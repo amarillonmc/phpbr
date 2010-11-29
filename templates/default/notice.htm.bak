@@ -1,0 +1,50 @@
+{template header}
+
+
+
+
+<div class="subtitle" >{lang gamestart}</div>
+<p align="center">
+我们这些挑战者再次聚集到了这里，<br>
+距最后一次鄙视acg_xilin，已经过了很长时间了，<br>
+当时acg_xilin说过，对我们的能力，他已经没有任何的怀疑。<br>
+在一个星期前，他突然宣布退休。<br>
+然后就没有他的信息了。<br><br>
+这时，和以前一样，面前出现了一个大屏幕，上面的人影是？<br><br>
+<img border="0" src="./img/n_1.gif" width="70" height="70"><br><br>
+“大家好，一名合格的毕业生需要毅力，智慧和勇气。为了测试你们，我给你们设置好了考场”<br>
+“大家请记住：汰弱留强，智者为王。”<br>
+“我acg_xilin又回来了！而且比以前更那啥了！现在我宣布”<br><br>
+</p>
+<p align="center">
+<font color="#ff0000" face="verdana" size="6">
+<span id="br" style="width:100%;filter:blur(add=1,direction=135,strength=9):glow(strength=5,color=gold); font-weight:700; text-decoration:underline">
+■ ACFUN BATTLE ROYALE ■开始！</span></font></p><br>
+“大家想在acfun毕业，就要努力的淘汰你的对手 - 把他的HP打光就可以了。”<br>
+“记住：唯一的萌友可能就是你的敌人！”<br><br>
+“当然，作弊是不对的，所以如果有人想强制打到我这里来，要先过我雇用的保镖一关！”<br>
+“可能将会付出生命的代价！”<br><br>
+“你从这里出去以后，随便到哪里都行。”<br>
+“但是请注意，你们所在的世界是不稳定的”<br><br>
+“每一小时都会有一部分地方从时空中消失。”<br>
+“我们叫这些地方[禁区]。对了，这个地方在你们出去以后也会成为禁区。”<br><br>
+“所幸，现在的科技已经能够预测到禁区的出现规律”<br>
+“请时刻关注地图，如果时间到了你还没有出禁区，你将会由于时空错乱自爆而死。”<br>
+“好了，如果大家想当版主的话，就要全力以赴哦。”<br><br>
+“现在你们每一个人都会有一个包裹，里面是面包和水，还有另外的两个东西。”<br><br>
+“这完全是靠运气，推荐你们访问www.acfun.cn提高下你们的个人内涵”<br>
+“好了，我不说什么了，下面的就交给你们了。”<br>
+“我会一直看着你的。”<br><br>
+“江湖险恶，祝大家好运！”<br><br>
+ <br><br>
+ <br>
+嗯……这些话以前在acg_xilin那里，听了几百遍了……连那个网址都一样……无聊<br><br>
+下面开始，就要按照号码，拿好那些东西，一个个离开这里了吧……<br><br>
+</font>
+<form method="post"  action="game.php" style="margin: 0px">
+<input type="hidden" name="mode" value="main">
+<input type="submit" name="enter" value="再次进行冒险">
+</form>
+</p>
+
+{template footer}

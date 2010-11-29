@@ -1,0 +1,62 @@
+body {text-align: center; background-position: 50% 50%; background-image: url("../../img/bru.gif"); background-attachment: fixed; background-repeat: no-repeat; font: 12px Tahoma, Verdana;cursor: crosshair; margin: 0; background-color: #000000; color: #ffffff;}
+a {text-decoration: none;color: #ff0000; cursor: crosshair}
+a:hover {color: #ffff99;}
+table {border: 1px;}
+tr {font-size: 9pt}td {font-size: 9pt}th {font-size: 9pt}
+input {cursor: text;}
+.title {font-family: "Laffayette Comic Pro";src: url("img/fonts/Laffayette_Comic_Pro.ttf"); margin: 6px;color: #ff0000; width: 100%;filter:blur(add=1,direction=135,strength=9):glow(strength=5,color=gold); font-weight:900; text-decoration:underline;font-size: 30px;}
+.subtitle {margin: 6px;color: #ff0000; width: 100%;font-size: 24px;font-weight:400;}
+.headerlink{}
+.small {font-size: 9pt}
+.b1, {border-right: #966 1px solid; border-top: #fcc 1px solid; background: #300; border-left: #fcc 1px solid; color: #fff; border-bottom: #966 1px solid; text-align: center}
+.b2, .admin td {border-right: #966 1px solid; border-top: #fcc 1px solid; background: #500; border-left: #fcc 1px solid; color: #fff; border-bottom: #966 1px solid; text-align: center}
+.b3 {border-right: #966 1px solid; border-top: #fcc 1px solid; border-left: #fcc 1px solid; color: #fff; border-bottom: #966 1px solid; text-align: center}
+.b4 {border-right: #966 1px solid; border-top: #fcc 1px solid; border-left: #fcc 1px solid; color: #fff; border-bottom: #669 1px solid; text-align: center}
+.t1 {text-align:center; font-weight: bold; color: black; border-left-style: none; border-right: 1.5pt solid black; border-top-style: none; border-bottom: 1.5pt solid black}
+.t2 {text-align:center; font-weight: bold; color: black; border-left-style: none; border-right-style: none; border-top-style: none; border-bottom: 1.5pt solid black}
+.t3 {text-align:center; font-weight: bold; color: black; border-left-style: none; border-right: 1.5pt solid black; border-top-style: none; border-bottom-style: none}
+.t4 {text-align:center; font-weight: normal; color: black; border-style: none; background-color: #808080}
+.t5 {text-align:center; font-weight: normal; color: black; border-style: none; background-color: #333333}
+.clit {color: #feea23; font: 900 18pt serif; }
+.yellow{color:#ffff00; font: 900 serif;}
+.clan{color: #00ffff;font: 900 serif;}
+.blue{color: #0000ff;font: 900 serif;}
+.red{color: #ff0000;font: 900 serif;}
+.green{color: #008000;font: 900 serif;}
+.lime{color: #00ff00;font: 900 serif;}
+.purple{color: #9900cc;font: 900 serif;}
+.dmg {font-size: 900 12pt; color: #ff0000}
+
+
+
+#main {
+white-space:nowrap;
+vertical-align:middle;
+}
+.battle td{
+text-align: center;
+}
+#chatlist{
+MARGIN: 0px;
+height:185px;
+width:550px;
+word-break:break-all;
+overflow:auto;
+}
+#sendchat{
+MARGIN: 0px;
+padding:0px;
+border:0px; 
+height:30px;
+width:550px;
+}
+#chatmsg{
+width:400px;
+
+}
+.footerline {
+height: 1px;
+background-image: url("../../img/footer_line.gif");
+}
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; } 
+.clearfix {display: inline-table;} /* Hides from IE-mac \*/ * html .clearfix {height: 1%;} .clearfix {display: block;} /* End hide from IE-mac */ 

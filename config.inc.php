@@ -9,7 +9,7 @@
 	$dbuser = 'bra2';			// database username
 						// 数据库用户名
 
-	$dbpw = 'bVd6UmSsycEVB6FU';			// database password
+	$dbpw = 'DBPWD';			// database password
 						// 数据库密码
 
 	$dbname = 'bra2';			// database name

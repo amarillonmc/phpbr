@@ -85,6 +85,7 @@ $lang = array
 	'check_admin' => '检查管理员账号',
 	'check_admin_validity' => '检查信息合法性',
 	'admin_username_invalid' => '用户名空, 长度超过限制或包含非法字符.',
+	'admin_password_invalid' => '密码为空, 长度超过限制或包含非法字符.',
 	'admin_invalid' => '您的信息没有填写完整.',
 	'fail_reason' => '失败. 原因:',
 	'go_back' => '返回上一页修改',
@@ -126,6 +127,8 @@ $lang = array
 	
 	'username' => '管理员账号:',
 	'username_comment' => '必须为论坛已存在账号',
+	'brpswd' => '管理员密码:',
+	'brpswd_comment' => '',
 	'adminmsg' => '站长留言:',
 	'adminmsg_comment' => '给用户的公告信息',
 	'startmode' => '游戏开始模式:',

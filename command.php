@@ -107,7 +107,7 @@ if($command == 'menu') {
 	} elseif(strpos($command,'off') === 0) {
 		$off_item = substr($command,3);
 		itemoff($off_item);
-		itemadd();
+		//itemadd();
 	} elseif(strpos($command,'swap') === 0) {
 		$swap_item = substr($command,4);
 		itemdrop($swap_item);

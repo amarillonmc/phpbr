@@ -34,9 +34,11 @@ $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 $db->select_db($dbname);
 require_once GAME_ROOT.'./gamedata/system.php';
-if(!$username||!$password){
+if(preg_match("[,|>|<|;]",$username)){
+	gexit($_ERROR['invalid_name'],__file__,__line__);
+} elseif(!$username||!$password) {
 	gexit($_ERROR['login_info'],__file__,__line__);
-}else{
+} else{
 	include_once GAME_ROOT.'./gamedata/system.php';
 
 	if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {

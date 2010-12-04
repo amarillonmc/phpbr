@@ -27,10 +27,11 @@ function poison($itmn = 0) {
 	}
 	$itmk = substr_replace($itmk,'P',0,1);
 	if($club == 8){ $itmk = substr_replace($itmk,'2',2,1); }
-	elseif($art == '毒物说明书'){$itmk = substr_replace($itmk,'1',2,1);}
-	elseif($art == '妖精的羽翼') {$itmk = substr_replace($itmk,'H',0,1);$log .= "一种神秘的力量净化了毒药，你的毒药变成了解毒剂！";}
+	elseif($art == '毒物说明书'){$itmk = substr_replace($itmk,'1',2,1);};
+	if($art == '妖精的羽翼') {$itmk = substr_replace($itmk,'H',0,1);$log .= "一种神秘的力量净化了毒药，你的毒药变成了解毒剂！";}
 	$itmsk = $pid;
-	$log .= "使用了 <span class=\"red\">$poison</span> ，<span class=\"yellow\">${'itm'.$itmn}</span> 被下毒了！<br>";
+	if($art == '妖精的羽翼') {$log .= "使用了 <span class=\"red\">$poison</span> ，<span class=\"yellow\">${'itm'.$itmn}</span> 被净化了！<br>";}
+	else {$log .= "使用了 <span class=\"red\">$poison</span> ，<span class=\"yellow\">${'itm'.$itmn}</span> 被下毒了！<br>";}
 	$poisons--;
 	if($poisons <= 0){
 		$log .= "<span class=\"red\">$poison</span> 用光了。<br>";

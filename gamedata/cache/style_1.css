@@ -1,17 +1,21 @@
-body {text-align: center; background-position: 50% 50%; background-image: url("../../img/bru.gif"); background-attachment: fixed; background-repeat: no-repeat; font: 12px Tahoma, Verdana;cursor: crosshair; margin: 0; background-color: #000000; color: #ffffff;}
-a {text-decoration: none;color: #ff0000; cursor: crosshair}
-a:hover {color: #ffff99;}
+﻿body {text-align: center; background-position: 50% 50%; background-image: url("../../img/STAR.gif"); background-attachment: fixed; background-repeat: no-repeat; font: 12px Tahoma, Verdana;cursor: crosshair; margin: 0; background-color: #111111; color: #ffffff;}
+a {text-decoration: none;color: #ccc; cursor: crosshair;}
+a:hover {color: #aff;}
 table {border: 1px;}
-tr {font-size: 9pt}td {font-size: 9pt}th {font-size: 9pt}
-input {cursor: text;}
-.title {font-family: "Laffayette Comic Pro";src: url("img/fonts/Laffayette_Comic_Pro.ttf"); margin: 6px;color: #ff0000; width: 100%;filter:blur(add=1,direction=135,strength=9):glow(strength=5,color=gold); font-weight:900; text-decoration:underline;font-size: 30px;}
+tr {font-size: 10pt}
+td {font-size: 10pt}
+th {font-size: 10pt}
+input {cursor: crosshair;}
+.title {font-family: "黑体"; margin: 6px;color: #ff0000; width: 100%;filter:blur(add=1,direction=90,strength=12):glow(strength=5,color=gold); font-weight:900; text-decoration:underline;font-size: 30px;}
 .subtitle {margin: 6px;color: #ff0000; width: 100%;font-size: 24px;font-weight:400;}
 .headerlink{}
 .small {font-size: 9pt}
-.b1, {border-right: #966 1px solid; border-top: #fcc 1px solid; background: #300; border-left: #fcc 1px solid; color: #fff; border-bottom: #966 1px solid; text-align: center}
-.b2, .admin td {border-right: #966 1px solid; border-top: #fcc 1px solid; background: #500; border-left: #fcc 1px solid; color: #fff; border-bottom: #966 1px solid; text-align: center}
-.b3 {border-right: #966 1px solid; border-top: #fcc 1px solid; border-left: #fcc 1px solid; color: #fff; border-bottom: #966 1px solid; text-align: center}
-.b4 {border-right: #966 1px solid; border-top: #fcc 1px solid; border-left: #fcc 1px solid; color: #fff; border-bottom: #669 1px solid; text-align: center}
+.b1 {background-color:rgba(93,246,199,0.6); *BACKGROUND: RGB(93,246,199); *filter:alpha(opacity=60); BORDER: #000 0px none; TEXT-ALIGN: center; COLOR: #fff; border-right: #111 5px solid; border-bottom: #111 5px solid;font-weight:bold}
+.b2 {background-color:rgba(84,135,134,0.8); *BACKGROUND: RGB(84,135,134); *filter:alpha(opacity=80); BORDER: #000 0px none; TEXT-ALIGN: center; COLOR: #fff; border-right: #111 5px solid; font-weight:bold}
+.b3 {background-color:rgba(17,17,17,0.5); *BACKGROUND:#111111; *filter:alpha(opacity=50); BORDER: #000 0px none; color: #fff; text-align: center; border-right: #111 5px solid}
+.b4 {BORDER: #000 0px none; color: #fff; text-align: center}
+.b5 {BORDER: #000 0px none; color: #fff; text-align: center; border-right: #111 5px solid}
+.admin td {BORDER: #000 3px transparent; TEXT-ALIGN: center; BACKGROUND: RGB(64,172,140); COLOR: #fff; border-right: #111 5px solid}
 .t1 {text-align:center; font-weight: bold; color: black; border-left-style: none; border-right: 1.5pt solid black; border-top-style: none; border-bottom: 1.5pt solid black}
 .t2 {text-align:center; font-weight: bold; color: black; border-left-style: none; border-right-style: none; border-top-style: none; border-bottom: 1.5pt solid black}
 .t3 {text-align:center; font-weight: bold; color: black; border-left-style: none; border-right: 1.5pt solid black; border-top-style: none; border-bottom-style: none}
@@ -39,20 +43,27 @@ text-align: center;
 #chatlist{
 MARGIN: 0px;
 height:185px;
-width:550px;
+width:600px;
 word-break:break-all;
 overflow:auto;
+position:relative;
 }
 #sendchat{
 MARGIN: 0px;
 padding:0px;
 border:0px; 
 height:30px;
-width:550px;
+width:600px;
 }
 #chatmsg{
 width:400px;
-
+border-right: #ddc 2px solid;
+border-top: #666 2px solid;
+border-left: #666 2px solid;
+border-bottom: #ddc 2px solid;
+}
+.nttx{
+	position:relative;
 }
 .footerline {
 height: 1px;

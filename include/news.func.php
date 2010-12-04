@@ -99,7 +99,7 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 				}
 			} elseif($news == 'death27') {
 				if($c){
-					$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span> 因触发了 <span class=\"yellow\">$c</span> 制作的 <span class=\"red\">陷阱$d</span> 被杀死";
+					$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span> 因触发了 <span class=\"yellow\">$c</span> 设置的 <span class=\"red\">陷阱$d</span> 被杀死";
 				} else {
 					$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span> 因触发了  <span class=\"red\">陷阱$d</span> 被杀死";
 				}

@@ -9,27 +9,15 @@ $isLogin = 1;
 //是否缓存css文件。0=不缓存，1=缓存
 $allowcsscache = 1;
 //站长留言
-$adminmsg = '<img src="http://amarilloviridian.com/wp-content/uploads/2010/05/TforceLogo90x30.gif" /><br>
-Tokiwa Life Game<br>
-PHP网页游戏大逃杀1.98SP1<br>
-MODDED BY 冴月麟<br>
-CODENAME：TLG<br>
-封装时间：2010-1-21 23：13 EST<br>
-<h2>感谢 MagicBear 氏提供快速服务器空间。
-<h2>第143回合玩家：小黄 L5成功！特此挂城门以求神RP
-</h2>
-<br>大逃杀群：25671738（人满）
-<br>大逃杀二群：97404731（新群）<br>
-<embed 
-width="195" height="18px"
-src="http://www.keyfc.net/play2.swf?soundFile=http://amarilloviridian.com/Media/seibai.mp3&bg=0xeeb96d&leftbg=0xeeb96d&lefticon=0xffd288&rightbg=0xeeb96d&rightbghover=0xffd288&righticon=0xffe3b5&righticonhover=0x000&text=0x000&slider=0xffe1ae&track=0xffd288&border=0x000&loader=0xffd288&autostart=yes&loop=yes"
-type="application/x-shockwave-flash"
-puginspage="http://www.macromeia.com/go/getflashplayer"
-allowfullscreen="false" ></embed>';
+$adminmsg = 'Just like a fairy<br>
+We have rose from the Ashes.<br>
+<img src = http://ug3g.com/lg/BRLOGO.jpg /><br>
+感谢 小黑大叔 提供服务器空间。<br>
+';
 //游戏开始方式 0=后台手动开始，1=每天固定时间始，2=上局结束后，间隔固定时间开始
-$startmode = 2;
+$startmode = 0;
 //游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔时间，>0
-$starthour = 1;
+$starthour = 20;
 //游戏开始的分钟数，范围1~59
 $startmin = 5;
 //游戏所用配置文件
@@ -39,7 +27,7 @@ $gamecfg = 1;
 //同ip限制激活人数。0为不限制
 $iplimit = 3;
 //头像数量（男女相同）
-$iconlimit = 22;
+$iconlimit = 20;
 //游戏进行状况显示条数
 $newslimit = 50;
 //生存者显示条数
@@ -52,34 +40,44 @@ $noiselimit = 300;
 //游戏内聊天信息显示条数
 $chatlimit = 50;
 //聊天信息更新时间(单位:毫秒)
-$chatrefresh = 120000;
+$chatrefresh = 60000;
 //游戏进行中是否显示聊天。0为不显示，数字为显示条数
 $chatinnews = 50;
 
 
 //■ 空手武器 ■
-$nowep = '空手';
+$nowep = '拳头';
+
 //■ 无防具 ■
 $noarb = '内衣';
 //■ 无道具 ■
 $noitm = '无';
 //■ 无限耐久度 ■
 $nosta = '∞';
+//■ 无属性 ■
+$nospk = '无';
+//■ 多种类武器 ■
+$mltwk = '泛用兵器';
+//■ 多重属性 ■
+$mltspk = '多重属性';
 
 
 //游戏状态描述
 $gstate = Array(0 => '已结束',10 => '即将开始',20 => '开放激活',30 => '人数已满',40=> '连斗中');
 $gwin = Array(0 => '程序故障', 1 => '全部死亡',2 => '最后幸存',3 => '禁区解除',4 => '无人参加',5 => '核爆全灭');
 $week = Array('日','一','二','三','四','五','六');
-$clubinfo = Array('无','天生神力','冷静执著','高强视力','内心的准心','孤注一掷','爆走一族','\长门有希/','\水濑秋子/','\博丽〇〇/','\枣恭介/', '富家子弟', '全能全才', '肌肉兄贵' ,'根性兄贵','<span class="red">L5状态</span>');
+$clubinfo = Array('无','搏击专精','剑术专精','准确投掷','射击高手','陷阱大师','短跑选手','电脑骇客','毒剂专家','热血狂人','猎人之眼', '富家子弟', '全能全才', '肌肉兄贵' ,'根性兄贵','<span class="red">L5状态</span>');
 $wthinfo = Array('晴天','大晴','多云','小雨','暴雨','台风','雷雨','下雪','起雾','浓雾','<span class="yellow">瘴气</span>','<span class="red">龙卷风</span>','<span class="clan">暴风雪</span>','<span class="blue">冰雹</span>');
-$sexinfo = Array('m' => 'NOD', 'f' => 'FARGO');
-$hpinfo = Array('很欢乐','无大碍','勉力支撑','挂掉了！');
+$sexinfo = Array('m' => '红队', 'f' => '蓝队');
+$hpinfo = Array('并无大碍','伤痕累累','生命危险','已经死亡');
+$spinfo = Array('精力充沛','略有疲惫','精疲力尽','已经死亡');
+$rageinfo = Array('平静','愤怒','暴怒','已经死亡');
+$wepeinfo = Array('不值一提','略有威胁','威力可观','无敌神器');
 $poseinfo = Array('通常','攻击姿态','防守姿态','探索姿态','隐藏姿态','治疗姿态');
-$tacinfo = Array('通常','','重视防御','重视反击','重视躲避','');
-$typeinfo = Array('挑战者','举办者','全息投影','常磐祭员工','我不是敌人的说～','真职人','游魂','全息幻象','管理员');
-$killmsginfo = Array('','我敬佩你的勇气，可惜勇气的另一面是自不量力……','真弱。','真弱。','啊……对不起！对不起！','看看职人的力量！','管理猿的话，一定要听哦！','... ...','管理员的话，一定要听哦！');
-$lwinfo = Array('','难道，这个就是能够更改世界的力量？！','这次失败了没关系，我们下次再见！','嘿，结束了么？','怎……怎么会这样？','长江后浪推前浪，前浪死在沙滩上！','呃——光学迷彩出错了吗？','... ...','系统出错了吗？');
+$tacinfo = Array('通常','','重视防御','重视反击','重视躲避');
+$typeinfo = Array('挑战者','举办者','全息幻象','常磐祭员工','非作战人员','复制人','游魂','全息幻象','管理员');
+$killmsginfo = Array('','你还不懂得运用你的力量，咱为此感到惋惜。','猎杀任务执行中。','抱歉，这是我的工作。','啊……对不起！对不起！','轻敌可是会死的！','忘记历史就意味着背叛，背叛就意味着……死亡。','……','死吧。');
+$lwinfo = Array('','呜……这个躯体……咱还是无法自由运用啊……','机体受损过重，任务被迫中止。','我……我还没领到我的工资啊！','怎……怎么会这样？','控血果然容易出意外啊。','呃——光学迷彩出错了吗？','……','系统出错了吗？');
 $infinfo = Array('b' => '胸', 'h' => '头', 'a' => '腕', 'f' => '足', 'p' => '毒');
 $attinfo = Array('N' => '徒手殴打', 'P' => '殴打','K' => '斩刺', 'G' => '射击', 'C' => '投掷', 'D' => '拉开引线投掷', 'F' => '铺设法阵炸');
 $skillinfo = Array('N' => 'wp', 'P' => 'wp', 'K' => 'wk', 'G' => 'wg', 'C' => 'wc', 'D' => 'wd', 'F'=> 'wf');
@@ -89,22 +87,24 @@ $noiseinfo = Array('G' => '枪声', 'D' => '爆炸声', 'F'=>'灵气');
 $chatinfo = Array(0 => '全员', 1 => '队伍', 2 => '密语', 3 => '遗言', 4 => '公告', 5 => '系统');
 $iteminfo = Array(
 	'N' => '无',
-	'WN' => '拳头',#空手
+	'WN' => '空手',#空手
 	'WP' => '钝器',
-	'WG' => '远程武器',
-	'WGK' => '泛用武器',
-	'WK' => '斩击利器',
-	'WC' => '可投掷',
+	'WG' => '远程兵器',
+	'WGK' => '泛用兵器',
+	'WK' => '锐器',
+	'WC' => '投掷兵器',
 	'WD' => '爆炸物',
-	'WF' => '灵符',
+	'WF' => '魔法兵器',
 	'DN' => '内衣',#内衣
-	'DB' => '外衣',
-	'DH' => '帽子',
-	'DA' => '腕部饰品',
-	'DF' => '鞋子',
-	'A'  => '徽章',
-	'AF' => '头饰',
-	'AM' => '胸针',
+	'DB' => '身体装备',
+	'DH' => '头部装备',
+	'DA' => '手臂装备',
+	'DF' => '腿部装备',
+	'A'  => '饰物',
+	'AD' => '防御饰物',
+	'AF' => '同志饰物',
+	'AM' => '热恋饰物',
+	'AW' => '未知饰物',
 	'HH' => '生命恢复',
 	'HS' => '体力恢复',
 	'HB' => '命体恢复',
@@ -135,7 +135,14 @@ $iteminfo = Array(
 	'ZC'=> '蓝色药丸',
 	'ZD'=> '透明药丸'
 	);
-
+$itemspkinfo = Array(
+	'G' => '防弹',
+	'H' => '防御受伤',
+	'F' => '同志',
+	'M' => '热恋',
+	'R' => '连续攻击',
+	'S' => '消音',
+	);
 $plsinfo = Array('管理后台','音乐区','RF高校','雪之镇','动画区','ACFUN贴吧','观音堂','清水池','白穗神社','墓地','娱乐区','对天使用作战本部','夏之镇','游戏区','光坂高校','柊家神社','常磐森林','M记戈壁','秋之镇','常磐镇医院','春之镇','专辑区','初始之树','幻想世界','永恒的世界','Hut of Amarillo');
 $xyinfo = Array('D-6','A-2','B-4','C-3','C-4','C-5','C-6','D-4','E-2','E-4','F-6','E-8','F-2','F-9','G-3','G-6','H-4','H-6','I-6','I-7','I-10','J-6','F-2','I-1','J-10','A-1');
 $areainfo = Array
@@ -185,6 +192,7 @@ $_ERROR = Array
 	'ip_limit' => '本局此IP激活人数已满，请下局再来',
 	'no_power' => '你的管理权限不够，不能进行此操作',
 	'wrong_adcmd' => '指令错误，请重新输入',
+	'invalid_name' => '用户名含有非法字符，请重新输入',
 	);
 
 

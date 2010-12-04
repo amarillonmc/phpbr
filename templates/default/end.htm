@@ -1,7 +1,7 @@
-{template header}
+﻿{template header}
 
 <!--{if $hp <= 0}-->
-<div class="subtitle" >你已经便当了！</div>
+<div class="subtitle" >你已经便当了！</div><BR>
 <IMG src="img/$iconImg" width="70" height="70" border="0" align="middle" style="filter:Xray()">
 <span class = "yellow b">$motto</span><br>
 便当时间：$dtime<br>
@@ -12,7 +12,7 @@
 <h1>祝下次游戏好运！<h1>
 <!--{elseif $gamestate === 0}-->
 	<!--{if $winmode == 2}-->
-	<div class="subtitle" >游戏结束</div>
+	<div class="subtitle" >游戏结束</div><BR>
 <p>
 噗通。<BR>
 眼前，浑身是血的萌友直勾勾地盯着我，然后跪倒在地。<BR>
@@ -110,7 +110,7 @@
 </p>
 
 	<!--{elseif $winmode == 3 && $state == 6}-->
-	<div class="subtitle" >游戏紧急中止</div>
+	<div class="subtitle" >游戏紧急中止</div><BR>
 <p>
 “哈……哈……”我疲惫地呼吸着。<br>
 林无月，之前在开幕仪式上口出狂言的这个女人，如今面朝下静静地躺在血泊之中。<br>
@@ -174,7 +174,7 @@ I will be back.<br>
 
 
 	<!--{elseif $winmode == 3}-->
-<div class="subtitle" >游戏紧急中止</div>
+<div class="subtitle" >游戏紧急中止</div><BR>
 <p>
 脑海中突然传出的声音，让正忙于厮杀的众人不约而同地停了下来。<BR>
 本以为会是那个林无月，但却是另一个似曾相识的声音。<BR>
@@ -214,7 +214,7 @@ I will be back.<br>
 </p>
 	
 		<!--{elseif $winmode == 5 && $state == 6}-->
-	<div class="subtitle" >核弹引爆</div>
+	<div class="subtitle" >核弹引爆</div><BR>
 <p>
 手中的按钮装置发出刺耳的“哔哔”声。<BR>
 真烦，不赶快把这东西丢掉的话，肯定会暴露位置，招来别人的攻击。
@@ -252,7 +252,7 @@ I will be back.<br>
 
 
 	<!--{elseif $winmode == 5}-->
-	<div class="subtitle" >核弹引爆</div>
+	<div class="subtitle" >核弹引爆</div><BR>
 <p>
 突然间划破天空的飞行物体，让正在厮杀的众人不约而同地停了下来。<BR>
 那震耳欲聋的尖锐呼啸声，让人不寒而栗。<BR>

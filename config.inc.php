@@ -3,16 +3,16 @@
 // [EN]	Set below parameters according to your account information provided by your hosting
 // [CH] 以下变量请根据空间商提供的账号参数修改,如有疑问,请联系服务器提供商
 
-	$dbhost = 'localhost';			// database server
+	$dbhost = 'mysql.alwaysdata.com';			// database server
 						// 数据库服务器
 
-	$dbuser = 'bra2';			// database username
+	$dbuser = 'winddramon';			// database username
 						// 数据库用户名
 
-	$dbpw = 'DBPWD';			// database password
+	$dbpw = 'zetajan8';			// database password
 						// 数据库密码
 
-	$dbname = 'bra2';			// database name
+	$dbname = 'winddramon_bra2';			// database name
 						// 数据库名
 
 	$dbreport = 1;				// send db error report? 1=yes
@@ -40,13 +40,13 @@
 	$pconnect = true;				// persistent database connection, 0=off, 1=on
 						// 数据库持久连接 false=关闭, true=打开
 
-	$gamefounder = 'Amarillo_NMC';			// super administrator's UID
+	$gamefounder = 'stage4';			// super administrator's UID
 						// 游戏创始人 UID, 可以支持多个创始人，之间使用 “,” 分隔。
 						// 如果不设置游戏创始人，则管理员之间可以相互编辑，具体权力差别请见游戏使用文档
 
-	$postinterval = 5;   //用户提交命令的间隔时间，单位秒
+	$postinterval = 1;   //用户提交命令的间隔时间，单位秒
 
-	$moveut = 0; //set the difference of server time and client time 
+	$moveut = 7; //set the difference of server time and client time 
 			//如果本地时间跟服务器时间有时差，在此处更改
 
 // [EN] !ATTENTION! Do NOT modify following after your board was settle down
@@ -76,13 +76,13 @@
 	$tplrefresh = 1;			// auto check validation of templates, 0=off, 1=on
 						// 模板自动刷新开关 0=关闭, 1=打开, 在不修改页面的情况下可以关闭
 
-	$bbsurl = 'http://www.amarilloviridian.com/';    //the bbs url for the game plus
+	$bbsurl = '';    //the bbs url for the game plus
 									//安装游戏插件的论坛地址
 
-	$gameurl = 'http://bra2.my-acg.com/';    // the url of game program files,for the full-window mode
+	$gameurl = 'http://wildmonbr.tk/bra2/';    // the url of game program files,for the full-window mode
 									//游戏程序地址，用于全屏模式
 
-	$homepage = 'http://www.amarilloviridian.com/';      // game homepage
+	$homepage = 'http://www.amarilloviridian.co.cc/';      // game homepage
 									//官方网站地址
 
 	$title = '生  存  游  戏';     //game title

@@ -148,7 +148,7 @@ function itemuse($itmn) {
 			$hp += $itme;
 			$hp = $hp > $mhp ? $mhp : $hp;
 			$oldhp = $hp - $oldhp;
-			$log .= "你使用了 <span class=\"red\">$itm</span> ，恢复了 <span class=\"yellow\">$oldhp</span> 点生命和 <span class=\"yellow\">$oldhp</span> 点体力。<br>";
+			$log .= "你使用了 <span class=\"red\">$itm</span> ，恢复了 <span class=\"yellow\">$oldhp</span> 点生命和 <span class=\"yellow\">$oldsp</span> 点体力。<br>";
 			if($itms != $nosta){ 
 				$itms--;  
 				if($itms <= 0){
@@ -407,7 +407,7 @@ function itemuse($itmn) {
 				}
 				$itms--;  
 			} else {
-				$log .= '你的武器不是棍棒，不能使用磨刀石。<br>';
+				$log .= '你的武器不是棍棒，不能安装钉子。<br>';
 			}
 		} elseif($itm == '针线包') {
 			global $arb,$arbk,$arbe,$arbs,$arbsk,$noarb;

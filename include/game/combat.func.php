@@ -124,7 +124,7 @@ function combat($w_pdata,$active = 1,$wep_kind = '') {
 	$att_dmg = $att_dmg ? $att_dmg : 0;
 	$def_dmg = $def_dmg ? $def_dmg : 0;
 	if(!$w_type) {
-		$w_log = "<span class=\"yellow\">与 $name 发生战斗！攻：$def_dmg 受：$att_dmg</span>";
+		$w_log = "<span class=\"yellow\">与 $name 发生战斗！敌人武器：$wep 。 攻：$def_dmg ，受：$att_dmg 。</span>";
 		logsave($w_pid,$now,$w_log);
 	}
 	
@@ -221,10 +221,11 @@ function attack($wep_kind = 'N',$active = 0){
 				global ${'w_ar'.$inf_att},${'w_ar'.$inf_att.'k'},${'w_ar'.$inf_att.'e'},${'w_ar'.$inf_att.'s'},${'w_ar'.$inf_att.'sk'};
 				if(${'w_ar'.$inf_att.'s'}){
 					${'w_ar'.$inf_att.'s'} --;
+					$log .= "$w_name 的 ${'w_ar'.$inf_att} 的耐久度下降了！<br>";
 					if(${'w_ar'.$inf_att.'s'} <= 0){
+						$log .= "$w_name 的 <span class=\"red\"> ${'w_ar'.$inf_att} </span> 受损过重，无法再装备了！<br>";
 						${'w_ar'.$inf_att} = ${'w_ar'.$inf_att.'k'} = ${'w_ar'.$inf_att.'sk'} = '';
 						${'w_ar'.$inf_att.'e'} = ${'w_ar'.$inf_att.'s'} = 0;
-						$log .= "$w_name 的 <span class=\"red\">${'w_ar'.$inf_att}</span> 破损了！<br>";
 					}
 				} else {
 					if(strpos($w_inf,$inf_att) === false){
@@ -236,17 +237,26 @@ function attack($wep_kind = 'N',$active = 0){
 		}
 		if(($weps == $nosta)&&(($wep_kind == 'K')||($wep_kind == 'P'))&&(rand(0,4) == 0)) {
 			$wepe --;
+			$log .= "你 的 $wep 的攻击力下降了！<br>";
 			if($wepe <= 0){
-				$log .= "<span class=\"red\">$wep 使用过度，毁坏了！</span><br>";
-				$wep = $wepk = $wepsk = '';
-				$wepe = $weps = 0;
+				$log .= "你 的 <span class=\"red\">$wep 使用过度，已经损坏，无法再装备了！</span><br>";
+				
+				$wep = '拳头';
+				$wepsk = '';
+				$wepk = 'WN';
+				$wepe = 0;
+				$weps = $nosta;
 			}
 		} elseif((($wep_kind == 'P')||($wep_kind == 'K'))&&($weps != $nosta)&&(rand(0,9) == 0)) {
 			$weps --;
+			$log .= "你 的 $wep 的耐久度下降了！<br>";
 			if($weps <= 0){
-				$log .= "<span class=\"red\">$wep 使用过度，毁坏了！</span><br>";
-				$wep = $wepk = $wepsk = '';
-				$wepe = $weps = 0;
+				$log .= "你 的 <span class=\"red\">$wep 使用过度，已经损坏，无法再装备了！</span><br>";
+				$wep = '拳头';
+				$wepsk = '';
+				$wepk = 'WN';
+				$wepe = 0;
+				$weps = $nosta;
 			}
 		}
 
@@ -269,15 +279,20 @@ function attack($wep_kind = 'N',$active = 0){
 	
 	if((($wep_kind == 'C')||($wep_kind == 'D'))&&($weps != $nosta)){
 		$weps --;
+		$log .= "你 用掉了1个 $wep 。<br>";
 		if($weps <= 0){
-			$log .= "<span class=\"red\">$wep 用光了！</span><br>";
-			$wep = $wepk = $wepsk = '';
-			$wepe = $weps = 0;
+			$log .= "你 的 <span class=\"red\">$wep</span> 用光了！<br>";
+			$wep = '拳头';
+			$wepsk = '';
+			$wepk = 'WN';
+			$wepe = 0;
+			$weps = $nosta;
 		}
 	} elseif(($wep_kind == 'G')&&($weps != $nosta)) {
 		$weps --;
+		$log .= "你 的 $wep 的残余弹药数减少了1。<br>";
 		if($weps <= 0){
-			$log .= "<span class=\"red\">$wep 的子弹用光了！</span><br>";
+			$log .= "你 的 <span class=\"red\">$wep</span> 的子弹用光了！<br>";
 			$weps = $nosta;
 		}
 	}
@@ -351,10 +366,11 @@ function defend($w_wep_kind = 'N',$active = 0){
 				global ${'ar'.$inf_att},${'ar'.$inf_att.'k'},${'ar'.$inf_att.'e'},${'ar'.$inf_att.'s'},${'ar'.$inf_att.'sk'};
 				if(${'ar'.$inf_att.'s'}) {
 					${'ar'.$inf_att.'s'} --;
+					$log .= "你 的 ${'ar'.$inf_att} 的耐久度下降了！<br>";
 					if(${'ar'.$inf_att.'s'} <= 0){
+						$log .= "你 的 <span class=\"red\">${'ar'.$inf_att}</span> 受损过重，无法再装备了！<br>";
 						${'ar'.$inf_att} = ${'ar'.$inf_att.'k'} = ${'ar'.$inf_att.'sk'} = '';
 						${'ar'.$inf_att.'e'} = ${'ar'.$inf_att.'s'} = 0;
-						$log .= "你 的 <span class=\"red\">${'ar'.$inf_att}</span> 破损了！<br>";
 					}
 				} else {
 					if(strpos($inf,$inf_att) === false){
@@ -366,17 +382,26 @@ function defend($w_wep_kind = 'N',$active = 0){
 		}
 		if(($w_weps == $nosta)&&(($w_wep_kind == 'K')||($w_wep_kind == 'P'))&&(rand(0,4) == 0)) {
 			$w_wepe --;
+			$log .= "$w_name 的 $w_wep 的攻击力下降了！<br>";
 			if($w_wepe <= 0) {
-				$log .= "<span class=\"red\">$w_wep 使用过度，损坏了！</span><br>";
-				$w_wep = $w_wepk = $w_wepsk = '';
-				$w_wepe = $w_weps = 0;
+				$log .= "$w_name 的 <span class=\"red\">$w_wep 使用过度，已经损坏，无法再装备了！</span><br>";
+				$w_wep = '拳头';
+				$w_wepsk = '';
+				$w_wepk = 'WN';
+				$w_wepe = 0;
+				$w_weps = $nosta;
 			}
 		} elseif((($w_wep_kind == 'P')||($w_wep_kind == 'K'))&&($w_weps != $nosta)&&(rand(0,9) == 0)) {
 			$w_weps --;
+			$log .= "$w_name 的 $w_wep 的耐久度下降了！<br>";
 			if($w_weps <= 0){
-				$log .= "<span class=\"red\">$w_wep 使用过度，损坏了！</span><br>";
-				$w_wep = $w_wepk = $w_wepsk = '';
+				$log .= "$w_name 的 <span class=\"red\">$w_wep 使用过度，已经损坏，无法再装备了！</span><br>";
 				$w_wepe = $w_weps = 0;
+				$w_wep = '拳头';
+				$w_wepsk = '';
+				$w_wepk = 'WN';
+				$w_wepe = 0;
+				$w_weps = $nosta;
 			}
 		}
 
@@ -407,13 +432,21 @@ function defend($w_wep_kind = 'N',$active = 0){
 	
 	if((($w_wep_kind == 'C')||($w_wep_kind == 'D'))&&($w_weps != $nosta)){
 		$w_weps --;
+		$log .= "$w_name 用掉了1个 $w_wep 。<br>";
 		if($w_weps <= 0){
-			$w_wep = $w_wepk = $w_wepsk = '';
+			$log .= "$w_name 的 <span class=\"red\">$w_wep</span> 用光了！<br>";
 			$w_wepe = $w_weps = 0;
+			$w_wep = '拳头';
+			$w_wepsk = '';
+			$w_wepk = 'WN';
+			$w_wepe = 0;
+			$w_weps = $nosta;
 		}
 	} elseif(($w_wep_kind == 'G')&&($w_weps != $nosta)) {
 		$w_weps --;
+		$log .= "$w_name 的 $w_wep 的残余弹药数减少了1。<br>";
 		if($w_weps <= 0){
+			$log .= "$w_name 的 <span class=\"red\">$w_wep</span> 的子弹用光了！<br>";
 			$w_weps = $nosta;
 		}
 	}

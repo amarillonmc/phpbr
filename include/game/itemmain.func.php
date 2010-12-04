@@ -163,9 +163,17 @@ function itemoff($item){
 	$itme0 = $itme;
 	$itms0 = $itms;
 	$itmsk0 = $itmsk;
-
+	
+	if($item == 'wep'){
+	$itm = '拳头';
+	$itmsk = '';
+	$itmk = 'WN';
+	$itme = 0;
+	$itms = $nosta;
+	} else {
 	$itm = $itmk = $itmsk = '';
 	$itme = $itms = 0;
+	}
 	itemget();
 	return;
 }
@@ -357,8 +365,8 @@ function itembuy($item,$shop,$bnum=1) {
 		$log .= '购买数量必须为大于0的整数。<br>';
 		return;
 	} elseif($bnum>$num) {
-		$log .= '购买数量不能超过道具总数量。<br>';
-		return; 
+		$log .= '购买数量必须小于物品数量。<br>';
+		return;
 	} elseif($money < $price*$bnum) {
 		$log .= '你的钱不够，不能够买此物品！<br>';
 		return;
@@ -408,6 +416,7 @@ function getcorpse($wid,$item){
 	}
 
 	$edata = $db->fetch_array($result);
+	
 	if($edata['hp']>0) {
 		$log .= "对方尚未死亡！<br>";
 		$mode = 'command';
@@ -417,7 +426,6 @@ function getcorpse($wid,$item){
 		$mode = 'command';
 		return;
 	}
-
 
 	if($item == 'wep') {
 		$itm0 = $edata['wep'];

@@ -32,79 +32,129 @@ function init_playerdata(){
 }
 
 function init_profile(){
-	global $inf,$infinfo,$hp,$mhp,$sp,$msp,$infdata,$infimg,$hstate,$hpimg,$spimg,$ardef,$arbe,$arhe,$arae,$arfe;
-
-
+	global $inf,$infinfo,$hp,$mhp,$sp,$msp,$infdata,$infimg,$newhpimg,$newspimg,$ardef,$arbe,$arhe,$arae,$arfe;
 	$ardef = $arbe + $arhe + $arae + $arfe;
-
-	if(($inf)&&($inf!='p')) {
+	if($inf) {
 		$infdata = '<span class="red b">';
 		if(strpos($inf,'h') !== false){
 			$infdata .= $infinfo['h'];
-			$infimg .= 'h';
-		}
-		if(strpos($inf,'b') !== false){
-			$infdata .= $infinfo['b'];
-			$infimg .= 'b';
+			$infimg .= '<img src="img/h.gif" style="position:absolute;top:0;left:4;width:146;height:19">';
 		}
 		if(strpos($inf,'a') !== false){
 			$infdata .= $infinfo['a'];
-			$infimg .= 'a';
+			$infimg .= '<img src="img/a.gif" style="position:absolute;top:20;left:4;width:122;height:20">';
+		}
+		if(strpos($inf,'b') !== false){
+			$infdata .= $infinfo['b'];
+			$infimg .= '<img src="img/b.gif" style="position:absolute;top:40;left:4;width:146;height:20">';
 		}
 		if(strpos($inf,'f') !== false){
 			$infdata .= $infinfo['f'];
-			$infimg .= 'f';
+			$infimg .= '<img src="img/f.gif" style="position:absolute;top:60;left:4;width:139;height:57">';
 		}
 		$infdata .= '</span>';
+		if(strpos($inf,'p') !== false) {
+			$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+			$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
+		}
 	} else {
 		$infdata = '';
-		$infimg = 'ok';
+		//$infimg = '<img src="img/ok.gif" style="position:absolute;top:120;left:18;">';
 	}
 
 
 	if($hp <= 0 ){
-		$hstate = 'dead';
-	} elseif(strpos($inf,'p') !== false) {
-		$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
-		$hstate = 'poison';
-	} elseif($hp> $mhp*0.5){$hstate = 'fine';
-	} elseif($hp> $mhp*0.2){$hstate = 'caution';
-	} else{$hstate = 'danger';
+		//$hstate = 'dead';
+		$infimg .= '<img src="img/dead.gif" style="position:absolute;top:120;left:1;width:94;height:40">';
+	//} elseif(strpos($inf,'p') !== false) {
+		//$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+		//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;">';
+		//$hstate = 'poison';
+	} elseif($hp <= $mhp*0.2){
+		//$hstate = 'fine';
+		$infimg .= '<img src="img/danger.gif" style="position:absolute;top:120;left:0;width:95;height:37">';
+	} elseif($hp <= $mhp*0.5){
+		//$hstate = 'caution';
+		$infimg .= '<img src="img/caution.gif" style="position:absolute;top:120;left:0;width:95;height:36">';
+	} elseif($inf == ''){
+		//$hstate = 'danger';
+		$infimg .= '<img src="img/fine.gif" style="position:absolute;top:120;left:8;width:81;height:38">';
 	}
 	
-	$hppre = floor(($hp/$mhp)*100);
-	$hpimg = '<img src="img/red.gif" width="'.$hppre.'%" height="10" border="0" align="left">';
-	$sppre = floor(($sp/$msp)*100);
-	$spimg = '<img src="img/yellow.gif" width="'.$sppre.'%" height="10" border="0" align="left">';
+	//$hppre = floor(($hp/$mhp)*100);
+	$newhppre = 5+floor(151*(1-$hp/$mhp));
+	//$hpimg = '<img src="img/red.gif" width="'.$hppre.'%" height="10" border="0" align="left">';
+	$newhpimg = '<img src="img/red2.gif" style="position:absolute; clip:rect('.$newhppre.'px,55px,160px,0px);">';
+	//$sppre = floor(($sp/$msp)*100);
+	$newsppre = 5+floor(151*(1-$sp/$msp));
+	//$spimg = '<img src="img/yellow.gif" width="'.$sppre.'%" height="10" border="0" align="left">';
+	$newspimg = '<img src="img/yellow2.gif" style="position:absolute; clip:rect('.$newsppre.'px,55px,160px,0px);">';
 
 	return;
 }
 
 function init_battle($ismeet = 0){
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep,$w_sNoinfo,$w_iconImg,$w_hpstate,$w_isdead,$hpinfo,$fog,$typeinfo,$sexinfo,$w_lvl,$w_exp,$w_upexp,$baseexp;
-
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_lvl,$w_rage,$w_hp,$w_sp,$w_mhp,$w_msp,$w_wep,$w_wepk,$w_wepe,$w_sNoinfo,$w_iconImg,$w_hpstate,$w_spstate,$w_ragestate,$w_wepestate,$w_isdead,$hpinfo,$spinfo,$rageinfo,$wepeinfo,$fog,$typeinfo,$sexinfo,$infinfo,$w_exp,$w_upexp,$baseexp,$w_pose,$w_tactic,$w_inf,$w_infdata;
 	$w_upexp = round(($w_lvl*$baseexp)+(($w_lvl+1)*$baseexp));
-
-	if(!$fog||$ismeet) {
-		$w_sNoinfo = "$typeinfo[$w_type] （$sexinfo[$w_gd] $w_sNo 号）";
-	    $w_i = $w_type > 0 ? 'n' : $w_gd;
-		$w_iconImg = $w_i.'_'.$w_icon.'.gif';
-	} else {
-		$w_sNoinfo = '？？？？';
-		$w_iconImg = 'question.gif';
-		$w_name = '？？？？';
-		$w_wep = '？？？？';
-	}
 	
 	if($w_hp <= 0) {
 		$w_hpstate = "<span class=\"red\">$hpinfo[3]</span>";
+		$w_spstate = "<span class=\"red\">$spinfo[3]</span>";
+		$w_ragestate = "<span class=\"red\">$rageinfo[3]</span>";
 		$w_isdead = true;
-	} elseif($w_hp < $w_mhp*0.1) {
+	} else{
+		if($w_hp < $w_mhp*0.1) {
 		$w_hpstate = "<span class=\"red\">$hpinfo[2]</span>";
-	} elseif($w_hp < $w_mhp*0.4) {
+		} elseif($w_hp < $w_mhp*0.4) {
 		$w_hpstate = "<span class=\"yellow\">$hpinfo[1]</span>";
-	} else {
+		} else {
 		$w_hpstate = "<span class=\"clan\">$hpinfo[0]</span>";
+		}
+		if($w_sp < $w_msp*0.25) {
+		$w_spstate = "<span class=\"red\">$spinfo[2]</span>";
+		} elseif($w_sp < $w_msp*0.5) {
+		$w_spstate = "<span class=\"yellow\">$spinfo[1]</span>";
+		} else {
+		$w_spstate = "<span class=\"clan\">$spinfo[0]</span>";
+		}
+		if($w_rage >= 100) {
+		$w_ragestate = "<span class=\"red\">$rageinfo[2]</span>";
+		} elseif($w_rage >= 30) {
+		$w_ragestate = "<span class=\"yellow\">$rageinfo[1]</span>";
+		} else {
+		$w_ragestate = "$rageinfo[0]";
+		}
+	}
+	
+	if($w_wepe >= 400) {
+		$w_wepestate = "<span class=\"red\">$wepeinfo[3]</span>";
+	} elseif($w_wepe >= 200) {
+		$w_wepestate = "<span class=\"yellow\">$wepeinfo[2]</span>";
+	} elseif($w_wepe >= 60) {
+		$w_wepestate = "<span class=\"clan\">$wepeinfo[1]</span>";
+	} else {
+		$w_wepestate = "$wepeinfo[0]";
+	}
+	
+	if(!$fog||$ismeet) {
+		$w_sNoinfo = "$typeinfo[$w_type]($sexinfo[$w_gd] $w_sNo 号)";
+	  $w_i = $w_type > 0 ? 'n' : $w_gd;
+		$w_iconImg = $w_i.'_'.$w_icon.'.gif';
+		$w_infdata = "$infinfo[$w_inf]";
+	} else {
+		$w_sNoinfo = '？？？';
+		$w_iconImg = 'question.gif';
+		$w_name = '？？？';
+		$w_wep = '？？？';
+		$w_infdata = '？？？';
+		$w_pose = -1;
+		$w_tactic = -1;
+		$w_lvl = '？';
+		$w_hpstate = '？？？';
+		$w_spstate = '？？？';
+		$w_ragestate = '？？？';
+		$w_wepestate = '？？？';
+		$w_wepk = '';
 	}
 	return;
 }

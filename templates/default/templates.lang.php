@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 $language = array
 	(
@@ -37,7 +37,8 @@ $language = array
 	'gender' => '性别',
 	'icon' => '头像',
 	'sNo' => '学号',
-	'club' => '内定称号',
+	'level' => '等级',
+	'club' => '特性',
 	'hp' => '生命',
 	'sp' => '体力',
 	'att' => '攻击力',
@@ -50,6 +51,7 @@ $language = array
 	'inf' => '受伤部位',
 	'pose' => '基础姿态',
 	'tactic' => '应战策略',
+	'kind1' => '种类',
 	'rage' => '怒气',
 	'killnum' => '击杀数',
 	'money' => '金钱',
@@ -59,6 +61,7 @@ $language = array
 	'command' => '指令',
 	'wep' => '武器',
 	'arb' => '防具',
+	'effect' => '攻击',
 	'cmd_choice' => '你想要做什么？',
 	'chat' => '消息',
 	'moneyunit' => '元',
@@ -68,11 +71,11 @@ $language = array
 	'wc' => '投',
 	'wd' => '爆',
 	'wf' => '灵',
-	'newsnotice' => '『大家都还活得很精神嘛！<br />以下是到现在为止的游戏状况。<br />今天也要好好干喔！』',
+	'newsnotice' => '“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”',
 	'useitem' => '使用',
 	'end' => '游戏结束！',
-	'send' => '喊出去',
-	'refresh' => '仔细听',
+	'send' => '发送',
+	'refresh' => '刷新',
 	'maptitle' => '会场简易地图',
 	);
 

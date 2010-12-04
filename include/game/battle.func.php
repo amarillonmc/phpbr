@@ -8,7 +8,7 @@ if(!defined('IN_GAME')) {
 
 function findenemy(&$w_pdata) {
 	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$nosta,$weps;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;
 	$battle_title = '发现敌人';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle();
@@ -35,7 +35,7 @@ function findenemy(&$w_pdata) {
 
 function findteam(&$w_pdata){
 	global $log,$mode,$main,$cmd,$battle_title;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;
 	$battle_title = '发现队友';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);
@@ -57,8 +57,8 @@ function findteam(&$w_pdata){
 }
 
 function findcorpse(&$w_pdata){
-	global $log,$mode,$main,$battle_title,$cmd,$bid;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep;
+	global $log,$mode,$main,$battle_title,$cmd,$bid,$iteminfo;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;
 	$battle_title = '发现尸体';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);

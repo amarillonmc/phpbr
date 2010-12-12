@@ -7,15 +7,22 @@ if(!defined('IN_GAME')) {
 
 
 function findenemy(&$w_pdata) {
-	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$nosta,$weps;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;
+	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$nosta,$weps,$bid;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
+	
+	if($w_pdata['pid'] !== $bid){
+		$log .= "<span class=\"yellow\">敌人数据出错。</span><br>";
+		$mode = 'command';
+		return;
+	}
+	
 	$battle_title = '发现敌人';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle();
+		
+	$log .= "你发现了敌人<span class=\"red\">$w_name</span>！<br>对方好像完全没有注意到你！<br>";
 
-	$log .= "你发现了敌人 <span class=\"red\">$w_name</span> ！<br>对方好像完全没有注意到你！<br>";
-
-	$cmd .= ' 现在想要做什么？<br><br>';
+	$cmd .= '现在想要做什么？<br><br>';
 	$cmd .= '向对手大喊：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
 	$cmd .= '<input type="hidden" name="mode" value="combat"><input type="hidden" name="wid" value="'.$w_pid.'">';
 
@@ -30,19 +37,27 @@ function findenemy(&$w_pdata) {
 	$cmd .= '<input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >逃跑</a><br>';
 
 	$main = 'battle';
+	
 	return;
 }
 
 function findteam(&$w_pdata){
-	global $log,$mode,$main,$cmd,$battle_title;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;
+	global $log,$mode,$main,$cmd,$battle_title,$bid;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
+	
+	if($w_pdata['pid'] !== $bid){
+		$log .= "<span class=\"yellow\">队友数据出错。</span><br>";
+		$mode = 'command';
+		return;
+	}
+	
 	$battle_title = '发现队友';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);
-
-	$log .= "你发现了队友 <span class=\"yellow\">$w_name</span> ！<br>";
 	
-	$cmd .= ' 现在想要做什么？<br><br>';
+	$log .= "你发现了队友<span class=\"yellow\">$w_name</span>！<br>";
+	
+	$cmd .= '现在想要做什么？<br><br>';
 	$cmd .= '留言：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
 	$cmd .= '想要转让什么？<input type="hidden" name="mode" value="senditem"><input type="hidden" name="wid" value="'.$w_pid.'"><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >不转让</a><br><br>';
 	for($i = 1;$i < 6; $i++){
@@ -58,13 +73,21 @@ function findteam(&$w_pdata){
 
 function findcorpse(&$w_pdata){
 	global $log,$mode,$main,$battle_title,$cmd,$bid,$iteminfo;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
+	
+	if($w_pdata['pid'] !== $bid){
+		$log .= "<span class=\"yellow\">尸体数据出错。</span><br>";
+		$mode = 'command';
+		return;
+	}
+	
 	$battle_title = '发现尸体';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);
-	$bid = $w_pid;
+		
+	//$bid = $w_pid;
 	$main = 'battle';
-	$log .= '你发现了 <span class="red">'.$w_name.'</span> 的尸体！<br>';
+	$log .= '你发现了<span class="red">'.$w_name.'</span>的尸体！<br>';
 
 	include template('corpse');
 	$cmd = ob_get_contents();
@@ -86,11 +109,11 @@ function senditem(){
 
 	$edata = $db->fetch_array($result);
 	if($edata['pls'] != $pls) {
-		$log .= "<span class=\"yellow\">".$edata['name']."</span> 已经离开了 <span class=\"yellow\">$plsinfo[$pls]</span> 。<br>";
+		$log .= "<span class=\"yellow\">".$edata['name']."</span>已经离开了<span class=\"yellow\">$plsinfo[$pls]</span> 。<br>";
 		$mode = 'command';
 		return;
 	} elseif($edata['hp'] <= 0) {
-		$log .= "<span class=\"yellow\">".$edata['name']."</span> 已经死亡，不能接受物品。<br>";
+		$log .= "<span class=\"yellow\">".$edata['name']."</span>已经死亡，不能接受物品。<br>";
 		$mode = 'command';
 		return;
 	}
@@ -126,8 +149,8 @@ function senditem(){
 				${'w_itme'.$i} = $itme;
 				${'w_itms'.$i} = $itms;
 				${'w_itmsk'.$i} = $itmsk;
-				$log .= "你将 <span class=\"yellow\">${'w_itm'.$i}</span> 送给了 <span class=\"yellow\">$w_name</span> 。<br>";
-				$w_log = "<span class=\"yellow\">$name</span> 将 <span class=\"yellow\">${'w_itm'.$i}</span> 送给了你。";
+				$log .= "你将<span class=\"yellow\">${'w_itm'.$i}</span>送给了<span class=\"yellow\">$w_name</span>。<br>";
+				$w_log = "<span class=\"yellow\">$name</span>将<span class=\"yellow\">${'w_itm'.$i}</span>送给了你。";
 				if(!$w_type){logsave($w_pid,$now,$w_log);}
 				addnews($now,'senditem',$name,$w_name,$itm);
 				w_save($w_pid);

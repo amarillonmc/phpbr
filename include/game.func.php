@@ -42,7 +42,7 @@ function init_profile(){
 		}
 		if(strpos($inf,'a') !== false){
 			$infdata .= $infinfo['a'];
-			$infimg .= '<img src="img/a.gif" style="position:absolute;top:20;left:4;width:122;height:20">';
+			$infimg .= '<img src="img/a.gif" style="position:absolute;top:20;left:4;width:112;height:20">';
 		}
 		if(strpos($inf,'b') !== false){
 			$infdata .= $infinfo['b'];
@@ -59,35 +59,22 @@ function init_profile(){
 		}
 	} else {
 		$infdata = '';
-		//$infimg = '<img src="img/ok.gif" style="position:absolute;top:120;left:18;">';
 	}
 
 
 	if($hp <= 0 ){
-		//$hstate = 'dead';
 		$infimg .= '<img src="img/dead.gif" style="position:absolute;top:120;left:1;width:94;height:40">';
-	//} elseif(strpos($inf,'p') !== false) {
-		//$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
-		//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;">';
-		//$hstate = 'poison';
 	} elseif($hp <= $mhp*0.2){
-		//$hstate = 'fine';
 		$infimg .= '<img src="img/danger.gif" style="position:absolute;top:120;left:0;width:95;height:37">';
 	} elseif($hp <= $mhp*0.5){
-		//$hstate = 'caution';
 		$infimg .= '<img src="img/caution.gif" style="position:absolute;top:120;left:0;width:95;height:36">';
 	} elseif($inf == ''){
-		//$hstate = 'danger';
 		$infimg .= '<img src="img/fine.gif" style="position:absolute;top:120;left:8;width:81;height:38">';
 	}
 	
-	//$hppre = floor(($hp/$mhp)*100);
 	$newhppre = 5+floor(151*(1-$hp/$mhp));
-	//$hpimg = '<img src="img/red.gif" width="'.$hppre.'%" height="10" border="0" align="left">';
 	$newhpimg = '<img src="img/red2.gif" style="position:absolute; clip:rect('.$newhppre.'px,55px,160px,0px);">';
-	//$sppre = floor(($sp/$msp)*100);
 	$newsppre = 5+floor(151*(1-$sp/$msp));
-	//$spimg = '<img src="img/yellow.gif" width="'.$sppre.'%" height="10" border="0" align="left">';
 	$newspimg = '<img src="img/yellow2.gif" style="position:absolute; clip:rect('.$newsppre.'px,55px,160px,0px);">';
 
 	return;
@@ -137,10 +124,31 @@ function init_battle($ismeet = 0){
 	}
 	
 	if(!$fog||$ismeet) {
-		$w_sNoinfo = "$typeinfo[$w_type]($sexinfo[$w_gd] $w_sNo 号)";
+		$w_sNoinfo = "$typeinfo[$w_type]({$sexinfo[$w_gd]}{$w_sNo}号)";
 	  $w_i = $w_type > 0 ? 'n' : $w_gd;
 		$w_iconImg = $w_i.'_'.$w_icon.'.gif';
-		$w_infdata = "$infinfo[$w_inf]";
+		if($w_inf) {
+			$w_infdata = '';
+			$w_infdata = '<span class="red b">';
+			if(strpos($w_inf,'h') !== false){
+				$w_infdata .= $infinfo['h'];
+			}
+			if(strpos($w_inf,'a') !== false){
+				$w_infdata .= $infinfo['a'];
+			}
+			if(strpos($w_inf,'b') !== false){
+				$w_infdata .= $infinfo['b'];
+			}
+			if(strpos($w_inf,'f') !== false){
+				$w_infdata .= $infinfo['f'];
+			}
+			$infdata .= '</span>';
+			if(strpos($w_inf,'p') !== false) {
+				$w_infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+			}
+		} else {
+			$w_infdata = '';
+		}
 	} else {
 		$w_sNoinfo = '？？？';
 		$w_iconImg = 'question.gif';

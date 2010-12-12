@@ -140,7 +140,7 @@ function event(){
 				$dice2 = $sp-1;
 			}
 			$sp-=$dice2;
-			$log .= "字幕太多，浏览器死机了！<BR>体力减少 <font color=\"red\"><b>{$dice2}</b></font>  点。<BR>";
+			$log .= "字幕太多，浏览器当机了！<BR>体力减少 <font color=\"red\"><b>{$dice2}</b></font>  点。<BR>";
 		}else{
 			$log .= "很〇很〇〇，我马上把窗口关了。<BR>";
 		}

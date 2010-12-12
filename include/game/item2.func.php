@@ -63,7 +63,7 @@ function hack($itmn = 0) {
 	}
 
 	if(!$itme) {
-		$log .= "<span class=\"yellow\">$itm</span> 已经没电，请寻找 电池 充电。<br>";
+		$log .= "<span class=\"yellow\">$itm</span>已经没电，请寻找<span class=\"yellow\">电池</span>充电。<br>";
 		$mode = 'command';
 		return;
 	}
@@ -71,29 +71,29 @@ function hack($itmn = 0) {
 	$hack_dice = rand(0,99);
 	if(($hack_dice < $hack_obbs)||(($club == 7)&&($hack_dice<95))) {
 		$hack = 1;
-		$log .= 'Hacking成功了！全部禁区都被解除了！！<br>';
+		$log .= '入侵禁区控制系统成功了！全部禁区都被解除了！<br>';
 		include_once GAME_ROOT.'./include/system.func.php';
 		movehtm();
 		addnews($now,'hack',$name);
 		save_gameinfo();
 	} else {
-		$log .= '可是，Hacking失败了┅';
+		$log .= '可是，入侵禁区控制系统失败了……<br>';
 	}
 	$itme--;
 	
 	$hack_dice2 = rand(0,99);
 
 	if($hack_dice2 < 5) {
-		$log .= '什么啊！电脑出现机械故障，坏掉了！<br>';
+		$log .= '由于你的不当操作，禁区系统防火墙锁定了你的电脑并远程引爆了它。幸好你本人的位置并没有被发现。<br>';
 		$itm = $itmk = $itmsk = '';
 		$itme = $itms = 0;
 	} elseif($hack_dice2 < 8) {
-			$log .= '┅什么？从项圈中┅发出警报的声响┅！？<br>';
+			$log .= "“小心隔墙有耳哦。”——<span class=\"evergreen\">林无月</span><br>";
 			include_once GAME_ROOT.'./include/state.func.php';
-			$log .= '你擅自hack禁区系统，导致项圈爆炸！<br>';
+			$log .= '你擅自入侵禁区控制系统，被控制系统远程消灭！<br>';
 			death('hack');
 	} elseif($itme <= 0) {
-		$log .= "<span class=\"red\">$itm</span> 的电力用光了！";
+		$log .= "<span class=\"red\">$itm</span>的电池耗尽了。";
 	}
 	return;
 }
@@ -187,7 +187,7 @@ function divining2($u) {
 
 }
 
-function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1) {
+function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1,$sfn) {
 	global $db,$tablepre,$log,$killnum,$mode;
 	global ${'itm'.$itmd},${'itms'.$itmd},${'itmk'.$itmd},${'itme'.$itmd},${'itmsk'.$itmd};
 	$dn = & ${'itm'.$itmd};
@@ -209,18 +209,22 @@ function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1) {
 	}
 
 	if(!$dnname){return;}
+	if($dnname == $sfn){
+		$log .= "你不能自杀。<br>";
+		return;
+	}
 	if(!$dndeath){$dndeath = '心脏麻痹';}
-	echo "name=$dnname,gender = $dngender,icon=$dnicon,";
+	//echo "name=$dnname,gender = $dngender,icon=$dnicon,";
 	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$dnname' AND type = 0");
 	if(!$db->num_rows($result)) { 
-		$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？1 <br>"; 
+		$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？<br>"; 
 	} else {
 		$edata = $db->fetch_array($result);
 		
 		if(($dngender != $edata['gd'])||($dnicon != $edata['icon'])) {
-			$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？ 2<br>"; 
+			$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？<br>"; 
 		} else {
-			$Log .= "你将<span class=\"yellow b\">$dnname</span>的名字写在了■DeathNote■上。";
+			$log .= "你将<span class=\"yellow b\">$dnname</span>的名字写在了■DeathNote■上。<br><span class=\"yellow b\">$dnname</span>被你杀死了。";
 			include_once GAME_ROOT.'./include/state.func.php';
 			kill('dn',$dnname,0,$edata['pid'],$dndeath);
 			$killnum++;

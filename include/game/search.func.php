@@ -5,7 +5,7 @@ if(!defined('IN_GAME')) {
 }
 
 function move($moveto = 99) {
-	global $log,$pls,$plsinfo,$inf,$hp,$sp,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
+	global $log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
 
 	$plsnum = sizeof($plsinfo);
 	if(($moveto == 'main')||($moveto < 0 )||($moveto >= $plsnum)){
@@ -15,7 +15,7 @@ function move($moveto = 99) {
 		$log .= '相同地点，不需要移动。<br>';
 		return;
 	} elseif(array_search($moveto,$arealist) <= $areanum && !$hack){
-		$log .= $plsinfo[$moveto].'是禁区，还是离远点吧！';
+		$log .= $plsinfo[$moveto].'是禁区，还是离远点吧！<br>';
 		return;
 	}
 	
@@ -26,7 +26,7 @@ function move($moveto = 99) {
 	else{ $movesp = 15; }
 	
 	if($sp <= $movesp){
-		$log .= '体力不足，不能移动，还是先睡会儿吧！';
+		$log .= "体力不足，不能移动！<br>还是先睡会儿吧！<br>";
 		return;
 	}
 
@@ -34,28 +34,28 @@ function move($moveto = 99) {
 	if($weather == 11) {
 		if($hack){$pls = rand(0,sizeof($plsinfo)-1);}
 		else {$pls = rand($areanum+1,sizeof($plsinfo)-1);}
-		$log = ($log . "你刚迈出脚步，就被一阵龙卷风吹到了 <span class=\"yellow\">$plsinfo[$pls]</span>  ！<br>");
+		$log = ($log . "龙卷风把你吹到了<span class=\"yellow\">$plsinfo[$pls]</span>！<br>");
 	} elseif($weather == 13) {
-		$damage = rand(1,3);
+		$damage = round($mhp/8) + rand(0,20);
 		$hp -= $damage;
-		$log .= "被 <span class=\"blue\">冰雹</span> 击中，导致生命减少了 <span class=\"red\">$damage</span> 点！<br>";
+		$log .= "被<span class=\"blue\">冰雹</span>击中，生命减少了<span class=\"red\">$damage</span>点！<br>";
 		if($hp <= 0 ) {
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('hsmove');
 			return;
 		} else {
 			$pls = $moveto;
-			$log .= "移动到了 <span class=\"yellow\">$plsinfo[$pls]</span> 。<br>";
+			$log .= "移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 		}
 	} else {
 		$pls = $moveto;
-		$log .= "移动到了 <span class=\"yellow\">$plsinfo[$pls]</span> 。<br>";
+		$log .= "移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 	}
 
 	if(strpos($inf, 'p') !== false){
-		$damage = rand(4,77);
+		$damage = round($mhp/10) + rand(0,10);
 		$hp -= $damage;
-		$log .= "毒发导致生命减少了 <span class=\"red\">$damage</span> 点！<br>";
+		$log .= "毒发减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('pmove');
@@ -73,10 +73,10 @@ function move($moveto = 99) {
 }
 
 function search(){
-	global $log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp;
+	global $log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp,$mhp,$inf;
 	
 	if(array_search($pls,$arealist) <= $areanum && !$hack){
-		$log .= $plsinfo[$pls].'是禁区，还是赶快逃跑吧！';
+		$log .= $plsinfo[$pls].'是禁区，还是赶快逃跑吧！<br>';
 		return;
 	}
 
@@ -87,21 +87,33 @@ function search(){
 	else{ $schsp = 15; }
 
 	if($sp <= $schsp){
-		$log .= '体力不足，不能探索，还是先睡会儿吧！';
+		$log .= "体力不足，不能探索！<br>还是先睡会儿吧！<br>";
 		return;	
 	}
 
 	if($weather == 13) {
-		$hp --;
-		$log .= "被 <span class=\"blue\">冰雹</span> 击中，导致生命减少了 <span class=\"red\">1</span> 点！<br>";
+		$damage = round($mhp/8) + rand(0,20);
+		$hp -= $damage;
+		$log .= "被<span class=\"blue\">冰雹</span>击中，生命减少<span class=\"red\">$damage</span>点！<br>";
 		if($hp <= 0 ) {
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('hsmove');
 			return;
 		}
 	}
+	
 	$sp -= $schsp;
 	$log .= '你仔细搜索着周围的一切。。。<br>';
+	if(strpos($inf, 'p') !== false){
+		$damage = round($mhp/16) + rand(0,5);
+		$hp -= $damage;
+		$log .= "毒发减少了<span class=\"red\">$damage</span>点生命！<br>";
+		if($hp <= 0 ){
+			include_once GAME_ROOT.'./include/state.func.php';
+			death('pmove');
+			return;
+		}
+	}
 	if(($gamestate>=40)&&($pose!=3)) {
 		discover(100);
 	} else {
@@ -112,7 +124,7 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$active_obbs;
+	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$active_obbs,$bid;
 
 	$event_dice = rand(0,99);
 	if($event_dice < $event_obbs){
@@ -133,7 +145,7 @@ function discover($schmode = 0) {
 			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid'");
 		}
 		if(!$db->num_rows($result)){
-			$log .= '这里似乎已经没有人在了。<br>';
+			$log .= '周围没有一个人。<br>';
 			$mode = 'command';
 			return;
 		}
@@ -152,11 +164,17 @@ function discover($schmode = 0) {
 				$enemy_dice = rand(0,99);
 				if($enemy_dice < ($find_obbs - $hide_r)) {
 					if($teamID&&(!$fog)&&($teamID == $edata['teamID'])){
+						$bid = $edata['pid'];
+						//$itmsk0 = $edata['pid'];
 						include_once GAME_ROOT.'./include/game/battle.func.php';
 						findteam($edata);
 						return;
 					} else {
 						$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf);
+						
+						$bid = $edata['pid'];
+						//$itmsk0 = $edata['pid'];
+						
 						$active_dice = rand(0,99);
 						if($active_dice < $active_obbs + $active_r) {
 							include_once GAME_ROOT.'./include/game/battle.func.php';
@@ -173,6 +191,10 @@ function discover($schmode = 0) {
 				$corpse_dice = rand(0,99);
 				if($corpse_dice < $corpse_obbs) {
 					if($gamestate <40 &&(($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
+						
+						$bid = $edata['pid'];
+						//$itmsk0 = $edata['pid'];
+						
 						include_once GAME_ROOT.'./include/game/battle.func.php';
 						findcorpse($edata);
 						return;
@@ -183,7 +205,7 @@ function discover($schmode = 0) {
 				}
 			}
 		}
-		$log .= '似乎有什么人潜藏着┅┅士兵吗？<br>';
+		$log .= '似乎有人隐藏着……<br>';
 		$mode = 'command';
 		return;
 	} else {
@@ -195,7 +217,7 @@ function discover($schmode = 0) {
 			$mapitem = openfile($mapfile);
 			$itemnum = sizeof($mapitem) - 1;
 			if($itemnum <= 0){
-				$log .= "这里似乎什么都没有了。<br>";
+				$log .= "周围找不到任何物品。<br>";
 				$mode = 'command';
 				return;
 			}

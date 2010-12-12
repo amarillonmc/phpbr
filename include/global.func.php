@@ -145,9 +145,9 @@ function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
 	$newsdata = file_get_contents($newsfile);
 	if(is_array($a)) {
-		$news = "$t,$n,".implode('-',$a).",$b,$c,$d\n";
+		$news = "$t,$n,".implode('-',$a).",$b,$c,$d,\n";
 	} elseif(isset($n)) {
-		$news = "$t,$n,$a,$b,$c,$d\n";
+		$news = "$t,$n,$a,$b,$c,$d,\n";
 	}
 	$newsdata = substr_replace($newsdata,$news,53,0);
 	writeover($newsfile,$newsdata,'wb');

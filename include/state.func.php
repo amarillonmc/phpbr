@@ -83,31 +83,45 @@ function kill($death,$dname,$dtype = 0,$dpid = 0,$annex = '') {
 }
 function lvlup(&$lvl, &$exp, $isplayer = 1) {
 	global $log,$baseexp;
-	$up_exp = round(($lvl*$baseexp)+(($lvl+1)*$baseexp));
-	if($exp >= $up_exp) {
-		$lvuphp = rand(8,10);$lvupatt = rand(2,4);$lvupdef = rand(3,5);
+	$up_exp_temp = round((2*$lvl+1)*$baseexp);
+	if($exp >= $up_exp_temp && $lvl<255) {
 		if($isplayer){
 			global $name,$hp,$mhp,$sp,$msp,$att,$def,$upexp;
+			$lvuphp = $lvupatt = $lvupdef = 0;
+			$i=0;
+			while($exp >= $up_exp_temp && $lvl<255){
+				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
+				$sp += ($msp * 0.2);
+				$lvl ++;$i++;
+				$up_exp_temp = round((2*$lvl+1)*$baseexp);
+			}
+			if($lvl>=255){$lvl=255;$exp=$up_exp_temp;}
+			$upexp=$up_exp_temp;
 			$hp += $lvuphp;$mhp += $lvuphp;
 			$att += $lvupatt;$def += $lvupdef;
-			$sp += 50; if($sp >= $msp){$sp = $msp;}
-			$lvl ++;
-			$upexp = round((($lvl+2)*$baseexp)+(($lvl+1)*$baseexp));
-
-			$log .= "<span class=\"yellow\">你 升级了！生命 + {$lvuphp}，攻击 + {$lvupatt}，防御 + {$lvupdef} ！</span><br>";
+			if($sp >= $msp){$sp = $msp;}
+			$log .= "<span class=\"yellow\">你升了{$i}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}！</span><br>";
 		} else {
 			global $now,$w_type,$w_pid,$w_name,$w_hp,$w_mhp,$w_sp,$w_msp,$w_att,$w_def,$w_upexp;
+			$lvuphp = $lvupatt = $lvupdef = 0;
+			$i=0;
+			while($exp >= $up_exp_temp && $lvl<255){
+				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
+				$w_sp += ($w_msp * 0.2);
+				$lvl ++;$i++;
+				$up_exp_temp = round((2*$lvl+1)*$baseexp);
+			}
+			if($lvl>=255){$lvl=255;$exp=$up_exp_temp;}
+			$w_upexp=$up_exp_temp;
 			$w_hp += $lvuphp;$w_mhp += $lvuphp;
 			$w_att += $lvupatt;$w_def += $lvupdef;
-			$w_sp += 50; if($w_sp >= $w_msp){$w_sp = $w_msp;}
-			$lvl ++;
-			$w_upexp = round(($lvl*$baseexp)+(($lvl+1)*$baseexp));
+			if($w_sp >= $w_msp){$w_sp = $w_msp;}
 			if(!$w_type){
-				$w_log = "<span class=\"yellow\">你 升级了！生命 + {$lvuphp}，攻击 + {$lvupatt}，防御 + {$lvupdef} ！</span><br>";
+				$w_log = "<span class=\"yellow\">你升了{$i}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}！</span><br>";
 				logsave($w_pid,$now,$w_log);
 			}
 		}
-	}
+	} elseif($lvl >= 255){$lvl=255;$exp=$up_exp_temp;}
 	return;
 }
 
@@ -126,7 +140,7 @@ function rest($command) {
 		$sp += $upsp;
 		if($sp >= $msp){ $sp = $msp; }
 		$upsp = $sp - $oldsp;
-		$log .= "你的体力恢复了 <span class=\"yellow\">$upsp</span> 点。<br>";
+		$log .= "你的体力恢复了<span class=\"yellow\">$upsp</span>点。<br>";
 	} elseif($state == 2) {
 		$resttime = $now - $endtime;
 		$endtime = $now;
@@ -137,7 +151,7 @@ function rest($command) {
 		$hp += $uphp;
 		if($hp >= $mhp){ $hp = $mhp; }
 		$uphp = $hp - $oldhp;
-		$log .= "你的生命恢复了 <span class=\"yellow\">$uphp</span> 点。<br>";
+		$log .= "你的生命恢复了<span class=\"yellow\">$uphp</span>点。<br>";
 	} elseif($state == 3) {
 		$resttime = $now - $endtime;
 		$endtime = $now;
@@ -155,13 +169,13 @@ function rest($command) {
 		$hp += $uphp;
 		if($hp >= $mhp){ $hp = $mhp; }
 		$uphp = $hp - $oldhp;
-		$log .= "你的体力恢复了 <span class=\"yellow\">$upsp</span> 点，生命恢复了 <span class=\"yellow\">$uphp</span> 点。<br>";
+		$log .= "你的体力恢复了<span class=\"yellow\">$upsp</span>点，生命恢复了<span class=\"yellow\">$uphp</span>点。<br>";
 	} else {
 		$mode = 'command';
 	}
 
 	if($command == 'rest') {
-		$cmd = '你正在 '.$restinfo[$state].' 。<br><input type="hidden" name="mode" value="rest"><br><input type="radio" name="command" id="rest" value="rest" checked><a onclick=sl("rest"); href="javascript:void(0);" >'.$restinfo[$state].'</a><br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >返回</a>';
+		$cmd = '你正在'.$restinfo[$state].'。<br><input type="hidden" name="mode" value="rest"><br><input type="radio" name="command" id="rest" value="rest" checked><a onclick=sl("rest"); href="javascript:void(0);" >'.$restinfo[$state].'</a><br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >返回</a>';
 	} else {
 		$state = 0;
 		$endtime = $now;

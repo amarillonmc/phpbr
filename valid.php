@@ -45,14 +45,14 @@ if($mode == 'enter') {
 	$killnum = 0;
 	$lvl = 0;
 	$exp = $areanum * 10;
-	$money = 200;
+	$money = 20;
 	$rage = 0;
 	$pose = 0;
 	$tactic = 0;
 	$icon = $icon ? $icon : rand(1,$iconlimit);
 	$club = makeclub();
 
-	$arb = $gd == 'm' ? '军服' : '道服';
+	$arb = $gd == 'm' ? '红队服' : '蓝队服';
 	$arbk = 'DB'; $arbe = 5; $arbs = 30;
 	$arh = $ara = $arf = $art = '';
 	$arhk = $arak = $arfk = $artk = '';
@@ -133,7 +133,7 @@ function makeclub() {
 	elseif($dice < 90)	{$club = 8;}//查毒可
 	elseif($dice < 115)	{$club = 9;$wf = 25;}//会心率上升，灵25
 	elseif($dice < 120)	{$club = 10;}//探索减
-	elseif($dice < 125)	{$club = 11;$money = 5000;}//出击钱数5000
+	elseif($dice < 125)	{$club = 11;$money = 500;}//出击钱数500
 	elseif($dice < 135)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 10;}//全熟练10
 	elseif($dice < 145)	{$club = 13;$mhp = $mhp + 100;}//生命上限提高100
 	elseif($dice < 150)	{$club = 14;$msp = $msp + 150;}//体力上限提高150

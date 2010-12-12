@@ -61,13 +61,12 @@ function get_active_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 }
 //命中率修正
 function get_hitrate($wkind = 'N',$skill = 0,$club = 0,$inf = ''){
-	global $hitrate_obbs,$hitrate_r,$weather;
+	global $hitrate_obbs,$hitrate_max_obbs,$hitrate_r,$weather;
 	$hitrate = $hitrate_obbs[$wkind];
-	if($wkind != 'C') {
-		$hitrate += round($skill * $hitrate_r[$wkind]); 
-		if(strpos($inf, 'h')!==false){$hitrate -= 20;}
-		if($weather == 12){$hitrate += 20;}
-	}
+	$hitrate += round($skill * $hitrate_r[$wkind]); 
+	if($hitrate > $hitrate_max_obbs[$wkind]) {$hitrate = $hitrate_max_obbs[$wkind];}
+	if(strpos($inf, 'h')!==false){$hitrate *= 0.75;}
+	if($weather == 12){$hitrate += 20;}
 	return $hitrate;
 }
 

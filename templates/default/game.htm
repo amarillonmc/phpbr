@@ -1,6 +1,5 @@
 {template header}
 <div id="notice"></div>
-
 <table border="0" cellspacing="10" cellpadding="0" align="center">
 	<tr valign=top><td>
 		<span id="main">
@@ -8,7 +7,7 @@
 		<span>
 		</td>
 		<td rowspan="2">
-		<table border="0" width="300" height="550" cellspacing="0" cellpadding="0" >
+		<table border="0" width="280" cellspacing="0" cellpadding="0" >
 			<tr>
 				<td height="20" class="b1"><div class=nttx><span class="yellow" id="pls">$plsinfo[$pls]</span>【<span class="red">剩余：<span id="anum">$alivenum</span>人</span>】</div></td>
 			</tr>
@@ -35,14 +34,16 @@
 		</td>
 	</tr>
 	<tr><td>
-		<table id="chat" border="0" width="600" height="200" cellspacing="0" cellpadding="0" background="img/chatting.gif" style="background-position:0px 120px;background-repeat:no-repeat;">
-			<tr height="1"><td height="1" width="600" class="b1"><div class=nttx>{lang chat}</div></td></tr>
-			<tr ><td valign="top" class="b3" style="text-align: left" height="1px">
+		<table id="chat" border="0" width="610" cellspacing="0" cellpadding="0" background="img/chatting.gif" style="background-position:0px 80px;background-repeat:no-repeat;valign:top">
+			<tr><td height="20px" width="605" class="b1"><div class=nttx>{lang chat}</div></td></tr>
+			<tr><td height="140px" valign="top" class="b3" style="text-align: left" height="1px">
 				<div id="chatlist" class="chatlist" >
 				<!--{loop $chatdata['msg'] $msg}-->
 				$msg
 				<!--{/loop}-->
-				</div>
+			</div></td></tr>
+			<tr><td class="b3" height="5"></td></tr>
+			<tr><td class="b3" height="35">
 				<div class=nttx>
 				<form type="post" id="sendchat" name="sendchat" action="chat.php" onsubmit="return false;" >
 				<input type="hidden" id="lastcid" name="lastcid" value="$chatdata['lastcid']">

@@ -14,19 +14,19 @@ function itemfind() {
 		return;
 	}
 	if($itmk0 == 'TO') {
-		global $name,$now,$hp,$bid,$db,$tablepre;
+		global $name,$now,$hp,$db,$tablepre,$bid;
 		$damage = round(rand(0,$itme0/2)+($itme0/2));
 		$hp -= $damage;
 		if($hp <= 0) {
-			$log .= "糟糕，你中了陷阱 <span class=\"yellow\">$itm0</span>！受到 <span class=\"dmg\">$damage</span> 点伤害！<br>";
+			$log .= "糟糕，你中了陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 			include_once GAME_ROOT.'./include/state.func.php';
 			if($itmsk0) {
 				$bid = $itmsk0;
 				$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
 				$wdata = $db->fetch_array($result);
-				$killmsg = death('trap',$wdata['name'],$wdata['type'],$itm);
-				$log .= "你被 <span class=\"red\">".$wdata['name']."</red> 设置的陷阱杀死了！";
-				$log .= "<span class=\"yellow\">{$wdata['name']} 对 你 说：“{$killmsg}”</span><br>";
+				$killmsg = death('trap',$wdata['name'],$wdata['type'],$itm0);
+				$log .= "你被<span class=\"red\">".$wdata['name']."</red>设置的陷阱杀死了！";
+				$log .= "<span class=\"yellow\">{$wdata['name']} 对你说：“{$killmsg}”</span><br>";
 				return;
 			} else {
 				$bid = 0;
@@ -36,10 +36,10 @@ function itemfind() {
 		} elseif($itmsk0) {
 			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
 			$wdata = $db->fetch_array($result);
-			$log .= "糟糕，你中了 <span class=\"yellow\">{$wdata['name']}</span> 设置的陷阱 <span class=\"yellow\">$itm0</span>！受到 <span class=\"dmg\">$damage</span> 点伤害！<br>";
+			$log .= "糟糕，你中了<span class=\"yellow\">{$wdata['name']}</span>设置的陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 			addnews($now,'trap',$name,$wdata['name'],$itm0);
 		} else {
-			$log .= "糟糕，你中了陷阱 <span class=\"yellow\">$itm0</span>！受到 <span class=\"dmg\">$damage</span> 点伤害！<br>";
+			$log .= "糟糕，你中了陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 		}
 		$itm0 = $itmk0 = $itmsk0 = '';
 		$itme0 = $itms0 = 0;
@@ -54,15 +54,15 @@ function itemfind() {
 
 function itemget() {
 	global $log,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
-	$log .= "获得了物品 <span class=\"yellow\">$itm0</span> 。<br>";
+	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
 	if(preg_match('/^(WC|WD|Y|TN|GB)/',$itmk0)){
 		for($i = 1;$i <= 5;$i++){
-			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i};
-			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})){
+			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
 				${'itms'.$i} += $itms0;
-				$log .= "与包裹里的 <span class=\"yellow\">$itm0</span> 合并了。";
-				$itm0 = $itmk0 = '';
+				$log .= "与包裹里的<span class=\"yellow\">$itm0</span>合并了。";
+				$itm0 = $itmk0 = $itmsk0 = '';
 				$itme0 = $itms0 = 0;
 				$mode = 'command';
 				return;
@@ -129,10 +129,18 @@ function itemdrop($item) {
 	$mapfile = GAME_ROOT."./gamedata/mapitem/{$pls}mapitem.php";
 	$itemdata = "$itm,$itmk,$itme,$itms,$itmsk,\n";
 	writeover($mapfile,$itemdata,'ab');
-	$log .= "你丢弃了 <span class=\"red\">$itm</span> 。<br>";
+	$log .= "你丢弃了<span class=\"red\">$itm</span>。<br>";
 	$mode = 'command';
+	if($item == 'wep'){
+	$itm = '拳头';
+	$itmsk = '';
+	$itmk = 'WN';
+	$itme = 0;
+	$itms = $nosta;
+	} else {
 	$itm = $itmk = $itmsk = '';
 	$itme = $itms = 0;
+	}
 	return;
 }
 
@@ -156,7 +164,7 @@ function itemoff($item){
 		$itmsk = & ${'ar'.$itmn.'sk'};
 	}
 
-	$log .= "你卸下了装备 <span class=\"yellow\">$itm</span> 。<br>";
+	$log .= "你卸下了装备<span class=\"yellow\">$itm</span>。<br>";
 
 	$itm0 = $itm;
 	$itmk0 = $itmk;
@@ -188,7 +196,7 @@ function itemadd(){
 	for($i = 1;$i <= 5;$i++){
 		global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 		if(!${'itms'.$i}){
-			$log .= "将 <span class=\"yellow\">$itm0</span> 放入包裹。<br>";
+			$log .= "将<span class=\"yellow\">$itm0</span>放入包裹。<br>";
 			${'itm'.$i} = $itm0;
 			${'itmk'.$i} = $itmk0;
 			${'itme'.$i} = $itme0;
@@ -231,13 +239,13 @@ function itemmerge($itn1,$itn2){
 	}
 
 	if(($it1 == $it2)&&($ite1 == $ite2)) {
-		if(($itk1==$itk2)&&preg_match('/^(WC|WD|Y|TN|GB)/',$itk1)) {
+		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|Y|TN|GB)/',$itk1)) {
 			$its2 += $its1;
 			$it1 = '';
 			$itk1 = 'N';
 			$ite1 = $its1 = 0;
-
-			$log .= "你合并了 <span class=\"yellow\">$it2</span> 。";
+			$itsk1 = '';
+			$log .= "你合并了<span class=\"yellow\">$it2</span>。";
 			$mode = 'command';
 			return;
 		} elseif(preg_match('/^(H|P)/',$itk1)&&preg_match('/^(H|P)/',$itk2)) {
@@ -245,19 +253,24 @@ function itemmerge($itn1,$itn2){
 				$p1 = substr($itk1,2);
 				$p2 = substr($itk2,2);
 				$k = substr($itk1,1,1);
-				if($p2 < $p1){ $p2 = $p1; $itsk2 = $itsk1;}
+				if($p2 < $p1){ $p2 = $p1;};
 				$itk2 = "P$k$p2";
+				if($itsk1 !== ''){
+					$itsk2=$itsk1;
+					}
 			}
 			$its2 += $its1;
 			$it1 = $itk1 = $itsk1 = '';
 			$ite1 = $its1 = 0;
-
-			$log .= "你合并了 <span class=\"yellow\">$it2</span> 。";
+			
+			$log .= "你合并了 <span class=\"yellow\">$it2</span>。";
 			$mode = 'command';
 			return;
+		} else {
+			$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不能合并！";
 		}
 	} else {
-		$log .= "<span class=\"yellow\">$it1</span> 与 <span class=\"yellow\">$it2</span> 不能合并！";
+		$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不能合并！";
 	}
 
 	if(!$itn1 || !$itn2) {
@@ -309,7 +322,7 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 		global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
 
 		list($itm0,$itmk0,$itme0,$itms0,$itmsk0) = $minfo['result'];
-		$log .= "<span class=\"yellow\">$mixitem[0] $mixitem[1] $mixitem[2]</span> 合成了 <span class=\"yellow\">{$minfo['result'][0]}</span><br>";
+		$log .= "<span class=\"yellow\">$mixitem[0] $mixitem[1] $mixitem[2]</span>合成了<span class=\"yellow\">{$minfo['result'][0]}</span><br>";
 		addnews($now,'itemmix',$name,$itm0);
 		if($club == 5) { $wd += 2; }
 		else { $wd+=1; }
@@ -338,7 +351,7 @@ function itemreduce($item){
 	$itms--;
 	if($itms <= 0) {
 		$itms = 0;
-		$log .= "<span class=\"red\">$itm</span> 用光了。<br>";
+		$log .= "<span class=\"red\">$itm</span>用光了。<br>";
 		$itm = $itmk = $itmsk = '';
 		$itme = $itms = 0;
 	}
@@ -347,13 +360,17 @@ function itemreduce($item){
 
 
 function itembuy($item,$shop,$bnum=1) {
-	global $log,$name,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0;
+	global $log,$name,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$pls;
 
 	$file = GAME_ROOT."./gamedata/shopitem/{$shop}shopitem.php";
 	$itemlist = openfile($file);
 	$iteminfo = $itemlist[$item];
 	if(!$iteminfo) {
 		$log .= '要购买的道具不存在！<br>';
+		return;
+	}
+	if($pls != 0 && $pls != 14) {
+		$log .= '你所在的位置没有商店。<br>';
 		return;
 	}
 	$bnum = (int)$bnum;
@@ -365,10 +382,10 @@ function itembuy($item,$shop,$bnum=1) {
 		$log .= '购买数量必须为大于0的整数。<br>';
 		return;
 	} elseif($bnum>$num) {
-		$log .= '购买数量必须小于物品数量。<br>';
+		$log .= '购买数量必须小于存货数量。<br>';
 		return;
 	} elseif($money < $price*$bnum) {
-		$log .= '你的钱不够，不能够买此物品！<br>';
+		$log .= '你的钱不够，不能购买此物品！<br>';
 		return;
 	} elseif(!preg_match('/^(WC|WD|Y|TN|GB|H)/',$ikind)&&$bnum>1) {
 		$log .= '此物品一次只能购买一个。<br>';

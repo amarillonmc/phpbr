@@ -39,15 +39,15 @@ extract($pdata);
 if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
 	if(($now-$noisetime) < 60) {
 		$noisesec = $now - $noisetime;
-		$log .= "<span class=\"yellow b\">{$noisesec}秒前， {$plsinfo[$noisepls]} 传来了 $noiseinfo[$noisemode] 。</span><br>";
+		$log .= "<span class=\"yellow b\">{$noisesec}秒前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
 	} else {
 		$noisemin = floor(($now-$noisetime)/60);
-		$log .= "<span class=\"yellow b\">{$noisemin}分钟前， {$plsinfo[$noisepls]} 传来了 $noiseinfo[$noisemode] 。</span><br>";
+		$log .= "<span class=\"yellow b\">{$noisemin}分钟前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
 	}
 }
 
 $log2 = readover(GAME_ROOT."./gamedata/log/$pid.log");
-if($log2 != '\n');{
+if($log2 != '\n'){
 	$log .= $log2;
 	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
 }
@@ -55,6 +55,8 @@ if($log2 != '\n');{
 init_playerdata();
 
 $gamedata = array();
+
+$bid = ($mode == 'combat') ? $bid : 0;
 
 if($command == 'menu') {
 	$mode = 'command';
@@ -119,11 +121,11 @@ if($command == 'menu') {
 	include_once GAME_ROOT.'./include/game/special.func.php';
 	if(strpos($command,'pose') === 0) {
 		$pose = substr($command,4,1);
-		$log .= "基础姿态变为 <span class=\"yellow\">$poseinfo[$pose]</span> 。<br> ";
+		$log .= "基础姿态变为<span class=\"yellow\">$poseinfo[$pose]</span>。<br> ";
 		$mode = 'command';
 	} elseif(strpos($command,'tac') === 0) {
 		$tactic = substr($command,3,1);
-		$log .= "应战策略变为 <span class=\"yellow\">$tacinfo[$tactic]</span> 。<br> ";
+		$log .= "应战策略变为<span class=\"yellow\">$tacinfo[$tactic]</span>。<br> ";
 		$mode = 'command';
 	} elseif(strpos($command,'inf') === 0) {
 		$infpos = substr($command,3,1);
@@ -163,13 +165,15 @@ if($command == 'menu') {
 } elseif($mode == 'deathnote') {
 	if($dnname){
 		include_once GAME_ROOT.'./include/game/item2.func.php';
-		deathnote($item,$dnname,$dndeath,$dngender,$dnicon);
+		deathnote($item,$dnname,$dndeath,$dngender,$dnicon,$name);
 	} else {
+		$log .= "嗯，暂时还不想杀人。<br>你合上了■DeathNote■。<br>";
 		$mode = 'command';
 	}
 } else {
 	$mode = 'command';
 }
+//$bid = 0;
 
 $gamedata['notice'] = ob_get_contents();
 

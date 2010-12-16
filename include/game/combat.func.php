@@ -362,7 +362,7 @@ function attack($wep_kind = 'N',$active = 0){
 			$weps = $nosta;
 		}
 	}
-	if((($wep_kind == 'G')&&(strpos($wepsk,'S') === false))||($wep_kind == 'D')) {
+	if((($wep_kind == 'G')&&(strpos($wepsk,'S') === false))||($wep_kind == 'D')||($wep_kind == 'F')) {
 		global $noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
 		$noisetime = $now;
 		$noisepls = $pls;
@@ -552,7 +552,7 @@ function defend($w_wep_kind = 'N',$active = 0){
 		}
 	}
 
-	if((($w_wep_kind == 'G')&&(strpos($w_wepsk,'S') === false))||($w_wep_kind == 'D')){
+	if((($w_wep_kind == 'G')&&(strpos($w_wepsk,'S') === false))||($w_wep_kind == 'D')||($wep_kind == 'F')){
 		global $noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
 		$noisetime = $now;
 		$noisepls = $pls;

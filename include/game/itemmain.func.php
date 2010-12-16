@@ -56,7 +56,7 @@ function itemget() {
 	global $log,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
 	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
-	if(preg_match('/^(WC|WD|Y|TN|GB)/',$itmk0)){
+	if(preg_match('/^(WC|WD|WF|Y|TN|GB)/',$itmk0)){
 		for($i = 1;$i <= 5;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){

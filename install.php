@@ -953,6 +953,11 @@ if(!$action) {
 				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['username_comment']?></td>
               </tr>
               <tr>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['brpswd']?></td>
+                <td bgcolor="#EEEEF6" width="30%"><input type="password" name="brpswd" size="30"></td>
+				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['brpswd_comment']?></td>
+              </tr>
+              <tr>
                 <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['adminmsg']?></td>
                 <td bgcolor="#EEEEF6" width="30%"><textarea cols="30" rows="4" style="overflow:auto" name="adminmsg" value=""></textarea></td>
 				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['adminmsg_comment']?></td>
@@ -986,6 +991,7 @@ if(!$action) {
 } elseif($action == 'install') {
 
 	$username = $_POST['username'];
+	$brpswd = $_POST['brpswd']
 
 ?>
         <tr>
@@ -1007,7 +1013,13 @@ if(!$action) {
 	if(!$username) {
 		$msg = $lang['admin_username_invalid'];
 	}
-
+	if(!$brpswd) {
+		$msg = $lang['admin_password_invalid'];
+	}
+	else {
+	$brpswd=md5($brpswd);
+	}
+  
 	if($msg) {
 
 ?>
@@ -1082,7 +1094,7 @@ echo"        <tr>\n";
 echo"          <td>\n";
 
 $extrasql = <<<EOT
-INSERT INTO bra_users (username,groupid) VALUES ('$username','9');
+INSERT INTO bra_users (username,`password`,groupid) VALUES ('$username','$brpswd','9');
 EOT;
 
 	runquery($sql);

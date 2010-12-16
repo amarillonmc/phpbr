@@ -87,37 +87,50 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 	if($exp >= $up_exp_temp && $lvl<255) {
 		if($isplayer){
 			global $name,$hp,$mhp,$sp,$msp,$att,$def,$upexp;
+			$lvup = 1+floor(($exp - $up_exp_temp)/$baseexp/2);
+			$lvup = $lvup > 255-$lvl ? 255-$lvl : $lvup;
+			//$log .="$lvup<br>";
 			$lvuphp = $lvupatt = $lvupdef = 0;
-			$i=0;
-			while($exp >= $up_exp_temp && $lvl<255){
+			for ($i=0;$i<$lvup;$i+=1){
+				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
+				$sp += ($msp * 0.1);
+			}
+			$lvl += $lvup;$up_exp_temp = round((2*$lvl+1)*$baseexp);
+			/*while($exp >= $up_exp_temp && $lvl<255){
 				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
 				$sp += ($msp * 0.1);
 				$lvl ++;$i++;
 				$up_exp_temp = round((2*$lvl+1)*$baseexp);
-			}
+			}*/
 			if($lvl>=255){$lvl=255;$exp=$up_exp_temp;}
 			$upexp=$up_exp_temp;
 			$hp += $lvuphp;$mhp += $lvuphp;
 			$att += $lvupatt;$def += $lvupdef;
 			if($sp >= $msp){$sp = $msp;}
-			$log .= "<span class=\"yellow\">你升了{$i}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}！</span><br>";
+			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}！</span><br>";
 		} else {
 			global $now,$w_type,$w_pid,$w_name,$w_hp,$w_mhp,$w_sp,$w_msp,$w_att,$w_def,$w_upexp;
+			$lvup = 1+floor(($exp - $up_exp_temp)/$baseexp/2);
+			$lvup = $lvup > 255-$lvl ? 255-$lvl : $lvup;
 			$lvuphp = $lvupatt = $lvupdef = 0;
-			$i=0;
-			while($exp >= $up_exp_temp && $lvl<255){
+			for ($i=0;$i<$lvup;$i+=1){
+				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
+				$w_sp += ($w_msp * 0.1);
+			}
+			$lvl += $lvup;$up_exp_temp = round((2*$lvl+1)*$baseexp);
+			/*while($exp >= $up_exp_temp && $lvl<255){
 				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
 				$w_sp += ($w_msp * 0.1);
 				$lvl ++;$i++;
 				$up_exp_temp = round((2*$lvl+1)*$baseexp);
-			}
+			}*/
 			if($lvl>=255){$lvl=255;$exp=$up_exp_temp;}
 			$w_upexp=$up_exp_temp;
 			$w_hp += $lvuphp;$w_mhp += $lvuphp;
 			$w_att += $lvupatt;$w_def += $lvupdef;
 			if($w_sp >= $w_msp){$w_sp = $w_msp;}
 			if(!$w_type){
-				$w_log = "<span class=\"yellow\">你升了{$i}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}！</span><br>";
+				$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}！</span><br>";
 				logsave($w_pid,$now,$w_log);
 			}
 		}

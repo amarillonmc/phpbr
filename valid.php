@@ -44,7 +44,7 @@ if($mode == 'enter') {
 	$pls = 0;
 	$killnum = 0;
 	$lvl = 0;
-	$exp = $areanum * 10;
+	$exp = $areanum * 30;
 	$money = 20;
 	$rage = 0;
 	$pose = 0;
@@ -52,10 +52,11 @@ if($mode == 'enter') {
 	$icon = $icon ? $icon : rand(1,$iconlimit);
 	$club = makeclub();
 
-	$arb = $gd == 'm' ? '红队服' : '蓝队服';
-	$arbk = 'DB'; $arbe = 5; $arbs = 30;
+	$arb = $gd == 'm' ? '红队制服' : '蓝队制服';
+	$arbk = 'DB'; $arbe = 5; $arbs = 15; $arbsk = '';
 	$arh = $ara = $arf = $art = '';
 	$arhk = $arak = $arfk = $artk = '';
+	$arhsk = $arask = $arfsk = $artsk = '';
 	$arhe = $arae = $arfe = $arte = 0;
 	$arhs = $aras = $arfs = $arts = 0;
 	
@@ -66,28 +67,28 @@ if($mode == 'enter') {
 	$weplist = openfile(config('stwep',$gamecfg));
 	do { 
 		$index = rand(1,count($weplist)-1); 
-		list($wep,$wepk,$wepe,$weps) = explode(",",$weplist[$index]);
+		list($wep,$wepk,$wepe,$weps,$wepsk) = explode(",",$weplist[$index]);
 	} while(!$wepk);
 
 	$stitemlist = openfile(config('stitem',$gamecfg));
 	do { 
 		$index = rand(1,count($stitemlist)-1); 
-		list($itm[3],$itmk[3],$itme[3],$itms[3]) = explode(",",$stitemlist[$index]);
+		list($itm[3],$itmk[3],$itme[3],$itms[3],$itmsk[3]) = explode(",",$stitemlist[$index]);
 	} while(!$itmk[3]);
 	do { 
 		$index = rand(1,count($stitemlist)-1); 
-		list($itm[4],$itmk[4],$itme[4],$itms[4]) = explode(",",$stitemlist[$index]);
+		list($itm[4],$itmk[4],$itme[4],$itms[4],$itmsk[4]) = explode(",",$stitemlist[$index]);
 	} while(!$itmk[4] || ($itmk[3] == $itmk[4]));
 
 	if(strpos($wepk,'WG') === 0){
-		$itm[3] = '子弹'; $itmk[3] = 'GB'; $itme[3] = 1; $itms[3] = 12; 
+		$itm[3] = '手枪子弹'; $itmk[3] = 'GB'; $itme[3] = 1; $itms[3] = 12; 
 	}
 	$state = 0;
 	$bid = 0;
 	$inf = $teamID = $teamPass = '';
-	$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5) VALUES ('$name','$pass','$type','$endtime','$gd','$sNo','$icon','$club','$hp','$mhp','$sp','$msp','$att','$def','$pls','$lvl','$exp','$money','$bid','$inf','$rage','$pose','$tactic','$state','$killnum','$wp','$wk','$wg','$wc','$wd','$teamID','$teamPass','$wep','$wepk','$wepe','$weps','$arb','$arbk','$arbe','$arbs','$arh','$arhk','$arhe','$arhs','$ara','$arak','$arae','$aras','$arf','$arfk','$arfe','$arfs','$art','$artk','$arte','$arts','$itm[0]','$itmk[0]','$itme[0]','$itms[0]','$itm[1]','$itmk[1]','$itme[1]','$itms[1]','$itm[2]','$itmk[2]','$itme[2]','$itms[2]','$itm[3]','$itmk[3]','$itme[3]','$itms[3]','$itm[4]','$itmk[4]','$itme[4]','$itms[4]','$itm[5]','$itmk[5]','$itme[5]','$itms[5]')");
+	$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('$name','$pass','$type','$endtime','$gd','$sNo','$icon','$club','$hp','$mhp','$sp','$msp','$att','$def','$pls','$lvl','$exp','$money','$bid','$inf','$rage','$pose','$tactic','$state','$killnum','$wp','$wk','$wg','$wc','$wd','$wf','$teamID','$teamPass','$wep','$wepk','$wepe','$weps','$arb','$arbk','$arbe','$arbs','$arh','$arhk','$arhe','$arhs','$ara','$arak','$arae','$aras','$arf','$arfk','$arfe','$arfs','$art','$artk','$arte','$arts','$itm[0]','$itmk[0]','$itme[0]','$itms[0]','$itm[1]','$itmk[1]','$itme[1]','$itms[1]','$itm[2]','$itmk[2]','$itme[2]','$itms[2]','$itm[3]','$itmk[3]','$itme[3]','$itms[3]','$itm[4]','$itmk[4]','$itme[4]','$itms[4]','$itm[5]','$itmk[5]','$itme[5]','$itms[5]','$wepsk','$arbsk','$arhsk','$arask','$arfsk','$artsk','$itmsk[0]','$itmsk[1]','$itmsk[2]','$itmsk[3]','$itmsk[4]','$itmsk[5]')");
 	$db->query("UPDATE {$tablepre}users SET lastgame='$gamenum' WHERE username='$name'");
-	addnews($now,'newpc',$name,"$sexinfo[$gd] $sNo 号",$ip);
+	addnews($now,'newpc',$name,"{$sexinfo[$gd]}{$sNo}{号}",$ip);
 
 
 	$gamestate = $validnum < $validlimit ? 20 : 30;
@@ -131,12 +132,12 @@ function makeclub() {
 	elseif($dice < 80)	{$club = 6;}//移动消耗减
 	elseif($dice < 85)	{$club = 7;}//P(HACK)=1
 	elseif($dice < 90)	{$club = 8;}//查毒可
-	elseif($dice < 115)	{$club = 9;$wf = 25;}//会心率上升，灵25
+	elseif($dice < 115)	{$club = 9;$wf = 25;}//能使用必杀，灵25
 	elseif($dice < 120)	{$club = 10;}//探索减
 	elseif($dice < 125)	{$club = 11;$money = 500;}//出击钱数500
 	elseif($dice < 135)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 10;}//全熟练10
-	elseif($dice < 145)	{$club = 13;$mhp = $mhp + 100;}//生命上限提高100
-	elseif($dice < 150)	{$club = 14;$msp = $msp + 150;}//体力上限提高150
+	elseif($dice < 145)	{$club = 13;$mhp = $mhp + 100;$hp = $mhp;}//生命上限提高100
+	elseif($dice < 150)	{$club = 14;$msp = $msp + 150;$sp = $msp;}//体力上限提高150
 	else				{$club = makeclub();}
 	return $club;
 }

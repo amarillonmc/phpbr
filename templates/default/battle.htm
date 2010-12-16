@@ -29,7 +29,7 @@
 							<td class="b2"><div class=nttx>{lang wep}{lang kind1}</div></td>
 							<td class="b3"><div class=nttx><!--{if $w_wepk != ''}-->$iteminfo[$w_wepk]<!--{else}-->？？？<!--{/if}--></div></td>
 							<td class="b2"><div class=nttx>{lang wep}</div></td>
-							<td class="b3"><div class=nttx><span class="yellow">$w_wep</span></div></td>
+							<td class="b3"><div class=nttx>$w_wep</div></td>
 						</tr>
 						<tr>
 							<td class="b2" height=20px><div class=nttx>{lang tactic}</div></td>
@@ -61,15 +61,15 @@
 						</tr>
 						<tr>
 							<td class="b2" width=65px height=20px><div class=nttx>{lang hp}</div></td>
-							<td class="b3" width=100px><div class=nttx>$hp / $mhp</div></td>
+							<td class="b3" width=100px><div class=nttx><span class="$hpcolor">$hp / $mhp</span></div></td>
 							<td class="b2" width=65px><div class=nttx>{lang sp}</div></td>
 							<td class="b3" width=70px><div class=nttx>$sp / $msp</div></td>
 							<td class="b2" width=65px><div class=nttx>{lang rage}</div></td>
-							<td class="b3" width=70px><div class=nttx><!--{if $rage >=30}--><span class="yellow"><b>$rage</b></span><!--{else}-->$rage<!--{/if}--></div></td>
+							<td class="b3" width=70px><div class=nttx><!--{if $rage >=30}--><span class="yellow">$rage</span><!--{else}-->$rage<!--{/if}--></div></td>
 						</tr>
 						<tr>
 							<td class="b2" height=20px><div class=nttx>{lang wep}</div></td>
-							<td class="b3"><div class=nttx><span class="yellow">$wep</span></div></td>
+							<td class="b3"><div class=nttx>$wep</div></td>
 							<td class="b2"><div class=nttx>{lang wep}{lang kind1}</div></td>
 							<td class="b3"><div class=nttx>$iteminfo[$wepk]</div></td>
 							<td class="b2"><div class=nttx>{lang wep}{lang effect}</div></td>

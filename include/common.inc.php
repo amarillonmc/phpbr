@@ -72,7 +72,7 @@ if (($gamestate > 10)&&($now > $areatime)) {
 if($gamestate == 20) {
 	$arealimit = $arealimit > 0 ? $arealimit : 1; 
 	if(($validnum <= 0)&&($areanum >= $arealimit*$areaadd)) {
-		gameover($areanum,'end4');
+		gameover($areatime-3599,'end4');
 	} elseif(($areanum >= $arealimit*$areaadd) || ($validnum >= $validlimit)) {
 		$gamestate = 30;
 		save_gameinfo();

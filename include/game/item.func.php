@@ -280,8 +280,8 @@ function itemuse($itmn) {
 			$log .= "你阅读了<span class=\"red\">$itm</span>。<br>";
 			$dice = rand(-10,10);
 			if(strpos($itmk, 'VV') === 0 ){
-				global $wp,$wk,$wg,$wc,$wd;
-				$ws_sum = $wp+$wk+$wg+$wc+$wd;
+				global $wp,$wk,$wg,$wc,$wd,$wf;
+				$ws_sum = $wp+$wk+$wg+$wc+$wd+$wf;
 				if($ws_sum < $skill_minimum * 5){
 					$vefct = $itme;
 				} elseif($ws_sum < $skill_limit * 5){
@@ -299,6 +299,7 @@ function itemuse($itmn) {
 				$wg += $vefct;//$itme;
 				$wc += $vefct;//$itme;
 				$wd += $vefct;//$itme; 
+				$wf += $vefct;//$itme;
 				$wsname= "全系熟练度";
 			} elseif(strpos($itmk, 'VP') === 0 ){
 				global $wp;
@@ -380,6 +381,22 @@ function itemuse($itmn) {
 				}
 				$wd += $vefct;//$itme; 
 				$wsname= "引爆熟练度";
+			} elseif(strpos($itmk, 'VF') === 0 ){
+				global $wf;
+				if($wf < $skill_minimum){
+					$vefct = $itme;
+				} elseif($wf < $skill_limit){
+					$vefct = round($itme*(1-($wf-$skill_minimum)/($skill_limit-$skill_minimum)));
+				} else {
+					$vefct = 0;
+				}
+				if($vefct <10){
+					if($vefct < $dice){
+						$vefct = -$dice;
+					} 
+				}
+				$wf += $vefct;//$itme; 
+				$wsname= "灵击熟练度";
 			}
 			if($vefct > 0){
 				$log .= "嗯，有所收获。<br>你的{$wsname}提高了<span class=\"yellow\">$vefct</span>点！<br>";
@@ -439,7 +456,7 @@ function itemuse($itmn) {
 				$mdname= "基础防御力";
 			} elseif(strpos($itmk, 'ME') === 0 ){
 				global $exp,$upexp,$baseexp;
-				$lvlup_objective = $itme/100;
+				$lvlup_objective = $itme/10;
 				$mefct = round($baseexp*2*$lvlup_objective+rand(0,5));
 				$exp += $mefct;				
 				$mdname= "经验值";
@@ -456,7 +473,7 @@ function itemuse($itmn) {
 				$mhp += $mefct; 
 				$mdname= "生命上限";
 			} elseif(strpos($itmk, 'MV') === 0 ){
-				global $wp,$wk,$wg,$wc,$wd;
+				global $wp,$wk,$wg,$wc,$wd,$wf;
 				$skill_minimum = 100;
 				$skill_limit = 300;
 				$dice = rand(-10,10);
@@ -478,6 +495,7 @@ function itemuse($itmn) {
 				$wg += $mefct;
 				$wc += $mefct;
 				$wd += $mefct; 
+				$wf += $mefct;
 				$mdname= "全系熟练度";
 			}
 			if($mefct > 0){
@@ -642,14 +660,14 @@ function itemuse($itmn) {
 			$log .= "你转动了几下天候棒。<br>天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br>";
 			$itms--;
 		} elseif($itm == '武器师安雅的奖赏') {
-			global $wep,$wepk,$wepe,$weps,$wepsk,$wp,$wk,$wg,$wc,$wd;
+			global $wep,$wepk,$wepe,$weps,$wepsk,$wp,$wk,$wg,$wc,$wd,$wf;
 			if(!$weps||!$wepe){
 				$log .= '请先装备武器。<br>';
 				return;
 			}
 			$dice = rand(0,99);
 			$dice2 = rand(0,99);
-			$skill = array('WP' => $wp,'WK' => $wk,'WG' => $wg,'WC' => $wc,'WD' => $wd);
+			$skill = array('WP' => $wp,'WK' => $wk,'WG' => $wg,'WC' => $wc,'WD' => $wd,'WF' => $wf);
 			arsort($skill);
 			$skill_keys = array_keys($skill);
 			$nowsk = substr($wepk,0,2);

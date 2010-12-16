@@ -91,7 +91,7 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			$i=0;
 			while($exp >= $up_exp_temp && $lvl<255){
 				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
-				$sp += ($msp * 0.2);
+				$sp += ($msp * 0.1);
 				$lvl ++;$i++;
 				$up_exp_temp = round((2*$lvl+1)*$baseexp);
 			}
@@ -107,7 +107,7 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			$i=0;
 			while($exp >= $up_exp_temp && $lvl<255){
 				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
-				$w_sp += ($w_msp * 0.2);
+				$w_sp += ($w_msp * 0.1);
 				$lvl ++;$i++;
 				$up_exp_temp = round((2*$lvl+1)*$baseexp);
 			}
@@ -134,7 +134,7 @@ function rest($command) {
 		$resttime = $now - $endtime;
 		$endtime = $now;
 		$oldsp = $sp;
-		$upsp = round($resttime/$sleep_time);
+		$upsp = round($msp*$resttime/$sleep_time/100);
 		if($pose == 5){$upsp*=2;}
 		if(strpos($inf,'b') !== false){$upsp=round($upsp/2);}
 		$sp += $upsp;
@@ -145,7 +145,7 @@ function rest($command) {
 		$resttime = $now - $endtime;
 		$endtime = $now;
 		$oldhp = $hp;
-		$uphp = round($resttime/$heal_time);
+		$uphp = round($mhp*$resttime/$heal_time/100);
 		if($pose == 5){$uphp*=2;}
 		if(strpos($inf,'b') !== false){$uphp=round($uphp/2);}
 		$hp += $uphp;
@@ -156,14 +156,14 @@ function rest($command) {
 		$resttime = $now - $endtime;
 		$endtime = $now;
 		$oldsp = $sp;
-		$upsp = round($resttime/$sleep_time);
+		$upsp = round($msp*$resttime/$sleep_time/100);
 		if($pose == 5){$upsp*=2;}
 		if(strpos($inf,'b') !== false){$upsp=round($upsp/2);}
 		$sp += $upsp;
 		if($sp >= $msp){ $sp = $msp; }
 		$upsp = $sp - $oldsp;
 		$oldhp = $hp;
-		$uphp = round($resttime/$heal_time);
+		$uphp = round($mhp*$resttime/$heal_time/100);
 		if($pose == 5){$uphp*=2;}
 		if(strpos($inf,'b') !== false){$uphp=round($uphp/2);}
 		$hp += $uphp;

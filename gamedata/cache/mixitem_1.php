@@ -18,7 +18,7 @@ $mixinfo = array
 	array('stuff' => array('咖喱','面包'),'result' => array('咖喱面包','HH',150,2,),),
 	array('stuff' => array('牛奶','立顿茶包','糯米丸子'),'result' => array('珍珠奶茶','HB',200,4,),),
 	array('stuff' => array('《小黄的草帽》','《小黄的钓鱼竿》','《小黄的行军靴》'),'result' => array('《小黄的精灵球》','WC',233,∞,),),
-	array('stuff' => array('《小黄的精灵球》','《小黄的背心》'),'result' => array('《小黄的超级球》','WC',233,∞,r),),
+	array('stuff' => array('《小黄的精灵球》','《小黄的收服特训》'),'result' => array('《小黄的超级球》','WC',233,∞,r),),
 	//array('stuff' => array('桔黄色的果酱','面包'),'result' => array('不甜的果酱面包','HB',300,5,),),
 	array('stuff' => array('月宫 亚由的半身像','神尾 观铃的半身像','古河 渚的半身像'),'result' => array('四季流转的咏叹调','WP',750,1,),),
 	array('stuff' => array('天泽 郁末的半身像','长森 瑞佳的半身像','枣 铃的半身像'),'result' => array('旁观轮回的覆唱诗','WK',750,1,),),

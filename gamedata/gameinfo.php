@@ -1,17 +1,17 @@
 <?php
 
-$gamenum = 1;
-$gamestate = 0;
-$starttime = 1291143900;
+$gamenum = 5;
+$gamestate = 20;
+$starttime = 1292381760;
 $winmode = 3;
 $winner = 'admin';
-$arealist = array(0,24,18,19,2,10,14,21,1,15,7,5,13,4,22,23,16,3,6,11,8,12,17,9,20,25);
-$areanum = 0;
-$areatime = 1291035601;
+$arealist = array(0,23,20,8,25,12,5,16,14,18,2,19,21,7,17,3,22,1,11,10,4,24,13,6,9,15);
+$areanum = 1;
+$areatime = 1292385600;
 $weather = 7;
 $hack = 0;
-$validnum = 61;
-$alivenum = 2;
-$deathnum = 59;
+$validnum = 1;
+$alivenum = 1;
+$deathnum = 0;
 
 ?>

@@ -7,8 +7,8 @@ if(!defined('IN_GAME')) {
 
 
 function findenemy(&$w_pdata) {
-	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$nosta,$weps,$bid;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
+	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$wf,$nosta,$weps,$bid;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
 	if($w_pdata['pid'] !== $bid){
 		$log .= "<span class=\"yellow\">敌人数据出错。</span><br>";
@@ -43,7 +43,7 @@ function findenemy(&$w_pdata) {
 
 function findteam(&$w_pdata){
 	global $log,$mode,$main,$cmd,$battle_title,$bid;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
 	if($w_pdata['pid'] !== $bid){
 		$log .= "<span class=\"yellow\">队友数据出错。</span><br>";
@@ -73,7 +73,7 @@ function findteam(&$w_pdata){
 
 function findcorpse(&$w_pdata){
 	global $log,$mode,$main,$battle_title,$cmd,$bid,$iteminfo;
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
 	if($w_pdata['pid'] !== $bid){
 		$log .= "<span class=\"yellow\">尸体数据出错。</span><br>";

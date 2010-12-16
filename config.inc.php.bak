@@ -3,16 +3,16 @@
 // [EN]	Set below parameters according to your account information provided by your hosting
 // [CH] 以下变量请根据空间商提供的账号参数修改,如有疑问,请联系服务器提供商
 
-	$dbhost = 'localhost';			// database server
+	$dbhost = 'mysql.alwaysdata.com';			// database server
 						// 数据库服务器
 
-	$dbuser = 'pkno1';			// database username
+	$dbuser = 'winddramon';			// database username
 						// 数据库用户名
 
-	$dbpw = 'zhou12345';			// database password
+	$dbpw = 'zetajan8';			// database password
 						// 数据库密码
 
-	$dbname = 'pkno1_sql';			// database name
+	$dbname = 'winddramon_bra2';			// database name
 						// 数据库名
 
 	$dbreport = 1;				// send db error report? 1=yes
@@ -40,7 +40,7 @@
 	$pconnect = true;				// persistent database connection, 0=off, 1=on
 						// 数据库持久连接 false=关闭, true=打开
 
-	$gamefounder = 'Amarillo_NMC';			// super administrator's UID
+	$gamefounder = 'stage4';			// super administrator's UID
 						// 游戏创始人 UID, 可以支持多个创始人，之间使用 “,” 分隔。
 						// 如果不设置游戏创始人，则管理员之间可以相互编辑，具体权力差别请见游戏使用文档
 

@@ -53,7 +53,7 @@ function move($moveto = 99) {
 	}
 
 	if(strpos($inf, 'p') !== false){
-		$damage = round($mhp/10) + rand(0,10);
+		$damage = round($mhp/16) + rand(0,10);
 		$hp -= $damage;
 		$log .= "毒发减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){
@@ -105,7 +105,7 @@ function search(){
 	$sp -= $schsp;
 	$log .= '你仔细搜索着周围的一切。。。<br>';
 	if(strpos($inf, 'p') !== false){
-		$damage = round($mhp/16) + rand(0,5);
+		$damage = round($mhp/32) + rand(0,5);
 		$hp -= $damage;
 		$log .= "毒发减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){

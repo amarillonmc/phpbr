@@ -1,125 +1,36 @@
-2010.11.30
--ÐÞÕýÁËinstall.phpÀï´æÔÚµÄÒ»¸öÎÊÌâ£ºBR°²×°Íê³ÉÒÔºó¹ÜÀíÔ±ÕËºÅµÄÃÜÂëÎª¿Õ¡£ÏÖÔÚ°²×°¹ý³ÌÖÐ½«ÒªÇó°²×°Õß´´½¨¹ÜÀíÔ±ÕËºÅµÄÃÜÂë¡£
--µ÷ÕûÁËCSSÒÔ¸ÄÉÆÊÓ¾õÐ§¹û¡£
--µÇÂ½½çÃæÓÃ»§ÃûÊäÈë¿ò½«²»ÔÊÐíÊäÈë<>,;×Ö·û
--ÐÞÕýÁËÑý¾«µÄÓðÒíÓëÅëâ¿ÏµÖ®¼äµÄÃ¬¶ÜÎÊÌâ¡£ÏÖÔÚÅëâ¿Ïµ×°±¸Ñý¾«µÄÓðÒíÒÔºóÊ¹ÓÃ¶¾Ò©½«»á¸øµÀ¾ß½â¶¾¡£
--ÐÞÕýÁËÕ½¶·Ê±Èç¹û×°±¸Ôâµ½ÆÆ»µÔòÎÞ·¨ÏÔÊ¾ÆÆËð×°±¸µÄÃû×ÖµÄÎÊÌâ¡£
-2010.12.1
--Ôö¼ÓÁËÏÔÊ¾ÎïÆ·ÊôÐÔµÄ¹¦ÄÜ¡£
--Îª±í¸ñÔö¼ÓÁË±³¾°Í¼¡£
--ÐÞÕýÁËÐ¶ÏÂÎäÆ÷ºÍÎäÆ÷ÓÃÍêÊ±±ØÐëË¢ÐÂÒ³Ãæ²Å»á½«ÎäÆ÷¸ÄÎª¡°¿ÕÊÖ¡±µÄÎÊÌâ¡£ÏÖÔÚÐ¶ÏÂÎäÆ÷Ö®ºó»»ÉÏµÄÎäÆ÷¾ÍÊÇ¿ÕÊÖ¡£
--ÏÖÔÚÕ½¶·Ê±Èç¹û×°±¸ÄÍ¾ÃÏÂ½µ½«»áÌáÊ¾Íæ¼Ò¡£
--µ÷ÕûCSSÊ¹Ö®¸ü¼æÈÝFFä¯ÀÀÆ÷
--ÏÖÔÚ·ÇÕ½¶·×´Ì¬Ê±Ôâµ½ÆäËûÍæ¼ÒµÄÏ®»÷½«»áÏÔÊ¾¸ÃÍæ¼ÒµÄÎäÆ÷¡£
-2010.12.2
--´ó·ù¶ÈÐÞ¸ÄÁË½çÃæ£¬¸Ä½øÁËÈËÎïÊÜÉË×´Ì¬µÄÏÔÊ¾ÒÔ¼°Õ½¶·»­ÃæµÄÏÔÊ¾¡£
-2010.12.4
--ÓëTKBR1.98SP1ÕûºÏÍê±Ï£¬°ÇÈËBUGÒÑ¾­ÐÞ¸´£¨´ó¸Å£©
--¸ü»»ÁËÈ«²¿µÄÍ·Ïñ£¬ÏÖÔÚÍ·Ïñ³ß´çÊÇ140X80
 
+2010.12.17
+//å¯¹combat.func.phpä½œäº†ç®€åŒ–
+//ä¼¤å®³æƒ©ç½šåŠ é‡ï¼ŒçŽ°åœ¨å¦‚æžœä¼¤å®³è¶…è¿‡2000ä¼šæ‰£é™¤2/3çš„HPï¼Œè€Œä¼¤å®³è¶…è¿‡5000åˆ™æ‰£é™¤4/5çš„HP
+//å†…å®šç§°å·ã€åœ°å›¾ç‰©å“ã€å•†åº—é“å…·ã€NPCèµ„æ–™ä¿®æ”¹ã€‚çŽ°åœ¨å®‰è£…é’‰å­æ–¹ä¾¿ä¸€äº›äº†ï¼Œåæ­£ä¸èƒ½è¶…é‡è´­ä¹°ï¼Œå¯¹å§ã€‚
+//å¢žåŠ äº†ç‰©å“åç§°çš„é™åˆ¶é•¿åº¦ï¼Œä¿®æ­£äº†ç‰©å“è€ä¹…æ”¹ä¸ºæ•´æ•°ä»¥åŽå¯¼è‡´çš„ä¸Žæ— é™è€ä¸å…¼å®¹çš„é—®é¢˜
+//è§£æ¯’å‰‚ç§ç±»æ”¹ä¸ºâ€œè¯å‰‚â€
 
-2010.12.6
--È¥³ýÁËÕ½¶·Ñ¶Ï¢ÖÐÈ«²¿µÄ¿Õ¸ñ£¬ÏÖÔÚ×÷Õ½ÐÅÏ¢¿´ÉÏÈ¥¸ü½ô´ÕÁË
--±ØÉ±¸¨ÖúÊôÐÔÊµ×°
--Ô¶³ÌÒ»Ë²Ç§»÷BUGÐÞ¸´£¡
--ÏÖÔÚ¶¾·¢ºÍ±ù±¢µ¼ÖÂµÄHP¼õÉÙ¸ÄÎª×î´óHPµÄ1/8×óÓÒ£¬ÖÐ¶¾ÕßÒªÐ¡ÐÄÁË£¡
--ÎªGAMEOVER½çÃæÌí¼ÓÁË¾çÇéÐÅÏ¢
--ÐÞÕýÁËºÏ²¢´ø¶¾²¹¸øÆ·Ö®ºó»á¶ªÊ§ÏÂ¶¾ÕßÐÅÏ¢µÄBUG£¬ÐÞÕýÁËºÏ²¢ÎïÆ·Ê±²»¿¼ÂÇÎïÆ·×ÓÀàÐÍµÄBUG
--ÏÖÔÚNPCÉíÉÏµÄ×°±¸Ò²ÓÐÊôÐÔÁË£¬Ð¡ÐÄÄÜ·Àµ¯µÄNPC£¡
-
-2010.12.8
--´ø¶¾ÎäÆ÷ºÍÁ¬Ðø¹¥»÷ÊôÐÔÊµ×°
--ÐÞ¸ÄÉÙÁ¿½çÃæÐ§¹û
-
-2010.12.9
--ÎäÆ÷ÊÜËðÂß¼­ÐÞ¸Ä£¬ÏÖÔÚÕ¶ÏµºÍÅ¹ÏµµÄÊÜËð¸ÅÂÊ²»Í¬ÁË¡£
--ÉÌµêÔ¶³Ì¹ºÂòµÄBUGÐÞ¸´ÁË¡£
--ÏÖÔÚDN²»ÄÜ½øÐÐ×ÔÉ±ÁË¡£ÇÒÐÞÕýÁËDNÊ¹ÓÃÊ±µÄÏÔÊ¾Ð¡´íÎó¡£
--ÐÞÕýÁËÉ±ÈËÊ±Èç¹ûÎäÆ÷ÓÃ¾¡ÄÇÃ´Ñ¶Ï¢ÀïÎäÆ÷ÏÔÊ¾³ö´íµÄÎÊÌâ
--ËÀÍöÊ±Ð×ÊÖÏÔÊ¾´íÎóµÃµ½ÐÞÕý¡£
-
-2010.12.11
--Ô¶³ÌÒ»Ë²Ç§»÷BUGµÄÐÞÕý·½Ê½ÓÖµÃµ½ÁËÐÞÕý= =£¬ÏÖÔÚÖ»ÒªÌá½»·Ç×÷Õ½Ö¸Áî¾ÍÎÞ·¨¹¥»÷Ö®Ç°Óöµ½µÄµÐÈËÁË
--ÐÂÔöÁË¸÷ÏµµÄ×î¸ßÃüÖÐÂÊ£¬ÏÖÔÚ½üÕ½Ïµ×î¶àÖ»ÄÜÓÐ90%µÄÃüÖÐÂÊÁË
--¼¼ÄÜÊéÏµÍ³ÐÞ¸Ä£¬ÏÖÔÚËæ×ÅÊìÁ·¶ÈµÄÌá¸ß£¬¼¼ÄÜÊéµÄÐ§¹û»áÏÂ½µ
--ÄÜÁ¦Ò©ÏµÍ³Êµ×°
--ÐÞÕýÁË½øÐÐ×´¿ö»á³öÏÖ¶àÓà¿Õ¸ñµÄÎÊÌâ
--ÏÖÔÚÉý¼¶»áÖ±½ÓÉýµ½¾­ÑéÖµ²»¹»ÎªÖ¹ÁË¡£
--µØÍ¼µÀ¾ßÐÞ¸Ä
-
-
-
-2.02:
-¸Ä¶¯µÄÎÄ¼þ£º
+1217 æ”¹åŠ¨çš„æ–‡ä»¶:
 /gamedata/
-	system.php //ÐÂÔöÊý×é$spinfo,$rageinfo,$$wepeinfo,$itemspkinfo
+		system.php 						//æ”¹åŠ¨å†…å®šç§°å·ã€æžªæ¢°å¼¹è¯ç§ç±»
+		player.sql  					//å¢žåŠ äº†ç‰©å“åç§°çš„é™åˆ¶é•¿åº¦ï¼Œä¿®æ­£äº†ç‰©å“è€ä¹…æ”¹ä¸ºæ•´æ•°ä»¥åŽå¯¼è‡´çš„ä¸Žæ— é™è€ä¸å…¼å®¹çš„é—®é¢˜
 /gamedata/cache/
-	combatcfg_1.php //ÐÂÔöÎäÆ÷ÊÜËð¸ÅÂÊÅÐ¶Ï
-	npc_1.php
-	mapitem_1.php //Ö÷ÒªÊÇÓÎÏ·Êý¾ÝµÄµ÷Õû
-	shopitem_1.php
-/include/
-	game.func.php 
-		//init_profile()ÐÂÔö$newhpimg,$newspimgÒÔ¶ÔÓ¦ÐÂÓÎÏ·½çÃæ
-		//init_profile()ÄÚ$infimgÂß¼­Ë³ÐòºÍÏÔÊ¾·½Ê½±ä¸ü£¬¶ÔÓ¦ÐÂÓÎÏ·½çÃæ
-		//init_battle()ÄÚÔö¼Ó±äÁ¿ÉùÃ÷£¬Ä¿µÄÊÇÔö¼ÓÕ½¶·»­ÃæÏÔÊ¾ÐÅÏ¢¡£
-/include/game/
-	battle.func.php //Ôö¼Ó±äÁ¿ÉùÃ÷£¬Ä¿µÄÊÇÔö¼ÓÕ½¶·»­ÃæÏÔÊ¾ÐÅÏ¢¡£
-	combat.func.php //Ôö¼ÓÎïÆ·ÄÍ¾ÃÏÂ½µÊ±µÄÏÔÊ¾ÎÄ×Ö£¬ÐÞÕýÁËÎïÆ·Ëð»ÙÊ±ÎÞ·¨ÏÔÊ¾ÎïÆ·Ãû³ÆµÄÎÊÌâ£¬ÐÞÕýÁËÎäÆ÷Ëð»µÒÔºó²»»áÂíÉÏ¸ÄÎª¿ÕÊÖµÄÎÊÌâ
-	itemmain.func.php //ÐÞÕýÁËÐ¶ÏÂÎäÆ÷Ö®ºó²»»áÂíÉÏ¸ÄÎª¿ÕÊÖµÄÎÊÌâ£»ÐÞÕýÁËÉÌµê³¬¶î¹ºÂòµÄÎÊÌâ£»	
-	item.func.php //ÐÞÕýÁËÊ¹ÓÃÃüÌå»Ø¸´ÎïÆ·Ê±£¬»Ø¸´ÖµÏÔÊ¾²»ÕýÈ·µÄÎÊÌâ£»ÐÞÕýÁËÊ¹ÓÃ¶¤×ÓÊ±µÄÎ¢Ð¡ÏÔÊ¾´íÎó£»¼¼ÄÜÊéÏµÍ³ÐÞ¸Ä
-	item2.func.php //ÐÞÕýÁËÊ¹ÓÃÑý¾«µÄÓðÒíÊ±ÓëÅëâ¿ÏµµÄ³åÍ»£¬Í¬Ê±¸ü¸ÄÁËÏÔÊ¾ÎÄ×ÖµÄË³Ðò¡£
-/install/
-	Á½¸öÓïÑÔÎÄ¼þ¶¼Ìí¼ÓÁËµã¶«Î÷£¬¸úinstall.phpµÄÐÞ¸ÄÓÐ¹Ø
-/¸ùÄ¿Â¼
-	command.php //¼òµ¥Ôö¼ÓÁËµÇÂ½Ê±ÅÐ¶ÏÓÃ»§ÃûÊÇ·ñº¬·Ç·¨×Ö·ûµÄ¹¦ÄÜ
-	login.php //Í¬ÉÏ£¬³ö´í½çÃæµÄÎÄ×ÖÏÔÊ¾
-	valid.php //³ö»÷Ç®Êýµ÷Õû
-	
-	
-???:
-/gamedata/
-	system.php //ÐÂÔö´ø¶¾¹¥»÷µÈÎäÆ÷ÊôÐÔµÄÎÄ×ÖÏÔÊ¾
-/gamedata/cache/
-	style_1.css  //Ö÷ÒªÊÇÏ¸½ÚÑùÊ½µÄÐÞ¸Ä£¬ÐÂÔöevergreenÎÄ×ÖÑùÊ½£¬¸ù¾Ý·´À¡Çé¿ö»¹¿ÉÐÞ¸Ä
-	npc_1.php //ÁÖÎÞÔÂÎäÆ÷ÏûÒôÁ¬Éä£¬ÉíÌå×°±¸È«Ïµ¹¥»÷¼õ°ë£¬ÏàÓ¦µÄHP¼õÎª8192£¬½ðÇ®¼õÎª10Ôª£»
-						//Î±Ô³ÎäÆ÷¸ÄÎªÁ¬Éä£¬ÏàÓ¦¹¥»÷Á¦½µµÍ
-						//¸ßÎ£NPC£ºÉíÌå×°±¸·ÀÓùÍ¶ÏµºÍÉäÏµ£¬Í·²¿×°±¸ÓÐ±ØÉ±¸¨ÖúÐ§¹û£¬ÎäÆ÷ÔöÇ¿£¬¹¥·Àµ÷Õû£¬Å­ÆøÖµµ÷Õû£¬×°±¸·ÀÓùÁ¦²àÖØµãµ÷Õû£¬µÈ¼¶½µµÍ£¨·ÀÁ·¼¶£©
-						//ËùÓÐNPCÐ¯´ø½ð¶î¼õÉÙ¡£
-						//Í¬Ê±ÐÞÕýÁË¹ÜÀíºóÌ¨³öÏÖN¸ö¿ÕÍæ¼ÒµÄBUG
-	mapitem.php //
+		gamecfg_1.php					//åŽ»é™¤äº†è·Ÿcombatcfgé‡å¤çš„éƒ¨åˆ†
+		combatcfg_1.php				//æ·»åŠ æ•°ç§å±žæ€§
+		mapitem_1.php 					//åœ°å›¾ç‰©å“ç•¥æ”¹
+		shopitem_1.php 					//å•†åº—é“å…·ç•¥æ”¹
+		npc_1.php						//NPCèµ„æ–™ç•¥æ”¹
 /img/
-	STAR.gif  //ÁÁ¶ÈÂÔÎ¢µ÷¸ß
 /include/
-	game.func.php //ÎªÕ½¶·½çÃæµÐÈËÊÜÉË×´Ì¬Ôö¼ÓÁËÎÄ×ÖÑùÊ½
-	system.func.php //ÐÞ¸ÄÁËÓÎÏ·³õÊ¼»¯º¯Êý£¬Ôö¼ÓÁË¶ÁÈ¡NPC×ÊÁÏÀï×°±¸µÄ×ÓÀàÐÍµÄ¹¦ÄÜ;ÐÞ¸ÄÁË½ûÇøÐÅÏ¢µÄ×ÖÉ«
-	global.func.php //addnewsº¯ÊýÔö¼ÓÁËÒ»¸ö¶ººÅÒÔÐÞÕý¶àÓà¿Õ¸ñ´íÎó
-	state.func.php //Éý¼¶º¯ÊýÐÞ¸Ä£¬ÏÖÔÚÉý¼¶½«Ò»Ö±Éýµ½¾­ÑéÖµÂú×ã²»ÁËÉý¼¶ÒªÇóÎªÖ¹£¬¶ø²»ÊÇÔ­À´µÄÖ»ÉýÒ»¼¶¡£
-								//¶øÇÒµÈ¼¶ÉÏÏÞÊÇ255£¬´ïµ½255½«²»ÔÙÉý¼¶¡£
+		game.func.php 				//å¢žåŠ çƒ§ä¼¤å’Œå†°å†»çŠ¶æ€æ˜¾ç¤º
+/include/admin/
+		pcmng.php 						//å¢žåŠ ç‰©å“åé•¿åº¦
 /include/game/
-	itemmain.func.php //ÐÞ¸ÄÁËºÏ²¢°ü¹üµÄÂß¼­£¬ÉÌµê¹ºÂò¹ý³ÌÖÐÐÂÔöÁËÎ»ÖÃÅÐ¶Ï¡£
-	item2.func.php //DN¸ÄÎª²»ÄÜ×ÔÉ±¡£ÐÞÕýÁËDNÊ¹ÓÃÊ±µÄÏÔÊ¾Ð¡´íÎó¡£
-	combat.func.php //ÐÂÔö±ØÉ±ÊôÐÔ$itmsk="c"£¬¸Ä¶¯ÁËÂß¼­²¢Ôö¼ÓÁËÅÐ¶Ïº¯Êý£»½«$bidÓÃ×÷·´Ò»Ë²Ç§»÷ÅÐ¶Ï²ÎÊý£»
-									//ÐÂÔöÁ¬Ðø¹¥»÷ÊôÐÔ$itmsk="r"£¬ÐÂÔö´ø¶¾¹¥»÷ÊôÐÔ$itmsk="p"¡£
-									//ÆäÊµ×î´óµÄ¸Ä¶¯ÊÇ¼ÓÈëÁËgetatkkey()¡¢get_hit_time()ºÍextradmg()Èý¸öº¯Êý£¬
-										//·Ö±ðÓÃ×÷»ñÈ¡¹¥»÷·½ËùÓµÓÐµÄÌØÐÔ¡¢»ñÈ¡¹¥»÷´ÎÊýºÍÖÂÉË¸ÅÂÊ£¨º­¸Çµ¥´Î¹¥»÷µÄÃüÖÐÂÊ£©ÒÔ¼°»ñÈ¡¸½¼ÓËðÉË£¬
-										//ËãÊÇÌá¹©Èý¸ö½Ó¿Ú
-									//get_hit_timeº¯ÊýÓÐÅÐ¶Ï¹¥»÷´ÎÊý¡¢ÃüÖÐ´ÎÊý¡¢ÖÂÉËÊýÖµºÍÎäÆ÷Ëð»µÊýÖµËÄÏî¹¦ÄÜ
-	battle.func.php //ÐÂÔö·´Ò»Ë²Ç§»÷ÅÐ¶Ï
-	search.func.php //ÐÂÔö·´Ò»Ë²Ç§»÷ÅÐ¶Ï£¬ÐÞ¸ÄÁË±ù±¢ºÍ¶¾·¢ÅÐ¶Ï¹«Ê½
-	item2.func.php //ÐÞ¸ÄÊ¹ÓÃÒÆ¶¯PCÊ±µÄÎÄ×Ö
-	item.func.php //¼¼ÄÜÊéÏµÍ³ÐÞ¸Ä£¬ÄÜÁ¦Ò©ÏµÍ³Êµ×°
-
+		attr.func.php					//çƒ§ä¼¤çŠ¶æ€å½±å“æ”»å‡»åŠ›ï¼Œå†»ä¼¤å‡é˜²å¾¡åŠ›
+		combat.func.php 			//åŽ»é™¤äº†å†—ä½™éƒ¨åˆ†ï¼Œå¢žåŠ äº†ç«ç„°å’Œå†°å†»ä¸¤ç§å±žæ€§
+		item.func.php					//æ·»åŠ è§£å†»è¯æ°´å’Œçƒ§ä¼¤è¯å‰‚ï¼Œæžªæ¢°å¼¹è¯ç§ç±»å¢žåŠ 
+		itemmain.func.php 		//çµç¬¦æ­¦å™¨å¯ä»¥æ­£ç¡®åˆå¹¶äº†
+		search.func.php				//å†»ä¼¤çŠ¶æ€å½±å“ç§»åŠ¨å’ŒæŽ¢ç´¢æ¶ˆè€—çš„ä½“åŠ›
+/install/
+		bra.sql 						  //å¢žåŠ äº†ç‰©å“åç§°çš„é™åˆ¶é•¿åº¦ï¼Œä¿®æ­£äº†ç‰©å“è€ä¹…æ”¹ä¸ºæ•´æ•°ä»¥åŽå¯¼è‡´çš„ä¸Žæ— é™è€ä¸å…¼å®¹çš„é—®é¢˜
 /templates/default/
-	battle.htm  //Ö÷Òª¸Ä¶¯ÊÇµÐ·½HP×´Ì¬µÄÎ»ÖÃ£¬ÏÖÔÚÊÓÏß²»ÓÃÒÆ¶¯Ì«¶à¾àÀë¾ÍÄÜ¿´Çå³þHP×´Ì¬ºÍÕ½¶·ÐÅÏ¢
-	end.htm  //½á¾ÖÎÄ×ÖºÍÏ¸½ÚÑùÊ½
-	game.htm  
-	valid.htm
-	profile.htm  //ÂÔÒÆ¶¯ÁËHPºÍSPµÄÎ»ÖÃ£¬Ï£ÍûÄÜ¸üÈÝÒ×¿´µ½
-	templates.lang.php
-	Ö÷ÒªÊÇÏ¸½ÚÊ½ÑùµÄÐÞ¸Ä
-/¸ùÄ¿Â¼
-  end.php //ËÀÍöÒ³ÃæÌí¼ÓÉÙÁ¿¾çÇé
-  command.php //ÐÂÔö·´Ò»Ë²Ç§»÷ÅÐ¶Ï£¬DN×Ö·ûÐÞÕý¡£Çë×¢ÒâÏÖÔÚÌá½»ÈÎºÎÃüÁî¶¼»áµ¼ÖÂ$bid=0¡£
+		sp_shop.htm 					//ä¿®æ”¹æ–‡å­—
 	
-
+/æ ¹ç›®å½•
+   valid.php 						//åˆå§‹ç»éªŒæ”¹åŠ¨

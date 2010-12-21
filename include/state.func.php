@@ -21,6 +21,7 @@ function death($death,$kname = '',$ktype = 0,$annex = '') {
 	elseif($death == 'hack') { $state = 14; }
 	elseif($death == 'pmove') { $state = 12; }
 	elseif($death == 'hsmove') { $state = 17; }
+	elseif($death == 'burnmove') { $state = 18; }
 	elseif($death == 'button') { $state = 30; }
 	elseif($death == 'suiside'){ $state = 31; }
 	else { $state = 10; }

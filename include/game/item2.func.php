@@ -98,7 +98,7 @@ function hack($itmn = 0) {
 	return;
 }
 
-function radar($m = 0){
+/*function radar($m = 0){
 	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$rinfo,$hack;
 	
 	if(!$mode) {
@@ -124,6 +124,52 @@ function radar($m = 0){
 	}
 
 	$log .= '白色数字：该区域内的人数<br><span class="red b">红色数字</span>：自己所在区域的人数<br><span class="red b">∵</span>：禁区<br><br>';
+	$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
+	$main = 'radar';
+	return;
+}*/
+
+function newradar($m = 0){
+	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack;
+	global $pnum,$npc1num,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num;
+	
+	if(!$mode) {
+		$log .= '仪器使用失败！<br>';
+		return;
+	}
+	for($i=0;$i<=count($plsinfo);$i++) {
+		if((array_search($i,$arealist) > $areanum) || $hack) {
+			if($i==$pls) {
+				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
+				$num0 = $db->num_rows($result);
+				for($j=1;$j<=6;$j++){
+					$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
+					${'num'.$j} = $db->num_rows($result);
+				}
+				$pnum[$i] ="<span class=\"red b\">$num0</span>";
+				for($j=1;$j<=6;$j++){
+					${'npc'.$j.'num'}[$i] = "<span class=\"red b\">${'num'.$j}</span>";;
+				}
+			} elseif($m == 2) {
+				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
+				$num0 = $db->num_rows($result);
+				for($j=1;$j<=6;$j++){
+					$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
+					${'num'.$j} = $db->num_rows($result);
+				}
+				$pnum[$i] ="$num0";
+				for($j=1;$j<=6;$j++){
+					${'npc'.$j.'num'}[$i] = "${'num'.$j}";;
+				}
+			} else {
+				$pnum[$i] = $npc1num[$i] =$npc2num[$i] =$npc3num[$i] =$npc4num[$i] =$npc5num[$i] =$npc6num[$i] ='？';
+			}
+		} else {
+			$pnum[$i] = $npc1num[$i] =$npc2num[$i] =$npc3num[$i] =$npc4num[$i] =$npc5num[$i] =$npc6num[$i] = '<span class="red b">×</span>';
+		}
+	}
+
+	$log .= '白色数字：该区域内的人数<br><span class="red b">红色数字</span>：自己所在区域的人数<br><span class="red b">×</span>：禁区<br><br>';
 	$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
 	$main = 'radar';
 	return;

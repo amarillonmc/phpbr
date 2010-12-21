@@ -57,6 +57,14 @@ function init_profile(){
 			$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
 			$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
 		}
+		if(strpos($inf,'u') !== false) {
+			$infdata .= "<span class=\"yellow b\">{$infinfo['u']}</span>";
+			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
+		}
+		if(strpos($inf,'i') !== false) {
+			$infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
+			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
+		}
 	} else {
 		$infdata = '';
 	}
@@ -101,14 +109,14 @@ function init_battle($ismeet = 0){
 		$w_ragestate = "<span class=\"red\">$rageinfo[3]</span>";
 		$w_isdead = true;
 	} else{
-		if($w_hp < $w_mhp*0.1) {
+		if($w_hp < $w_mhp*0.2) {
 		$w_hpstate = "<span class=\"red\">$hpinfo[2]</span>";
-		} elseif($w_hp < $w_mhp*0.4) {
+		} elseif($w_hp < $w_mhp*0.5) {
 		$w_hpstate = "<span class=\"yellow\">$hpinfo[1]</span>";
 		} else {
 		$w_hpstate = "<span class=\"clan\">$hpinfo[0]</span>";
 		}
-		if($w_sp < $w_msp*0.25) {
+		if($w_sp < $w_msp*0.2) {
 		$w_spstate = "$spinfo[2]";
 		} elseif($w_sp < $w_msp*0.5) {
 		$w_spstate = "$spinfo[1]";
@@ -156,6 +164,12 @@ function init_battle($ismeet = 0){
 			$infdata .= '</span>';
 			if(strpos($w_inf,'p') !== false) {
 				$w_infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+			}
+			if(strpos($w_inf,'u') !== false) {
+				$w_infdata .= "<span class=\"yellow b\">{$infinfo['u']}</span>";
+			}
+			if(strpos($w_inf,'i') !== false) {
+				$w_infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
 			}
 		} else {
 			$w_infdata = '';

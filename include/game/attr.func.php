@@ -97,7 +97,9 @@ function get_attack_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 	if($active){$attack += $_ATTACK['pose'][$pose];}
 	else{$attack += $_ATTACK['tactic'][$tactic];}
 	if(strpos($inf,'a') !== false){$attack -= 20;}
-
+	if(strpos($inf,'u') !== false){$attack -= 30;}
+	$attack = $attack > 0 ? $attack : 1;
+	
 	return $attack/100;
 }
 //防御力修正，百分比
@@ -116,7 +118,9 @@ function get_defend_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 	if($active){$defend += $_DEFEND['pose'][$pose];}
 	else{$defend += $_DEFEND['tactic'][$tactic];}
 	if(strpos($inf,'b') !== false){$defend -= 20;}
-
+	if(strpos($inf,'i') !== false){$attack -= 10;}
+	$defend = $defend > 0 ? $defend : 1;
+	
 	return $defend/100;
 }
 

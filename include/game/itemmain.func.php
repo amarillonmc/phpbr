@@ -56,7 +56,7 @@ function itemget() {
 	global $log,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
 	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
-	if(preg_match('/^(WC|WD|WF|Y|TN|GB)/',$itmk0)){
+	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB)/',$itmk0)){
 		for($i = 1;$i <= 5;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
@@ -239,7 +239,7 @@ function itemmerge($itn1,$itn2){
 	}
 
 	if(($it1 == $it2)&&($ite1 == $ite2)) {
-		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|Y|TN|GB)/',$itk1)) {
+		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|WF|Y|C|TN|GB)/',$itk1)) {
 			$its2 += $its1;
 			$it1 = '';
 			$itk1 = 'N';
@@ -387,7 +387,7 @@ function itembuy($item,$shop,$bnum=1) {
 	} elseif($money < $price*$bnum) {
 		$log .= '你的钱不够，不能购买此物品！<br>';
 		return;
-	} elseif(!preg_match('/^(WC|WD|Y|TN|GB|H)/',$ikind)&&$bnum>1) {
+	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H)/',$ikind)&&$bnum>1) {
 		$log .= '此物品一次只能购买一个。<br>';
 		return;
 	}

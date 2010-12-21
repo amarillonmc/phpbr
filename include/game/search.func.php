@@ -19,11 +19,12 @@ function move($moveto = 99) {
 		return;
 	}
 	
-	//足部受伤，20；足球社，12；正常，15；
+	//足部受伤，20；足球社，12；冻伤，30；正常，15；
+	$movesp = 15;
+	if(strpos($inf, 'f') !== false){ $movesp += 5; }
+	if(strpos($inf, 'i') !== false){ $movesp += 15; }
+	if($club == 6){ $movesp -= 3; }
 
-	if(strpos($inf, 'f') !== false){ $movesp = 20; }
-	elseif($club == 6){ $movesp = 12; }
-	else{ $movesp = 15; }
 	
 	if($sp <= $movesp){
 		$log .= "体力不足，不能移动！<br>还是先睡会儿吧！<br>";
@@ -45,20 +46,30 @@ function move($moveto = 99) {
 			return;
 		} else {
 			$pls = $moveto;
-			$log .= "移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
+			$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 		}
 	} else {
 		$pls = $moveto;
-		$log .= "移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
+		$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 	}
 
 	if(strpos($inf, 'p') !== false){
 		$damage = round($mhp/16) + rand(0,10);
 		$hp -= $damage;
-		$log .= "毒发减少了<span class=\"red\">$damage</span>点生命！<br>";
+		$log .= "<span class=\"purple\">毒发</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('pmove');
+			return;
+		}
+	}
+	if(strpos($inf, 'u') !== false){
+		$damage = round($mhp/16) + rand(0,15);
+		$hp -= $damage;
+		$log .= "<span class=\"yellow\">烧伤发作</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
+		if($hp <= 0 ){
+			include_once GAME_ROOT.'./include/state.func.php';
+			death('burnmove');
 			return;
 		}
 	}
@@ -80,11 +91,12 @@ function search(){
 		return;
 	}
 
-	//腕部受伤，20；侦探社，12；正常，15；
-
-	if(strpos($inf, 'a') !== false){ $schsp = 20; }
-	elseif($club == 10){ $schsp = 12; }
-	else{ $schsp = 15; }
+	//腕部受伤，20；冻伤：30；侦探社，12；正常，15；
+	$schsp =15;
+	if(strpos($inf, 'a') !== false){ $schsp += 5; }
+	if(strpos($inf, 'i') !== false){ $schsp += 15; }
+	if($club == 10){ $schsp -= 3; }
+	
 
 	if($sp <= $schsp){
 		$log .= "体力不足，不能探索！<br>还是先睡会儿吧！<br>";
@@ -103,14 +115,24 @@ function search(){
 	}
 	
 	$sp -= $schsp;
-	$log .= '你仔细搜索着周围的一切。。。<br>';
+	$log .= "消耗<span class=\"yellow\">{$schsp}</span>点体力，你搜索着周围的一切。。。<br>";
 	if(strpos($inf, 'p') !== false){
 		$damage = round($mhp/32) + rand(0,5);
 		$hp -= $damage;
-		$log .= "毒发减少了<span class=\"red\">$damage</span>点生命！<br>";
+		$log .= "<span class=\"purple\">毒发</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('pmove');
+			return;
+		}
+	}
+	if(strpos($inf, 'u') !== false){
+		$damage = round($mhp/32) + rand(0,15);
+		$hp -= $damage;
+		$log .= "<span class=\"yellow\">烧伤发作</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
+		if($hp <= 0 ){
+			include_once GAME_ROOT.'./include/state.func.php';
+			death('burnmove');
 			return;
 		}
 	}

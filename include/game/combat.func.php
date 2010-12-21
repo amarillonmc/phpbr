@@ -1,132 +1,131 @@
-﻿<?php
+<?php
 
-if(!defined('IN_GAME')) {
-	exit('Access Denied');
+if (! defined ( 'IN_GAME' )) {
+	exit ( 'Access Denied' );
 }
 
-function combat($w_pdata,$active = 1,$wep_kind = '') {
-	global $log,$mode,$main,$cmd,$battle_title,$db,$tablepre,$pls,$message,$now,$w_log,$nosta,$hdamage,$hplayer;
-	global $pid,$name,$club,$inf,$lvl,$exp,$killnum,$bid,$tactic,$pose,$hp;
-	global $wep,$wepk,$wepe,$weps,$wepsk;
-	global $w_pid,$w_name,$w_pass,$w_type,$w_endtime,$w_gd,$w_sNo,$w_icon,$w_club,$w_hp,$w_mhp,$w_sp,$w_msp,$w_att,$w_def,$w_pls,$w_lvl,$w_exp,$w_money,$w_bid,$w_inf,$w_rage,$w_pose,$w_tactic,$w_killnum,$w_state,$w_wp,$w_wk,$w_wg,$w_wc,$w_wd,$w_wf,$w_teamID,$w_teamPass;
-	global $w_wep,$w_wepk,$w_wepe,$w_weps,$w_arb,$w_arbk,$w_arbe,$w_arbs,$w_arh,$w_arhk,$w_arhe,$w_arhs,$w_ara,$w_arak,$w_arae,$w_aras,$w_arf,$w_arfk,$w_arfe,$w_arfs,$w_art,$w_artk,$w_arte,$w_arts,$w_itm0,$w_itmk0,$w_itme0,$w_itms0,$w_itm1,$w_itmk1,$w_itme1,$w_itms1,$w_itm2,$w_itmk2,$w_itme2,$w_itms2,$w_itm3,$w_itmk3,$w_itme3,$w_itms3,$w_itm4,$w_itmk4,$w_itme4,$w_itms4,$w_itm5,$w_itmk5,$w_itme5,$w_itms5,$w_wepsk,$w_arbsk,$w_arhsk,$w_arask,$w_arfsk,$w_artsk,$w_itmsk0,$w_itmsk1,$w_itmsk2,$w_itmsk3,$w_itmsk4,$w_itmsk5;
-	global $infinfo,$w_combat_inf;
+function combat($w_pdata, $active = 1, $wep_kind = '') {
+	global $log, $mode, $main, $cmd, $battle_title, $db, $tablepre, $pls, $message, $now, $w_log, $nosta, $hdamage, $hplayer;
+	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp;
+	global $wep, $wepk, $wepe, $weps, $wepsk;
+	global $w_pid, $w_name, $w_pass, $w_type, $w_endtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
+	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5;
+	global $infinfo, $w_combat_inf;
 	
-
 	$battle_title = '战斗发生';
 	
-	if(!$wep_kind) {
-		$w1 = substr($wepk,1,1);
-		$w2 = substr($wepk,2,1);
-		if(($w1 == 'G')&&($weps==$nosta)){
+	if (! $wep_kind) {
+		$w1 = substr ( $wepk, 1, 1 );
+		$w2 = substr ( $wepk, 2, 1 );
+		if (($w1 == 'G') && ($weps == $nosta)) {
 			$wep_kind = $w2 ? $w2 : 'P';
 		} else {
 			$wep_kind = $w1;
 		}
 	}
 	$wep_temp = $wep;
-
-	if($active) {
-		if($wep_kind == 'back'){
+	
+	if ($active) {
+		if ($wep_kind == 'back') {
 			$log .= "你逃跑了。";
 			$bid = 0;
 			$mode = 'command';
 			return;
 		}
-
-		$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$w_pdata'");
-		if(!$db->num_rows($result)){
+		
+		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pdata'" );
+		if (! $db->num_rows ( $result )) {
 			$log .= "对方不存在！<br>";
 			$bid = 0;
 			$mode = 'command';
 			return;
 		}
-
-		$edata = $db->fetch_array($result);
 		
-		if($edata['pid'] !== $bid){
+		$edata = $db->fetch_array ( $result );
+		
+		if ($edata ['pid'] !== $bid) {
 			$log .= "<span class=\"yellow\">一瞬千击！<br>你想千击？<br>玩儿蛋去！<br>来弄我噻！<br>来弄我噻！<br>来弄我噻！<br></span><br>";
 			$bid = 0;
 			$mode = 'command';
 			return;
 		}
 		
-		if($edata['pls'] != $pls) {
-			$log .= "<span class=\"yellow\">".$edata['name']."</span>已经离开了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
+		if ($edata ['pls'] != $pls) {
+			$log .= "<span class=\"yellow\">" . $edata ['name'] . "</span>已经离开了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 			$bid = 0;
 			$mode = 'command';
 			return;
-		} elseif($edata['hp'] <= 0) {
-			$log .= "<span class=\"red\">".$edata['name']."</span>已经死亡，不能被攻击。<br>";
-			include_once GAME_ROOT.'./include/game/battle.func.php';
-			findcorpse($edata);
+		} elseif ($edata ['hp'] <= 0) {
+			$log .= "<span class=\"red\">" . $edata ['name'] . "</span>已经死亡，不能被攻击。<br>";
+			include_once GAME_ROOT . './include/game/battle.func.php';
+			findcorpse ( $edata );
 			$bid = 0;
 			return;
 		}
-
-		if($message) {
-			$log .= "<span class=\"lime\">你对 ".$edata['name']." 大喊：$message</span><br>";
-			if(!$edata['type']){
+		
+		if ($message) {
+			$log .= "<span class=\"lime\">你对 " . $edata ['name'] . " 大喊：$message</span><br>";
+			if (! $edata ['type']) {
 				$w_log = "<span class=\"lime\">$name 对你大喊：$message</span>";
-				logsave($edata['pid'],$now,$w_log);
+				logsave ( $edata ['pid'], $now, $w_log );
 			}
 		}
-
-		extract($edata,EXTR_PREFIX_ALL,'w');
-		init_battle(1);
-		include_once GAME_ROOT.'./include/game/attr.func.php';
-
+		
+		extract ( $edata, EXTR_PREFIX_ALL, 'w' );
+		init_battle ( 1 );
+		include_once GAME_ROOT . './include/game/attr.func.php';
+		
 		$log .= "你向<span class=\"red\">$w_name</span>发起了攻击！<br>";
-		$att_dmg = attack($wep_kind,1);
+		$att_dmg = attack ( $wep_kind, 1 );
 		$w_hp -= $att_dmg;
-
-		if(($w_hp > 0)&&($w_tactic != 4)&&($w_pose != 5)) {
+		
+		if (($w_hp > 0) && ($w_tactic != 4) && ($w_pose != 5)) {
 			global $rangeinfo;
-			$w_w1 = substr($w_wepk,1,1);
-			$w_w2 = substr($w_wepk,2,1);
-			if(($w_w1 == 'G')&&($w_weps==$nosta)) {
+			$w_w1 = substr ( $w_wepk, 1, 1 );
+			$w_w2 = substr ( $w_wepk, 2, 1 );
+			if (($w_w1 == 'G') && ($w_weps == $nosta)) {
 				$w_wep_kind = $w_w2 ? $w_w2 : 'P';
 			} else {
 				$w_wep_kind = $w_w1;
 			}
-
-			if(($rangeinfo[$wep_kind] == $rangeinfo[$w_wep_kind]) || ($rangeinfo[$w_wep_kind] == 'M')){
-				$counter = get_counter($w_wep_kind,$w_tactic,$w_club,$w_inf);
-				$counter_dice = rand(0,99);
-				if($counter_dice < $counter) {
+			
+			if (($rangeinfo [$wep_kind] == $rangeinfo [$w_wep_kind]) || ($rangeinfo [$w_wep_kind] == 'M')) {
+				$counter = get_counter ( $w_wep_kind, $w_tactic, $w_club, $w_inf );
+				$counter_dice = rand ( 0, 99 );
+				if ($counter_dice < $counter) {
 					$log .= "<span class=\"red\">{$w_name}的反击！</span><br>";
-					$def_dmg = defend($w_wep_kind);
+					$def_dmg = defend ( $w_wep_kind );
 				} else {
 					$log .= "<span class=\"red\">{$w_name}逃跑了！</span><br>";
 				}
 			} else {
 				$log .= "<span class=\"red\">{$w_name}不能反击，逃跑了！</span><br>";
 			}
-
+		
 		}
 	} else {
-		extract($w_pdata,EXTR_PREFIX_ALL,'w');
-		init_battle(1);
-		include_once GAME_ROOT.'./include/game/attr.func.php';
-
+		extract ( $w_pdata, EXTR_PREFIX_ALL, 'w' );
+		init_battle ( 1 );
+		include_once GAME_ROOT . './include/game/attr.func.php';
+		
 		$log .= "<span class=\"red\">$w_name</span>突然向你袭来！<br>";
-		$w_w1 = substr($w_wepk,1,1);
-		$w_w2 = substr($w_wepk,2,1);
-		if(($w_w1 == 'G')&&($w_weps==$nosta)) {
+		$w_w1 = substr ( $w_wepk, 1, 1 );
+		$w_w2 = substr ( $w_wepk, 2, 1 );
+		if (($w_w1 == 'G') && ($w_weps == $nosta)) {
 			$w_wep_kind = $w_w2 ? $w_w2 : 'P';
 		} else {
 			$w_wep_kind = $w_w1;
 		}
-		$def_dmg = defend($w_wep_kind,1);
-		if(($hp > 0)&&($tactic != 4)&&($pose != 5)) {
+		$def_dmg = defend ( $w_wep_kind, 1 );
+		if (($hp > 0) && ($tactic != 4) && ($pose != 5)) {
 			global $rangeinfo;
-			if(($rangeinfo[$wep_kind] == $rangeinfo[$w_wep_kind]) || ($rangeinfo[$wep_kind] == 'M')){
-				$counter = get_counter($wep_kind,$tactic,$club,$inf);
-				$counter_dice = rand(0,99);
-				if($counter_dice < $counter) {
+			if (($rangeinfo [$wep_kind] == $rangeinfo [$w_wep_kind]) || ($rangeinfo [$wep_kind] == 'M')) {
+				$counter = get_counter ( $wep_kind, $tactic, $club, $inf );
+				$counter_dice = rand ( 0, 99 );
+				if ($counter_dice < $counter) {
 					$log .= "<span class=\"red\">你的反击！</span><br>";
-					$wep_kind = substr($wepk,1,1);
-					$att_dmg = attack($wep_kind);
+					$wep_kind = substr ( $wepk, 1, 1 );
+					$att_dmg = attack ( $wep_kind );
 					$w_hp -= $att_dmg;
 				} else {
 					$log .= "<span class=\"red\">你逃跑了！</span><br>";
@@ -136,61 +135,70 @@ function combat($w_pdata,$active = 1,$wep_kind = '') {
 			}
 		}
 	}
-	w_save($w_pid);
+	w_save ( $w_pid );
 	$att_dmg = $att_dmg ? $att_dmg : 0;
 	$def_dmg = $def_dmg ? $def_dmg : 0;
-	$w_inf_log = "";
-	if(strpos($w_combat_inf,'p') !== false){
-		$w_inf_log .= "敌人的攻击造成你<span class=\"purple\">中毒</span>了！<br>";
-	}
-	if(strpos($w_combat_inf,'h') !== false){
-		$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[h]</span>部受伤了！<br>";
-	}
-	if(strpos($w_combat_inf,'b') !== false){
-		$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[b]</span>部受伤了！<br>";
-	}
-	if(strpos($w_combat_inf,'a') !== false){
-		$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[a]</span>部受伤了！<br>";
-	}
-	if(strpos($w_combat_inf,'f') !== false){
-		$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[f]</span>部受伤了！<br>";
-	}
-	if(!$w_type) {
+	
+	if (! $w_type) {
+		$w_inf_log = '';
+		if ($w_combat_inf) {
+			global $exdmginf;
+			if (strpos ( $w_combat_inf, 'p' ) !== false) {
+				$w_inf_log .= "敌人的攻击造成你{$exdmginf['p']}了！<br>";
+			}
+			if (strpos ( $w_combat_inf, 'u' ) !== false) {
+				$w_inf_log .= "敌人的攻击造成你{$exdmginf['u']}了！<br>";
+			}
+			if (strpos ( $w_combat_inf, 'i' ) !== false) {
+				$w_inf_log .= "敌人的攻击造成你{$exdmginf['i']}了！<br>";
+			}
+			if (strpos ( $w_combat_inf, 'h' ) !== false) {
+				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[h]</span>部受伤了！<br>";
+			}
+			if (strpos ( $w_combat_inf, 'b' ) !== false) {
+				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[b]</span>部受伤了！<br>";
+			}
+			if (strpos ( $w_combat_inf, 'a' ) !== false) {
+				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[a]</span>部受伤了！<br>";
+			}
+			if (strpos ( $w_combat_inf, 'f' ) !== false) {
+				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[f]</span>部受伤了！<br>";
+			}
+		}
 		$w_log = "与手持<span class=\"red\">$wep_temp</span>的<span class=\"yellow\">$name</span>发生战斗！<br>你受到其<span class=\"yellow\">$att_dmg</span>点攻击，对其造成<span class=\"yellow\">$def_dmg</span>点反击。<br>$w_inf_log";
-		logsave($w_pid,$now,$w_log);
+		logsave ( $w_pid, $now, $w_log );
 	}
 	
-	if(($att_dmg > $hdamage)&&($att_dmg>=$def_dmg)) {
+	if (($att_dmg > $hdamage) && ($att_dmg >= $def_dmg)) {
 		$hdamage = $att_dmg;
 		$hplayer = $name;
-		save_combatinfo();
-	} elseif (($def_dmg > $hdamage)&&(!$w_type)) {
+		save_combatinfo ();
+	} elseif (($def_dmg > $hdamage) && (! $w_type)) {
 		$hdamage = $def_dmg;
 		$hplayer = $w_name;
-		save_combatinfo();
+		save_combatinfo ();
 	}
-
+	
 	//$bid = $w_pid;
+	
 
-	if($w_hp <= 0) {
+	if ($w_hp <= 0) {
 		$w_bid = $pid;
 		$w_hp = 0;
-		$killnum++;
-		include_once GAME_ROOT.'./include/state.func.php';
-		$killmsg = kill($wep_kind,$w_name,$w_type,$w_pid,$wep_temp);
+		$killnum ++;
+		include_once GAME_ROOT . './include/state.func.php';
+		$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
 		$log .= "<span class=\"red\">{$w_name}被你杀死了！</span><br>";
 		$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";
-		include_once GAME_ROOT.'./include/game/battle.func.php';
-		$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$w_pid'");
-		$cdata = $db->fetch_array($result);
-		findcorpse($cdata);
-		//$itmsk0 = '';
+		include_once GAME_ROOT . './include/game/battle.func.php';
+		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pid'" );
+		$cdata = $db->fetch_array ( $result );
+		findcorpse ( $cdata );
 		$bid = 0;
 		return;
 	} else {
 		$main = 'battle';
-		//$itmsk0 = '';
-		init_battle(1);
+		init_battle ( 1 );
 		$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
 		$bid = $hp == 0 ? $bid : 0;
 		return;
@@ -198,332 +206,189 @@ function combat($w_pdata,$active = 1,$wep_kind = '') {
 
 }
 
-
-function attack($wep_kind = 'N',$active = 0){
-	global $now,$nosta,$log,$infatt,$infobbs,$infinfo,$attinfo,$skillinfo,${$skillinfo[$wep_kind]},$log,$skill_dmg,$weather,$pls,$pid,$name,$pose,$tactic,$club,$att,$inf,$message,$w_hp,$exp,$w_rage,$lvl,$w_lvl,$killnum,$rage,$hp,$gd,$w_pid,$w_gd,$w_name,$w_pose,$w_tactic,$w_club,$w_inf,$w_def;
-	global $wep,$wepk,$wepe,$weps,$artk,$wepsk,$w_arbe,$w_arbsk,$w_arhe,$w_arae,$w_arfe;
-	global $arhsk,$arbsk,$arask,$arfsk,$artsk,$wepimprate,$w_combat_inf;
-	global $w_wepsk,$w_arhsk,$w_arask,$w_arfsk,$w_artsk,$w_artk,$dmg_fluc,$sp;
-		
-	if((strpos($wepk,'G') == 1)&&($weps == $nosta)) { 
-		if(($wep_kind == 'G')||($wep_kind == 'P')){ $wep_kind = 'P';$watt = round($wepe/5);}
-		else { $watt = $wepe; }
+function attack($wep_kind = 'N', $active = 0) {
+	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo, ${$skillinfo [$wep_kind]}, $wepimprate;
+	global $name, $lvl, $gd, $pid, $pls, $hp, $sp, $rage, $exp, $club, $att, $inf, $message;
+	global $wep, $wepk, $wepe, $weps, $wepsk;
+	global $w_arbe, $w_arbsk, $w_arhe, $w_arae, $w_arfe;
+	global $artk, $arhsk, $arbsk, $arask, $arfsk, $artsk;
+	global $w_hp, $w_rage, $w_lvl, $w_pid, $w_gd, $w_name, $w_inf, $w_def;
+	global $w_wepsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_artk;
+	
+	if ((strpos ( $wepk, 'G' ) == 1) && ($weps == $nosta)) {
+		if (($wep_kind == 'G') || ($wep_kind == 'P')) {
+			$wep_kind = 'P';
+			$is_wpg = true;
+			$watt = round ( $wepe / 5 );
+		} else {
+			$watt = $wepe;
+		}
+	} elseif ($wep_kind == 'N') {
+		$watt = round(${$skillinfo [$wep_kind]}/4);
+	} else {
+		$watt = $wepe * 2;
 	}
-	elseif($wep_kind == 'N'){ $watt = 0; }
-	else{ $watt = $wepe*2; }
+	
 	$log .= "使用{$wep}<span class=\"yellow\">$attinfo[$wep_kind]</span>{$w_name}！<br>";
 	
-	$att_key = getatkkey($wepsk,$arhsk,$arbsk,$arask,$arfsk,$artsk,$artk);
-	
-	$wep_skill = & ${$skillinfo[$wep_kind]};
-	$hitrate = get_hitrate($wep_kind,$wep_skill,$club,$inf);
-	$hr_dice = rand(0,99);
-	$hit_time = get_hit_time($att_key,$wep_skill,$hitrate,$wepk,$wep_kind,$weps,$infobbs[$wep_kind],$wepimprate[$wep_kind]);
-	if($hit_time[1] > 0) {
-		if((((strpos($att_key,"l")!== false)&&($gd != $w_gd))||((strpos($att_key,"g")!== false)&&($gd == $w_gd)))&&(!rand(0,4))) {
-			$log .= "<span class=\"red\">你被{$w_name}迷惑，无法全力攻击！</span>";
+	$att_key = getatkkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk,$is_wpg );
+	//echo $is_wpg.' '.$att_key;
+	$w_def_key = getdefkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk );
+	$wep_skill = & ${$skillinfo [$wep_kind]};
+	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $club, $inf );
+	//$hr_dice = rand(0,99);
+	$hit_time = get_hit_time ( $att_key, $wep_skill, $hitrate, $wep_kind, $weps, $infobbs [$wep_kind], $wepimprate [$wep_kind],$is_wpg);
+	if ($hit_time [1] > 0) {
+		$gender_dmg_p = check_gender ( '你', $w_name, $gd, $w_gd, $att_key );
+		if ($gender_dmg_p == 0) {
 			$damage = 1;
 		} else {
-			global $att;
+			$w_active = 1 - $active;
 			$attack = $att + $watt;
-			$attack_p = get_attack_p($weather,$pls,$pose,$tactic,$club,$inf,$active);
-			$att_pow = $attack * $attack_p;
-
 			$defend = $w_def + $w_arbe + $w_arhe + $w_arae + $w_arfe;
-			$w_active = 1-$active;
-			$defend_p = get_defend_p($weather,$pls,$w_pose,$w_tactic,$w_club,$w_inf,$w_active);
-			$def_pow = $defend * $defend_p;
-			$damage = ($att_pow/$def_pow) * $wep_skill * $skill_dmg[$wep_kind];
-			$dmg_factor = (100+rand(-$dmg_fluc[$wep_kind],$dmg_fluc[$wep_kind]))/100;
-			//$log .= "$dmg_factor<br>";
-			$damage = round($damage*$dmg_factor*rand(4,10)/10);
-			//$damage = rand(round($damage*0.3),round($damage));
-			$w_def_key = getdefkey($w_wepsk,$w_arhsk,$w_arbsk,$w_arask,$w_arfsk,$w_artsk,$w_artk);
-			checkarb($damage,$wep_kind,$w_def_key);
-			if($wep_kind == 'D'){$damage += $wepe;}
-			elseif($wep_kind == 'F'){
-				$damage = round(($wepe + $damage)*get_spell_factor(0,$club,$att_key,$sp,$wepe));
+			
+			$damage = get_original_dmg ( '', 'w_', $attack, $defend, $att_key, $w_def_key, $wep_skill, $wep_kind );
+			
+			checkarb ( $damage, $wep_kind, $w_def_key );
+			if ($wep_kind == 'D') {
+				$damage += $wepe;
+			} elseif ($wep_kind == 'F') {
+				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe ) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
 			}
-			$damage_p = get_damage_p($rage,$wep_skill,$lvl,$club,$message,$att_key,0);
+			$damage_p = get_damage_p ( $rage, $wep_skill, $lvl, $club, $message, $att_key, 0 );
 			$damage *= $damage_p;
 			
-			$damage = $damage>1 ? round($damage) : 1;
-			if((((strpos($att_key,"l")!== false)&&($gd == $w_gd))||((strpos($att_key,"g")!== false)&&($gd != $w_gd)))&&(!rand(0,4))) {
-				$log .= "<span class=\"red\">你被{$w_name}激怒，伤害加倍！</span>";
-				$damage *= 2;
-			}
+			$damage = $damage > 1 ? round ( $damage ) : 1;
+			$damage *= $gender_dmg_p;
 		}
-		if($hit_time[1]>1) {
+		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
-			if($hit_time[1] ==2){$dmg_p = 1.8;}
-			elseif($hit_time[1] ==3){$dmg_p = 2.5;}
-			else{$dmg_p = 2.5 + 0.5*($hit_time[1]-3);}
-			$damage = round($damage * $dmg_p);
+			if ($hit_time [1] == 2) {
+				$dmg_p = 1.8;
+			} elseif ($hit_time [1] == 3) {
+				$dmg_p = 2.5;
+			} else {
+				$dmg_p = 2.5 + 0.5 * ($hit_time [1] - 3);
+			}
+			$damage = round ( $damage * $dmg_p );
 			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
 		} else {
 			$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
 		}
 		
-		$damage += extradmg($w_name,0,$club,$w_inf,$att_key,$wepe,$wep_skill,$w_def_key);
-
-		checkdmg($name,$w_name,$damage);
+		$damage += get_ex_dmg ( $w_name, 0, $club, $w_inf, $att_key, $wepe, $wep_skill, $w_def_key);
 		
-		if($damage>=1000) {
-			$hp = ceil($hp/2);
-			$log .= "惨无人道的攻击对你自己造成了<span class=\"red\">反噬伤害！</span><br>";
-		}
+		checkdmg ( $name, $w_name, $damage );
 		
-		$inf_dice = rand(0,99);
-		if($hit_time[2]>0){
-			$infatt_dice = rand(0,4);
-			if(($infatt_dice == 1)&&(strpos($infatt[$wep_kind],'b') !== false)){ $inf_att = 'b';}
-			elseif(($infatt_dice == 2)&&(strpos($infatt[$wep_kind],'h') !== false)){ $inf_att = 'h';}
-			elseif(($infatt_dice == 3)&&(strpos($infatt[$wep_kind],'a') !== false)){ $inf_att = 'a';}
-			elseif(($infatt_dice == 4)&&(strpos($infatt[$wep_kind],'f') !== false)){ $inf_att = 'f';}
-			if($inf_att) {
-				global ${'w_ar'.$inf_att},${'w_ar'.$inf_att.'k'},${'w_ar'.$inf_att.'e'},${'w_ar'.$inf_att.'s'},${'w_ar'.$inf_att.'sk'};
-				if(${'w_ar'.$inf_att.'s'}){
-					${'w_ar'.$inf_att.'s'} -= $hit_time[2];
-					$log .= "{$w_name}的{${'w_ar'.$inf_att}}的耐久度下降了{$hit_time[2]}！<br>";
-					if(${'w_ar'.$inf_att.'s'} <= 0){
-						$log .= "{$w_name}的<span class=\"red\">${'w_ar'.$inf_att}</span>受损过重，无法再装备了！<br>";
-						${'w_ar'.$inf_att} = ${'w_ar'.$inf_att.'k'} = ${'w_ar'.$inf_att.'sk'} = '';
-						${'w_ar'.$inf_att.'e'} = ${'w_ar'.$inf_att.'s'} = 0;
-					}
-				} else {
-					if(strpos($w_inf,$inf_att) === false){
-						$w_inf .= $inf_att;
-						$w_combat_inf .= $inf_att;
-						$log .= "{$w_name}的<span class=\"red\">$infinfo[$inf_att]</span>部受伤了！<br>";
-					}
-				}
-			}
-		}
-		//if(($weps == $nosta)&&(($wep_kind == 'K')||($wep_kind == 'P'))&&(rand(0,4) == 0)) {
-		if($hit_time[3] > 0 && $weps == $nosta) {
-			$wepe_m = $hit_time[3] * 1;
-			$wepe -= $wepe_m;
-			$log .= "你的{$wep}的攻击力下降了{$wepe_m}！<br>";
-			if($wepe <= 0){
-				$log .= "你的<span class=\"red\">$wep</span>使用过度，已经损坏，无法再装备了！<br>";
-				
-				$wep = '拳头';
-				$wepsk = '';
-				$wepk = 'WN';
-				$wepe = 0;
-				$weps = $nosta;
-			}
-		} elseif($hit_time[3] > 0 && $weps != $nosta) {
-			$weps -= $hit_time[3];
-			$log .= "你的{$wep}的耐久度下降了{$hit_time[3]}！<br>";
-			if($weps <= 0){
-				$log .= "你的<span class=\"red\">$wep</span>使用过度，已经损坏，无法再装备了！<br>";
-				$wep = '拳头';
-				$wepsk = '';
-				$wepk = 'WN';
-				$wepe = 0;
-				$weps = $nosta;
-			}
-		}
-
-		$expup = round(($w_lvl - $lvl)/3);
-		$exp += $expup>0 ? $expup : 1;
-
-		global $upexp;
-		if($exp >= $upexp){ 
-			include_once GAME_ROOT.'./include/state.func.php';
-			lvlup($lvl,$exp,1);
-		}
-
-		$rageup = round(($lvl - $w_lvl)/3);
-		$w_rage += $rageup>0 ? $rageup : 1;
-
+		get_dmg_punish ( '你', $damage, $hp ,$att_key);
+		
+		get_inf ( $w_name, $hit_time [2], $wep_kind, 'w_' );
+		
+		check_KP_wep ( '你', $hit_time [3], $wep, $wepk, $wepe, $weps, $wepsk );
+		
+		exprgup ( $lvl, $w_lvl, $exp, 1, $w_rage );
+	
 	} else {
 		$damage = 0;
 		$log .= "但是没有击中！<br>";
 	}
+	check_GCDF_wep ( '你', $hit_time [0], $wep, $wep_kind, $wepk, $wepe, $weps, $wepsk );
 	
-	if((($wep_kind == 'C')||($wep_kind == 'D')||($wep_kind == 'F'))&&($weps != $nosta)){
-		$weps -= $hit_time[0];
-		$log .= "你用掉了{$hit_time[0]}个{$wep}。<br>";
-		if($weps <= 0){
-			$log .= "你的<span class=\"red\">$wep</span>用光了！<br>";
-			$wep = '拳头';
-			$wepsk = '';
-			$wepk = 'WN';
-			$wepe = 0;
-			$weps = $nosta;
-		}
-	} elseif(($wep_kind == 'G')&&($weps != $nosta)) {
-		$weps -= $hit_time[0];
-		$log .= "你的{$wep}的子弹数减少了{$hit_time[0]}。<br>";
-		if($weps <= 0){
-			$log .= "你的<span class=\"red\">$wep</span>的子弹用光了！<br>";
-			$weps = $nosta;
-		}
-	}
-	if((($wep_kind == 'G')&&(strpos($wepsk,'S') === false))||($wep_kind == 'D')||($wep_kind == 'F')) {
-		global $noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
-		$noisetime = $now;
-		$noisepls = $pls;
-		$noiseid = $pid;
-		$noiseid2 = $w_pid;
-		$noisemode = $wep_kind;
-		save_combatinfo();
-	}
+	addnoise ( $wep_kind, $wepsk, $now, $pls, $pid, $w_pid, $wep_kind );
 	
 	$wep_skill ++;
 	return $damage;
 }
 
-
-function defend($w_wep_kind = 'N',$active = 0){
-	global $nosta,$log,$infatt,$infobbs,$infinfo,$attinfo,$skillinfo,${'w_'.$skillinfo[$w_wep_kind]},$log,$skill_dmg,$weather,$pls,$now,$pid,$name;
-	global $w_pid,$w_att,$gd,$w_gd,$w_pose,$w_tactic,$w_club,$w_inf,$w_wep,$w_wepk,$w_wepsk,$w_wepe,$w_weps,$w_artk,$name,$w_name,$pose,$tactic,$club,$inf,$def,$arbe,$arhe,$arae,$arfe,$arbsk,$hp,$w_exp,$rage,$lvl,$w_lvl,$w_type,$w_sNo,$w_killnum,$w_rage,$w_hp;
-	global $w_arhsk,$w_arbsk,$w_arask,$w_arfsk,$w_artsk,$wepimprate;
-	global $wepsk,$arhsk,$arask,$arfsk,$artsk,$artk,$dmg_fluc,$w_sp;
+function defend($w_wep_kind = 'N', $active = 0) {
+	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo, ${'w_' . $skillinfo [$w_wep_kind]}, $wepimprate;
+	global $w_name, $w_lvl, $w_gd, $w_pid, $pls, $w_hp, $w_sp, $w_rage, $w_exp, $w_club, $w_att, $w_inf;
+	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk;
+	global $arbe, $arbsk, $arhe, $arae, $arfe;
+	global $w_artk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk;
+	global $hp, $rage, $lvl, $pid, $gd, $name, $inf, $att, $def;
+	global $wepsk, $arhsk, $arask, $arfsk, $artsk, $artk;
+	global $w_type, $w_sNo, $w_killnum;
 	
 	$w_wep_temp = $w_wep;
 	
-	if((strpos($w_wepk,'G') == 1)&&($w_wep_kind == 'P')) { $watt = round($w_wepe/5); }
-	elseif($w_wep_kind == 'N') { $watt = 0; }
-	else{ $watt = $w_wepe*2; }
-
+	if ((strpos ( $w_wepk, 'G' ) == 1) && ($w_wep_kind == 'P')) {
+		$watt = round ( $w_wepe / 5 );
+		$is_wpg = true;
+	} elseif ($w_wep_kind == 'N') {
+		$watt = round(${'w_' . $skillinfo [$w_wep_kind]}/4);
+	} else {
+		$watt = $w_wepe * 2;
+	}
+	
 	$log .= "{$w_name}使用{$w_wep}<span class=\"yellow\">$attinfo[$w_wep_kind]</span>你！<br>";
-
-	$w_att_key = getatkkey($w_wepsk,$w_arhsk,$w_arbsk,$w_arask,$w_arfsk,$w_artsk,$w_artk);
-
-	$w_wep_skill = & ${'w_'.$skillinfo[$w_wep_kind]};
-	$hitrate = get_hitrate($w_wep_kind,$w_wep_skill,$w_club,$w_inf);
-
-	$hr_dice = rand(0,99);
-	$hit_time = get_hit_time($w_att_key,$w_wep_skill,$hitrate,$w_wepk,$w_wep_kind,$w_weps,$infobbs[$w_wep_kind],$wepimprate[$w_wep_kind]);
-
-	if($hit_time[1] > 0) {
-		if((((strpos($w_att_key,"l")!== false)&&($gd != $w_gd))||((strpos($w_att_key,"g")!== false)&&($gd == $w_gd)))&&(!rand(0,4))) {
-			$log .= "<span class=\"red\">{$w_name}被你迷惑，无法全力攻击！</span>";
+	
+	$w_att_key = getatkkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk,$is_wpg );
+	$def_key = getdefkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk );
+	$w_wep_skill = & ${'w_' . $skillinfo [$w_wep_kind]};
+	$hitrate = get_hitrate ( $w_wep_kind, $w_wep_skill, $w_club, $w_inf );
+	
+	$hit_time = get_hit_time ( $w_att_key, $w_wep_skill, $hitrate,$w_wep_kind, $w_weps, $infobbs [$w_wep_kind], $wepimprate [$w_wep_kind] ,$is_wpg);
+	
+	if ($hit_time [1] > 0) {
+		$gender_dmg_p = check_gender ( $w_name, '你', $w_gd, $gd, $w_att_key );
+		if ($gender_dmg_p == 0) {
 			$damage = 1;
 		} else {
 			global $w_att;
+			$w_active = 1 - $active;
 			$attack = $w_att + $watt;
-			$attack_p = get_attack_p($weather,$pls,$w_pose,$w_tactic,$w_club,$w_inf,$active);
-			$att_pow = $attack * $attack_p;
-
 			$defend = $def + $arbe + $arhe + $arae + $arfe;
-			$w_active = 1-$active;
-			$defend_p = get_defend_p($weather,$pls,$pose,$tactic,$club,$inf,$w_active);
-			$def_pow = $defend * $defend_p;
-
-			$damage = ($att_pow/$def_pow) * $w_wep_skill * $skill_dmg[$w_wep_kind];
-			$dmg_factor = (100+rand(-$dmg_fluc[$w_wep_kind],$dmg_fluc[$w_wep_kind]))/100;
-			$damage = round($damage*$dmg_factor*rand(4,10)/10);
-			//$damage = rand(round($damage*0.3),round($damage));
-			$def_key = getdefkey($wepsk,$arhsk,$arbsk,$arask,$arfsk,$artsk,$artk);
-			checkarb($damage,$w_wep_kind,$def_key);
-			if($w_wep_kind == 'D'){$damage += $w_wepe;}
-			elseif($w_wep_kind == 'F'){
-				$damage = round(($w_wepe + $damage)*get_spell_factor(1,$w_club,$w_att_key,$w_sp,$w_wepe));
+			
+			$damage = get_original_dmg ( 'w_', '', $attack, $defend, $w_att_key, $def_key, $w_wep_skill, $w_wep_kind );
+			
+			checkarb ( $damage, $w_wep_kind, $def_key );
+			if ($w_wep_kind == 'D') {
+				$damage += $w_wepe;
+			} elseif ($w_wep_kind == 'F') {
+				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe ) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
 			}
-			$damage_p = get_damage_p($w_rage,$w_wep_skill,$w_lvl,$w_club,'',$w_att_key,1);
+			$damage_p = get_damage_p ( $w_rage, $w_wep_skill, $w_lvl, $w_club, '', $w_att_key, 1 );
 			$damage *= $damage_p;
 			
-			$damage = $damage>1 ? round($damage) : 1;
-			if((((strpos($w_att_key,"l")!== false)&&($gd == $w_gd))||((strpos($w_att_key,"g")!== false)&&($gd != $w_gd)))&&(!rand(0,4))) {
-				$log .= "<span class=\"red\">{$w_name}被你激怒，伤害加倍！</span>";
-				$damage *= 2;
-			}
+			$damage = $damage > 1 ? round ( $damage ) : 1;
+			$damage *= $gender_dmg_p;
 		}
 		
-		if($hit_time[1]>1) {
+		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
-			if($hit_time[1] ==2){$dmg_p = 1.8;}
-			elseif($hit_time[1] ==3){$dmg_p = 2.5;}
-			else{$dmg_p = 2.5 + 0.5*($hit_time[1]-3);}
-			$damage = round($damage * $dmg_p);
+			if ($hit_time [1] == 2) {
+				$dmg_p = 1.8;
+			} elseif ($hit_time [1] == 3) {
+				$dmg_p = 2.5;
+			} else {
+				$dmg_p = 2.5 + 0.5 * ($hit_time [1] - 3);
+			}
+			$damage = round ( $damage * $dmg_p );
 			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
 		} else {
 			$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
 		}
-
-		$damage += extradmg("你",1,$w_club,$inf,$w_att_key,$wepe,$w_wep_skill,$def_key);
 		
-		checkdmg($w_name,$name,$damage);
+		$damage += get_ex_dmg ( "你", 1, $w_club, $inf, $w_att_key, $w_wepe, $w_wep_skill, $def_key);
 		
-		if($damage>=1000) {
-			$w_hp = ceil($w_hp/2);
-			$log .= "惨无人道的攻击对{$w_name}自身造成了<span class=\"red\">反噬伤害！</span><br>";
-		}
+		checkdmg ( $w_name, $name, $damage );
 		
-		$inf_dice = rand(0,99);
-		if($hit_time[2]>0) {
-			$infatt_dice = rand(1,4);
-			$inf_att = '';
-			if(($infatt_dice == 1)&&(strpos($infatt[$w_wep_kind],'b') !== false)){ $inf_att = 'b';}
-			elseif(($infatt_dice == 2)&&(strpos($infatt[$w_wep_kind],'h') !== false)){ $inf_att = 'h';}
-			elseif(($infatt_dice == 3)&&(strpos($infatt[$w_wep_kind],'a') !== false)){ $inf_att = 'a';}
-			elseif(($infatt_dice == 4)&&(strpos($infatt[$w_wep_kind],'f') !== false)){ $inf_att = 'f';}
-			if($inf_att) {
-				global ${'ar'.$inf_att},${'ar'.$inf_att.'k'},${'ar'.$inf_att.'e'},${'ar'.$inf_att.'s'},${'ar'.$inf_att.'sk'};
-				if(${'ar'.$inf_att.'s'}) {
-					${'ar'.$inf_att.'s'} -= $hit_time[2];
-					$log .= "你的{${'ar'.$inf_att}}的耐久度下降了{$hit_time[2]}！<br>";
-					if(${'ar'.$inf_att.'s'} <= 0){
-						$log .= "你的<span class=\"red\">${'ar'.$inf_att}</span>受损过重，无法再装备了！<br>";
-						${'ar'.$inf_att} = ${'ar'.$inf_att.'k'} = ${'ar'.$inf_att.'sk'} = '';
-						${'ar'.$inf_att.'e'} = ${'ar'.$inf_att.'s'} = 0;
-					}
-				} else {
-					if(strpos($inf,$inf_att) === false){
-						$inf .= $inf_att;
-						$log .= "你的<span class=\"red\">$infinfo[$inf_att]</span>部受伤了！<br>";
-					}
-				}
-			}
-		}
-		if($hit_time[3] > 0 && $w_weps == $nosta) {
-			$w_wepe_m = $hit_time[3] * 1;
-			$w_wepe -= $w_wepe_m;
-			$log .= "{$w_name}的{$w_wep}的攻击力下降了{$w_wepe_m}！<br>";
-			if($w_wepe <= 0) {
-				$log .= "{$w_name}的<span class=\"red\">$w_wep</span>使用过度，已经损坏，无法再装备了！<br>";
-				$w_wep = '拳头';
-				$w_wepsk = '';
-				$w_wepk = 'WN';
-				$w_wepe = 0;
-				$w_weps = $nosta;
-			}
-		} elseif($hit_time[3] > 0 && $weps != $nosta) {
-			$w_weps -= $hit_time[3];
-			$log .= "{$w_name}的{$w_wep}的耐久度下降了{$hit_time[3]}！<br>";
-			if($w_weps <= 0){
-				$log .= "{$w_name}的<span class=\"red\">$w_wep</span>使用过度，已经损坏，无法再装备了！<br>";
-				$w_wepe = $w_weps = 0;
-				$w_wep = '拳头';
-				$w_wepsk = '';
-				$w_wepk = 'WN';
-				$w_wepe = 0;
-				$w_weps = $nosta;
-			}
-		}
-
-		$expup = round(($lvl - $w_lvl)/3);
-		$w_exp += $expup>0 ? $expup : 1;
-		global $w_upexp;
-		if($w_exp >= $w_upexp){ 
-			include_once GAME_ROOT.'./include/state.func.php';
-			lvlup($w_lvl,$w_exp,0); 
-		}
-
-
-		$rageup = round(($w_lvl - $lvl)/3);
-		$rage += $rageup>0 ? $rageup : 1;
-
+		get_dmg_punish ( $w_name, $damage, $w_hp,$w_att_key );
+		
+		get_inf ( '你', $hit_time [2], $w_wep_kind, '' );
+		
+		check_KP_wep ( $w_name, $hit_time [3], $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk );
+		
+		exprgup ( $w_lvl, $lvl, $w_exp, 0, $rage );
+		
 		$hp -= $damage;
-		if($hp <= 0) {
+		
+		if ($hp <= 0) {
 			$hp = 0;
-			$w_killnum++;
-			include_once GAME_ROOT.'./include/state.func.php';
-			$killmsg = death($w_wep_kind,$w_name,$w_type,$w_wep_temp);
+			$w_killnum ++;
+			include_once GAME_ROOT . './include/state.func.php';
+			$killmsg = death ( $w_wep_kind, $w_name, $w_type, $w_wep_temp );
 			$log .= "<span class=\"yellow\">{$w_name}对你说：“{$killmsg}”</span><br>";
 		}
 	} else {
@@ -531,72 +396,61 @@ function defend($w_wep_kind = 'N',$active = 0){
 		$log .= "但是没有击中！<br>";
 	}
 	
-	if((($w_wep_kind == 'C')||($w_wep_kind == 'D')||($w_wep_kind == 'F'))&&($w_weps != $nosta)){
-		$w_weps -= $hit_time[0];
-		$log .= "{$w_name}用掉了{$hit_time[0]}个{$w_wep}。<br>";
-		if($w_weps <= 0){
-			$log .= "{$w_name}的<span class=\"red\">$w_wep</span>用光了！<br>";
-			$w_wepe = $w_weps = 0;
-			$w_wep = '拳头';
-			$w_wepsk = '';
-			$w_wepk = 'WN';
-			$w_wepe = 0;
-			$w_weps = $nosta;
-		}
-	} elseif(($w_wep_kind == 'G')&&($w_weps != $nosta)) {
-		$w_weps -= $hit_time[0];
-		$log .= "{$w_name}的{$w_wep}的子弹数减少了{$hit_time[0]}。<br>";
-		if($w_weps <= 0){
-			$log .= "{$w_name}的<span class=\"red\">$w_wep</span>的子弹用光了！<br>";
-			$w_weps = $nosta;
-		}
-	}
-
-	if((($w_wep_kind == 'G')&&(strpos($w_wepsk,'S') === false))||($w_wep_kind == 'D')||($wep_kind == 'F')){
-		global $noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
-		$noisetime = $now;
-		$noisepls = $pls;
-		$noiseid = $w_pid;
-		$noiseid2 = $pid;
-		$noisemode = $w_wep_kind;
-		save_combatinfo();
-	}
+	check_GCDF_wep ( $w_name, $hit_time [0], $w_wep, $w_wep_kind, $w_wepk, $w_wepe, $w_weps, $w_wepsk );
+	
+	addnoise ( $w_wep_kind, $w_wepsk, $now, $pls, $w_pid, $pid, $w_wep_kind );
+	
 	$w_wep_skill ++;
 	
 	return $damage;
 }
 
-function get_damage_p(&$rg,$sk = 0,$lv = 0,$cl = 0,$msg = '',$atkcdt,$sd = 0){
+function get_original_dmg($w1, $w2, $att, $def, $a_ky, $d_ky, $ws, $wp_kind) {
+	global $skill_dmg, $dmg_fluc, $weather, $pls;
+	global ${$w1 . 'pose'}, ${$w1 . 'tactic'}, ${$w1 . 'club'}, ${$w1 . 'inf'}, ${$w1 . 'active'}, ${$w2 . 'pose'}, ${$w2 . 'tactic'}, ${$w2 . 'club'}, ${$w2 . 'inf'}, ${$w2 . 'active'};
+	$attack_p = get_attack_p ( $weather, $pls, ${$w1 . 'pose'}, ${$w1 . 'tactic'}, ${$w1 . 'club'}, ${$w1 . 'inf'}, ${$w1 . 'active'} );
+	$att_pow = $att * $attack_p;
+	$defend_p = get_defend_p ( $weather, $pls, ${$w2 . 'pose'}, ${$w2 . 'tactic'}, ${$w2 . 'club'}, ${$w2 . 'inf'}, ${$w2 . 'active'} );
+	$def_pow = $def * $defend_p;
+	$damage = ($att_pow / $def_pow) * $ws * $skill_dmg [$wp_kind];
+	
+	$dmg_factor = (100 + rand ( - $dmg_fluc [$wp_kind], $dmg_fluc [$wp_kind] )) / 100;
+	
+	$damage = round ( $damage * $dmg_factor * rand ( 4, 10 ) / 10 );
+	return $damage;
+}
+
+function get_damage_p(&$rg, $sk = 0, $lv = 0, $cl = 0, $msg = '', $atkcdt, $sd = 0) {
 	global $log;
-	$cri_dice = rand(0,99);
+	$cri_dice = rand ( 0, 99 );
 	$damage_p = 1;
-	if(strpos($atkcdt,"c") !== false) {
+	if (strpos ( $atkcdt, "c" ) !== false) {
 		$rg_m = 10;
 		$max_dice = 75;
-	} elseif($cl ==9) {
+	} elseif ($cl == 9) {
 		$rg_m = 50;
 		$max_dice = 50;
 	} else {
 		$rg_m = 30;
 		$max_dice = 30;
 	}
-	if($cl == 9) {
-		if($sd == 0){
-			if((!empty($msg))&&($rg>=$rg_m) || $rg == 255){
+	if ($cl == 9) {
+		if ($sd == 0) {
+			if ((! empty ( $msg )) && ($rg >= $rg_m) || $rg == 255) {
 				$log .= "你消耗<span class=\"yellow\">$rg_m</span>点怒气，<span class=\"red\">发动必杀技</span>！";
 				$damage_p = 2;
 				$rg -= $rg_m;
 			}
 		} else {
-			if($cri_dice < $max_dice || $rg==255){
+			if (($cri_dice < $max_dice && ($rg >= $rg_m)) || $rg == 255) {
 				$log .= "<span class=\"red\">发动必杀技</span>！";
 				$damage_p = 2;
 				$rg -= $rg_m;
 			}
 		}
-	} elseif($cri_dice < $max_dice || $rg==255) {
-		if(($rg >= $rg_m)&&($sk >= 20)&&($lv >= 3)){
-			if($sd == 0) {
+	} elseif ($cri_dice < $max_dice || $rg == 255) {
+		if (($rg >= $rg_m) && ($sk >= 20)) {
+			if ($sd == 0) {
 				$log .= "你消耗<span class=\"yellow\">$rg_m</span>点怒气，使出";
 			}
 			$log .= "<span class=\"red\">重击</span>！";
@@ -607,98 +461,118 @@ function get_damage_p(&$rg,$sk = 0,$lv = 0,$cl = 0,$msg = '',$atkcdt,$sd = 0){
 	return $damage_p;
 }
 
-function checkdmg($p1,$p2,$d) {
-	if(($d>=100)&&($d<150)) {
-		$words = "$p1 对 $p2 做出了 $d 点的攻击！ 一定是有练过！ ";
-	} elseif(($d>=150)&&($d<200)) {
-		$words = "$p1 拿了什么神兵！？ $p2 被打了 $d 滴血！！  ";
-	} elseif(($d>=200)&&($d<250)) {
-		$words = "$p1 简直不是人！！ $p2 瞬间被打了 $d 点伤害！！  ";
-	} elseif(($d>=250)&&($d<300)) {
-		$words = "$p1 发出会心一击！！！ $p2 损失了 $d 点生命！！！  ";
-	} elseif(($d>=300)&&($d<400)) {
-		$words = "$p1 使出浑身解数奋力一击！！！ $d 点伤害！！！ $p2 还活着吗？ ";
-	} elseif(($d>=400)&&($d<500)) {
-		$words = "$p1 使出呼风唤雨的力量！！！！可怜的 $p2 受到了 $d 点的伤害！！！！  ";
-	} elseif(($d>=500)&&($d<600)) {
-		$words = "$p1 发挥所有潜能使出绝招！！！！ $p2 招架不住，生命减少 $d 点！！！！  ";
-	} elseif(($d>=600)&&($d<750)) {
-		$words = "$p1 手中的武器闪耀出七彩光芒！！！！ $p2 招架不住，生命减少 $d 点！！！！  ";
-	} elseif(($d>=750)&&($d<1000)) {
-		$words = "$p1 受到天神的加护，打出惊天动地的一击 – $p2 被打掉 $d 点生命值！！！！！  ";
-	} elseif($d>=1000) {
-		$words = "$p1 燃烧自己的生命得到了不可思议的力量！！！！！ 「 $d 」 点的伤害值，没天理啊… $p2 死-定-了！！！！！  ";
+function checkdmg($p1, $p2, $d) {
+	//$p1 = "<span class=\"yellow\">$p1</span>";$p2 = "<span class=\"yellow\">$p2</span>";$d2 = "<span class=\"dmg\">$d</span>";
+	if (($d >= 100) && ($d < 150)) {
+		$words = "{$p1}对{$p2}做出了{$d}点的攻击，一定是有练过。";
+	} elseif (($d >= 150) && ($d < 200)) {
+		$words = "{$p1}拿了什么神兵？{$p2}被打了{$d}滴血。";
+	} elseif (($d >= 200) && ($d < 250)) {
+		$words = "{$p1}简直不是人！{$p2}瞬间被打了{$d}点伤害。";
+	} elseif (($d >= 250) && ($d < 300)) {
+		$words = "{$p1}发出会心一击！{$p2}损失了{$d}点生命！";
+	} elseif (($d >= 300) && ($d < 400)) {
+		$words = "{$p1}使出浑身解数奋力一击！{$d}点伤害！{$p2}还活着吗？";
+	} elseif (($d >= 400) && ($d < 500)) {
+		$words = "{$p1}使出呼风唤雨的力量！可怜的{$p2}受到了{$d}点的伤害！";
+	} elseif (($d >= 500) && ($d < 600)) {
+		$words = "{$p1}发挥所有潜能使出绝招！{$p2}招架不住，生命减少{$d}点！";
+	} elseif (($d >= 600) && ($d < 750)) {
+		$words = "{$p1}手中的武器闪耀出七彩光芒！{$p2}招架不住，生命减少{$d}点！";
+	} elseif (($d >= 750) && ($d < 1000)) {
+		$words = "{$p1}受到天神的加护，打出惊天动地的一击——{$p2}被打掉{$d}点生命值！";
+	} elseif ($d >= 1000) {
+		$words = "{$p1}燃烧自己的生命得到了不可思议的力量！【{$d}】点的伤害值，没天理啊……{$p2}死——定——了！";
 	} else {
 		$words = '';
 	}
-	if($words) {
-		addnews(0,'damage',$words);
+	if ($words) {
+		addnews ( 0, 'damage', $words );
 	}
 	return;
 }
 
-function checkarb(&$dmg,$w,$ar) {
+function checkarb(&$dmg, $w, $ar) {
 	global $log;
-	if(strpos($ar,$w) !== false) {
-		$dice = rand(0,99);
-		if($dice < 90) {
+	if (strpos ( $ar, $w ) !== false) {
+		$dice = rand ( 0, 99 );
+		if ($dice < 90) {
 			$dmg /= 2;
 			$log .= "<span class=\"red\">攻击被防具抵消了！</span>";
 		}
 	}
+	return;
 }
-function getatkkey($w,$ah,$ab,$aa,$af,$at,$atkind) {
+
+function getatkkey($w, $ah, $ab, $aa, $af, $at, $atkind, $is_wpg) {
 	
-	$atkcdt = "";
-	$eqpkey = $w.$ah.$ab.$aa.$af.$at.substr($atkind,1,1);
-	if(strpos($eqpkey,"c")!==false) {
-		$atkcdt .= "c"; 
+	$atkcdt = '';
+	$eqpkey = $w.$ah . $ab . $aa . $af . $at . substr ( $atkind, 1, 1 );
+	
+	if (strpos ( $eqpkey, 'c' ) !== false) {
+		$atkcdt .= '_c';
 	}
-	if(strpos($eqpkey,"l")!==false) {
-		$atkcdt .= "l"; 
+	if (strpos ( $eqpkey, 'l' ) !== false) {
+		$atkcdt .= '_l';
 	}
-	if(strpos($eqpkey,"g")!==false) {
-		$atkcdt .= "g"; 
+	if (strpos ( $eqpkey, 'g' ) !== false) {
+		$atkcdt .= '_g';
 	}
-	if(strpos($w,"r")!==false) {
-		$atkcdt .= "r"; 
+	if (strpos ( $eqpkey, 'H' ) !== false) {
+		$atkcdt .= '_H';
 	}
-	if(strpos($w,"p")!==false) {
-		$atkcdt .= "p"; 
+	if (strpos ( $w, 'r' ) !== false && !$is_wpg) {
+		$atkcdt .= '_r';
+	}
+	if (strpos ( $w, 'p' ) !== false && !$is_wpg) {
+		$atkcdt .= '_p';
+	}
+	if (strpos ( $w, 'u' ) !== false && !$is_wpg) {
+		$atkcdt .= '_u';
+	}
+	if (strpos ( $w, 'i' ) !== false && !$is_wpg) {
+		$atkcdt .= '_i';
 	}
 	return $atkcdt;
 }
-function get_hit_time($ky,$ws,$htr,$wk0,$wk,$lmt,$infr,$wimpr) {
-	global $log,$nosta;
-	if($lmt == $nosta){
+
+function get_hit_time($ky, $ws, $htr, $wk, $lmt, $infr, $wimpr, $is_wpg = false) {
+	global $log, $nosta;
+	if ($lmt == $nosta) {
 		$wimpr *= 2;
-		if(strpos($wk0,'G') != false){
+		if ($is_wpg) {
 			$wimpr *= 4;
 		}
 	}
-	if(strpos($ky,"r")!==false){
-		$tt = $ws >=800 ? 6 : 2+floor($ws/200);
-		if($wk == 'C' || $wk == 'D' || $wk == 'F'){
-			if($lmt == $nosta){$lmt=99;}
-			if($tt>$lmt){$tt=$lmt;}
+	if (strpos ( $ky, 'r' ) !== false) {
+		$atk_t = $ws >= 800 ? 6 : 2 + floor ( $ws / 200 );
+		if ($wk == 'C' || $wk == 'D' || $wk == 'F') {
+			if ($lmt == $nosta) {
+				$lmt = 99;
+			}
+			if ($atk_t > $lmt) {
+				$atk_t = $lmt;
+			}
 		}
-		if($wk == 'G' && $tt>$lmt){$tt=$lmt;}
-		if($wk == 'P' && strpos($wk0,'G') != false){$tt=1;}
+		if ($wk == 'G' && $atk_t > $lmt) {
+			$atk_t = $lmt;
+		}
+
 		$ht_t = 0;
 		$inf_t = 0;
 		$wimp_t = 0;
 		//if($htr>100){$htr=100;}
-		for ($i=1;$i<=$tt;$i++){
-			$dice = rand(0,99);
-			$dice2 = rand(0,99);
-			$dice3 = rand(0,99);
-			if($dice < $htr) {
-				$ht_t++;
-				if($dice2 < $infr){
-				$inf_t++;
+		for($i = 1; $i <= $atk_t; $i ++) {
+			$dice = rand ( 0, 99 );
+			$dice2 = rand ( 0, 99 );
+			$dice3 = rand ( 0, 99 );
+			if ($dice < $htr) {
+				$ht_t ++;
+				if ($dice2 < $infr) {
+					$inf_t ++;
 				}
-				if($dice3 < $wimpr){
-				$wimp_t++;
+				if ($dice3 < $wimpr) {
+					$wimp_t ++;
 				}
 			}
 			$htr *= 0.8;
@@ -706,92 +580,320 @@ function get_hit_time($ky,$ws,$htr,$wk0,$wk,$lmt,$infr,$wimpr) {
 			$wimpr *= $wimpr <= 0 ? 1 : 1.2;
 		}
 	} else {
-		$tt = 1;
+		$atk_t = 1;
 		$ht_t = 0;
 		$inf_t = 0;
 		$wimp_t = 0;
-		$dice=rand(0,99);
-		$dice2=rand(0,99);
-		$dice3=rand(0,99);
-		if($dice < $htr) {
+		$dice = rand ( 0, 99 );
+		$dice2 = rand ( 0, 99 );
+		$dice3 = rand ( 0, 99 );
+		if ($dice < $htr) {
 			$ht_t = 1;
-			if($dice2 < $infr) {
-			$inf_t = 1;
+			if ($dice2 < $infr) {
+				$inf_t = 1;
 			}
-			if($dice3 < $wimpr) {
-			$wimp_t = 1;
+			if ($dice3 < $wimpr) {
+				$wimp_t = 1;
 			}
 		}
 	}
-	if($tt>1 && $ht_t>0){$log .= "{$tt}次连续攻击命中<span class=\"yellow\">{$ht_t}</span>次！";}
-	return Array($tt,$ht_t,$inf_t,$wimp_t);
+	if ($atk_t > 1 && $ht_t > 0) {
+		$log .= "{$atk_t}次连续攻击命中<span class=\"yellow\">{$ht_t}</span>次！";
+	}
+	return Array ($atk_t, $ht_t, $inf_t, $wimp_t );
 }
 
-function getdefkey($w,$ah,$ab,$aa,$af,$at,$atkind){
-	$defcdt = "";
-	$eqpkey = $w.$ah.$ab.$aa.$af.$at.substr($atkind,1,1);
-	if(strpos($eqpkey,"A")!==false) {$defcdt .= "NPKGCDF";}
-	else{
-		if(strpos($eqpkey,"N")!==false) {$defcdt .= "N";}
-		if(strpos($eqpkey,"P")!==false) {$defcdt .= "P";}
-		if(strpos($eqpkey,"K")!==false) {$defcdt .= "K";}
-		if(strpos($eqpkey,"G")!==false) {$defcdt .= "G";}
-		if(strpos($eqpkey,"C")!==false) {$defcdt .= "C";}
-		if(strpos($eqpkey,"D")!==false) {$defcdt .= "D";}
-		if(strpos($eqpkey,"F")!==false) {$defcdt .= "F";}
+function getdefkey($w, $ah, $ab, $aa, $af, $at, $atkind) {
+	$defcdt = '';
+	$eqpkey = $w . $ah . $ab . $aa . $af . $at . substr ( $atkind, 1, 1 );
+	if (strpos ( $eqpkey, 'A' ) !== false) {
+		$defcdt .= 'NPKGCDF';
+	} else {
+		if (strpos ( $eqpkey, 'N' ) !== false) {
+			$defcdt .= '_N';
+		}
+		if (strpos ( $eqpkey, 'P' ) !== false) {
+			$defcdt .= '_P';
+		}
+		if (strpos ( $eqpkey, 'K' ) !== false) {
+			$defcdt .= '_K';
+		}
+		if (strpos ( $eqpkey, 'G' ) !== false) {
+			$defcdt .= '_G';
+		}
+		if (strpos ( $eqpkey, 'C' ) !== false) {
+			$defcdt .= '_C';
+		}
+		if (strpos ( $eqpkey, 'D' ) !== false) {
+			$defcdt .= '_D';
+		}
+		if (strpos ( $eqpkey, 'F' ) !== false) {
+			$defcdt .= '_F';
+		}
 	}
-	if(strpos($eqpkey,"q")!==false) {$defcdt .= "q";}
+	if (strpos ( $eqpkey, 'q' ) !== false) {
+		$defcdt .= '_q';
+	}
+	if (strpos ( $eqpkey, 'U' ) !== false) {
+		$defcdt .= '_U';
+	}
+	if (strpos ( $eqpkey, 'I' ) !== false) {
+		$defcdt .= '_I';
+	}
 	return $defcdt;
 }
 
-function extradmg($nm,$sd,$clb,&$inf,$ky,$wepe,$ws,$dky) {
-	global $log,$w_combat_inf;
-	$e_dmg = 0;
-	if(strpos($ky,"p")!==false) {
-		$e_dmg = 1+round(($wepe/($wepe+100)+$ws/($ws+1000)) * (100+rand(-20,20)));
-		if (strpos($dky,"q")==false){
-			if (strpos($inf,"p")!==false){
-				$e_dmg*=2;
-				$log .= "由于对方已经中毒，毒性攻击伤害加倍！造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
-			} else{
-				$log .= "毒性攻击造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！";
-				$dice = rand(0,99);
-				if($clb == 8){$e_htr = $ws >= 300 ? 90 : 30+$ws/5;}
-				else{$e_htr = $ws >=500 ? 60 : 10+$ws/10;}
-				if($dice < $e_htr){
-					$inf .= 'p';
-					if($sd==0){$w_combat_inf .= 'p';}
-					$log .= "并造成{$nm}<span class=\"purple\">中毒</span>了！<br>";
-				}
-			}
+
+function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $we, $ws, $dky) {
+	global $log, $exdmgname, $exdmginf;
+	global $ex_dmg_def,$ex_base_dmg, $ex_wep_dmg, $ex_skill_dmg, $ex_dmg_fluc, $ex_inf_r, $ex_max_inf_r, $ex_skill_inf_r, $ex_inf_punish;
+	if (strpos ( $ky, 'p' ) !== false) {
+		$ex_dmg_sign = 'p';
+		if ($clb == 8) {
+			$e_htr = 20;
 		} else {
-			$e_dmg=round($e_dmg/2);
-			$log .= "毒性攻击被防御效果抵消了！造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
+			$e_htr = 0;
 		}
 	}
-	return $e_dmg;
+	if (strpos ( $ky, 'u' ) !== false) {
+		$ex_dmg_sign = 'u';
+		$e_htr = 0;
+		
+	}
+	if (strpos ( $ky, 'i' ) !== false) {
+		$ex_dmg_sign = 'i';
+		$e_htr = 0;
+	}
+	if (isset ( $ex_dmg_sign )) {
+		$dmgnm = $exdmgname [$ex_dmg_sign];
+		$dmginf = $exdmginf [$ex_dmg_sign];
+		$def = $ex_dmg_def [$ex_dmg_sign];
+		$bdmg = $ex_base_dmg[$ex_dmg_sign];
+		$wdmg = $ex_wep_dmg [$ex_dmg_sign];
+		$sdmg = $ex_skill_dmg [$ex_dmg_sign];
+		$fluc = $ex_dmg_fluc [$ex_dmg_sign];
+		$infr = $ex_inf_r [$ex_dmg_sign];
+		$minfr = $ex_max_inf_r [$ex_dmg_sign];
+		$sinfr = $ex_skill_inf_r [$ex_dmg_sign];
+		$punish = $ex_inf_punish [$ex_dmg_sign];
+		$e_dmg = 1 + round ( ($we / ($we + $wdmg) + $ws / ($ws + $sdmg)) * (100 + rand ( - $fluc, $fluc ))/100*$bdmg );
+		if (strpos ( $dky, $def ) == false) {
+			if (strpos ( $inf, $ex_dmg_sign ) !== false && $punish > 1) {
+				$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害倍增！";
+				$e_htr = 0;
+			} elseif (strpos ( $inf, $ex_dmg_sign ) !== false && $punish < 1) {
+				$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害减少！";
+				$e_htr = 0;
+			} else {
+				$e_htr += $infr + $ws * $sinfr;
+				$e_htr = $e_htr > $minfr ? $minfr : $e_htr;
+			}
+			$e_dmg = round ( $e_dmg * $punish );
+			$log .= "{$dmgnm}造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
+			$dice = rand ( 0, 99 );
+			if ($dice < $e_htr) {
+				$inf .= $ex_dmg_sign;
+				if ($sd == 0) {
+					global $w_combat_inf;
+					$w_combat_inf .= $ex_dmg_sign;
+				}
+				$log .= "并造成{$nm}{$dmginf}了！<br>";
+			}
+		} else {
+			$e_dmg = round ( $e_dmg / 2 );
+			$log .= "{$dmgnm}被防御效果抵消了！造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
+		}
+		return $e_dmg;
+	} else {
+		return;
+	}
+
 }
 
-function get_spell_factor($sd,$clb,$ky,&$sp,$we) {
-	global $log;
-	if($sd == 0){
-		if($clb == 9){
-			$spd = 0.4*$we;
-			if ($spd >= $sp) {$spd=$sp -1;}
-			$factor = 0.5+$spd/(($we+1)*0.4)/2;
+
+function get_WF_p($w, $clb, $we) {
+	global $log, ${$w . 'sp'};
+	if (! empty ( $w )) {
+		$factor = 0.5;
+	} else {
+		$we = $we > 0 ? $we : 1;
+		if ($clb == 9) {
+			$spd0 = round ( 0.4 * $we );
 		} else {
-			$spd = 0.5*$we;
-			if ($spd >= $sp) {$spd=$sp -1;}
-			$factor = 0.5+$spd/(($we+1)*0.5)/2;
+			$spd0 = round ( 0.5 * $we );
 		}
-		$factor = round($factor*100);
-		if($sd == 0){
-			$log .= "你消耗{$spd}点体力，发挥了灵力武器{$factor}％的威力！";
+		if ($spd0 >= ${$w . 'sp'}) {
+			$spd = ${$w . 'sp'} - 1;
+		} else {
+			$spd = $spd0;
 		}
-	}else {$spd = 0;$factor = 50;}
-	$sp -= $spd;$factor /= 100;
+		$factor = 0.5 + $spd / $spd0 / 2;
+		$f = round ( 100 * $factor );
+		$log .= "你消耗{$spd}点体力，发挥了灵力武器{$f}％的威力！";
+		${$w . 'sp'} -= $spd;
+	}
 	return $factor;
 }
+
+function check_KP_wep($nm, $ht, &$wp, &$wk, &$we, &$ws, &$wsk) {
+	global $log, $nosta;
+	if ($ht > 0 && $ws == $nosta) {
+		$we -= $ht;
+		if($nm == '你'){$log .= "{$nm}的{$wp}的攻击力下降了{$ht}！<br>";}
+		if ($we <= 0) {
+			$log .= "{$nm}的<span class=\"red\">$wp</span>使用过度，已经损坏，无法再装备了！<br>";
+			$wp = '拳头';
+			$wk = 'WN';
+			$we = 0;
+			$ws = $nosta;
+			$wsk = '';
+		}
+	} elseif ($ht > 0 && $ws != $nosta) {
+		$ws -= $ht;
+		if($nm == '你'){$log .= "{$nm}的{$wp}的耐久度下降了{$ht}！<br>";}
+		if ($ws <= 0) {
+			$log .= "{$nm}的<span class=\"red\">$wp</span>使用过度，已经损坏，无法再装备了！<br>";
+			$wp = '拳头';
+			$wk = 'WN';
+			$we = 0;
+			$ws = $nosta;
+			$wsk = '';
+		}
+	}
+	return;
+}
+
+function check_GCDF_wep($nm, $ht, &$wp, $wp_kind, &$wk, &$we, &$ws, &$wsk) {
+	global $log, $nosta;
+	if ((($wp_kind == 'C') || ($wp_kind == 'D') || ($wp_kind == 'F')) && ($ws != $nosta)) {
+		$ws -= $ht;
+		if($nm == '你'){$log .= "{$nm}用掉了{$ht}个{$wp}。<br>";}
+		if ($ws <= 0) {
+			$log .= "{$nm}的<span class=\"red\">$wp</span>用光了！<br>";
+			$wp = '拳头';
+			$wsk = '';
+			$wk = 'WN';
+			$we = 0;
+			$ws = $nosta;
+		}
+	} elseif (($wp_kind == 'G') && ($ws != $nosta)) {
+		$ws -= $ht;
+		if($nm == '你'){$log .= "{$nm}的{$wp}的弹药数减少了{$ht}。<br>";}
+		if ($ws <= 0) {
+			$log .= "{$nm}的<span class=\"red\">$wp</span>的弹药用光了！<br>";
+			$ws = $nosta;
+		}
+	}
+	return;
+}
+
+function get_inf($nm, $ht, $wp_kind, $w = '') {
+	if ($ht > 0) {
+		global $infatt;
+		$infatt_dice = rand ( 1, 4 );
+		if (($infatt_dice == 1) && (strpos ( $infatt [$wp_kind], 'b' ) !== false)) {
+			$inf_att = 'b';
+		} elseif (($infatt_dice == 2) && (strpos ( $infatt [$wp_kind], 'h' ) !== false)) {
+			$inf_att = 'h';
+		} elseif (($infatt_dice == 3) && (strpos ( $infatt [$wp_kind], 'a' ) !== false)) {
+			$inf_att = 'a';
+		} elseif (($infatt_dice == 4) && (strpos ( $infatt [$wp_kind], 'f' ) !== false)) {
+			$inf_att = 'f';
+		}
+		if ($inf_att) {
+			global $log, ${$w . 'ar' . $inf_att}, ${$w . 'ar' . $inf_att . 'k'}, ${$w . 'ar' . $inf_att . 'e'}, ${$w . 'ar' . $inf_att . 's'}, ${$w . 'ar' . $inf_att . 'sk'};
+			if (${$w . 'ar' . $inf_att . 's'}) {
+				${$w . 'ar' . $inf_att . 's'} -= $ht;
+				if ($nm == '你') {
+					$log .= "{$nm}的${$w.'ar'.$inf_att}的耐久度下降了{$ht}！<br>";
+				}
+				if (${$w . 'ar' . $inf_att . 's'} <= 0) {
+					$log .= "{$nm}的<span class=\"red\">${$w.'ar'.$inf_att}</span>受损过重，无法再装备了！<br>";
+					${$w . 'ar' . $inf_att} = ${$w . 'ar' . $inf_att . 'k'} = ${$w . 'ar' . $inf_att . 'sk'} = '';
+					${$w . 'ar' . $inf_att . 'e'} = ${$w . 'ar' . $inf_att . 's'} = 0;
+				}
+			} else {
+				global $log, ${$w . 'inf'}, $infinfo;
+				if (strpos ( ${$w . 'inf'}, $inf_att ) === false) {
+					${$w . 'inf'} .= $inf_att;
+					if ($w == 'w_') {
+						global ${$w . 'combat_inf'};
+						${$w . 'combat_inf'} .= $inf_att;
+					}
+					$log .= "{$nm}的<span class=\"red\">$infinfo[$inf_att]</span>部受伤了！<br>";
+				}
+			}
+		}
+	}
+	return;
+}
+
+function get_dmg_punish($nm, $dmg, &$hp,$a_ky) {
+	if ($dmg >= 1000) {
+		global $log;
+		if ($dmg < 2000) {
+			$hp_d = floor ( $hp / 2 );
+		} elseif ($dmg < 5000) {
+			$hp_d = floor ( $hp * 2 / 3 );
+		} else {
+			$hp_d = floor ( $hp * 4 / 5 );
+		}
+		if(strpos($a_ky,'H')!=false){$hp_d = floor($hp_d/10);}
+		$log .= "惨无人道的攻击对{$nm}自身造成了<span class=\"red\">$hp_d</span>点<span class=\"red\">反噬伤害！</span><br>";
+		$hp -= $hp_d;
+	}
+	return;
+}
+
+function exprgup(&$lv_a, $lv_d, &$exp, $isplayer, &$rg) {
+	global $log;
+	$expup = round ( ($lv_d - $lv_a) / 3 );
+	$expup = $expup > 0 ? $expup : 1;
+	$exp += $expup;
+	//$log .= "$isplayer 的经验值增加 $expup 点<br>";
+	if ($isplayer) {
+		global $upexp;
+		$nl_exp = $upexp;
+	} else {
+		global $w_upexp;
+		$nl_exp = $w_upexp;
+	}
+	if ($exp >= $nl_exp) {
+		include_once GAME_ROOT . './include/state.func.php';
+		lvlup ( $lv_a, $exp, $isplayer );
+	}
+	$rgup = round ( ($lv_a - $lv_d) / 3 );
+	$rg += $rgup > 0 ? $rgup : 1;
+	return;
+}
+
+function addnoise($wp_kind, $wsk, $ntime, $npls, $nid1, $nid2, $nmode) {
+	if ((($wp_kind == 'G') && (strpos ( $wsk, 'S' ) === false)) || ($wp_kind == 'D') || ($wp_kind == 'F')) {
+		global $noisetime, $noisepls, $noiseid, $noiseid2, $noisemode;
+		$noisetime = $ntime;
+		$noisepls = $npls;
+		$noiseid = $nid1;
+		$noiseid2 = $nid2;
+		$noisemode = $nmode;
+		save_combatinfo ();
+	}
+	return;
+}
+
+function check_gender($nm_a, $nm_d, $gd_a, $gd_d, $a_ky) {
+	$gd_dmg_p = 1;
+	if ((((strpos ( $a_ky, "l" ) !== false) && ($gd_a != $gd_d)) || ((strpos ( $a_ky, "g" ) !== false) && ($gd_a == $gd_d))) && (! rand ( 0, 4 ))) {
+		global $log;
+		$log .= "<span class=\"red\">{$nm_a}被{$nm_d}迷惑，无法全力攻击！</span>";
+		$gd_dmg_p = 0;
+	} elseif ((((strpos ( $a_ky, "l" ) !== false) && ($gd_a == $gd_d)) || ((strpos ( $a_ky, "g" ) !== false) && ($gd_a != $gd_d))) && (! rand ( 0, 4 ))) {
+		global $log;
+		$log .= "<span class=\"red\">{$nm_a}被{$nm_d}激怒，伤害加倍！</span>";
+		$gd_dmg_p = 2;
+	}
+	return $gd_dmg_p;
+}
+
 
 ?>
 

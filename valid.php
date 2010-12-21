@@ -44,7 +44,7 @@ if($mode == 'enter') {
 	$pls = 0;
 	$killnum = 0;
 	$lvl = 0;
-	$exp = $areanum * 30;
+	$exp = $areanum * 20;
 	$money = 20;
 	$rage = 0;
 	$pose = 0;

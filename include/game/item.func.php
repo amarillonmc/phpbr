@@ -229,22 +229,40 @@ function itemuse($itmn) {
 			$mode = 'command'; 
 			return; 
 		}
-		if(strpos($wepsk, 'r') !== false){
-			if(strpos($itmk, 'r') !== false){
-				$bulletnum = 20;
+		if(strpos($wepsk, 'u') !== false){
+			if(strpos($itmk, 'u') !== false){
+				$bulletnum = 10;
 			} else {
 				$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>"; 
 				$mode = 'command'; 
 				return; 
 			}
-		}	else {
-			if(strpos($itmk, 'r') == false){
-				$bulletnum = 6;
+		}elseif(strpos($wepsk, 'i') !== false){
+			if(strpos($itmk, 'i') !== false){
+				$bulletnum = 10;
 			} else {
 				$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>"; 
 				$mode = 'command'; 
-				return;
-			} 
+				return; 
+			}
+		}else{
+			if(strpos($wepsk, 'r') !== false){
+				if(strpos($itmk, 'r') !== false){
+					$bulletnum = 20;
+				} else {
+					$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>"; 
+					$mode = 'command'; 
+					return; 
+				}
+			}	else {
+				if($itmk == 'GB'){
+					$bulletnum = 6;
+				} else {
+					$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>"; 
+					$mode = 'command'; 
+					return;
+				} 
+			}
 		}
 		if($weps == $nosta){ $weps = 0; }
 		$bullet = $bulletnum - $weps;
@@ -265,15 +283,52 @@ function itemuse($itmn) {
 		if($itme > 0) {
 			$log .= "使用了<span class=\"red\">$itm</span>。<br>";
 			include_once GAME_ROOT.'./include/game/item2.func.php';
-			radar($itmsk);
+			newradar($itmsk);
 			$itme--;
 			if($itme <= 0) {
-				$log .= '雷达的电力用光了，请使用电池充电。<br>';
+				$log .= $itm.'的电力用光了，请使用电池充电。<br>';
 			}
 		} else {
 			$itme = 0;
-			$log .= '雷达没有电了，请先充电。<br>';
+			$log .= $itm.'没有电了，请先充电。<br>';
 		}
+	} elseif(strpos($itmk, 'C') === 0) {
+		global $inf,$exdmginf;
+		if(strpos($itm, '烧伤药剂') === 0){
+			if(strpos($inf, 'u') !== false){
+				$inf = str_replace('u', '', $inf);
+				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf['u']}状态解除了。<br>";
+			} else {
+				$log .= "服用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
+			}
+			$itms--;
+		} elseif(strpos($itm, '解冻药水') === 0){
+			if(strpos($inf, 'i') !== false){
+				$inf = str_replace('i', '', $inf);
+				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf['i']}状态解除了。<br>";
+			} else {
+				$log .= "服用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
+			}
+			$itms--;
+			
+		} elseif(strpos($itm, '解毒剂') === 0){
+			if(strpos($inf, 'p') !== false){
+				$inf = str_replace('p', '', $inf);
+				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf['p']}状态解除了。<br>";
+			} else {
+				$log .= "服用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
+			}
+			$itms--;
+			
+		} else{
+			$log .= "服用了<span class=\"red\">$itm</span>……发生了什么？<br>";
+			$itms--;
+		}
+		if($itms <= 0){
+			$log .= "<span class=\"red\">$itm</span>用光了。<br>";
+			$itm = $itmk = $itmsk = '';$itme = $itms = 0;
+		}
+		
 	} elseif(strpos($itmk, 'V') ===0 ){
 			$skill_minimum = 100;
 			$skill_limit = 300;
@@ -549,7 +604,7 @@ function itemuse($itmn) {
 				}
 			}
 			return;
-		} elseif($itm == '解毒剂') {
+		} /*elseif($itm == '解毒剂') {
 			global $inf,$infinfo;
 			if(strpos($inf, 'p') !== false){
 				$inf = str_replace('p', '', $inf);
@@ -558,7 +613,8 @@ function itemuse($itmn) {
 				$log .= "使用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
 			}
 			$itms--;  
-		} elseif(strpos($itm,'磨刀石') !== false) {
+		}*/ 
+		elseif(strpos($itm,'磨刀石') !== false) {
 			global $wep,$wepk,$wepe,$weps,$wepsk;
 			if(strpos($wepk,'K') == 1) {
 				$dice = rand(0,49);	
@@ -624,11 +680,12 @@ function itemuse($itmn) {
 		} elseif($itm == '移动PC') {
 			include_once GAME_ROOT.'./include/game/item2.func.php';
 			hack($itmn);
-		} elseif($itm == '雷达用电池') {
+		} elseif($itm == '探测器电池') {
 			$flag = false;
 			for($i=1;$i<=5;$i++) {
-				global ${'itm'.$i},${'itme'.$i};
-				if((strpos(${'itm'.$i}, '雷达') !== false)&&(strpos(${'itm'.$i}, '电池') === false)) {
+				global ${'itmk'.$i},${'itme'.$i},${'itm'.$i};
+				if(${'itmk'.$i}== 'R'){
+				//if((strpos(${'itm'.$i}, '雷达') !== false)&&(strpos(${'itm'.$i}, '电池') === false)) {
 					${'itme'.$i} += $itme;
 					$itms--;
 					$flag = true;
@@ -637,7 +694,7 @@ function itemuse($itmn) {
 				}
 			}
 			if(!$flag){
-				$log .= '你没有雷达。<br>';
+				$log .= '你没有探测仪器。<br>';
 			}
 		} elseif($itm == '御神签') {
 			$log .= "使用了<span class=\"yellow\">$itm</span>。<br>";

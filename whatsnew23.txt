@@ -1,42 +1,68 @@
-2010.12.16
-//F物品种类改为g，M物品种类改为l
-//修正物品耐久超过1000则出现异常的问题
-//修正不能记录玩家性别的错误
-//修复无人参与游戏时游戏结束时间异常的BUG
-//伤害公式修改，现在各种武器的伤害变动范围各不相同了。话说回来那份错漏百出的帮助欺骗了我们好久啊。
-//修复了FF浏览器里下拉菜单不正常的问题
-//灵系武器实装。灵系武器特点：高命中，保证伤害，但是后期伤害普通，而且主动攻击时要消耗体力，如果体力不足则威力下降。灵系武器反击不消耗体力，但是威力减半。
-//数据库结构修改，修复了不能记录玩家性别的问题、胜利者画面部分资料缺失的问题，以及物品耐久不能超过1000的问题
-//商店菜单修改
-//升级逻辑修改，也许能减少系统资源的浪费
-//捡到道具时能显示道具的属性
 
-1216 改动的文件:
+2010.12.17
+//对combat.func.php作了简化
+//伤害惩罚加重，现在如果伤害超过2000会扣除2/3的HP，而伤害超过5000则扣除4/5的HP
+//内定称号、地图物品、商店道具、NPC资料修改。现在安装钉子方便一些了，反正不能超量购买，对吧。
+//增加了物品名称的限制长度，修正了物品耐久改为整数以后导致的与无限耐不兼容的问题
+
+2010.12.19
+//解毒剂种类改为“药剂”
+//雷达强化！现在雷达可以探测玩家和NPC了
+//
+
+1217 改动的文件:
 /gamedata/
-		system.php 						//修改原FM类物品的说明
-		player.sql  					//修改数据库结构，修正物品耐久超过1000则出现异常的问题；为添加新状态预留了空间
+		system.php 						//改动内定称号、枪械弹药种类
+		player.sql  					//增加了物品名称的限制长度，修正了物品耐久改为整数以后导致的与无限耐不兼容的问题
 /gamedata/cache/
-		mapitem.php 					//原FM类物品类型改为gl
-		shopitem_1.php 				//商店菜单修改
+		gamecfg_1.php					//去除了跟combatcfg重复的部分
+		combatcfg_1.php				//添加数种属性
+		mapitem_1.php 					//地图物品略改
+		shopitem_1.php 					//商店道具略改
+		npc_1.php						//NPC资料略改
 /img/
 /include/
-		game.func.php 				//游戏过程中记录灵系熟练度
-		system.func.php 			//游戏结束时将灵系熟练度写入数据库。修复无人参与游戏时游戏结束时间异常的BUG.
-		state.func.php        //升级逻辑从while改为for
 /include/admin/
-		pcmng.php //角色管理界面增加修改灵熟的功能
+		pcmng.php 						//增加物品名限制长度
+		
 /include/game/
-		combat.func.php 			//修改战斗中对原FM类物品的判断；灵系武器实装
-		battle.func.php 			//战斗前预读灵熟
-		item.func.php 				//技能书和能力药针对灵熟做修改，安雅对灵系作修改
+		itemmain.func.php 		//灵符武器可以正确合并了
+		search.func.php				//冻伤状态影响移动和探索消耗的体力，增加烧伤死亡
 /install/
-		bra.sql 						  //修改数据库结构，使优胜者资料能显示灵熟；修正不能记录玩家性别的错误；为添加新状态预留了空间
+		bra.sql 						  //增加了物品名称的限制长度，修正了物品耐久改为整数以后导致的与无限耐不兼容的问题
 /templates/default/
-		command.htm						//修复了下拉菜单
-		sp_shop.htm 					//商店菜单修改
-		profile.htm						//小修改
-		itemfind.htm					//捡到道具时显示属性
+		sp_shop.htm 					//修改文字
 	
 /根目录
- 	 command.php 						//死亡时更新灵系熟练度，商店菜单修改
-  	valid.php 						//初始化灵系武器熟练度
+   valid.php 						//初始经验改动
+   
+1219 改动的文件:
+/gamedata/
+		system.php 						//
+		player.sql  					//
+/gamedata/cache/
+		gamecfg_1.php					//
+		combatcfg_1.php				//添加数种属性
+		mapitem_1.php 					//地图物品略改
+		shopitem_1.php 					//商店道具略改
+		npc_1.php						//NPC资料略改
+/img/
+/include/
+		game.func.php 				//增加烧伤和冰冻状态显示
+		state.func.php				//增加烧伤死亡
+/include/admin/
+		
+/include/game/
+		attr.func.php					//烧伤状态影响攻击力，冻伤减防御力
+		combat.func.php 			//去除了冗余部分，增加了火焰和冰冻两种属性
+		item.func.php					//添加解冻药水和烧伤药剂，枪械弹药种类增加。雷达修改，雷达用电池修改
+		item2.func.php				//添加新雷达，注释掉了旧雷达
+		search.func.php				//冻伤状态影响移动和探索消耗的体力，增加烧伤死亡
+/install/
+
+/templates/default/
+
+		radar.htm							//雷达强化
+	
+/根目录
+	 chat.php								//把误加的引号改了回来

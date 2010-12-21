@@ -22,13 +22,13 @@ function chgword($nmotto,$nlastword,$nkillmsg) {
 	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
 	$userinfo = $db->fetch_array($result);
 	if($nmotto != $userinfo['motto']) {
-		$log .= "口头禅变更为 <span class=\"yellow\">$nmotto</span> 。<br>";
+		$log .= '口头禅变更为<span class="yellow">'.$nmotto.'</span>。<br>';
 	}
 	if($nlastword != $userinfo['lastword']) {
-		$log .= "遗言变更为 <span class=\"yellow\">$nlastword</span> 。<br>";
+		$log .= '遗言变更为<span class="yellow">'.$nlastword.'</span>。<br>';
 	}
 	if($nkillmsg != $userinfo['killmsg']) {
-		$log .= "留言变更为 <span class=\"yellow\">$nkillmsg</span> 。<br>";
+		$log .= '留言变更为<span class="yellow">'.$nkillmsg.'</span>。<br>';
 	}
 
 	$db->query("UPDATE {$tablepre}users SET motto='$nmotto', lastword='$nlastword', killmsg='$nkillmsg' WHERE username='$name'");
@@ -49,7 +49,7 @@ function chginf($infpos){
 		} else {
 			$inf = str_replace($infpos,'',$inf);
 			$sp -= $inf_sp;
-			$log .= "<span class=\"red\">$infinfo[$infpos]部</span> 的伤口已经包扎好了！";
+			$log .= '<span class="red">'.$infinfo[$infpos].'部</span>的伤口已经包扎好了！';
 			$mode = 'command';
 			return;
 		}
@@ -84,9 +84,9 @@ function chkpoison($itmn){
 	}
 	
 	if(strpos($itmk,'P') === 0) {
-		$log .= "<span class=\"red\">$itm 有毒！</span>";
+		$log .= '<span class="red">'.$itm.'有毒！</span>';
 	} else {
-		$log .= "<span class=\"yellow\">$itm 是安全的。</span>";
+		$log .= '<span class="yellow">'.$itm.'是安全的。</span>';
 	}
 	$mode = 'command';
 	return;

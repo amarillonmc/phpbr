@@ -54,6 +54,7 @@ if($log2 != '\n'){
 
 init_playerdata();
 
+
 $gamedata = array();
 
 $bid = ($mode == 'combat') ? $bid : 0;
@@ -176,6 +177,7 @@ if($command == 'menu') {
 //$bid = 0;
 
 $gamedata['notice'] = ob_get_contents();
+init_profile();
 
 if($hp <= 0) {
 	$cmd = '<span class="dmg">你死了。</span><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br><br><br><input type="button" id="submit" onClick="location.href=\'end.php\'" value="提交">';
@@ -200,7 +202,7 @@ if($url){$gamedata['url'] = $url;}
 $gamedata['pls'] = $plsinfo[$pls];
 $gamedata['anum'] = $alivenum;
 
-init_profile();
+//init_profile();
 
 ob_clean();
 $main ? include template($main) : include template('profile');

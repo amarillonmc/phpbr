@@ -111,6 +111,8 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 				$log .= "<span class=\"red\">{$w_name}攻击范围不足，不能反击，逃跑了！</span><br>";
 			}
 		
+		} elseif(($w_tactic == 4) || ($w_pose == 5)) {
+			$log .= "<span class=\"red\">{$w_name}逃跑了！</span><br>";
 		}
 	} else {
 		extract ( $w_pdata, EXTR_PREFIX_ALL, 'w' );
@@ -147,6 +149,8 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 			} else {
 				$log .= "<span class=\"red\">你攻击范围不足，不能反击，逃跑了！</span><br>";
 			}
+		} elseif(($tactic == 4) || ($pose == 5)) {
+			$log .= "<span class=\"red\">你逃跑了！</span><br>";
 		}
 	}
 	w_save ( $w_pid );

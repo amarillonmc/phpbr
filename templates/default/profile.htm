@@ -1,16 +1,16 @@
-<table border="0" width="610" cellspacing="0" cellpadding="0"  valign="middle">
+<table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle">
 <tr><td>
-<table border="0" width="610" cellspacing="0" cellpadding="0"  valign="middle" background="img/profile.gif" style="background-position:bottom left;background-repeat:no-repeat;">
+<table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle" background="img/profile.gif" style="background-position:bottom left;background-repeat:no-repeat;">
 	<tr><td height="20" width="210" colspan="3" class="b1"><div class=nttx>$name</div></td>
-		<td width="80" colspan="1" class="b1"><div class=nttx>{$sexinfo[$gd]}{$sNo}号</div></td>
-		<td width="95" colspan="2" class="b1"><div class=nttx>{lang weather}:$wthinfo[$weather]</div></td>
+		<td width="100" colspan="1" class="b1"><div class=nttx>{$sexinfo[$gd]}{$sNo}号</div></td>
+		<td width="115" colspan="2" class="b1"><div class=nttx>{lang weather}:$wthinfo[$weather]</div></td>
 		<td width="205" colspan="1" class="b1"><div class=nttx>{lang gamedate}<!--{if $gamestate == 40 }--><font color="red">{lang combo}</font><!--{/if}--></div></td>
 		</tr>
 	<tr><td rowspan="4" colspan="2" width="140" height="80" class="b3"><div class=nttx><img src="img/$iconImg" border="0" style="width:140;height:80"></div></td>
 		<td width="60" class="b2"><div class=nttx>{lang level}</div></td>
-		<td width="80" class="b3"><div class=nttx>Lv. $lvl</div></td>
+		<td width="100" class="b3"><div class=nttx>Lv. $lvl</div></td>
 		<td width="45" class="b2"><div class=nttx><!--{if $wp >= 25}-->{lang wp}{lang skill}<!--{else}--><span class="grey">{lang wp}{lang skill}</span><!--{/if}--></div></td>
-		<td width="45" class="b3"><div class=nttx>$wp</div></td>
+		<td width="55" class="b3"><div class=nttx>$wp</div></td>
 		<td rowspan="8" width="205" height="160" class="b3">
 			<div class=nttx>
 				<table border="0" width=205px height=160px cellspacing="0" cellpadding="0">
@@ -83,7 +83,7 @@
 </tr>
 <tr><td height="10" class="b5"></td></tr>
 <tr><td>
-  		<TABLE border="0" cellSpacing=0 cellPadding=0 height=140 width=610 background="img/enp.gif" style="background-position:bottom left;background-repeat:no-repeat;">
+  		<TABLE border="0" cellSpacing=0 cellPadding=0 height=140 width=640 background="img/enp.gif" style="background-position:bottom left;background-repeat:no-repeat;">
   			<tr>
   				<td>
   				<TABLE border="0" cellSpacing=0 cellPadding=0 height=100% width=100%>
@@ -97,42 +97,42 @@
           <tr>
           						<TD class=b2 height="20"><div class=nttx><!--{if $iteminfo[$wepk]}-->$iteminfo[$wepk]<!--{else}-->$mltwk<!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $weps}-->$wep<!--{else}-->$nowep<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $wepsk}--><!--{if $itemspkinfo[$wepsk]}-->$itemspkinfo[$wepsk]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$wepsk_words</div></TD>
                       <TD class=b3><div class=nttx>$wepe</div></TD>
                       <TD class=b3><div class=nttx>$weps</div></TD>
           </tr>
           <tr>
           	          <TD class=b2 height="20"><div class=nttx><!--{if $arbs}-->$iteminfo['DB']<!--{else}--><span class="grey">$iteminfo['DB']</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $arbs}-->$arb<!--{else}-->$noarb<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $arbsk}--><!--{if $itemspkinfo[$arbsk]}-->$itemspkinfo[$arbsk]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arbsk_words</div></TD>
                       <TD class=b3><div class=nttx>$arbe</div></TD>
                       <TD class=b3><div class=nttx>$arbs</div></TD>
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx><!--{if $arhs}-->$iteminfo['DH']<!--{else}--><span class="grey">$iteminfo['DH']</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $arhs}-->$arh<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $arhsk}--><!--{if $itemspkinfo[$arhsk]}-->$itemspkinfo[$arhsk]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arhsk_words</div></TD>
                       <TD class=b3><div class=nttx>$arhe</div></TD>
                       <TD class=b3><div class=nttx>$arhs</div></TD>
           </tr>
           <tr>
           			  		<TD class=b2 height="20"><div class=nttx><!--{if $aras}-->$iteminfo['DA']<!--{else}--><span class="grey">$iteminfo['DA']</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $aras}-->$ara<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $arask}--><!--{if $itemspkinfo[$arask]}-->$itemspkinfo[$arask]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arask_words</div></TD>
                       <TD class=b3><div class=nttx>$arae</div></TD>
                       <TD class=b3><div class=nttx>$aras</div></TD>
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx><!--{if $arfs}-->$iteminfo['DF']<!--{else}--><span class="grey">$iteminfo['DF']</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $arfs}-->$arf<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $arfsk}--><!--{if $itemspkinfo[$arfsk]}-->$itemspkinfo[$arfsk]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arfsk_words</div></TD>
                       <TD class=b3><div class=nttx>$arfe</div></TD>
                       <TD class=b3><div class=nttx>$arfs</div></TD>
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx><!--{if $arts}-->$iteminfo[$artk]<!--{else}--><span class="grey">$iteminfo['A']</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $arts}-->$art<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $artsk}--><!--{if $itemspkinfo[$artsk]}-->$itemspkinfo[$artsk]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$artsk_words</div></TD>
                       <TD class=b3><div class=nttx>$arte</div></TD>
                       <TD class=b3><div class=nttx>$arts</div></TD>
           </tr>
@@ -150,35 +150,35 @@
           		<tr>          			  
                       <TD class=b2><div class=nttx><!--{if $iteminfo[$itmk1]}-->$iteminfo[$itmk1]<!--{else}--><span class="grey">{lang pack}1</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $itms1}-->$itm1<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $itmsk1 && is_numeric($itmsk1) == false}--><!--{if $itemspkinfo[$itmsk1]}-->$itemspkinfo[$itmsk1]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk1_words</div></TD>
                       <TD class=b3><div class=nttx>$itme1</div></TD>
                       <TD class=b3><div class=nttx>$itms1</div></TD>
                       </tr>
                 <tr>
                       <TD class=b2><div class=nttx><!--{if $iteminfo[$itmk2]}-->$iteminfo[$itmk2]<!--{else}--><span class="grey">{lang pack}2</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $itms2}-->$itm2<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $itmsk2 && is_numeric($itmsk2) == false}--><!--{if $itemspkinfo[$itmsk2]}-->$itemspkinfo[$itmsk2]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk2_words</div></TD>
                       <TD class=b3><div class=nttx>$itme2</div></TD>
                       <TD class=b3><div class=nttx>$itms2</div></TD>
                       </tr>
                 <tr>          			  
                       <TD class=b2><div class=nttx><!--{if $iteminfo[$itmk3]}-->$iteminfo[$itmk3]<!--{else}--><span class="grey">{lang pack}3</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $itms3}-->$itm3<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $itmsk3 && is_numeric($itmsk3) == false}--><!--{if $itemspkinfo[$itmsk3]}-->$itemspkinfo[$itmsk3]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk3_words</div></TD>
                       <TD class=b3><div class=nttx>$itme3</div></TD>
                       <TD class=b3><div class=nttx>$itms3</div></TD>
                       </tr>
                 <tr>          	
                       <TD class=b2><div class=nttx><!--{if $iteminfo[$itmk4]}-->$iteminfo[$itmk4]<!--{else}--><span class="grey">{lang pack}4</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $itms4}-->$itm4<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $itmsk4  && is_numeric($itmsk4) == false}--><!--{if $itemspkinfo[$itmsk4]}-->$itemspkinfo[$itmsk4]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk4_words</div></TD>
                       <TD class=b3><div class=nttx>$itme4</div></TD>
                       <TD class=b3><div class=nttx>$itms4</div></TD>
                       </tr>
                 <tr>          			  
                       <TD class=b2><div class=nttx><!--{if $iteminfo[$itmk5]}-->$iteminfo[$itmk5]<!--{else}--><span class="grey">{lang pack}5</span><!--{/if}--></div></TD>
                       <TD class=b3><div class=nttx><!--{if $itms5}-->$itm5<!--{else}-->$noitm<!--{/if}--></div></TD>
-                      <TD class=b3><div class=nttx><!--{if $itmsk5 && is_numeric($itmsk5) == false}--><!--{if $itemspkinfo[$itmsk5]}-->$itemspkinfo[$itmsk5]<!--{else}-->$mltspk<!--{/if}--><!--{else}-->$nospk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk5_words</div></TD>
                       <TD class=b3><div class=nttx>$itme5</div></TD>
                       <TD class=b3><div class=nttx>$itms5</div></TD>
                       </tr>

@@ -83,6 +83,25 @@ if($mode == 'enter') {
 	if(strpos($wepk,'WG') === 0){
 		$itm[3] = '手枪子弹'; $itmk[3] = 'GB'; $itme[3] = 1; $itms[3] = 12; 
 	}
+	
+//	if ($name == '四面') {
+//		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
+//		$att += 100;$def += 100;
+//		$exp += 500;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
+//		$itm[1] = 'END BOSS HEAL'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
+//		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
+//		$itm[3] = '广域生命探测器'; $itmk[3] = 'R'; $itme[3] = 50; $itms[3] = 1;$itmsk[3] = 2;
+//		$itm[4] = 'END BOSS PLASMA'; $itmk[4] = 'WG'; $itme[4] = 300; $itms[4] = 300;$itmsk[4] = 'ur';
+//		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
+//		$wep = 'END BOSS KNIFE';$wepk = 'WK';$wepe = 300;$weps = 300;$wepsk = 'r';
+//		$arb = '能量装甲';$arbk = 'DB'; $arbe = 400; $arbs = 150; $arbsk = 'A';
+//		$arh = '机动头盔';$arhk = 'DH'; $arhe = 200; $arhs = 150; $arhsk = 'UI';
+//		$ara = '腕力增幅器';$arak = 'DA'; $arae = 200; $aras = 150; $arask = 'c';
+//		$arf = '金属战靴';$arfk = 'DF'; $arfe = 200; $arfs = 150; $arfsk = 'q';
+//		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
+//		$wp=$wk=$wg=$wc=$wd=$wf=200;
+//	}
+	
 	$state = 0;
 	$bid = 0;
 	$inf = $teamID = $teamPass = '';
@@ -121,7 +140,7 @@ if($mode == 'enter') {
 }
 
 function makeclub() {
-	global $wp,$wk,$wg,$wc,$wd,$wf,$money,$mhp,$msp;
+	global $wp,$wk,$wg,$wc,$wd,$wf,$money,$mhp,$msp,$hp,$sp;
 	$wp = $wk = $wg = $wc = $wd = $wf = 0;
 	$dice = rand(0,149);
 	if($dice < 15)		{$club = 1;$wp = 25;}//殴25
@@ -137,7 +156,7 @@ function makeclub() {
 	elseif($dice < 125)	{$club = 11;$money = 500;}//出击钱数500
 	elseif($dice < 135)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 10;}//全熟练10
 	elseif($dice < 145)	{$club = 13;$mhp = $mhp + 100;$hp = $mhp;}//生命上限提高100
-	elseif($dice < 150)	{$club = 14;$msp = $msp + 150;$sp = $msp;}//体力上限提高150
+	elseif($dice < 150)	{$club = 14;$msp = $msp + 200;$sp = $msp;}//体力上限提高200
 	else				{$club = makeclub();}
 	return $club;
 }

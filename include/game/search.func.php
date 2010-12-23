@@ -6,6 +6,7 @@ if(!defined('IN_GAME')) {
 
 function move($moveto = 99) {
 	global $log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
+	
 
 	$plsnum = sizeof($plsinfo);
 	if(($moveto == 'main')||($moveto < 0 )||($moveto >= $plsnum)){
@@ -19,10 +20,16 @@ function move($moveto = 99) {
 		return;
 	}
 	
-	//足部受伤，20；足球社，12；冻伤，30；正常，15；
+	//足部受伤，20；足球社，12；冻伤，30；正常，15；去gamecfg里改吧
 	$movesp = 15;
-	if(strpos($inf, 'f') !== false){ $movesp += 5; }
-	if(strpos($inf, 'i') !== false){ $movesp += 15; }
+	if ($inf) {
+		global $inf_move_sp;
+		foreach ($inf_move_sp as $inf_ky => $sp_down) {
+			if(strpos($inf,$inf_ky)!==false){$movesp+=$sp_down;}
+		}
+	}
+	//if(strpos($inf, 'f') !== false){ $movesp += 5; }
+	//if(strpos($inf, 'i') !== false){ $movesp += 15; }
 	if($club == 6){ $movesp -= 3; }
 
 	
@@ -52,8 +59,24 @@ function move($moveto = 99) {
 		$pls = $moveto;
 		$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 	}
-
-	if(strpos($inf, 'p') !== false){
+	
+	if($inf){
+		global $infwords,$inf_move_hp;
+		foreach ($inf_move_hp as $inf_ky => $o_dmg) {
+			if(strpos($inf,$inf_ky)!==false){
+				$damage = round($mhp * $o_dmg) + rand(0,15);
+				$hp -= $damage;
+				$log .= "{$infwords[$inf_ky]}减少了<span class=\"red\">$damage</span>点生命！<br>";
+				if($hp <= 0 ){
+					include_once GAME_ROOT.'./include/state.func.php';
+					death($inf_ky.'move');
+					return;
+				}
+			}			
+		}
+	}
+	
+	/*if(strpos($inf, 'p') !== false){
 		$damage = round($mhp/16) + rand(0,10);
 		$hp -= $damage;
 		$log .= "<span class=\"purple\">毒发</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
@@ -69,10 +92,10 @@ function move($moveto = 99) {
 		$log .= "<span class=\"yellow\">烧伤发作</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){
 			include_once GAME_ROOT.'./include/state.func.php';
-			death('burnmove');
+			death('umove');
 			return;
 		}
-	}
+	}*/
 	$log .= $areainfo[$pls];
 	if(($gamestate>=40)&&($pose!=3)){
 		discover(100);
@@ -86,15 +109,22 @@ function move($moveto = 99) {
 function search(){
 	global $log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp,$mhp,$inf;
 	
+	
 	if(array_search($pls,$arealist) <= $areanum && !$hack){
 		$log .= $plsinfo[$pls].'是禁区，还是赶快逃跑吧！<br>';
 		return;
 	}
 
-	//腕部受伤，20；冻伤：30；侦探社，12；正常，15；
+	//腕部受伤，20；冻伤：30；侦探社，12；正常，15；改到gamecfg
 	$schsp =15;
-	if(strpos($inf, 'a') !== false){ $schsp += 5; }
-	if(strpos($inf, 'i') !== false){ $schsp += 15; }
+	if ($inf) {
+		global $inf_search_sp;
+		foreach ($inf_search_sp as $inf_ky => $sp_down) {
+			if(strpos($inf,$inf_ky)!==false){$schsp+=$sp_down;}
+		}
+	}
+	//if(strpos($inf, 'a') !== false){ $schsp += 5; }
+	//if(strpos($inf, 'i') !== false){ $schsp += 15; }
 	if($club == 10){ $schsp -= 3; }
 	
 
@@ -116,7 +146,23 @@ function search(){
 	
 	$sp -= $schsp;
 	$log .= "消耗<span class=\"yellow\">{$schsp}</span>点体力，你搜索着周围的一切。。。<br>";
-	if(strpos($inf, 'p') !== false){
+	if($inf){
+		global $infwords,$inf_search_hp;
+		foreach ($inf_search_hp as $inf_ky => $o_dmg) {
+			if(strpos($inf,$inf_ky)!==false){
+				$damage = round($mhp * $o_dmg) + rand(0,10);
+				$hp -= $damage;
+				$log .= "{$infwords[$inf_ky]}减少了<span class=\"red\">$damage</span>点生命！<br>";
+				if($hp <= 0 ){
+					include_once GAME_ROOT.'./include/state.func.php';
+					death($inf_ky.'move');
+					return;
+				}
+			}			
+		}
+	}
+	
+	/*if(strpos($inf, 'p') !== false){
 		$damage = round($mhp/32) + rand(0,5);
 		$hp -= $damage;
 		$log .= "<span class=\"purple\">毒发</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
@@ -132,10 +178,10 @@ function search(){
 		$log .= "<span class=\"yellow\">烧伤发作</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
 		if($hp <= 0 ){
 			include_once GAME_ROOT.'./include/state.func.php';
-			death('burnmove');
+			death('umove');
 			return;
 		}
-	}
+	}*/
 	if(($gamestate>=40)&&($pose!=3)) {
 		discover(100);
 	} else {
@@ -146,8 +192,7 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$active_obbs,$bid;
-
+	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$bid;
 	$event_dice = rand(0,99);
 	if($event_dice < $event_obbs){
 		include_once GAME_ROOT.'./include/game/event.func.php';
@@ -193,12 +238,11 @@ function discover($schmode = 0) {
 						return;
 					} else {
 						$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf);
-						
 						$bid = $edata['pid'];
 						//$itmsk0 = $edata['pid'];
 						
 						$active_dice = rand(0,99);
-						if($active_dice < $active_obbs + $active_r) {
+						if($active_dice <  $active_r) {
 							include_once GAME_ROOT.'./include/game/battle.func.php';
 							findenemy($edata);
 							return;
@@ -261,6 +305,7 @@ function discover($schmode = 0) {
 			$log .= "但是什么都没有发现。<br>";
 		}
 	}
+	
 	$mode = 'command';
 	return;
 

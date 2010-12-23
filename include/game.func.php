@@ -33,9 +33,23 @@ function init_playerdata(){
 
 function init_profile(){
 	global $inf,$infinfo,$hp,$mhp,$sp,$msp,$infdata,$infimg,$hpcolor,$spcolor,$newhpimg,$newspimg,$ardef,$arbe,$arhe,$arae,$arfe;
+	global $itemspkinfo,$wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk,$itmsk0,$itmsk1,$itmsk2,$itmsk3,$itmsk4,$itmsk5;
+	global $nospk,$wepsk_words,$arbsk_words,$arhsk_words,$arask_words,$arfsk_words,$artsk_words,$itmsk0_words,$itmsk1_words,$itmsk2_words,$itmsk3_words,$itmsk4_words,$itmsk5_words;
+	foreach (Array('wepsk','arbsk','arhsk','arask','arfsk','artsk','itmsk0','itmsk1','itmsk2','itmsk3','itmsk4','itmsk5') as $sk_value) {
+		if(${$sk_value} && is_numeric(${$sk_value}) == false){
+			${$sk_value.'_words'} = '';
+			for ($i = 0; $i < strlen($sk_value); $i++) {
+				${$sk_value.'_words'} .= $itemspkinfo[substr(${$sk_value},$i,1)];
+			}
+		} else {
+			${$sk_value.'_words'} =$nospk;
+		}
+	}
+
 	$ardef = $arbe + $arhe + $arae + $arfe;
+	$infdata = '';
 	if($inf) {
-		$infdata = '<span class="red b">';
+		//$infdata = '<span class="red b">';
 		if(strpos($inf,'h') !== false){
 			$infdata .= $infinfo['h'];
 			$infimg .= '<img src="img/h.gif" style="position:absolute;top:0;left:4;width:146;height:19">';
@@ -52,22 +66,28 @@ function init_profile(){
 			$infdata .= $infinfo['f'];
 			$infimg .= '<img src="img/f.gif" style="position:absolute;top:60;left:4;width:139;height:57">';
 		}
-		$infdata .= '</span>';
+		//$infdata .= '</span>';
 		if(strpos($inf,'p') !== false) {
-			$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+			$infdata .= $infinfo['p'];
+			//$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
 			$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
 		}
 		if(strpos($inf,'u') !== false) {
-			$infdata .= "<span class=\"yellow b\">{$infinfo['u']}</span>";
+			$infdata .= $infinfo['u'];
+			//$infdata .= "<span class=\"red b\">{$infinfo['u']}</span>";
 			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
 		}
 		if(strpos($inf,'i') !== false) {
-			$infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
+			$infdata .= $infinfo['i'];
+			//$infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
 			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
 		}
-	} else {
-		$infdata = '';
-	}
+		if(strpos($inf,'e') !== false) {
+			$infdata .= $infinfo['e'];
+			//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
+			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
+		}
+	} 
 
 	$hpcolor = 'clan';
 	if($hp <= 0 ){
@@ -148,8 +168,13 @@ function init_battle($ismeet = 0){
 		$w_iconImg = $w_i.'_'.$w_icon.'.gif';
 		if($w_inf) {
 			$w_infdata = '';
-			$w_infdata = '<span class="red b">';
-			if(strpos($w_inf,'h') !== false){
+			foreach ($infinfo as $inf_ky => $inf_nm) {
+				if(strpos($w_inf,$inf_ky) !== false) {
+					$w_infdata .= $inf_nm;
+				}
+			}
+			//$w_infdata = '<span class="red b">';
+			/*if(strpos($w_inf,'h') !== false){
 				$w_infdata .= $infinfo['h'];
 			}
 			if(strpos($w_inf,'a') !== false){
@@ -160,9 +185,9 @@ function init_battle($ismeet = 0){
 			}
 			if(strpos($w_inf,'f') !== false){
 				$w_infdata .= $infinfo['f'];
-			}
-			$infdata .= '</span>';
-			if(strpos($w_inf,'p') !== false) {
+			}*/
+			//$infdata .= '</span>';
+			/*if(strpos($w_inf,'p') !== false) {
 				$w_infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
 			}
 			if(strpos($w_inf,'u') !== false) {
@@ -170,7 +195,7 @@ function init_battle($ismeet = 0){
 			}
 			if(strpos($w_inf,'i') !== false) {
 				$w_infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
-			}
+			}*/
 		} else {
 			$w_infdata = '';
 		}

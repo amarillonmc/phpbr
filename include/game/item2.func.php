@@ -88,7 +88,7 @@ function hack($itmn = 0) {
 		$itm = $itmk = $itmsk = '';
 		$itme = $itms = 0;
 	} elseif($hack_dice2 < 8) {
-			$log .= "“小心隔墙有耳哦。”——<span class=\"evergreen\">林无月</span><br>";
+			$log .= "<span class=\"evergreen\">“小心隔墙有耳哦。”</span>——林无月<br>";
 			include_once GAME_ROOT.'./include/state.func.php';
 			$log .= '你擅自入侵禁区控制系统，被控制系统远程消灭！<br>';
 			death('hack');

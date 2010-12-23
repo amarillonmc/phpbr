@@ -49,7 +49,7 @@ function chginf($infpos){
 		} else {
 			$inf = str_replace($infpos,'',$inf);
 			$sp -= $inf_sp;
-			$log .= '<span class="red">'.$infinfo[$infpos].'部</span>的伤口已经包扎好了！';
+			$log .= $infinfo[$infpos].'<span class="red">部</span>的伤口已经包扎好了！';
 			$mode = 'command';
 			return;
 		}

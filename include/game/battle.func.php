@@ -165,6 +165,4 @@ function senditem(){
 	return;
 }
 
-
-
 ?>

@@ -1,3 +1,8 @@
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
 {template header}
 
 
@@ -5,7 +10,7 @@
 
 
 <div class="subtitle" >{lang help}</div>
-<span class="lime">GM重新撰写帮助中，请等待，谢谢！</span><br>
+
 
 <HR>
 <DIV align="center" class=Filler>
@@ -27,26 +32,26 @@ cellSpacing=0 cellPadding=0 align=center border=1>
   <TR>
     <TD><A href="help.php#常见问题">常见问题</A></TD>
     <TD><A href="help.php#参加游戏">参加游戏</A></TD>
-    <TD><A href="help.php#胜利条件">胜利条件</A></TD>
+    <TD><A href="help.php#禁区和胜利">禁区和胜利</A></TD>
     <TD><A href="help.php#操作说明">操作说明</A></TD>
     <TD><A href="help.php#指令说明">指令说明</A></TD></TR>
   <TR>
     <TD><A href="help.php#道具说明">道具说明</A></TD>
     <TD><A href="help.php#道具合成">道具合成</A></TD>
-    <TD><A href="help.php#社团说明">社团说明</A></TD>
+    <TD><A href="help.php#内定称号">内定称号</A></TD>
     <TD><A href="help.php#战斗说明">战斗说明</A></TD>
-    <TD><A href="help.php#受伤，状态">受伤，状态</A></TD></TR>
+    <TD><A href="help.php#受伤与状态">受伤与状态</A></TD></TR>
   <TR>
-    <TD><A href="help.php#基本姿态">基本姿态</A></TD>
+    <TD><A href="help.php#基础姿态">基础姿态</A></TD>
     <TD><A href="help.php#应战策略">应战策略</A></TD>
     <TD><A href="help.php#熟练度">熟练度</A></TD>
-    <TD><A href="help.php#禁区">禁区</A></TD>
+    <TD><A href="help.php#属性">属性</A></TD>
     <TD><A href="help.php#天气">天气</A></TD></TR>
   <TR>
     <TD><A href="help.php#武器">武器</A></TD>
     <TD><A href="help.php#毒药和陷阱">毒药和陷阱</A></TD>
     <TD><A href="help.php#特殊道具">特殊道具</A></TD>
-    <TD><A href="help.php#必杀技">必杀技</A></TD>
+    <TD><A href="help.php#重击和必杀">重击和必杀</A></TD>
     <TD><A href="help.php#玩家守则">玩家守则</A></TD></TR>
 </TBODY></TABLE>
 <HR>
@@ -82,295 +87,647 @@ cellSpacing=0 cellPadding=0 align=center border=1>
 8.清水池新增神北小毬，一之濑琴美和SSS团长的半身像，可以合成得到攻击力是原催泪弹攻击力的约1/10；耐久为原催泪弹的45倍的爆系武器。<br><br>
 以上修改，从新服169回游戏开始生效，结束剧情的更改可能要再推后一点，老服的话暂定为WID。<br><br>冴月麟<br>2010-05-20 0221AM 
 EST
-<br><br>1.92<br>Initial Release of BRA 2.<br>
-在开始游戏前请详阅下面的说明书。 内容很多没错， 不过对于第一次入门来说的人有阅读的必要。 <BR>
-<B class="red">连下面最常见问题也不看的玩家可能在任何时间被强制杀死退出游戏。</B> <BR>
-就算你没时间看完，也请在发问前先来这里搜寻一下有没有你要问的问题。<BR> 这里没有说明的，则是希望让玩家自行探索。 因为这是说明书，不是攻略。<BR>
-注意，以下说明中设计的所有数值，都是初始设定，管理员可根据情况修改。一切数据以游戏中的为准。<BR><BR>
+<br><br>1.92<br>Initial Release of BRA 2.EST<br><br>
 
-<B style="COLOR: #f00"><A name=FAQ>■FAQ 常见问题</A></B><BR>
-<DIV align="left" class=FAQ>下面列出许多新手最常问的问题。 若问了这里已有的问题会被视为没看说明书。<BR>
+<p>写在前面的话</p>
+<p>作为一款网页游戏，BR大逃杀也算是有点年头的东西了。<br>也许你已经是BR原版的老玩家了；也许你虽然没怎么玩过BR大逃杀，但是对类似的网页游戏有所涉猎；当然更可能的情况是你以前并没有接触过这款网页游戏。<br>无论你是刚刚在上一局游戏胜出的老手，为了打发下一盘游戏开始前的等待时间而点进来看帮助；<br>还是你是初出茅庐的菜鸟，刚刚莫名其妙地死亡之后决定好好了解一下游戏的进行方式，<br>本帮助文档都希望使你了解到关于这款BR大逃杀改进版——常磐大逃杀——的更多的知识。</p>
+<p>以下就是关于这款游戏的基本说明，包括游戏的操作方式、游戏过程、基本的道具资料以及NPC资料。<BR>部分内容并未在此说明，则是为了保留一点神秘感，增加游戏的趣味性。<BR>
+注意，以下帮助文档中的所有资料，都是常磐大逃杀v.2.65版本的资料，如果版本号更新则可能出现变动。一切数据以游戏为准，本帮助文档仅供参考。<BR><BR></p>
+
+<B style="COLOR: #f00"><A name="常见问题">■FAQ 常见问题</A></B><BR>
+<DIV align="left" class=FAQ>下面以FAQ的形式将常磐大逃杀最基本的游戏概念作简要的阐述。<BR>
 <DL>
-  <DT>问：我是新手，这怎么玩？ (看不懂/教我玩/带我玩) 
-  <DD>答：这是一个网页游戏，请大略把这整份说明书看过一遍，<BR>第一次看可能很多地方看不懂，你不用急着把它背起来，<BR>先有个概念，然后时间到注册进去，顺便把说明书的窗口开在旁边对照着看，<BR>玩个两三遍很快就会了解了。大部份的人上手后都同意其实一开始想问的问题 在这份说明书中都有答案。<BR>新手不是罪恶，但更不是借口。问问题请仔细提出你哪里不懂，如果只有一句看不懂或教我玩，别人想帮也不知何从帮起，所以我们只好视为干扰游戏进行。 <BR>
-  <DT>问：怎么注册？ 我之前注的账号不能用了？ 
-  <DD>答：你只要注册游戏所在的论坛账号就可以了。<BR> 
-  <DT>问：钱(资金)是干么用的、怎么赚钱、怎么买东西、能不能卖东西? 
-  <DD>答：钱可以在商店买东西，不能卖东西，只有杀人才可以拿钱。 商店的位置在分校与废校的「特殊」指令。 
-  <DT>问：怎么组队？ 怎样加入队伍？ 怎么给队友东西？给队友钱？ 
-  <DD>答：组队或加入队伍请选「队伍」，<BR>创立队伍请直接输入你想用的队伍名称以及想用的密码，<BR>加入别人的队伍则输入对方的队名密码。<BR>公频上常有人在临时公开招人（会自报名称密码），想加入可多注意公频。<BR>(如通常「XXX/123」表示队名是 XXX，密码是 123)<BR>钱不能给队友。<BR>
-  <DT>问：公频上有人在换东西！ 怎么跟他交换？ 
-  <DD>答：只能用队友给东西的方式。 通常换东西是会先沟通好进同一队，<BR>然后约好地方互探（记得留空格），等到彼此都给了东西就 OK 了。<BR>但请小心人心险恶，交易过程中发生什么事原则上站方是不处理的。<BR>（若有人过度恶意行为被多次告发等等还是会介入进行调查）<BR>
-  <DT>问：怎样杀人？ 怎样才会死？ 
-  <DD>答：碰到(原地探索与移动)人就可攻击。 对方或自己血扣完就死了。 
-  <DT>问：怎样回复(增加)体力、耐力？ 
-  <DD>答：回体耐可以吃东西或用睡眠、治疗、静养等指令回复。<BR>但注意要按返回或有战斗才会显示回复量，且太快返回可能会无回复效果。 
-  <DT>问：受伤怎么办？ 中毒怎么办？ 
-  <DD>答：受伤跟中毒都不会自动解除。 受伤时在「特殊」会多出「包扎伤口」(要耐力够才行)， 中毒只有找或买解毒剂。 
+  <DT>问：常磐大逃杀怎么玩？ 
+  <DD>答：常磐大逃杀是一个网页游戏，基本操作跟浏览其他网页是一样的，用鼠标选择指令并发送就可以进行游戏了。<br>至于更深入的知识，请大略把整份帮助文档浏览一遍，<BR>第一次看可能很多地方一知半解，不用急着把它背起来，<BR>只要头脑中有游戏概念，玩的时候遇到不了解的情况就查询帮助，<BR>两三盘游戏之后差不多就会明白游戏流程了<BR>
+  <DT>问：怎么注册？ 
+  <DD>答：如果游戏依附于论坛，那么可能需要你注册那个论坛的账号，并用这个账号登陆游戏。<BR>不过多数情况下游戏是独立运行的，只要在首页输入用户名密码就算注册了，并且下次登陆键入相同的用户名密码就能沿用这个账号。<br> 
+  <DT>问：怎么移动？怎么捡东西？怎么找敌人？ 
+  <DD>答：在“移动”下拉框选择想移动到的地点并且提交，就可以移动到该地点。<br>选择“搜索”选项并且提交则会在原地进行探索。<br>移动和探索都会消耗一定体力，如果自己处于异常状态还可能损失一定生命，而且可能遇到敌人、队友、尸体陷阱、意外事件，或者发现物品。<br>如果发现物品，选择“拾取”则会将其放入包裹，如果包裹已满则会让你进行取舍；选择“丢弃”则会将不要的物品直接丢弃。<BR>
+  <DT>问：怎样杀人？怎样会死？ 
+  <DD>答：原地探索或者移动之后，有一定概率遭遇敌人。<br>如果对方发现了你，那么强制进入战斗；<br>如果对方没有发现你，那么你可以酌情选择攻击或者逃跑。<br>战斗时依据双方攻击、防御以及熟练度，会互相造成损伤。<br>战斗中如果对方生命减为0，那么对方死亡，你可以在尸体上掠夺一件物品或者拿走金钱。<br>如果游戏没有进入连斗状态，以后还有可能再遇到同一个人的尸体，还有机会再拿物品，当然其他玩家也可能捷足先登。<br>如果你自己生命减为0，那么你将死去，在同一局游戏中无法再进行任何活动。<br>
+  <DT>问：钱是干么用的？怎么赚钱？怎么买东西？能不能卖东西？ 
+  <DD>答：钱可以在商店购买装备或者道具。<br>进入游戏时会自动给每个玩家发一定数量的金钱，NPC身上也有大量金钱，杀死玩家或者NPC就能拿到他身上携带的金钱。<br>除此之外，没有别的获得金钱的方式。<br>不同游戏版本里，商店的位置并不完全一样。常磐大逃杀里，在“管理后台”与“光坂高校”选择“特殊”下拉框的“商店”就能够进入商店了。 
+  <DT>问：能组队吗？怎么组队？怎样加入队伍？怎么给队友东西？给队友钱？ 
+  <DD>答：在游戏进入“连斗”阶段之前都可以组队，进入“连斗”之后所有队伍自动解散并且无法再组队，此时玩家只能自相残杀。<BR>想创立队伍或加入队伍请选“队伍”指令。<BR>创立队伍请直接输入你想用的队伍名称以及想用的密码，如果创立成功会消耗一定体力。<BR>加入别人的队伍则输入对方的队名密码，加入成功也会消耗一定体力。<BR>成为队友之后，只要可见度良好，队友之间都不会互相攻击。<BR>遇到队友时，可以选择将道具送给队友，但是钱不能给队友。<BR>起雾或者浓雾天气，可见度差，就算是队友也会误伤。<BR> 
+  <DT>问：体力耗尽了！生命值快归零了！怎样回复体力和生命？ 
+  <DD>答：回复体力和生命有三种办法：吃补给品、睡眠/治疗/静养，以及等级提升。<BR>游戏开局会发面包和矿泉水，分别能回复生命和体力。游戏各地区地面上也散布有大量的补给品，不过可能带毒，服用后反而损失生命。<BR>如果补给耗尽，选择“睡眠”指令并提交可以随时间回复体力，选“治疗”指令则是回复生命，在“常磐镇医院”还可以选择“静养”指令，同时回复体力和生命。<BR>点击“提交”能看到回复量，在回复时，无法进行其他行动；点击“返回”并提交则返回作战状态。<BR>此外，等级提升时也能回复少量体力和生命值。<BR> 
+  <DT>问：受伤了怎么办？中毒怎么办？ 
+  <DD>答：受伤跟中毒都不会自动解除。<BR>受伤时在“特殊”下拉框选择“包扎伤口”指令，消耗一定体力包扎伤口。<BR>如果中毒只有寻找或购买解毒剂并服用才能解除。<BR> 
   </DD></DL></DIV>
+<br><br>
+<B style="COLOR: #f00"><A name="参加游戏">1。参加游戏</A></B><BR>
+<p>
+在常磐大逃杀的首页，可以看到输入用户名和密码的输入框。<br>
+<br>
+如果游戏是以论坛插件形式存在的，必须首先注册相应论坛的账号。<br>
+然后在登陆论坛后，进入论坛的大逃杀插件，并用论坛账号登陆即可进行游戏。<br>
+<br>
+如果游戏不依附于论坛，在游戏首页输入用户名和密码并点击“登陆”<br>
+如果以前用同一个账号登陆过，则会激活此账号。若为新账号，则会自动进行新用户注册。<br>
+如果已经激活了账号，将不显示用户名密码输入框，而显示“进入游戏”按钮。<br>
+若游戏状态为“开放激活”，点击“进入游戏”即可进入游戏角色创建流程。<br>
+注意，每局游戏开始时，必须重新激活一次角色。<br>
+<br>
+如果中途要离开游戏，只要退出论坛或者关闭浏览器即可。<br>
+请注意，就算你离开游戏，你的游戏角色仍留在在游戏中，有可能被别人杀死、因停留在禁区被抹杀，或者遭遇到别的事情。<br>
+所以，在离开前请注意将游戏角色移动到合适的地点，并调整自己的迎战策略。</p>
 
-<B class="red">注意：以下涉及的数据，皆为游戏原始数据，管理员可能会修改，以实际游戏中数据为准！</B> <BR>
+<br><br>
+<B style="COLOR: #f00"><A name="禁区和胜利">2。禁区和胜利</A></B><BR>
+<p>
+常磐大逃杀地图中共有25个区域。<br>
+根据服务器的设定，每隔一定的时间，就会有一些地区变为禁区。<br>
+在禁区增加的那一刻，如果有人停留在禁区未走，或者姿态没有调整为“躲避姿态”，将会被强行杀死。<br>
+禁区增加到一定程度，将会使游戏进入“连斗阶段”。<br>
+进入连斗以后，游戏停止激活，所有尸体消失，所有队伍解散，剩下的人必须决一死战。<br>
+同时禁区还会继续增加，如果全部地区都变为禁区，那么所有的参与者都会死亡，这局游戏将没有胜利者。<br>
+在全部地区变为禁区之前，将其他参与者全部杀死。<br>
+最后独存的那个人，就是本局游戏的胜利者，将迎来“最后幸存”结局。<br>
 <br>
-<B style="COLOR: #f00"><A name=参加游戏>1。参加游戏</A></B><BR>
+如果找到道具“移动PC”，玩家可以解除禁区。<br>
+从禁区解除的时刻起一直到下一次增加禁区的时间为止，玩家可以任意访问被禁止的区域。<br>
+如果玩家对自己的能力足够自信，可以尝试挑战位于管理后台的BOSS，击败游戏BOSS并使用BOSS身上的特殊道具将迎来“锁定解除”结局。<br>
+可能存在别的游戏结局，期待玩家可以找到。</p>
+<br><br>
+<B style="COLOR: #f00"><A name="操作说明">3。操作说明</A></B><BR>
 <br>
-本游戏是以论坛插件形式存在的，所以在进行游戏前，必须首先注册相应论坛的账号。<br>
-然后在登陆论坛后，进入论坛的“生存游戏”插件。<br>
-在“生存游戏”的首页，可以看到“进入游戏”的按钮。<br>
-当游戏状态为“开放激活”时，点击此按钮即可进入游戏角色激活流程。<br>
-如果已经激活了账号，将直接进入游戏进行界面。<br>
-注意，每局游戏开始时，必须重新激活一次角色。<br><br>
+<p>下面这是一般游戏进行中的画面，整个游戏是以选指令的方式进行的。左上为你的状态显示，左下部分为聊天框，右半边就是下指令的地方。  <br>
+  <img src="img/help.png" width="923" height="590"></p><br>
 
-如果中途要退出游戏，只要退出论坛或者关闭浏览器即可。<br>
-但是，此时你的人物还是会继续在游戏中生存，所以有可能被别人杀死，或者因停留在禁区被爆头。<br>
-所以，在离开前请注意调整自己的策略和姿态。<br>
 
-<br>
-<B style="COLOR: #f00"><A name=胜利条件>2。胜利条件</A></B><BR>
-<br>
-游戏中共有22个地区。<br>
-每隔一定的时间，就会有一些地区变为禁区。<br>
-玩家必须在全部地区变为禁区之前，将其他参加游戏者全部杀死。<br>
-最后存活的那个人，就是本局游戏的胜利者。<br>
-可能存在其它的结局，期待玩家可以找到。<br>
-<br>
-<B style="COLOR: #f00"><A name=操作说明>3。操作说明</A></B><BR>
-<br>
-<DIV style="BORDER-RIGHT: white 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: white 1px solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; MARGIN: 1em; BORDER-LEFT: white 1px solid; WIDTH: 500px; PADDING-TOP: 0.5em; BORDER-BOTTOM: white 1px solid; TEXT-ALIGN: center; color:lime;">下面这是一般游戏进行中的画面。整个游戏是以选指令的方式进行的。<BR>左上为你的状态显示，左下部分为聊天框，右半边就是所有下指令的地方。<BR><IMG src="img/help_1.gif"></DIV>
+<B style="COLOR: #f00"><A name="指令说明">4。指令说明</A></B><BR>
+<p>
+『移动』 消耗15点体力，离开现在的区域而移动到别的区域。<br> 
+『探索』 消耗15点体力，探索现在的区域。<br>
+移动和探索都可能遇到敌人、队友、尸体，遇上突发事件，或者发现物品。<br>
+『道具使用』 根据道具的类型使用或者装备所选的道具。可拥有的道具上限是5个。</p>
 
-<B style="COLOR: #f00"><A name=指令说明>4。指令说明</A></B><BR>
-<br>
-『移动』 离开现在的区域，移动到别的区域。容易与其他人遭遇。 （消耗15点耐力）<br> 
-『探索』 探索现在的区域，可能发现道具或者敌人等。 （消耗15点耐力）  <br>
-『道具使用』 根据道具的类型使用或者装备所选的道具。可拥有的道具上限是5个<br><br>
 
+<p>
 “道具”：<br>
-『道具合成』  将2或3个不同的道具，合成为一个新道具。常见的合成公式请参考下文<br>
-『道具丢弃』  将包裹里的道具丢掉。丢弃的道具不会消失，将放置在当前的地图上。<br>
-『整理包裹』  可以将完全相同的道具合并的一起，节约包裹空间。<br>
-『卸下装备』  将身上的武器或者防具写下放置到包裹里。<br><br>
+『道具合成』 将2或3个不同的道具，合成为一个新道具。常见的合成公式请参考下文<br>
+『道具丢弃』 将包裹里的道具丢掉。丢弃的道具不会消失，将被放置在当前的地区，自己或别人还能再次找到。<br>
+『整理包裹』 可以将完全相同的道具合并在一起，节约包裹空间。注意，将有毒的食物和无毒的食物合并，会使全部食物带毒。<br>
+『卸下装备』 将身上的武器或者防具卸下放置到包裹里。</p>
 
 
+<p>
 “恢复”：<br>
-『睡眠』 恢复体力<br>
-『治疗』 恢复生命，但是不会治疗伤口（伤口治疗在“特殊”功能内）<br>
-『精养』 同时恢复生命和体力，只能在诊所内进行<br><br>
+『睡眠』 根据睡眠的时间和体力上限，按一定比例恢复体力。<br>
+『治疗』 根据睡眠的时间和生命上限，按一定比例恢复生命，但是不会治疗伤口或解除异常状态。伤口治疗在“特殊”功能内。<br>
+『静养』 同时恢复生命和体力，只能在常磐镇医院内进行。</p>
 
 
+
+
+<p>
 “特殊”：<br>
-『商店』：在分校或者废校时，可以进入商店购买道具。购买前请确认包裹里有空位放置道具。<br>
-『基础姿态』 更改自己的行动姿态，详情见下文<br>
-『应战策略』更改自己的应战策略，详情见下文。<br>
-『留言变更』 修改自己的口头禅，杀人留言和遗言<br>
-『包扎伤口』 如果在战斗中受伤，则使用此功能处理伤口。（消耗25点体力）<br>
-『查毒』 检查饮食中是否有毒，只有烹饪社具有此功能。<br><br>
+『商店』：在管理后台或光坂高校时，可以进入商店购买道具。购买前请确认包裹里有空位放置道具，否则会要求丢弃一个道具。<br>
+『基础姿态』 更改自己的行动姿态，各种行动姿态的详情见下文。<br>
+『应战策略』 更改自己的应战策略，各种应战策略的详情见下文。<br>
+『留言变更』 修改自己的座右铭，杀人留言和遗言。<br>
+『包扎伤口』 如果在战斗中受伤，可以使用此功能处理伤口。包扎伤口要消耗25点体力，如果体力不足则无法包扎。<br>
+『查毒』 检查饮食中是否有毒，只有特性为“黑衣组织”时才能使用具有此功能。</p>
 
 
-
+<p>
 “队伍”：<br>
-同一队伍的人可以赠送道具，但是不能互相攻击。（特殊天气下，可能会误伤）<br>
+同一队伍的人可以赠送道具，但是不能互相攻击。注意：在能见度很低的天气状况下可能会误伤。<br>
 进入连斗后，所有的队伍都将被取消，并且不能再组建或者加入队伍。<br>
-『创建队伍』  组建一个新的队伍，队伍必须有名称和密码。（消耗50点体力）<br>
-『加入队伍』  加入一个已经存在的队伍，需要填写队伍名称和密码。每支队伍最多有5人。（消耗25点体力）<br>
-『脱离队伍』  脱离目前已经加入的队伍。<br><br>
+『创建队伍』  消耗50点体力，组建一个新的队伍，队伍必须有名称和密码。<br>
+『加入队伍』  消耗25点体力，加入一个已经存在的队伍，需要填写队伍名称和密码。每支队伍最多有5人。<br>
+『脱离队伍』  脱离目前已经加入的队伍。</p><br><br>
 
-<br>
+<B style="COLOR: #f00"><A name="道具说明">5。道具说明</A></B><BR>
 
-<B style="COLOR: #f00"><A name=道具说明>5。道具说明</A></B><BR>
-
-<br>
+<p>
 道具有以下几种类型：<br>
-『生命恢复』：使用后恢复生命<br>
-『体力恢复』：使用后恢复体力<br>
-『命体恢复』：使用后同时恢复生命和体力<br>
-小提示：所有的恢复类道具，都有可能含毒。<br>
-『武器』：使用后装备在手上，增加攻击力。分为殴，斩，射，投，爆五系<br>
-『防具』：使用后装备在身体上，增加防御力，并保护该部位不会受伤。分为体，头，腕，足四个部位<br>
-『饰品』：使用后佩戴在身体上，有特殊用途。<br>
-『特殊』：特殊道具，部分特殊道具的用途见“特殊道具”部分<br>
+『生命恢复』：使用后按道具的效果值恢复生命。<br>
+『体力恢复』：使用后按道具的效果值恢复体力。<br>
+『命体恢复』：使用后同时恢复生命和体力。<br>
+小提示：所有的恢复类道具，都有可能含毒。如果使用了带毒的恢复类道具，不仅不能恢复生命或者体力，还会损失一定的生命，并且进入“中毒”状态。<br><br>
+『药剂』：根据药剂类型的不同，使用后能够去除异常状态。如果不在异常状态，服用药剂完全无效。<br>
+『技能书』：使用后，能够按一定比例增加玩家的熟练度。如果玩家熟练度较高，技能书的效果会降低，甚至倒扣熟练度。<br>
+『能力药』：使用后，能够按一定比例增加玩家的各项能力。如果玩家各项能力较高，能力药的效果会降低，甚至倒扣能力值。<br><br>
+『武器』：使用后装备在手上，增加攻击力。武器分为殴，斩，射，投，爆，灵六系，不同的武器有不同的特性，详情见下文。<br>
+『防具』：使用后装备在身体上，增加防御力，并保护该部位不会受伤。分为体，头，腕，足四个部位。<br>
+『饰品』：使用后佩戴在身体上，部分饰物有特殊用途。<br><br>
+『合成专用』：用来合成更高级道具的物品，单独携带是没有任何作用的。<br>
+『特殊』：有特殊用途的道具，详情见“特殊道具”部分</p>
 
+<br><br>
+<B style="COLOR: #f00"><A name="道具合成">6。道具合成</A></B><BR>
 <br>
-<B style="COLOR: #f00"><A name=道具合成>6。道具合成</A></B><BR>
-<br>
-可以将某些物品合成为另一种物品，只要名称正确即可合成。合成道具时可增加爆熟。<br>
-常见物品合成表：
-<TABLE cellSpacing=0 cellPadding=0 border=0>
+可以将某些物品合成为另一种物品，只要名称正确即可合成。合成道具成功则可增加爆熟。<br>
+常见物品合成表：<BR>
+
+<TABLE cellSpacing=0 cellPadding=0 border=1px>
   <TBODY>
   <TR>
-    <TD width=20>　</TD>
-    <TD>
-      <TABLE style="WIDTH: 500px" cellSpacing=0 cellPadding=0 border=1>
-        <TBODY>
-        <TR>
-          <TD bgColor=#ffff00><B><FONT color=#000000>合成材料</FONT></B></TD>
-          <TD bgColor=#ffff00>　</TD>
-          <TD bgColor=#ffff00><B><FONT color=#000000>合成结果</FONT></B></TD></TR>
+          <TD width="400"><B>合成材料</B></TD>
+          <TD width="25">　</TD>
+          <TD width="400"><B>合成结果</B></TD>
+        </TR>
         <TR>
           <TD>轻油 + 肥料</TD>
           <TD>→</TD>
-          <TD>火药</TD></TR>
+          <TD>火药【合成专用】</TD>
+        </TR>
         <TR>
           <TD>水 + 地雷</TD>
           <TD>→</TD>
-          <TD>水鸳鸯</TD></TR>
+          <TD>水鸳鸯【爆炸物】</TD>
+        </TR>
         <TR>
           <TD>灯油 + 钉</TD>
           <TD>→</TD>
-          <TD>☆仙女棒☆</TD></TR>
-        <TR>
-          <TD>雷达用电池 + 打火机</TD>
+          <TD>☆仙女棒☆【爆炸物】</TD>
+        </TR>
+		<TR>
+          <TD>生命探测器 + 增幅设备</TD>
           <TD>→</TD>
-          <TD>☆自爆电池☆</TD></TR>
+          <TD>广域生命探测器【特殊】</TD>
+        </TR>
+        <TR>
+          <TD>探测器电池 + 打火机</TD>
+          <TD>→</TD>
+          <TD>☆自爆电池☆【爆炸物】</TD>
+        </TR>
         <TR>
           <TD>汽油 + 空瓶</TD>
           <TD>→</TD>
-          <TD>☆火焰瓶☆</TD></TR>
+          <TD>☆火焰瓶☆【爆炸物】</TD>
+        </TR>
         <TR>
           <TD>信管 + 火药</TD>
           <TD>→</TD>
-          <TD>★炸药★</TD></TR>
+          <TD>★炸药★【爆炸物】</TD>
+        </TR>
         <TR>
           <TD>导火线 + 火药</TD>
           <TD>→</TD>
-          <TD>★炸药★</TD></TR>
+          <TD>★炸药★【爆炸物】</TD>
+        </TR>
         <TR>
           <TD>喷雾器罐 + 打火机</TD>
           <TD>→</TD>
-          <TD>★简易火焰放射器★</TD></TR>
-        <TR>
-          <TD>简易雷达 + 天线</TD>
+          <TD>★简易火焰放射器★【远程兵器】</TD>
+        </TR>
+		<TR>
+          <TD>针筒 + 疗伤药</TD>
           <TD>→</TD>
-          <TD>雷达</TD></TR>
+          <TD>治疗针【生命恢复】</TD>
+        </TR>
+        <TR>
+          <TD>针筒 + 毒药</TD>
+          <TD>→</TD>
+          <TD>毒针【锐器】</TD>
+        </TR>
+        <TR>
+          <TD>喷雾器罐 + 毒药</TD>
+          <TD>→</TD>
+          <TD>简易毒气弹【爆炸物】</TD>
+        </TR>
         <TR>
           <TD>安雅人体冰雕 + 解冻药水</TD>
           <TD>→</TD>
-          <TD>武器师安雅的奖赏</TD>
+          <TD>武器师安雅的奖赏【特殊】</TD>
         <TR>
           <TD>手机 + 笔记本电脑</TD>
           <TD>→</TD>
-          <TD>移动PC</TD>
+          <TD>移动PC【特殊】</TD>
         <TR>
           <TD>杂炊 + 松茸<BR></TD>
           <TD>→</TD>
-          <TD>松茸御饭</TD>
+          <TD>松茸御饭【体力恢复】</TD>
         <TR>
           <TD>咖喱 + 面包<BR></TD>
           <TD>→</TD>
-          <TD>咖喱面包</TD>
+          <TD>咖喱面包【生命恢复】</TD>
         <TR>
           <TD>牛奶 + 立顿茶包 + 糯米丸子</TD>
           <TD>→</TD>
-          <TD>珍珠奶茶</TD></TR>
-</TBODY></TABLE></TD></TR></TBODY></TABLE>　　 
-
-<br>
-<B style="COLOR: #f00"><A name=社团说明>7。社团说明</A></B><BR>
-<br>
-社团在进入游戏时随机生成。一般类社团出现机率较高。各社团特点：
-
-<TABLE cellSpacing=0 cellPadding=0 border=0>
-  <TBODY>
-  <TR>
-    <TD width=20>　</TD>
-    <TD>
-      <TABLE cellSpacing=0 cellPadding=0 border=1>
-        <TBODY>
+          <TD>珍珠奶茶【命体恢复】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#cccccc>社团名</FONT></TD>
-          <TD align=middle bgColor=#cccccc>属性变化</FONT></TD>
-          <TD align=middle bgColor=#cccccc>特征</FONT></TD>
-          <TD align=middle bgColor=#cccccc>种类</FONT></TD></TR>
+          <TD>《小黄的草帽》 + 《小黄的钓鱼竿》 + 《小黄的行军靴》</TD>
+          <TD>→</TD>
+          <TD>《小黄的精灵球》【投掷兵器】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>棒球社</TD>
-          <TD bgColor=#333333>殴 初始熟练20</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD align=middle bgColor=#333333>一般</TD></TR>
+          <TD>《小黄的精灵球》 + 《小黄的收服特训》</TD>
+          <TD>→</TD>
+          <TD>《小黄的超级球》【投掷兵器】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>击剑社</TD>
-          <TD bgColor=#333333>斩 初始熟练20</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD align=middle bgColor=#333333>一般</TD></TR>
+          <TD>月宫 亚由的半身像 + 神尾 观铃的半身像 + 古河 渚的半身像</TD>
+          <TD>→</TD>
+          <TD>四季流转的咏叹调【钝器】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>弓道社</TD>
-          <TD bgColor=#333333>射 初始熟练20</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD align=middle bgColor=#333333>一般</TD></TR>
+          <TD>天泽 郁末的半身像 + 长森 瑞佳的半身像 + 枣 铃的半身像</TD>
+          <TD>→</TD>
+          <TD>旁观轮回的覆唱诗【锐器】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>篮球社</TD>
-          <TD bgColor=#333333>投 初始熟练20</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD align=middle bgColor=#333333>一般</TD></TR>
+          <TD>神北 小毬的半身像 + 一之濑 琴美的半身像 + SSS团长的半身像</TD>
+          <TD>→</TD>
+          <TD>天然属性也是很可怕的！【爆炸物】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>化学社</TD>
-          <TD bgColor=#333333>爆 初始熟练20</TD>
-          <TD bgColor=#333333>合成道具时有额外爆熟加成</TD>
-          <TD align=middle bgColor=#333333>一般</TD></TR>
+          <TD>四季流转的咏叹调 + 旁观轮回的覆唱诗</TD>
+          <TD>→</TD>
+          <TD>KEY催泪弹【爆炸物】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>足球社</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD bgColor=#333333>移动时消耗的体力减少</TD>
-          <TD align=middle bgColor=#333333>特殊</TD></TR>
+          <TD>恐龙玩偶 + 天使玩偶 + 团子玩偶</TD>
+          <TD>→</TD>
+          <TD>观铃的嘎哦嘎哦恐龙喷火分队【远程兵器】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>侦探社</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD bgColor=#333333>搜索时消耗的体力减少</TD>
-          <TD align=middle bgColor=#333333>特殊</TD></TR>
+          <TD>早苗面包 + 像围棋子一样的饼干 + 浓厚粘稠果汁</TD>
+          <TD>→</TD>
+          <TD>KEY系儿童套餐【命体恢复】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>电脑社</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD bgColor=#333333>hack成功率100%</TD>
-          <TD align=middle bgColor=#333333>特殊</TD></TR>
+          <TD>幻之使魔 + 永恒之桶</TD>
+          <TD>→</TD>
+          <TD>灵魂的结晶【投掷兵器】</TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>动漫社</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD bgColor=#333333>可自由控制怒气使用必杀技</TD>
-          <TD align=middle bgColor=#333333>特殊</TD></TR>
+          <TD>空白符卡 + 夜雀歌谱</TD>
+          <TD>→</TD>
+          <TD>声符『枭的夜鸣声』【灵力兵器】 </TD>
+        </TR>
         <TR>
-          <TD align=middle bgColor=#333333>烹饪社</TD>
-          <TD bgColor=#333333>　</TD>
-          <TD bgColor=#333333>可以使用“检查毒物”指令。<BR>下毒效果加倍。<BR>合成食物有数量加成。</TD>
-          <TD align=middle bgColor=#333333>特殊</TD></TR>
-</TBODY></TABLE></TD></TR></TBODY></TABLE>
-<BR>
-<B style="COLOR: #f00"><A name=战斗说明>8。战斗说明</A></B><BR>
-<br>
-在区域移动，或是在探索区域的时候遇见了其它的玩家便会发生战斗。<BR>　　如果是我方先发现对手，就可以先制攻击。<BR>　　相反的，如果被对方先发现，就是对方先发动攻击。<BR><BR>　　在战斗当中杀害对手时，对方所拥有的物品、武器、防具能够择一拿走。<BR>　　不过，在自己休息中被偷袭而反击之后杀了对方的时候，没有办法夺取对方的物品。 
-<BR>　　战斗时，先发现对手的人可以先攻击。而在先发动攻击的场合，可以选择『攻击』、『逃走』、『讯息』。<BR>　　另外，『战斗』会依照装备的武器而有殴打、斩刺等等命令可以选择。<br><br>
-<B style="COLOR: #f00"><A name=受伤，状态>9。受伤，状态</A></B><BR>
-<br>
-战斗中，有一定的机率受伤，根据受伤的部分，会受到以下的限制。<BR>　　另外，根据武器的不同，受伤的时候，部位也会不同。<BR>　　以特定的防具可以防止受伤。<BR>　　每当防具防止玩家受伤的时候，防具的耐久度都会下降，直至损坏。<BR><BR>
-<TABLE cellSpacing=0 cellPadding=0 border=0>
-  <TBODY>
-  <TR>
-    <TD width=20>　</TD>
-    <TD>
-      <TABLE cellSpacing=0 cellPadding=0 border=1>
-        <TBODY>
+          <TD>空白符卡 + 雏人形</TD>
+          <TD>→</TD>
+          <TD>疵符『破裂的护身符』【灵力兵器】 </TD>
+        </TR>
         <TR>
-          <TD>『头』</TD>
-          <TD>攻击的命中率下降</TD></TR>
+          <TD>空白符卡 + 被遗忘的伞</TD>
+          <TD>→</TD>
+          <TD>伞符『雨伞的星之交响』【灵力兵器】 </TD>
+        </TR>
         <TR>
-          <TD>『腕』</TD>
-          <TD>攻击力下降</TD></TR>
+          <TD>空白符卡 + ☆博丽护符☆</TD>
+          <TD>→</TD>
+          <TD>梦符『梦想妙珠』 【灵力兵器】 </TD>
+        </TR>
         <TR>
-          <TD>『腹』</TD>
-          <TD>睡觉，治疗时的回复力下降</TD></TR>
+          <TD>空白符卡 + ☆山蘑菇粉☆</TD>
+          <TD>→</TD>
+          <TD>星符『星尘狂欢』【灵力兵器】 </TD>
+        </TR>
         <TR>
-          <TD>『足』</TD>
-          <TD>移动，探索时耐力消耗增加</TD></TR>
+          <TD>空白符卡 + ★时停怀表★</TD>
+          <TD>→</TD>
+          <TD>时符『Private Square』【灵力兵器】 </TD>
+        </TR>
         <TR>
-          <TD>『毒』</TD>
-          <TD>移动、探索时体力减少。</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>　
-受伤的话，可以用“特殊”命令中的「包扎伤口」来治疗（一次一个部位）<BR>　　要进行包扎，必须要25点耐力。<BR>　　如果是中毒需要用解毒剂。（关于毒请见下列详细说明
+          <TD>空白符卡 + ★瓶装幽灵★</TD>
+          <TD>→</TD>
+          <TD>幽鬼剑『妖童饿鬼之断食』【灵力兵器】 </TD>
+        </TR>
+        <TR>
+          <TD>空白符卡 + ★守矢神签★</TD>
+          <TD>→</TD>
+          <TD>秘术『一子单传的弹幕』【灵力兵器】 </TD>
+        </TR>
+        <TR>
+          <TD>空白符卡 + 《文文。新闻》</TD>
+          <TD>→</TD>
+          <TD>风符『风神一扇』【灵力兵器】 </TD>
+        </TR>
+        <TR>
+          <TD>空白符卡 + 冰冻青蛙 + バカ⑨制冰块</TD>
+          <TD>→</TD>
+          <TD>冰符『Icicle Fall - easy』【灵力兵器】 </TD>
+        </TR>
+        <TR>
+          <TD>空白符卡 + 【触手的萃取液】 + 《东方永夜抄》</TD>
+          <TD>→</TD>
+          <TD>『深弹幕结界 - 梦幻泡影』【灵力兵器】 </TD>
+        </TR>
+        <TR>
+          <TD>红色方块 + 绿色方块 + 蓝色方块</TD>
+          <TD>→</TD>
+          <TD>纯真之剑【锐器】</TD>
+        </TR>
+        <TR>
+          <TD>红色方块 + 黄色方块 + 金色方块</TD>
+          <TD>→</TD>
+          <TD>热情之枪【远程兵器】</TD>
+        </TR>
+        <TR>
+          <TD>蓝色方块 + 黄色方块 + 水晶方块</TD>
+          <TD>→</TD>
+          <TD>温柔的关怀【命体恢复】</TD>
+        </TR>
+        <TR>
+          <TD>金色方块 + 银色方块 + 水晶方块</TD>
+          <TD>→</TD>
+          <TD>喷发的斗志【爆炸物】</TD>
+        </TR>
+        <TR>
+          <TD>绿色方块 + 银色方块</TD>
+          <TD>→</TD>
+          <TD>炙热的手套【手臂装备】</TD>
+        </TR>
+        <TR>
+          <TD>红色方块 + 黄色方块</TD>
+          <TD>→</TD>
+          <TD>坚强戒指【手臂装备】</TD>
+        </TR>
+        <TR>
+          <TD>金色方块 + 水晶方块</TD>
+          <TD>→</TD>
+          <TD>活力之靴【腿部装备】</TD>
+        </TR>
+        <TR>
+          <TD>红色方块 + 银色方块</TD>
+          <TD>→</TD>
+          <TD>红宝石方块【合成专用】</TD>
+        </TR>
+        <TR>
+          <TD>金色方块 + 绿色方块</TD>
+          <TD>→</TD>
+          <TD>蓝宝石方块【合成专用】</TD>
+        </TR>
+        <TR>
+          <TD>蓝色方块 + 黄色方块</TD>
+          <TD>→</TD>
+          <TD>绿宝石方块【合成专用】</TD>
+        </TR>
+        <TR>
+          <TD>红宝石方块 + 蓝宝石方块</TD>
+          <TD>→</TD>
+          <TD>绿宝石方块【合成专用】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 黄色方块</TD>
+          <TD>→</TD>
+          <TD>黄色的宝石枪【远程兵器】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 红色方块</TD>
+          <TD>→</TD>
+          <TD>红色的宝石刀【锐器】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 蓝色方块</TD>
+          <TD>→</TD>
+          <TD>蓝色的宝石锤【钝器】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 绿色方块</TD>
+          <TD>→</TD>
+          <TD>绿色的宝石镖【投掷兵器】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 金色方块</TD>
+          <TD>→</TD>
+          <TD>金色的宝石炸弹【爆炸物】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 银色方块</TD>
+          <TD>→</TD>
+          <TD>银色的宝石护甲【身体装备】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 水晶方块</TD>
+          <TD>→</TD>
+          <TD>水晶宝石盾【手臂装备】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 红宝石方块</TD>
+          <TD>→</TD>
+          <TD>珍珠头盔【头部装备】</TD>
+        </TR>
+        <TR>
+          <TD>绿宝石方块 + 蓝宝石方块</TD>
+          <TD>→</TD>
+          <TD>钻石靴子【腿部装备】</TD>
+        </TR>
+        <TR>
+          <TD>红宝石方块 + 红色方块</TD>
+          <TD>→</TD>
+          <TD>粉红色的项链【饰品】</TD>
+        </TR>
+        <TR>
+          <TD>蓝宝石方块 + 蓝色方块</TD>
+          <TD>→</TD>
+          <TD>深蓝色的项链【饰品】</TD>
+        </TR>
+        <TR>
+          <TD>黄色方块 + 黄色方块 + 黄色方块</TD>
+          <TD>→</TD>
+          <TD>不可思议之刀【锐器】</TD>
+        </TR>
+        <TR>
+          <TD>红色方块 + 红色方块 + 红色方块</TD>
+          <TD>→</TD>
+          <TD>不可思议之枪【远程兵器】</TD>
+        </TR>
+        <TR>
+          <TD>绿色方块 + 绿色方块 + 绿色方块</TD>
+          <TD>→</TD>
+          <TD>不可思议之斧【钝器】</TD>
+        </TR>
+        <TR>
+          <TD>蓝色方块 + 蓝色方块 + 蓝色方块</TD>
+          <TD>→</TD>
+          <TD>不可思议之魂【爆炸物】</TD>
+        </TR>
+        <TR>
+          <TD>金色方块 + 金色方块 + 金色方块</TD>
+          <TD>→</TD>
+          <TD>不可思议之镖【投掷兵器】</TD>
+        </TR>
+        <TR>
+          <TD>水晶方块 + 水晶方块 + 水晶方块</TD>
+          <TD>→</TD>
+          <TD>绿宝石方块【合成专用】</TD>
+        </TR>
+        <TR>
+          <TD>风见 幽香的ID卡 + 坂持 金发的ID卡 + 御坂 美琴的ID卡</TD>
+          <TD>→</TD>
+          <TD>游戏解除钥匙【特殊】</TD>
+        </TR>
+  </TBODY>
+  </TABLE>　　 
 
 <br><br>
-<B style="COLOR: #f00"><A name=基本姿态>10。基本姿态</A></B><BR>
+<B style="COLOR: #f00"><A name="内定称号">7。内定称号</A></B><BR>
 <br>
-<TABLE cellSpacing=0 cellPadding=0 width=663 border=0>
-  <TBODY>
-  <TR>
-    <TD width=20>　</TD>
-    <TD width=643>
-      <TABLE id=AutoNumber7 
+<p>
+玩家进入游戏时，会随机分配到一个内定称号。<BR>
+内定称号分为“一般”和“特殊”两种类型，一般内定称号增加熟练度，获得几率较高；特殊内定称号会赋予玩家特殊能力，获得几率较低。<BR>
+内定称号对玩家的影响如下表：</p><BR>
+
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+        <TBODY>
+        <TR>
+          <TD width="86" align=middle>称号名</FONT></TD>
+          <TD width="132" align=middle>属性变化</FONT></TD>
+          <TD width="266" align=middle>特征</FONT></TD>
+          <TD width="54" align=middle>种类</FONT></TD>
+        </TR>
+        <TR>
+          <TD align=middle>铁拳无敌</TD>
+          <TD>殴系初始熟练25</TD>
+          <TD>　</TD>
+          <TD align=middle>一般</TD></TR>
+        <TR>
+          <TD align=middle>见敌必斩</TD>
+          <TD>斩系初始熟练25</TD>
+          <TD>　</TD>
+          <TD align=middle>一般</TD></TR>
+        <TR>
+          <TD align=middle>狙击鹰眼</TD>
+          <TD>射系初始熟练25</TD>
+          <TD >　</TD>
+          <TD align=middle>一般</TD></TR>
+        <TR>
+          <TD align=middle >灌篮高手</TD>
+          <TD>投系初始熟练25</TD>
+          <TD >　</TD>
+          <TD align=middle>一般</TD></TR>
+        <TR>
+          <TD align=middle>拆弹专家</TD>
+          <TD>爆系初始熟练25</TD>
+          <TD >合成道具时有额外爆熟加成</TD>
+		  <TD align=middle >一般</TD></TR>
+		<TR>
+          <TD align=middle>超能力者</TD>
+          <TD >灵系初始熟练25</TD>
+          <TD >可自由控制怒气使用必杀技</TD>
+          <TD align=middle >一般</TD></TR>
+        <TR>
+          <TD align=middle >音速小子</TD>
+          <TD >　</TD>
+          <TD >移动时消耗的体力减少</TD>
+          <TD align=middle >特殊</TD></TR>
+        <TR>
+          <TD align=middle >人肉搜索</TD>
+          <TD >　</TD>
+          <TD >搜索时消耗的体力减少</TD>
+          <TD align=middle >特殊</TD></TR>
+        <TR>
+          <TD align=middle >锡安成员</TD>
+          <TD >　</TD>
+          <TD >hack成功率95%</TD>
+          <TD align=middle >特殊</TD></TR>
+        <TR>
+          <TD align=middle >黑衣组织</TD>
+          <TD >　</TD>
+          <TD >可以使用“查毒”指令。<BR>
+            下毒效果加倍。<BR>
+            使用毒性攻击有命中率加成。<br></TD>
+          <TD align=middle >特殊</TD></TR>
+        <TR>
+          <TD align=middle >天赋异禀</TD>
+          <TD >全系初始熟练10</TD>
+          <TD >　</TD>
+          <TD align=middle >特殊</TD>
+        </TR>
+        <TR>
+          <TD align=middle >富家子弟</TD>
+          <TD >　</TD>
+          <TD >初始金钱500<br></TD>
+          <TD align=middle >特殊</TD>
+        </TR>
+        <TR>
+          <TD align=middle >肌肉兄贵</TD>
+          <TD >　</TD>
+          <TD >初始生命上限+100<br></TD>
+          <TD align=middle >特殊</TD>
+        </TR>
+        <TR>
+          <TD height="34" align=middle >根性兄贵</TD>
+          <TD >　</TD>
+          <TD >初始体力上限+200</TD>
+          <TD align=middle >特殊</TD>
+        </TR>
+</TBODY></TABLE>
+<BR><br>
+<B style="COLOR: #f00"><A name="战斗说明">8。战斗说明</A></B><BR>
+<p>
+战斗分为两种：自己引发的战斗和其他玩家引发的战斗。<BR>
+玩家自己移动或者探索时，遇见了其它的玩家便会发生战斗，这种战斗是由玩家自己引发的。<BR>
+玩家有一定的概率先发现对手，此时可以选择“攻击”或者“逃走”，还可以向对方喊话。<BR>
+如果选择攻击，则能先制攻击。此时会依照武器的类型，进行不同类型的攻击。<BR>
+如果选择逃走，则一定能回避战斗。<BR>
+相反的，如果玩家被对方先发现，就是对方先发动攻击。此时无法回避战斗。<BR>
+<BR>
+此外，其他玩家也会行动。当一名玩家主动行动而遇到另一名玩家时，主动行动的玩家是战斗的引发者，可以看到详细的作战讯息。<BR>
+另一名玩家不属于战斗的引发者，只能看到简要的战斗报告。<BR>
+引发战斗的玩家，在战斗当中杀害对手时，可以从对方所拥有的武器防具或者金钱中，选择一个拿走。<BR>
+不过，如果战斗并非由玩家引发，但是在战斗中杀了对方，这种情况下没有办法捡取对方的物品。<BR>
+</p><br><br>
+<B style="COLOR: #f00"><A name="受伤与状态">9。受伤与异常状态</A></B><BR>
+<p>
+战斗中，玩家自己或者敌人都有一定几率发出“致伤攻击”。<BR>
+致伤攻击会随机选择被攻击者的一个身体部位。<BR>
+如果该部位装备有防具，则会减少该防具的耐久。如果防具耐久下降到0，那么防具将会损坏。<BR>
+如果该部位未装备防具，那么被攻击者的那个部位则会“受伤”。<BR>
+此外，部分武器带有“属性攻击”，有一定几率导致异常状态。<BR>
+受伤部位和异常状态种类不同，被攻击者受到的影响也不同。详细情况见下表。</p>
+
+<table cellspacing=0 cellpadding=0 border=1>
+        <tbody>
+          <tr>
+            <td width="66" ><div align="center" class="STYLE22"><span class="STYLE19">状态</span> </div></td>
+            <td width="725" ><div align="center" class="STYLE22"><span class="STYLE19">效果</span></div></td>
+            <td width="108" ><div align="center" class="STYLE20">解除方法</div></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『头』</span></td>
+            <td><span class="STYLE29">命中率↓↓</span></td>
+            <td><span class="STYLE31">包扎伤口</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『腕』</span></td>
+            <td><span class="STYLE31"><span class="STYLE32">攻击力↓↓<span class="STYLE29"></span></span><span class="STYLE33">探索体力消耗↑↑</span></span></td>
+            <td><span class="STYLE31">包扎伤口</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『腹』</span></td>
+            <td><span class="STYLE31"><span class="STYLE33">睡觉和治疗效果↓↓</span><span class="STYLE32">防御力↓↓</span></span></td>
+            <td><span class="STYLE31">包扎伤口</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『足』</span></td>
+            <td><span class="STYLE34">移动体力消耗↑↑</span></td>
+            <td><span class="STYLE31">包扎伤口</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『<span class="STYLE39">毒</span>』</span></td>
+            <td><span class="STYLE31"><span class="STYLE32">移动时生命↓↓</span><span class="STYLE33">探索时生命↓</span></span></td>
+            <td><span class="STYLE31">使用解毒剂</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『<span class="STYLE35">烧伤</span>』</span></td>
+            <td><span class="STYLE31"><span class="STYLE35">攻击力↓↓↓</span><span class="STYLE32">移动时生命↓↓</span><span class="STYLE33">探索时生命↓ </span></span></td>
+            <td><span class="STYLE31">使用烧伤药剂</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『<span class="STYLE36">冻伤</span>』</span></td>
+            <td><span class="STYLE31"><span class="STYLE36">防御力↓</span><span class="STYLE33">命中率↓↓</span><span class="STYLE36">先手攻击率↓反击率↓</span><span class="STYLE32">移动和探索体力消耗↑↑↑</span></span></td>
+            <td><span class="STYLE31">使用解冻药水</span></td>
+          </tr>
+          <tr>
+            <td><span class="STYLE31">『<span class="STYLE33">麻痹</span>』</span></td>
+            <td><span class="STYLE31"><span class="STYLE36">命中率↓</span><span class="STYLE35">先手攻击率↓↓↓反击率↓↓↓</span><span class="STYLE36">移动和探索体力消耗↑</span></span></td>
+            <td><span class="STYLE31">使用麻痹药剂</span></td>
+          </tr>
+        </tbody>
+      </table>
+<br>
+<br>
+<B style="COLOR: #f00"><A name="基础姿态">10。基础姿态</A></B><BR>
+<br>
+<TABLE id=AutoNumber7 
       style="BORDER-RIGHT: black 0.75pt solid; BORDER-TOP: black 0.75pt solid; BORDER-LEFT: black 0.75pt solid; BORDER-BOTTOM: black 0.75pt solid; BORDER-COLLAPSE: collapse; BACKGROUND-COLOR: white" 
       height=279 cellSpacing=0 cellPadding=0 width=683 border=1 
       fpstyle="29,111111100">
@@ -378,14 +735,14 @@ EST
         <TR>
           <TD class=t1 width=80 height=32>方针</TD>
           <TD class=t2 width=269 height=28>说明</TD>
-          <TD class=t2 width=72 height=28>&nbsp;攻击力&nbsp;</TD>
-          <TD class=t2 width=72 height=28>&nbsp;防御力&nbsp;</TD>
-          <TD class=t2 width=72 height=28>&nbsp;发见率&nbsp;</TD>
+          <TD class=t2 width=72 height=28>攻击力</TD>
+          <TD class=t2 width=72 height=28>防御力</TD>
+          <TD class=t2 width=72 height=28>发见率</TD>
           <TD class=t2 width=98 height=28>先制攻击率</TD></TR>
         <TR>
           <TD class=t3 bgColor=#cccccc height=40>通常</TD>
           <TD class=t4 style="TEXT-ALIGN: left" width=269 height=40><BR><FONT 
-            color=#ffffff>没有什么可以也没什么不可以的。通常行动。</FONT><BR>　</TD>
+            color=#ffffff>没有什么可以也没什么不可以的。通常行动。</FONT><BR>&nbsp;</TD>
           <TD class=t4 width=72 height=40><FONT 
           color=#ffffff><B>　</B></FONT></TD>
           <TD class=t4 width=72 height=40><FONT 
@@ -397,7 +754,7 @@ EST
         <TR>
           <TD class=t3 bgColor=#999999 height=40>攻击姿态</TD>
           <TD class=t5 style="TEXT-ALIGN: left" width=269 height=40><BR><FONT 
-            color=#ffffff>把攻击当作重点来行动。</FONT><BR>　</TD>
+            color=#ffffff>把攻击当作重点来行动。</FONT><BR>&nbsp;</TD>
           <TD class=t5 width=72 height=40><FONT 
           color=#00ffff><B>↑↑↑</B></FONT></TD>
           <TD class=t5 width=72 height=40><FONT 
@@ -409,7 +766,7 @@ EST
         <TR>
           <TD class=t3 bgColor=#cccccc height=40>防御姿态</TD>
           <TD class=t4 style="TEXT-ALIGN: left" width=269 height=40><BR><FONT 
-            color=#ffffff>把防御当作重点来行动。</FONT><BR>　</TD>
+            color=#ffffff>把防御当作重点来行动。</FONT><BR>&nbsp;</TD>
           <TD class=t4 width=72 height=40><FONT 
           color=#ffff00><B>↓↓↓</B></FONT></TD>
           <TD class=t4 width=72 height=40><FONT 
@@ -421,7 +778,7 @@ EST
         <TR>
           <TD class=t3 bgColor=#999999 height=40>探索姿态</TD>
           <TD class=t5 style="TEXT-ALIGN: left" width=269 height=40><FONT 
-            color=#ffffff><BR>为了探索而行动。</FONT><BR>　</TD>
+            color=#ffffff><BR>为了探索而行动。</FONT><BR>&nbsp;</TD>
           <TD class=t5 width=72 height=40><FONT 
           color=#ffffff><B>　</B></FONT></TD>
           <TD class=t5 width=72 height=40><FONT 
@@ -433,7 +790,7 @@ EST
         <TR>
           <TD class=t3 bgColor=#cccccc height=40>隐密姿态</TD>
           <TD class=t4 style="TEXT-ALIGN: left" width=269 height=40><BR><FONT 
-            color=#ffffff>不被敌人发现为目的，隐密的移动。</FONT><BR>　</TD>
+            color=#ffffff>不被敌人发现为目的，隐密的移动。</FONT><BR>&nbsp;</TD>
           <TD class=t4 width=72 height=40><FONT 
           color=#ffff00><B>↓↓↓</B></FONT></TD>
           <TD class=t4 width=72 height=40><FONT 
@@ -449,15 +806,11 @@ EST
           <TD class=t5 width=72 height=37><FONT color=#ffff00><B>↓↓↓</B></FONT></TD>
           <TD class=t5 width=72 height=37><FONT color=#ffff00><b>↓↓↓</FONT></TD>
           <TD class=t5 width=72 height=37><FONT color=#ffff00><B>↓↓↓</B></FONT></TD>
-          <TD class=t5 width=98 height=37><FONT color=#ffff00><B>↓↓↓</B></FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>
-<B style="COLOR: #f00"><A name=应战策略>11。应战策略</A></B><BR>
+          <TD class=t5 width=98 height=37><FONT color=#ffff00><B>↓↓↓</B></FONT></TD></TR></TBODY></TABLE><BR><BR>
+<B style="COLOR: #f00"><A name="应战策略">11。应战策略</A></B><BR>
 <br>
 <TABLE cellSpacing=0 cellPadding=0 border=0>
-  <TBODY>
-  <TR>
-    <TD width=20>　</TD>
-    <TD>
-      <TABLE id=AutoNumber8 
+<TABLE id=AutoNumber8 
       style="BORDER-RIGHT: black 0.75pt solid; BORDER-TOP: black 0.75pt solid; BORDER-LEFT: black 0.75pt solid; BORDER-BOTTOM: black 0.75pt solid; BACKGROUND-COLOR: white" 
       height=229 cellSpacing=0 cellPadding=0 width=683 border=1 
       fpstyle="29,111111100">
@@ -465,10 +818,10 @@ EST
         <TR>
           <TD class=t1 width=80 height=32>方针</TD>
           <TD class=t2 width=269 height=28>说明</TD>
-          <TD class=t2 width=72 height=28>&nbsp;攻击力&nbsp;</TD>
-          <TD class=t2 width=72 height=28>&nbsp;防御力&nbsp;</TD>
-          <TD class=t2 width=90 height=28>&nbsp;回避率&nbsp;</TD>
-          <TD class=t2 width=80 height=28>&nbsp;被发现率</TD></TR>
+          <TD class=t2 width=72 height=28>攻击力</TD>
+          <TD class=t2 width=72 height=28>防御力</TD>
+          <TD class=t2 width=90 height=28>回避率</TD>
+          <TD class=t2 width=80 height=28>被发现率</TD></TR>
         <TR>
           <TD class=t3 bgColor=#cccccc height=27>通常</TD>
           <TD class=t4 style="TEXT-ALIGN: left" width=269 height=27><FONT 
@@ -480,7 +833,7 @@ EST
         <TR>
           <TD class=t3 bgColor=#999999 height=27>重视反击</TD>
           <TD class=t5 style="TEXT-ALIGN: left" width=269 height=27><FONT 
-            color=#ffffff><BR>对对手的反击机会上升。<BR>　</FONT></TD>
+            color=#ffffff><BR>对对手的反击机会上升。<BR>&nbsp;</FONT></TD>
           <TD class=t5 width=72 height=27><FONT color=#00ffff><B>↑↑↑</B></FONT></TD>
           <TD class=t5 width=72 height=27><FONT color=#ffff00><B>↓↓↓</B></FONT></TD>
           <TD class=t5 width=90 height=27><FONT color=#ffffff><B>　</B></FONT></TD>
@@ -488,7 +841,7 @@ EST
         <TR>
           <TD class=t3 bgColor=#cccccc height=27>重视防御</TD>
           <TD class=t4 style="TEXT-ALIGN: left" width=269 height=27><FONT 
-            color=#ffffff><BR>彻底的防御。<BR>　</FONT></TD>
+            color=#ffffff><BR>彻底的防御。<BR>&nbsp;</FONT></TD>
           <TD class=t4 width=72 height=27><FONT color=#ffff00><B>↓↓↓</B></FONT></TD>
           <TD class=t4 width=72 height=27><FONT color=#00ffff><B>↑↑↑</B></FONT></TD>
           <TD class=t4 width=90 height=27><FONT color=#ffffff><B>　</B></FONT></TD>
@@ -501,27 +854,37 @@ EST
           <TD class=t5 style="COLOR: #ff0" width=72 height=37><B>↓↓</B> 
           <TD class=t5 width=72 height=27><FONT color=#00ffff><B>↑↑</B></FONT></TD>
           <TD class=t5 style="COLOR: #fff" width=80 height=37><B>　</B> 
-        </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-		<FONT color=#ff0000>　　※被发现率表示被其它玩家发现的机率</FONT> <BR><BR>
-<B style="COLOR: #f00"><A name=熟练度>12。熟练度</A></B><BR>
-<br>
-使用武器时，各个类别都有熟练度存在，每次用该武器攻击敌人，就能提高熟练度。<BR>&nbsp;&nbsp;&nbsp; 
-即使攻击不中时，熟练度也会上升（如果不攻击就逃走，是得不到熟练度的）。 <BR>&nbsp;&nbsp;&nbsp; 
-熟练度到达规定值的时候，熟练等级就会上升。<BR>&nbsp;&nbsp;&nbsp; 
-比较特别的是，合成物品也可以提升<B>爆</B>系武器的熟练度。<BR>&nbsp;&nbsp;&nbsp; 
-如果用不熟悉的武器战斗的话，是无法发挥该武器100%的威力的。<BR>&nbsp;&nbsp;&nbsp; 
-<BR><BR>
-
-<B style="COLOR: #f00"><A name=禁区>13。禁区</A></B><BR>
-每天固定时间班主任会发布禁止进入的区域，具体情况可在“进行状况”中察看。<BR>
-如果游戏系统没有开启“自动逃避禁区”功能的话，时间一到，要是玩家在禁止区域的话，会颈环爆炸，爆头而死。<BR>
-注意，进入连斗后，自动逃避禁区功能关闭。<BR>
-如果设置应战策略为“重视躲避”，则禁区增加是可自动逃避禁区。
-<B style="COLOR: #f00"><A name=天气>14。天气</A></B><BR>
-<br>
-在禁止区域发表的同时天气也会变化。<BR>　　天候会影响游戏状况中的各种数据的变化，变化的程度请参考以下的表。<BR><!--
-　　基本上，天候只会有些微的变化，最多也只会变化两个阶段。<br>
--->　　当天气不好的时候，有一定的机率没有办法确定对手。<BR>　　这时可能会攻击到自己的队员，请小心。<BR>　　听说还有未知的天气，数值不明、出现时机不明，请自行实验。<BR><BR>
+        </TD></TR></TBODY></TABLE>
+<p><FONT color=#ff0000>　　※被发现率表示被其它玩家发现的机率</FONT> <BR>
+    <BR>
+    <B style="COLOR: #f00"><A name="熟练度">12。熟练度</A></B><BR>
+    <p>
+  武器的伤害值跟该武器类型的“熟练度”息息相关。<BR>
+  玩家刚进入游戏时，熟练度低下，可能用武器只能造成1-2点的伤害。<BR>
+  但是到后期，熟练度升高以后，可能用同样的武器都能将敌人秒杀。<BR>
+  战斗时，只要对敌人进行攻击，无论命中与否，武器类型对应的熟练度都会上升。<BR>
+  如果逃跑，自然得不到熟练度。<BR>
+  比较特别的是，合成物品和设置陷阱也可以增加爆系武器的熟练度。<BR>
+  阅读“技能书”或者使用特定的“能力药”也可以提高熟练度。<BR>
+  此外，使用“装有H173的注射器”进行自杀时，有微小概率会进入L5状态，此时全系熟练度都会大幅度上升。
+  </p>
+  <BR>
+  
+  <B style="COLOR: #f00"><A name="属性">13。属性</A></B><BR>
+  <p>
+属性是常磐大逃杀在原版大逃杀基础上独创的系统，能极大丰富游戏的玩法。<BR>
+属性分为武器属性、防具属性和道具属性。具体的属性说明很快会放出，请期待。
+</p>
+<B style="COLOR: #f00"><A name="天气">14。天气</A></B><BR>
+  <br><p>
+在禁区增加的同时，天气也会变化。<BR>  　　
+天气会影响游戏状况中的各种数据的变化，变化的程度请参考以下的表。<BR>
+不过，天气对游戏状况的影响一般是微乎其微的。<br>
+当天气能见度不好的时候，先制攻击时无法确定对方的身份。<BR>
+这时贸然攻击可能会伤害自己的队友，请小心。<BR>
+此外，如果使用道具“天候棒”，则会将天气强制改变成“冰雹”、“龙卷风”、“瘴气”和“暴风雪”的其中一种。<BR>
+这些天气对游戏的具体影响请玩家自己体会。<BR>
+</p>
 <TABLE cellSpacing=0 cellPadding=0 border=0>
   <TBODY>
   <TR>
@@ -532,11 +895,11 @@ EST
         <TBODY>
         <TR>
           <TD class=t1 width=70 height=22>天气</TD>
-          <TD class=t2>&nbsp;攻击力&nbsp;</TD>
-          <TD class=t2>&nbsp;防御力&nbsp;</TD>
-          <TD class=t2>&nbsp;回避率&nbsp;</TD>
-          <TD class=t2>&nbsp;发现率&nbsp;</TD>
-          <TD class=t2>&nbsp;视野&nbsp;</TD></TR>
+          <TD class=t2>攻击力</TD>
+          <TD class=t2>防御力</TD>
+          <TD class=t2>回避率</TD>
+          <TD class=t2>发现率</TD>
+          <TD class=t2>视野</TD></TR>
         <TR>
           <TD class=t3 width=70 bgColor=#cccccc height=22>『大晴』</TD>
           <TD class=t4><FONT color=#0000ff>极强</FONT></TD>
@@ -607,71 +970,90 @@ EST
           <TD class=t5><FONT color=#ffffff>无</FONT></TD>
           <TD class=t5><FONT color=#ffff00>弱</FONT></TD>
           <TD class=t5><FONT color=#ff0000>超低</FONT></TD>
-		  </TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>
-<B style="COLOR: #f00"><A name=武器>15。武器</A></B><BR>
-<br>
-武器有一定机率损坏。<BR>　　损坏到效用 
-=0 
-的武器不能再次使用，必须空手作战。<BR>　　无限的武器不会不见，但损坏时会变钝、降低攻击力。<BR>　　枪类武器，不装子弹时只能直接作为钝器攻击，会很快敲坏。 
-<BR>　　子弹可以装 6 或 12 
-发，装的方法是装备枪时「使用」子弹。<BR>　　投掷或爆类的武器，投出以后就变少了，属于消耗品。<BR><BR>　　特定装备武器种类「使用」属性为「强化」类的道具的话，可以增加攻击力或其它能力。 
-<BR><BR>　　已知加攻击力的道具有：磨刀石类(对任何剑系武器)、<BR>　　钉类(只能作用于殴系「棍棒」或「钉棍棒」，注意其它名字如球棒都是不行的)<BR>　　另外针线包可以增加防具的有效次数，灭音器可以让枪消音，<BR>　　都是身上穿着或拿着对应的武器或防具然后「使用」对应的道具即可。<BR>　　其它还有一些道具则要靠你自己摸索猜测。<BR><BR>
+  </TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>
+<B style="COLOR: #f00"><A name="武器">15。武器</A></B><BR>
+<p>
+武器分为殴、斩、射、投、爆、灵六系。不同的武器之间的特性差异很大，详情见下表。</p>
 <TABLE class=weapon >
   <TBODY>
   <TR>
-    <TH>武器种类
-    <TH>优势
-    <TH>缺点</TR> 
+    <TH width="88" align="center">武器种类
+    <TH width="499">优势
+    <TH width="446">缺点</TR> 
   <TR class=t1>
-    <TD>　　枪　　
-    <TD>初期高攻击力
-    <TD>要上子弹</TD>
+    <TD height="32" align="center">枪
+    <TD>攻击力较高，命中率较高，武器附加效果多
+    <TD>需要多种子弹，易被防弹装备抵消伤害</TD>
   <TR class=t2>
-    <TD>　　剑　　
-    <TD>可变动攻击力，让对手负伤范围最广
-    <TD>变动攻击力,最高损坏率</TD>
+    <TD align="center">剑
+    <TD>变动攻击力，易于让对手负伤，伤害较高
+    <TD>变动攻击力,武器损坏率高</TD>
+	
   <TR class=t1>
-    <TD>　　殴　　
+    <TD align="center">殴
     <TD>空手也有加成,少数有变动攻击力
     <TD>原始攻击力普通 
   <TR class=t2>
-    <TD>　　投　　
-    <TD>ITD 一定命中，最适合磨掉装甲
-    <TD>攻击力小 
+    <TD align="center">投
+    <TD>命中率最高，伤害稳定
+    <TD>攻击力低 
   <TR class=t1>
-    <TD>　　爆　　
-    <TD>ITD 保证伤害值，让低等级也能挑战高等级
-    <TD>数量少 
+    <TD align="center">爆
+    <TD>基础伤害无视防御，攻击力高，敌人难以反击
+    <TD>武器数量有限，命中率低，无法反击  
   <TR class=t2>
-    <TD>[性别加成]
-    <TD align=left colSpan=2>有些武器有特殊性别加成，打同性或异性时可能产生伤害只有 1 或大于100的爆击效果。 
-      <BR>所谓性别加成是看双方的性别， 不是只看使用者的性别。 <BR>此类武器不会特别显示， 请玩家自行观察注意。 
-</TR></TBODY></TABLE><BR>　　
-注： ITD 表示 Ignore Target Defense 无视对方防御<BR>     防御可表现在两种地方上,一种是影响命中机率一种减低伤害值<BR>      所以投与爆的 ITD 各只对应一种
+    <TD align="center">灵
+    <TD>基础伤害无视防御，命中率高
+    <TD>武器需要合成，攻击需消耗体力
+  <TR class=t1>
+    <TD height="59" align="center">[性别加成]
+    <TD align=left colSpan=2>有些武器或饰品有特殊性别加成，打同性或异性时可能产生伤害只有 1 或大于100的爆击效果。 
+      <BR>
+      所谓性别加成是看双方的性别， 不是只看使用者的性别。 </TR></TBODY></TABLE>
+      <p>
+殴、斩系武器，命中对手之后，有一定机率造成武器“损坏”。<BR>
+如果武器的耐久值不是“无限”，那么耐久将会下降。耐久降为0后，武器会损毁，之后就必须赤手空拳了。<BR>
+如果武器的耐久值是“无限”，那么武器的攻击效果将会下降，效果降为0时武器同样会损毁。<BR>
+无限耐久的殴、斩系武器比有限耐久的殴、斩系武器更容易损坏，请注意取舍。<BR><BR>
+射系武器有“子弹”的设定，当武器耐久非“无限”时才能作为枪械进行射击。<BR>
+如果射系武器子弹用尽，在游戏中耐久值将显示为“无限”。此时射系武器只能直接作为钝器攻击，攻击力会飞速下降。<BR>
+根据射系武器所拥有的属性的不同，需要的子弹类型也不同，请注意收集。<BR>
+带“火焰”、“冰冻”或者“电击”属性的射系武器，分别需要火焰弹药、冻气弹药和枪械电池。<BR>
+除此之外，连续攻击的射系武器属于“机枪”，需要机枪子弹。这些类型之外的射系武器属于手枪，用手枪子弹就可以装填。<BR>
+根据子弹类型的不同，弹夹上限也不同。<BR>
+装填子弹的方法是装备射系武器并「使用」子弹。<BR>　　<BR>　
+投系，爆系和灵系的武器，属于消耗品，每攻击一次数量都会减少。当然也存在可以无限攻击的这三类武器。<BR>
 <BR>
-<B style="COLOR: #f00"><A name=毒药和陷阱>16。毒药和陷阱</A></B><BR>
+部分道具如“磨刀石”、“钉”、“武器师安雅的奖赏”等，都能强化武器，使用方法是装备武器然后使用特殊道具即可。具体情况见“特殊道具”。 
+</p>
+<BR>
+<B style="COLOR: #f00"><A name="毒药和陷阱">16。毒药和陷阱</A></B><BR>
 <br>
-　　有些道具「使用」之后可以在所在的区域设下陷阱。<BR>　　毒药「使用」后可对大部份回复物品下毒，<BR>　　另外也有天然含有毒性的回复道具。<BR>　　设陷阱的时候可以增加经验值和爆熟。<BR>　　自己设的陷阱可能会被自己触发，<BR>　　所以在设下陷阱或是下毒的时候要小心。<BR><BR>　　除此之外，应急治伤没有办法解毒，所以手上要有『解毒剂』比较好。 <BR><BR>
-<B style="COLOR: #f00"><A name=特殊道具>17。特殊道具</A></B><BR>
+陷阱类道具：「使用」之后可以在所在的区域设下陷阱，设置的同时可以增加经验值和爆熟。<BR>
+毒药：「使用」后可对大部份回复物品下毒。<BR>
+自己设的陷阱可能会被自己触发，自己下毒的食物可能会被自己捡到并且误食，所以在设下陷阱或是下毒的时候要谨慎。<BR>
+陷阱类道具会造成不超过道具效果值的伤害，下毒的食物会造成与食物效果值一样的伤害。<BR>
+<B style="COLOR: #f00"><A name="特殊道具">17。特殊道具</A></B><BR>
 <br>
-游戏中部分特殊道具的用途
+在此列出游戏中部分特殊道具的用途。<br>
 <TABLE cellSpacing=0 cellPadding=0 border=0>
   <TBODY>
   <TR>
-    <TD width=20>　</TD>
-    <TD>
-      <TABLE style="WIDTH: 500px" cellSpacing=0 cellPadding=0 border=1>
+    <TD width=31>　</TD>
+    <TD width="506">
+      <TABLE width="524" border=1 cellPadding=0 cellSpacing=0 style="WIDTH: 500px">
         <TBODY>
         <TR>
-          <TD bgColor=#ffff00 width="25%"><B><FONT color=#000000>道具名称</FONT></B></TD>
-          <TD bgColor=#ffff00 width="5%">　</TD>
-          <TD bgColor=#ffff00 width="70%"><B><FONT color=#000000>道具用途</FONT></B></TD></TR>
+          <TD bgColor=#ffff00 width="30%"><B><FONT color=#000000>道具名称</FONT></B></TD>
+          <TD bgColor=#ffff00 width="7%">　</TD>
+          <TD bgColor=#ffff00 width="63%"><B><FONT color=#000000>道具用途</FONT></B></TD>
+        </TR>
         <TR>
-          <TD>雷达</TD>
+          <TD>广域生命探测器</TD>
           <TD>→</TD>
           <TD>可显示各个地图上的生存人数</TD></TR>
         <TR>
-          <TD>雷达用电池</TD>
+          <TD>探测器电池</TD>
           <TD>→</TD>
           <TD>给雷达充电</TD></TR>
         <TR>
@@ -703,7 +1085,7 @@ EST
           <TD>→</TD>
           <TD>提高护体防具的防御力</TD></TR>
         <TR>
-          <TD>避弹衣</TD>
+          <TD>防弹衣</TD>
           <TD>→</TD>
           <TD>减少枪械的伤害</TD>
         <TR>
@@ -711,25 +1093,25 @@ EST
           <TD>→</TD>
           <TD>可以使你的枪械在攻击时不会发出声音</TD>
         <TR>
-          <TD>去死去死团员证</TD>
+          <TD>亲热天堂</TD>
           <TD>→</TD>
           <TD>佩带后，对同性产生莫大的仇恨，容易被异性迷惑</TD>
         <TR>
-          <TD>好人证书</TD>
+          <TD>11区GV</TD>
           <TD>→</TD>
           <TD>佩带后，对异性产生莫大的仇恨，容易被同性迷惑</TD>
          <TR>
-          <TD>士兵证书</TD>
-          <TD>→</TD>
-          <TD>佩带后，提高攻击力</TD>
-         <TR>
-          <TD>教师证书</TD>
-          <TD>→</TD>
-          <TD>佩带后，提高防御力</TD>
-         <TR>
           <TD>毒物说明书</TD>
           <TD>→</TD>
-          <TD>佩带后，下毒效果增加50%。不能与烹饪社下毒效果叠加</TD>
+          <TD>佩带后，下毒效果增加50%。不能与黑衣组织下毒效果叠加</TD>
+         <TR>
+          <TD>妖精的羽翼</TD>
+          <TD>→</TD>
+          <TD>佩带后防止毒伤，给食物下毒相当于解毒</TD>
+         <TR>
+          <TD>弱点探测器</TD>
+          <TD>→</TD>
+          <TD>佩带后，重击率上升，重击消耗怒气减少</TD>
        <TR>
           <TD>御神签<BR></TD>
           <TD>→</TD>
@@ -750,17 +1132,20 @@ EST
           <TD>■DeathNote■</TD>
           <TD>→</TD>
           <TD>？？？？</TD>
-		</TR>
-</TBODY></TABLE></TD></TR></TBODY></TABLE><BR><BR>
+</TR>
+</TBODY></TABLE></TD>
+  </TR></TBODY></TABLE><BR><BR>
 
-<B style="COLOR: #f00"><A name=必杀技>18。必杀技</A></B><BR>
+<B style="COLOR: #f00"><A name="重击和必杀">18。重击和必杀</A></B><BR>
 <br>
-当等级、熟练度、怒气达到一定条件时，在攻击时有可能出现重击。<BR>
-如果是“动漫社”，则可以自由的控制自己的怒气，释放出“必杀技”！！！<BR>
-释放方式为在攻击时向对方 <span class="lime">喊话</span> 。<BR>
-根据喊话的不同，甚至可以释放出不同的必杀技！（此功能尚未开放。）<BR>
-<BR><BR>
-<B style="COLOR: #f00"><A name=玩家守则>19。玩家守则</A></B><BR>
+当怒气达到30时，攻击时可能发出重击，攻击伤害x1.5。<BR>
+如果内定称号是“超能力者”，则可以自由控制自己的怒气，释放出“必杀技”，此时攻击伤害x2。<BR>
+释放方式为在攻击时向对方<span class="lime">喊话</span> 。<BR>
+释放必杀技会消耗50点怒气，如果不喊话则绝对不会释放必杀技。<BR>
+此外，如果怒气值积累到255，则会100%发出重击或者释放必杀技。
+<BR>
+NPC也会发出重击和必杀技，请随时小心。<BR><BR>
+<B style="COLOR: #f00"><A name="玩家守则">19。玩家守则</A></B><BR>
 <br>
 <span class="green">
 1。使用不雅昵称或口出脏言者，斩首示众<br>

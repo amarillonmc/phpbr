@@ -5,6 +5,7 @@ table {align:center;border: 0px;}
 tr {font-size: 10pt; margin: 0px;}
 td {font-size: 10pt; margin: 0px;}
 th {font-size: 10pt; margin: 0px;}
+p {line-height:16px;}
 li {font-family: "新宋体";font-size: 10pt;line-height:16px}
 input {cursor: crosshair;}
 .title {font-family: "微软雅黑"; margin: 6px;color: #98fb98; width: 100%;filter:blur(add=1,direction=90,strength=12):glow(strength=5,color=gold); font-weight:900; text-decoration:underline;font-size: 30px;}

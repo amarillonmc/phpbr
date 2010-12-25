@@ -18,7 +18,7 @@ function event(){
 				$dice2 = $sp-1;
 			}
 			$sp-=$dice2;
-			$log .= "心灵被震撼了，产生了心理创伤！<BR>体力减少 <font color=\"red\"><b>{$dice2}</b></font>  点。<BR>";
+			$log .= "心灵被震撼了，产生了心理创伤！<BR>体力减少<span class=\"red b\">{$dice2}</span>点。<BR>";
 		}else{
 			$log .= "呼...还好顶住了...<BR>";
 		}
@@ -29,7 +29,7 @@ function event(){
 			$inf = str_replace('h','',$inf);
 			$inf = ($inf . 'h');
 		}elseif($dice1 == 3){
-			$log = ($log . "“呜嘛呜——！”<br>被怪人打中了，受到<font color=\"red\"><b>{$dice2}</b></font> 点伤害！<BR>");
+			$log = ($log . "“呜嘛呜——！”<br>被怪人打中了，受到<span class=\"red b\">{$dice2}</span>点伤害！<BR>");
 			$hp-=$dice2;
 		}else{
 			$log = ($log . "呼，总算逃脱了。<BR>");
@@ -46,7 +46,7 @@ function event(){
 				$dice2 = $sp-1;
 			}
 			$sp-=$dice2;
-			$log = ($log . "掉下池中了，不过，已努力爬了上来！<BR>体力减少 <font color=\"red\"><b>{$dice2}</b></font> 点。<BR>");
+			$log = ($log . "掉下池中了，不过，已努力爬了上来！<BR>体力减少<span class=\"red b\">{$dice2}</span>点。<BR>");
 		}else{
 			$log = ($log . "呼...幸好没掉下水池...<BR>");
 		}
@@ -59,7 +59,7 @@ function event(){
 			$inf = str_replace('f','',$inf);
 			$inf = ($inf . "f");
 		}elseif($dice1 == 3){
-			$log = ($log . "被光头爆了，受到<font color=\"red\"><b>{$dice2}</b></font> 点伤害！<BR>");
+			$log = ($log . "被光头爆了，受到<span class=\"red b\">{$dice2}</span>点伤害！<BR>");
 			$hp-=$dice2;
 		}else{
 			$log = ($log . "呼...总算是逃脱了...<BR>");
@@ -72,7 +72,7 @@ function event(){
 			$inf = str_replace('f','',$inf);
 			$inf = ($inf . "f");
 		}elseif($dice1 == 3){
-			$log = ($log . "你被击飞出了窗外，受到<font color=\"red\"><b>{$dice2}</b></font> 点伤害！<BR>");
+			$log = ($log . "你被击飞出了窗外，受到<span class=\"red b\">{$dice2}</span>点伤害！<BR>");
 			$hp-=$dice2;
 		}else{
 			$log = ($log . "呼...总算是避开了...<BR>");
@@ -84,7 +84,7 @@ function event(){
 			$inf = str_replace('h','',$inf);
 			$inf = ($inf . "h");
 		}elseif($dice1 == 3){
-			$log = ($log . "被乌鸦袭击，受到<font color=\"red\"><b>{$dice2}</b></font> 点伤害！<BR>");
+			$log = ($log . "被乌鸦袭击，受到<span class=\"red b\">{$dice2}</span>点伤害！<BR>");
 			$hp-=$dice2;
 		}else{
 			$log = ($log . "呼，总算击退了。<BR>");
@@ -99,20 +99,20 @@ function event(){
 			$inf = str_replace('a','',$inf);
 			$inf = ($inf . "a");
 		}elseif($dice1 == 3){
-			$log = ($log . "皮卡丘使用了电光石火！受到<font color=\"red\"><b>{$dice2}</b></font> 点伤害！<BR>");
+			$log = ($log . "皮卡丘使用了电光石火！受到<span class=\"red b\">{$dice2}</span>点伤害！<BR>");
 			$hp-=$dice2;
 		}else{
 			$log = ($log . "成功地逃跑了。<BR>");
 		}
 	} elseif($pls == 17) { //M记戈壁
-		$log = ($log . "糟糕，脚下踩到了憨八嘎！<BR>");
+		$log = ($log . "糟糕，脚下踩到了汉八嘎！<BR>");
 		if($dice1 <= 3){
 			$dice2 += 10;
 			if($sp <= $dice2){
 				$dice2 = $sp-1;
 			}
 			$sp-=$dice2;
-			$log = ($log . "摔出的距离大约有四个憨八嘎那么长吧！<BR>体力减少 <font color=\"red\"><b>{$dice2}</b></font> 点。<BR>");
+			$log = ($log . "摔出的距离大约有四个汉八嘎那么长吧！<BR>体力减少<span class=\"red b\">{$dice2}</span>点。<BR>");
 		}else{
 			$log = ($log . "呼...幸好没跌倒...<BR>");
 		}
@@ -124,7 +124,7 @@ function event(){
 			$inf = str_replace('h','',$inf);
 			$inf = ($inf . 'h');
 		}elseif($dice1 == 3){
-			$log = ($log . "被乌鸦袭击，受到<font color=\"red\"><b>{$dice2}</b></font> 点伤害！<BR>");
+			$log = ($log . "被乌鸦袭击，受到<span class=\"red b\">{$dice2}</span>点伤害！<BR>");
 			$hp-=$dice2;
 		}else{
 			$log = ($log . "呼，总算击退了。<BR>");
@@ -140,7 +140,7 @@ function event(){
 				$dice2 = $sp-1;
 			}
 			$sp-=$dice2;
-			$log .= "字幕太多，浏览器当机了！<BR>体力减少 <font color=\"red\"><b>{$dice2}</b></font>  点。<BR>";
+			$log .= "字幕太多，浏览器当机了！<BR>体力减少<span class=\"red b\">{$dice2}</span>点。<BR>";
 		}else{
 			$log .= "很〇很〇〇，我马上把窗口关了。<BR>";
 		}

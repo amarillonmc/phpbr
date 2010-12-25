@@ -74,8 +74,13 @@ function kill($death,$dname,$dtype = 0,$dpid = 0,$annex = '') {
 	save_gameinfo();
 
 	if($dtype) {
-		$lwname = "{$typeinfo[$dtype]} $dname";
-		$lastword = $lwinfo[$dtype];
+		$lwname = $typeinfo[$dtype].' '.$dname;
+		if(is_array($lwinfo[$dtype])){
+			$lastword = $lwinfo[$dtype][$dname];
+		}else{
+			$lastword = $lwinfo[$dtype];
+		}
+			
 		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')");
 	}
 	

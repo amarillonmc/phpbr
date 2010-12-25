@@ -95,18 +95,18 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 				if ($counter_dice < $counter) {
 					$log .= "<span class=\"red\">{$w_name}的反击！</span><br>";
 					if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-						$log .= npc_chat ( $w_type, 'defend' );
+						$log .= npc_chat ( $w_type,$w_name, 'defend' );
 					}
 					$def_dmg = defend ( $w_wep_kind );
 				} else {
 					if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-						$log .= npc_chat ( $w_type, 'escape' );
+						$log .= npc_chat ( $w_type,$w_name, 'escape' );
 					}
 					$log .= "<span class=\"red\">{$w_name}处于无法反击的状态，逃跑了！</span><br>";
 				}
 			} else {
 				if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-					$log .= npc_chat ( $w_type, 'cannot' );
+					$log .= npc_chat ( $w_type,$w_name, 'cannot' );
 				}
 				$log .= "<span class=\"red\">{$w_name}攻击范围不足，不能反击，逃跑了！</span><br>";
 			}
@@ -122,7 +122,7 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 		$log .= "<span class=\"red\">$w_name</span>突然向你袭来！<br>";
 		
 		if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-			$log .= npc_chat ( $w_type, 'attack' );
+			$log .= npc_chat ( $w_type,$w_name, 'attack' );
 		}
 		
 		$w_w1 = substr ( $w_wepk, 1, 1 );
@@ -212,7 +212,7 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 		include_once GAME_ROOT . './include/state.func.php';
 		$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
 		if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-			$log .= npc_chat ( $w_type, 'death' );
+			$log .= npc_chat ( $w_type,$w_name, 'death' );
 		}
 		$log .= "<span class=\"red\">{$w_name}被你杀死了！</span><br>";
 		$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";
@@ -281,7 +281,7 @@ function attack($wep_kind = 'N', $active = 0) {
 			//	$damage += $wepe;
 			//} elseif ($wep_kind == 'F') {
 			if ($wep_kind == 'F') {
-				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe ) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
+				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
 			}
 			$damage *= $damage_p;
 			
@@ -309,7 +309,7 @@ function attack($wep_kind = 'N', $active = 0) {
 		
 		get_dmg_punish ( '你', $damage, $hp, $att_key );
 		
-		get_inf ( $w_name, $hit_time [2], $wep_kind, 'w_' );
+		get_inf ( $w_name, $hit_time [2], $wep_kind);
 		
 		check_KP_wep ( '你', $hit_time [3], $wep, $wepk, $wepe, $weps, $wepsk );
 		
@@ -374,7 +374,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			//	$damage += $w_wepe;
 			//} elseif ($w_wep_kind == 'F') {
 			if ($w_wep_kind == 'F') {
-				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe ) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
+				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
 			}
 			$damage *= $damage_p;
 			
@@ -403,7 +403,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 		
 		get_dmg_punish ( $w_name, $damage, $w_hp, $w_att_key );
 		
-		get_inf ( '你', $hit_time [2], $w_wep_kind, '' );
+		get_inf ( '你', $hit_time [2], $w_wep_kind);
 		
 		check_KP_wep ( $w_name, $hit_time [3], $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk );
 		
@@ -416,7 +416,11 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			$w_killnum ++;
 			include_once GAME_ROOT . './include/state.func.php';
 			$killmsg = death ( $w_wep_kind, $w_name, $w_type, $w_wep_temp );
-			$log .= "<span class=\"yellow\">{$w_name}对你说：“{$killmsg}”</span><br>";
+			if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
+				$log .= npc_chat ( $w_type,$w_name, 'kill' );
+			} else {
+				$log .= "<span class=\"yellow\">{$w_name}对你说：“{$killmsg}”</span><br>";
+			}
 		}
 	} else {
 		$damage = 0;
@@ -480,7 +484,7 @@ function get_damage_p(&$rg, $cl = 0, $msg = '', $atkcdt, $type, $nm) {
 	if ($cri_dice <= $max_dice && $rg >= $rg_m) {
 		global $log;
 		if ($type == 1 || $type == 5 || $type == 6|| $type == 7) {
-			$log .= npc_chat ( $type, 'critical' );
+			$log .= npc_chat ( $type,$nm, 'critical' );
 		}
 		if ($nm == '你') {
 			$log .= "{$nm}消耗<span class=\"yellow\">$rg_m</span>点怒气，<span class=\"red\">{$cri_word}</span>！";
@@ -782,6 +786,12 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 								$w_combat_inf .= $ex_inf_sign;
 							}
 							$log .= "并造成{$nm}{$dmginf}了！<br>";
+							global $name,$w_name;
+							if($nm == '你'){
+								addnews($now,'inf',$w_name,$name,$ex_inf_sign);
+							}else{
+								addnews($now,'inf',$name,$w_name,$ex_inf_sign);
+							}	
 						}
 					}
 				} else {
@@ -869,9 +879,9 @@ function get_WF_p($w, $clb, $we) {
 	} else {
 		$we = $we > 0 ? $we : 1;
 		if ($clb == 9) {
-			$spd0 = round ( 0.2 * $we );
+			$spd0 = round ( 0.2*$we);
 		} else {
-			$spd0 = round ( 0.25 * $we );
+			$spd0 = round ( 0.25*$we);
 		}
 		if ($spd0 >= ${$w . 'sp'}) {
 			$spd = ${$w . 'sp'} - 1;
@@ -920,7 +930,7 @@ function check_KP_wep($nm, $ht, &$wp, &$wk, &$we, &$ws, &$wsk) {
 
 function check_GCDF_wep($nm, $ht, &$wp, $wp_kind, &$wk, &$we, &$ws, &$wsk) {
 	global $log, $nosta;
-	if ((($wp_kind == 'C') || ($wp_kind == 'D') || ($wp_kind == 'F')) && ($ws != $nosta)) {
+	if ((($wp_kind == 'C') || ($wp_kind == 'D')|| ($wp_kind == 'F')) && ($ws != $nosta)) {
 		$ws -= $ht;
 		if ($nm == '你') {
 			$log .= "{$nm}用掉了{$ht}个{$wp}。<br>";
@@ -946,7 +956,7 @@ function check_GCDF_wep($nm, $ht, &$wp, $wp_kind, &$wk, &$we, &$ws, &$wsk) {
 	return;
 }
 
-function get_inf($nm, $ht, $wp_kind, $w = '') {
+function get_inf($nm, $ht, $wp_kind) {
 	if ($ht > 0) {
 		global $infatt;
 		$infatt_dice = rand ( 1, 4 );
@@ -959,12 +969,17 @@ function get_inf($nm, $ht, $wp_kind, $w = '') {
 		} elseif (($infatt_dice == 4) && (strpos ( $infatt [$wp_kind], 'f' ) !== false)) {
 			$inf_att = 'f';
 		}
+		if($nm == '你'){
+			$w = '';
+		} else {
+			$w = 'w_';
+		}
 		if ($inf_att) {
 			global $log, ${$w . 'ar' . $inf_att}, ${$w . 'ar' . $inf_att . 'k'}, ${$w . 'ar' . $inf_att . 'e'}, ${$w . 'ar' . $inf_att . 's'}, ${$w . 'ar' . $inf_att . 'sk'};
 			if (${$w . 'ar' . $inf_att . 's'}) {
 				${$w . 'ar' . $inf_att . 's'} -= $ht;
 				if ($nm == '你') {
-					$log .= "{$nm}的${$w.'ar'.$inf_att}的耐久度下降了{$ht}！<br>";
+					$log .= "你的${$w.'ar'.$inf_att}的耐久度下降了{$ht}！<br>";
 				}
 				if (${$w . 'ar' . $inf_att . 's'} <= 0) {
 					$log .= "{$nm}的<span class=\"red\">${$w.'ar'.$inf_att}</span>受损过重，无法再装备了！<br>";
@@ -980,6 +995,12 @@ function get_inf($nm, $ht, $wp_kind, $w = '') {
 						${$w . 'combat_inf'} .= $inf_att;
 					}
 					$log .= "{$nm}的<span class=\"red\">$infinfo[$inf_att]</span>部受伤了！<br>";
+					global $name,$w_name;
+					if($nm == '你'){
+						addnews($now,'inf',$w_name,$name,$inf_att);
+					}else{
+						addnews($now,'inf',$name,$w_name,$inf_att);
+					}					
 				}
 			}
 		}
@@ -1063,53 +1084,62 @@ function check_gender($nm_a, $nm_d, $gd_a, $gd_d, $a_ky) {
 	return $gd_dmg_p;
 }
 
-function npc_chat($type, $mode) {
+function npc_chat($type,$nm, $mode) {
 	global $npcchaton;
 	if ($npcchaton) {
 		global $npcchat, $w_itmsk0, $w_hp, $w_mhp;
-		if ($type == 1|| $type == 7) {
-			$npcwords = '<span class="evergreen">';
-		} elseif ($type == 5 || $type == 6) {
-			$npcwords = '<span class="yellow">';
-		} else {
+//		if ($type == 1|| $type == 7) {
+//			$npcwords = '<span class="evergreen">';
+//		} elseif ($type == 5 || $type == 6) {
+//			$npcwords = '<span class="yellow">';
+//		} else {
+//			$npcwords = '<span>';
+//		}
+		$chatcolor = $npcchat[$type][$nm]['color'];
+		if(!empty($chatcolor)){
+			$npcwords = "<span class = \"{$chatcolor}\">";
+		}else{
 			$npcwords = '<span>';
 		}
 		switch ($mode) {
 			case 'attack' :
 				if (empty ( $w_itmsk0 )) {
-					$npcwords .= "{$npcchat[$type][0]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][0]}<br>";
 					$w_itmsk0 = '1';
 				} elseif ($w_hp > ($w_mhp / 2)) {
 					$dice = rand ( 1, 2 );
-					$npcwords .= "{$npcchat[$type][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
 				} else {
 					$dice = rand ( 3, 4 );
-					$npcwords .= "{$npcchat[$type][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
 				}
 				break;
 			case 'defend' :
 				if (empty ( $w_itmsk0 )) {
-					$npcwords .= "{$npcchat[$type][0]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][0]}<br>";
 					$w_itmsk0 = '1';
 				} elseif ($w_hp > ($w_mhp / 2)) {
 					$dice = rand ( 5, 6 );
-					$npcwords .= "{$npcchat[$type][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
 				} else {
 					$dice = rand ( 7, 8 );
-					$npcwords .= "{$npcchat[$type][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
 				}
 				break;
 			case 'death' :
-				$npcwords .= "{$npcchat[$type][9]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][9]}<br>";
 				break;
 			case 'escape' :
-				$npcwords .= "{$npcchat[$type][10]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][10]}<br>";
 				break;
 			case 'cannot' :
-				$npcwords .= "{$npcchat[$type][11]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][11]}<br>";
 				break;
 			case 'critical' :
-				$npcwords .= "{$npcchat[$type][12]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][12]}<br>";
+				break;
+			case 'kill' :
+				$npcwords .= "{$nm}对你说道：{$npcchat[$type][$nm][13]}<br>";
 				break;
 		}
 		/*if ($mode == 'attack') {

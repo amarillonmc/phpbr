@@ -27,6 +27,8 @@ function itemfind() {
 				$killmsg = death('trap',$wdata['name'],$wdata['type'],$itm0);
 				$log .= "你被<span class=\"red\">".$wdata['name']."</red>设置的陷阱杀死了！";
 				$log .= "<span class=\"yellow\">{$wdata['name']} 对你说：“{$killmsg}”</span><br>";
+				$itm0 = $itmk0 = $itmsk0 = '';
+				$itme0 = $itms0 = 0;
 				return;
 			} else {
 				$bid = 0;

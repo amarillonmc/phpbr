@@ -7,7 +7,7 @@ if(!defined('IN_GAME')) {
 
 
 function  parse_news($start = 1, $range = 0 , $file = '') {
-	global $week,$newsfile,$nowep,$db,$tablepre,$lwinfo,$plsinfo,$wthinfo,$typeinfo;
+	global $week,$newsfile,$nowep,$db,$tablepre,$lwinfo,$plsinfo,$wthinfo,$typeinfo,$exdmginf;
 	$file = $file ? $file : $newsfile;	
 	$ninfo = openfile($file);
 	$r = sizeof($ninfo) - 1;
@@ -64,7 +64,7 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}无意中引爆了核弹，本次游戏无人生还</span><br>\n";
 		} elseif(strpos($news,'death') === 0) {
 			if($news == 'death11') {
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">禁区停留</span>死亡";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因滞留在<span class=\"red\">禁区【{$plsinfo[$b]}】</span>死亡";
 			} elseif($news == 'death12') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">毒发</span>死亡";
 			} elseif($news == 'death13') {
@@ -72,9 +72,9 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 			} elseif($news == 'death14') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">入侵禁区系统失败</span>死亡";
 			} elseif($news == 'death15') {
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"red\">时空特使强行消除。</span>";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"red\">时空特使强行消除</span>";
 			} elseif($news == 'death16') {
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"red\">由理直接拉入SSS团。</span>";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"red\">由理直接拉入SSS团</span>";
 			} elseif($news == 'death17') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"red\">冰雹砸死</span>";
 			} elseif($news == 'death18') {
@@ -120,11 +120,11 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 				$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
 				$lastword = $db->result($result, 0);
 			} else {
-				$dname = "{$typeinfo[$b]} $a";
-				$lastword = $lwinfo[$b];
+				$dname = $typeinfo[$b].' '.$a;
+				$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
 			}
 
-			$newsinfo .= "<span class=\"yellow\">【$dname ： {$lastword}】</span><br>\n";
+			$newsinfo .= "<span class=\"yellow\">【{$dname}：“{$lastword}”】</span><br>\n";
 		} elseif($news == 'poison') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"purple\">{$a}食用了{$b}下毒的{$c}</span><br>\n";
 		} elseif($news == 'trap') {
@@ -151,6 +151,8 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}得到了常磐之灵加护！</span><br>\n";
 		} elseif($news == 'suisidefail') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}注射了H173，却由于RP太高进入了发狂状态！！</span><br>\n";
+		} elseif($news == 'inf') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}的攻击致使{$b}</span>{$exdmginf[$c]}<span class=\"red\">了</span><br>\n";
 		} else {
 			$newsinfo .= "<li>$time,$news,$a,$b,$c,$d<br>\n";
 		}

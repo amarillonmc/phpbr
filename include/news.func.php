@@ -64,7 +64,7 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}无意中引爆了核弹，本次游戏无人生还</span><br>\n";
 		} elseif(strpos($news,'death') === 0) {
 			if($news == 'death11') {
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因滞留在<span class=\"red\">禁区【{$plsinfo[$b]}】</span>死亡";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因滞留在<span class=\"red\">禁区【{$plsinfo[$c]}】</span>死亡";
 			} elseif($news == 'death12') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">毒发</span>死亡";
 			} elseif($news == 'death13') {

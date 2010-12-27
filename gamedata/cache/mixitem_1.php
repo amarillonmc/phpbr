@@ -57,7 +57,7 @@ $mixinfo = array
 	array('stuff' => array('水晶方块','水晶方块','水晶方块'),'result' => array('绿宝石方块','X',3,3,),),
 	array('stuff' => array('幻之使魔','永恒之桶'),'result' => array('灵魂的结晶','WC',180,90,),),
 	array('stuff' => array('针筒','疗伤药'),'result' => array('治疗针','HH',120,1,),),
-	array('stuff' => array('针筒','毒药'),'result' => array('毒针','WK',35,5,p),),
+	array('stuff' => array('针筒','毒药'),'result' => array('毒针','WK',15,4,p),),
 	array('stuff' => array('喷雾器罐','毒药'),'result' => array('简易毒气弹','WD',70,5,dp),),
 	array('stuff' => array('空白符卡','夜雀歌谱'),'result' => array('声符『枭的夜鸣声』','WF',15,∞,e),),
 	array('stuff' => array('空白符卡','雏人形'),'result' => array('疵符『破裂的护身符』','WF',15,∞,p),),

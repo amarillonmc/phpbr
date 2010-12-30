@@ -81,26 +81,59 @@ if($mode == 'enter') {
 	} while(!$itmk[4] || ($itmk[3] == $itmk[4]));
 
 	if(strpos($wepk,'WG') === 0){
-		$itm[3] = '手枪子弹'; $itmk[3] = 'GB'; $itme[3] = 1; $itms[3] = 12; 
+		$itm[3] = '手枪子弹'; $itmk[3] = 'GB'; $itme[3] = 1; $itms[3] = 12; $itmsk[3] = '';
 	}
 	
-//	if ($name == '四面') {
-//		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
-//		$att += 100;$def += 100;
-//		$exp += 500;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
-//		$itm[1] = 'END BOSS HEAL'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
-//		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
-//		$itm[3] = '广域生命探测器'; $itmk[3] = 'R'; $itme[3] = 50; $itms[3] = 1;$itmsk[3] = 2;
-//		$itm[4] = 'END BOSS PLASMA'; $itmk[4] = 'WG'; $itme[4] = 300; $itms[4] = 300;$itmsk[4] = 'ur';
-//		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
-//		$wep = 'END BOSS KNIFE';$wepk = 'WK';$wepe = 300;$weps = 300;$wepsk = 'r';
-//		$arb = '能量装甲';$arbk = 'DB'; $arbe = 400; $arbs = 150; $arbsk = 'A';
-//		$arh = '机动头盔';$arhk = 'DH'; $arhe = 200; $arhs = 150; $arhsk = 'UI';
-//		$ara = '腕力增幅器';$arak = 'DA'; $arae = 200; $aras = 150; $arask = 'c';
-//		$arf = '金属战靴';$arfk = 'DF'; $arfe = 200; $arfs = 150; $arfsk = 'q';
-//		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
-//		$wp=$wk=$wg=$wc=$wd=$wf=200;
+//	$shenzhuang = rand(1,10);
+//	switch ($shenzhuang) {
+//		case 1:
+//			$itm[5] = '圭一少年的球棒'; $itmk[5] = 'WP'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'e';
+//		break;
+//		case 2:
+//			$itm[5] = '简称为UCW的三弦'; $itmk[5] = 'WK'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'p';
+//		break;
+//		case 3:
+//			$itm[5] = '燃素粒子火焰炮'; $itmk[5] = 'WG'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'u';
+//		break;
+//		case 4:
+//			$itm[5] = '水晶的超级球'; $itmk[5] = 'WC'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'ir';
+//		break;
+//		case 5:
+//			$itm[5] = '久违的KEY系催泪弹'; $itmk[5] = 'WD'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'd';
+//		break;
+//		case 6:
+//			$itm[5] = '梦想天生'; $itmk[5] = 'WF'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'd';
+//		break;
+//		case 7:
+//			$itm[5] = '这样的装备没问题么的铠甲'; $itmk[5] = 'DB'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'E';
+//		break;
+//		case 8:
+//			$itm[5] = '这样的装备没问题么的头盔'; $itmk[5] = 'DH'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'q';
+//		break;
+//		case 9:
+//			$itm[5] = '这样的装备没问题么的手套'; $itmk[5] = 'DA'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'U';
+//		break;
+//		case 10:
+//			$itm[5] = '这样的装备没问题么的靴子'; $itmk[5] = 'DF'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'I';
+//		break;
 //	}
+	if ($name == '四面') {
+		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
+		$att += 100;$def += 100;
+		$exp += 500;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
+		$itm[1] = 'END BOSS HEAL'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
+		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
+		$itm[3] = '广域生命探测器'; $itmk[3] = 'R'; $itme[3] = 50; $itms[3] = 1;$itmsk[3] = 2;
+		$itm[4] = 'END BOSS PLASMA'; $itmk[4] = 'WG'; $itme[4] = 300; $itms[4] = 300;$itmsk[4] = 'ur';
+		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
+		$wep = 'END BOSS KNIFE';$wepk = 'WK';$wepe = 300;$weps = 300;$wepsk = 'r';
+		$arb = '能量装甲';$arbk = 'DB'; $arbe = 400; $arbs = 150; $arbsk = 'A';
+		$arh = '机动头盔';$arhk = 'DH'; $arhe = 200; $arhs = 150; $arhsk = 'UI';
+		$ara = '腕力增幅器';$arak = 'DA'; $arae = 200; $aras = 150; $arask = 'c';
+		$arf = '金属战靴';$arfk = 'DF'; $arfe = 200; $arfs = 150; $arfsk = 'qE';
+		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
+		$wp=$wk=$wg=$wc=$wd=$wf=200;
+	}
 	
 	$state = 0;
 	$bid = 0;

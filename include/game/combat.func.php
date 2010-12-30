@@ -250,7 +250,7 @@ function attack($wep_kind = 'N', $active = 0) {
 			$watt = $wepe;
 		}
 	} elseif ($wep_kind == 'N') {
-		$watt = round ( ${$skillinfo [$wep_kind]} / 4 );
+		$watt = ${$skillinfo [$wep_kind]};
 	} else {
 		$watt = $wepe * 2;
 	}
@@ -343,7 +343,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 		$watt = round ( $w_wepe / 5 );
 		$is_wpg = true;
 	} elseif ($w_wep_kind == 'N') {
-		$watt = round ( ${'w_' . $skillinfo [$w_wep_kind]} / 4 );
+		$watt = ${'w_' . $skillinfo [$w_wep_kind]};
 	} else {
 		$watt = $w_wepe * 2;
 	}
@@ -764,7 +764,7 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 					$e_dmg =  round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
 				}
 				//$e_dmg += round ( ($we / ($we + $wdmg) + $ws / ($ws + $sdmg)) * rand ( 100 - $fluc, 100 + $fluc ) / 200 * $bdmg * $wk_dmg_p );
-				if (strpos ( $dky, $def ) == false) {
+				if (strpos ( $dky, $def ) === false) {
 					if (strpos ( $inf, $ex_dmg_sign ) !== false && $punish > 1) {
 						$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害倍增！";
 						$e_dmg *= $punish;
@@ -777,7 +777,7 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 					}
 					$e_dmg = round($e_dmg);
 					$log .= "{$dmgnm}造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
-					if (!empty($ex_inf_sign) && strpos ( $inf, $ex_dmg_sign ) == false) {
+					if (!empty($ex_inf_sign) && (strpos ( $inf, $ex_inf_sign ) === false)) {
 						$dice = rand ( 0, 99 );
 						if ($dice < $e_htr) {
 							$inf .= $ex_inf_sign;

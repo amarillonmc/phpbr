@@ -72,7 +72,7 @@ $language = array
 	'wc' => '投',
 	'wd' => '爆',
 	'wf' => '灵',
-	'newsnotice' => '“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”',
+	'newsnotice' => '<span class="evergreen">“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”</span>',
 	'useitem' => '使用',
 	'end' => '游戏结束！',
 	'send' => '发送',

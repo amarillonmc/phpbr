@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 $language = array
 	(
@@ -20,7 +20,7 @@ $language = array
 	'adminmsg' => '站长留言',
 	'username' => '账号',
 	'password' => '密码',
-	'welcome' => '欢迎你， $cuser ！',
+	'welcome' => '欢迎你，{$cuser}！',
 	'login' => '登录',
 	'numinfo' => '第 $gamenum 回游戏 ',
 	'gamedate' => '{$month}月{$day}日 星期{$week["$wday"]} {$hour}:{$min}',

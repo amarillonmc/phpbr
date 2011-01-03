@@ -250,7 +250,7 @@ function attack($wep_kind = 'N', $active = 0) {
 			$watt = $wepe;
 		}
 	} elseif ($wep_kind == 'N') {
-		$watt = ${$skillinfo [$wep_kind]};
+		$watt =  round (${$skillinfo [$wep_kind]}*2/3);
 	} else {
 		$watt = $wepe * 2;
 	}

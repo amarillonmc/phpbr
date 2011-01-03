@@ -324,16 +324,19 @@ function itemuse($itmn) {
 		}
 	
 	} elseif (strpos ( $itmk, 'T' ) === 0) {
-		global $pls, $exp, $upexp, $wd;
+		global $pls, $exp, $upexp, $wd, $club,$lvl;
 		$mapfile = GAME_ROOT . "./gamedata/mapitem/{$pls}mapitem.php";
 		$itemdata = "$itm,TO,$itme,1,$pid,\n";
 		writeover ( $mapfile, $itemdata, 'ab' );
 		$log .= "设置了陷阱<span class=\"red\">$itm</span>。<br>小心，自己也很难发现。<br>";
-		$exp ++;
-		$wd ++;
+		//echo $exp;
+		if($club == 5){$exp += 2;$wd+=2;}
+		else{$exp++;$wd++;}
+		
 		if ($exp >= $upexp) {
 			include_once GAME_ROOT . './include/state.func.php';
-			lvlup ( $exp, $upexp );
+			//lvlup ( $exp, $upexp );
+			lvlup ($lvl, $exp, 1);
 		}
 		if ($itms != $nosta) {
 			$itms --;
@@ -350,8 +353,8 @@ function itemuse($itmn) {
 			$mode = 'command';
 			return;
 		}
-		if (strpos ( $wepsk, 'u' ) !== false) {
-			if ($itmk == 'GBu') {
+		if (strpos ( $wepsk, 'e' ) !== false) {
+			if ($itmk == 'GBe') {
 				$bulletnum = 10;
 			} else {
 				$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>";
@@ -366,8 +369,8 @@ function itemuse($itmn) {
 				$mode = 'command';
 				return;
 			}
-		} elseif (strpos ( $wepsk, 'e' ) !== false) {
-			if ($itmk == 'GBe') {
+		} elseif (strpos ( $wepsk, 'u' ) !== false) {
+			if ($itmk == 'GBu') {
 				$bulletnum = 10;
 			} else {
 				$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>";

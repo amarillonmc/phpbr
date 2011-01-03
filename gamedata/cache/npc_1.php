@@ -350,6 +350,7 @@ $npcinfo = array
 			'itmk4' => 'WK',
 			'itme4' => 500,
 			'itms4' => 150,
+			'itmsk4' => c,
 			),
 		1 => array
 			(
@@ -375,6 +376,7 @@ $npcinfo = array
 			'itmk4' => 'WC',
 			'itme4' => 500,
 			'itms4' => 150,
+			'itmsk4' => rc,
 			),
 		2 => array
 			(
@@ -400,6 +402,7 @@ $npcinfo = array
 			'itmk4' => 'WP',
 			'itme4' => 500,
 			'itms4' => 150,
+			'itmsk4' => c,
 			),
 		),
 	),

@@ -32,7 +32,9 @@ function itemfind() {
 				return;
 			} else {
 				$bid = 0;
-				death('trap','','',$itmsk0);
+				death('trap','','',$itm0);
+				$itm0 = $itmk0 = $itmsk0 = '';
+				$itme0 = $itms0 = 0;
 				return;
 			}
 		} elseif($itmsk0) {
@@ -58,7 +60,7 @@ function itemget() {
 	global $log,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
 	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
-	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB)/',$itmk0)){
+	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB|M|V)/',$itmk0)){
 		for($i = 1;$i <= 5;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
@@ -221,7 +223,15 @@ function itemadd(){
 }
 
 function itemmerge($itn1,$itn2){
-	global $log,$mode,${'itm'.$itn1},${'itmk'.$itn1},${'itme'.$itn1},${'itms'.$itn1},${'itmsk'.$itn1},${'itm'.$itn2},${'itmk'.$itn2},${'itme'.$itn2},${'itms'.$itn2},${'itmsk'.$itn2};
+	global $log,$mode;
+	
+	if($itn1 == $itn2) {
+		$log .= '需要选择两个物品才能进行合并！';
+		$mode = 'itemmerge';
+		return;
+	}
+	
+	global $nosta,${'itm'.$itn1},${'itmk'.$itn1},${'itme'.$itn1},${'itms'.$itn1},${'itmsk'.$itn1},${'itm'.$itn2},${'itmk'.$itn2},${'itme'.$itn2},${'itms'.$itn2},${'itmsk'.$itn2};
 	
 	$it1 = & ${'itm'.$itn1};
 	$itk1 = & ${'itmk'.$itn1};
@@ -239,14 +249,18 @@ function itemmerge($itn1,$itn2){
 		$mode = 'itemmerge';
 		return;
 	}
+	
+	if($its1==$nosta || $its2==$nosta) {
+		$log .= '耐久是无限的物品不能合并！';
+		$mode = 'itemmerge';
+		return;
+	}
 
 	if(($it1 == $it2)&&($ite1 == $ite2)) {
-		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|WF|Y|C|TN|GB)/',$itk1)) {
+		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|WF|Y|C|TN|GB|V|M)/',$itk1)) {
 			$its2 += $its1;
-			$it1 = '';
-			$itk1 = 'N';
+			$it1 = $itk1 = $itsk1 = '';
 			$ite1 = $its1 = 0;
-			$itsk1 = '';
 			$log .= "你合并了<span class=\"yellow\">$it2</span>。";
 			$mode = 'command';
 			return;
@@ -269,22 +283,24 @@ function itemmerge($itn1,$itn2){
 			$mode = 'command';
 			return;
 		} else {
-			$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不能合并！";
+			$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不是同类型同属性物品，不能合并！";
+			$mode = 'itemmerge';
 		}
 	} else {
-		$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不能合并！";
+		$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不是同名同效果物品，不能合并！";
+		$mode = 'itemmerge';
 	}
 
 	if(!$itn1 || !$itn2) {
 		itemadd();
 	}
 
-	$mode = 'command';
+	//$mode = 'command';
 	return;
 }
 
 function itemmix($m1=0,$m2=0,$m3=0) {
-	global $log,$mode,$gamecfg,$name;
+	global $log,$mode,$gamecfg,$name,$nosta;
 	global ${'itm'.$m1},${'itm'.$m2},${'itm'.$m3},$club,$wd;
 
 	if((${'itm'.$m1} && ((${'itm'.$m1} == ${'itm'.$m2}) || (${'itm'.$m1} == ${'itm'.$m3}))) || ((${'itm'.$m2}) && (${'itm'.$m2} == ${'itm'.$m3}))) {
@@ -326,9 +342,12 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 		list($itm0,$itmk0,$itme0,$itms0,$itmsk0) = $minfo['result'];
 		$log .= "<span class=\"yellow\">$mixitem[0] $mixitem[1] $mixitem[2]</span>合成了<span class=\"yellow\">{$minfo['result'][0]}</span><br>";
 		addnews($now,'itemmix',$name,$itm0);
-		if($club == 5) { $wd += 2; }
-		else { $wd+=1; }
-		if((strpos($itmk0,'H') === 0)&&($club == 8)){ $itms0 = ceil($itms0*1.5); }
+		//if($club == 5) { $wd += 2; }
+		//else { $wd+=1; }
+		$wd+=1;
+		if((strpos($itmk0,'WD') === 0)&&($club == 5)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*1.5); }
+		elseif((strpos($itmk0,'H') === 0)&&($club == 8)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*1.5); }
+		elseif(($itm0 == '移动PC' || $itm0 == '广域生命探测器') && ($club == 7)){ $itme0 *= 3; }
 		itemget();
 	}
 	return;
@@ -389,7 +408,7 @@ function itembuy($item,$shop,$bnum=1) {
 	} elseif($money < $price*$bnum) {
 		$log .= '你的钱不够，不能购买此物品！<br>';
 		return;
-	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H)/',$ikind)&&$bnum>1) {
+	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$ikind)&&$bnum>1) {
 		$log .= '此物品一次只能购买一个。<br>';
 		return;
 	}

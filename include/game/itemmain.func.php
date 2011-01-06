@@ -442,13 +442,20 @@ function itembuy($item,$shop,$bnum=1) {
 
 
 
-function getcorpse($wid,$item){
+function getcorpse($item){
 	global $db,$tablepre,$log,$mode;
-	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$money,$pls;
+	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$money,$pls,$bid;
+	if($bid==0){
+		$log .= '<span class="yellow">想扒尸？玩儿蛋去。</span><br>';
+		$bid = 0;
+		$mode = 'command';
+		return;
+	}
 
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$wid'");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$bid'");
 	if(!$db->num_rows($result)){
-		$log .= "对方不存在！<br>";
+		$log .= '对方不存在！<br>';
+		$bid = 0;
 		$mode = 'command';
 		return;
 	}
@@ -456,11 +463,13 @@ function getcorpse($wid,$item){
 	$edata = $db->fetch_array($result);
 	
 	if($edata['hp']>0) {
-		$log .= "对方尚未死亡！<br>";
+		$log .= '对方尚未死亡！<br>';
+		$bid = 0;
 		$mode = 'command';
 		return;
 	} elseif($edata['pls'] != $pls) {
-		$log .= "对方跟你不在同一个地图！<br>";
+		$log .= '对方跟你不在同一个地图！<br>';
+		$bid = 0;
 		$mode = 'command';
 		return;
 	}
@@ -492,12 +501,14 @@ function getcorpse($wid,$item){
 		$edata['itme'.$itmn] = $edata['itms'.$itmn] = 0;  
 	} elseif($item == 'money') {
 		$money += $edata['money'];
-		$log .= '获得了金钱 <span class="yellow">'.$edata['money'].'</span> 。<br>';
+		$log .= '获得了金钱 <span class="yellow">'.$edata['money'].'</span>。<br>';
 		$edata['money'] = 0;
 		w_save2($edata);
+		$bid = 0;
 		$mode = 'command';
 		return;
 	} else {
+		$bid = 0;
 		return;
 	}
 
@@ -508,7 +519,7 @@ function getcorpse($wid,$item){
 	} else {
 		itemget();
 	}
-
+	$bid = 0;
 	$mode = 'command';
 	return;
 }

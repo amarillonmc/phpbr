@@ -24,7 +24,7 @@ function findenemy(&$w_pdata) {
 
 	$cmd .= '现在想要做什么？<br><br>';
 	$cmd .= '向对手大喊：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
-	$cmd .= '<input type="hidden" name="mode" value="combat"><input type="hidden" name="wid" value="'.$w_pid.'">';
+	$cmd .= '<input type="hidden" name="mode" value="combat">';
 
 	$w1 = substr($wepk,1,1);
 	$w2 = substr($wepk,2,1);
@@ -59,7 +59,7 @@ function findteam(&$w_pdata){
 	
 	$cmd .= '现在想要做什么？<br><br>';
 	$cmd .= '留言：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
-	$cmd .= '想要转让什么？<input type="hidden" name="mode" value="senditem"><input type="hidden" name="wid" value="'.$w_pid.'"><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >不转让</a><br><br>';
+	$cmd .= '想要转让什么？<input type="hidden" name="mode" value="senditem"><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >不转让</a><br><br>';
 	for($i = 1;$i < 6; $i++){
 		global ${'itms'.$i};
 		if(${'itms'.$i}) {
@@ -97,12 +97,17 @@ function findcorpse(&$w_pdata){
 
 
 function senditem(){
-	global $tablepre,$log,$mode,$main,$command,$cmd,$battle_title,$pls,$wid,$plsinfo,$message,$db,$now,$name,$w_log;
-
-
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$wid'");
+	global $tablepre,$log,$mode,$main,$command,$cmd,$battle_title,$pls,$plsinfo,$message,$db,$now,$name,$w_log,$bid;
+	if($bid==0){
+		$log .= '<span class="yellow">你跟别人关系真好，但是……玩儿蛋去吧。</span><br>';
+		$bid = 0;
+		$mode = 'command';
+		return;
+	}
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$bid'");
 	if(!$db->num_rows($result)){
 		$log .= "对方不存在！<br>";
+		$bid = 0;
 		$mode = 'command';
 		return;
 	}
@@ -111,10 +116,12 @@ function senditem(){
 	if($edata['pls'] != $pls) {
 		$log .= "<span class=\"yellow\">".$edata['name']."</span>已经离开了<span class=\"yellow\">$plsinfo[$pls]</span> 。<br>";
 		$mode = 'command';
+		$bid = 0;
 		return;
 	} elseif($edata['hp'] <= 0) {
 		$log .= "<span class=\"yellow\">".$edata['name']."</span>已经死亡，不能接受物品。<br>";
 		$mode = 'command';
+		$bid = 0;
 		return;
 	}
 
@@ -129,6 +136,7 @@ function senditem(){
 		global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
 		if (!${'itms'.$itmn}) {
 			$log .= '此道具不存在！';
+			$bid = 0;
 			$mode = 'command';
 			return;
 		}
@@ -156,11 +164,13 @@ function senditem(){
 				w_save($w_pid);
 				$itm = $itmk = $itmsk = '';
 				$itme = $itms = 0;
+				$bid = 0;
 				return;
 			}
 		}
 		$log .= "<span class=\"yellow\">$w_name</span> 的包裹已经满了，不能赠送物品。<br>";
 	}
+	$bid = 0;
 	$mode = 'command';
 	return;
 }

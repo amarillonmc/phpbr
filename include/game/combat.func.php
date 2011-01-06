@@ -4,7 +4,7 @@ if (! defined ( 'IN_GAME' )) {
 	exit ( 'Access Denied' );
 }
 
-function combat($w_pdata, $active = 1, $wep_kind = '') {
+function combat($active = 1, $wep_kind = '') {
 	global $log, $mode, $main, $cmd, $battle_title, $db, $tablepre, $pls, $message, $now, $w_log, $nosta, $hdamage, $hplayer;
 	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
@@ -32,8 +32,14 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 			$mode = 'command';
 			return;
 		}
+		if($bid==0){
+			$log .= "<span class=\"yellow\">一瞬千击！<br>你想千击？<br>玩儿蛋去！<br>来弄我噻！<br>来弄我噻！<br>来弄我噻！<br></span><br>";
+			$bid = 0;
+			$mode = 'command';
+			return;
+		}
 		
-		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pdata'" );
+		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$bid'" );
 		if (! $db->num_rows ( $result )) {
 			$log .= "对方不存在！<br>";
 			$bid = 0;
@@ -43,12 +49,12 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 		
 		$edata = $db->fetch_array ( $result );
 		
-		if ($edata ['pid'] !== $bid) {
+		/*if ($edata ['pid'] !== $bid) {
 			$log .= "<span class=\"yellow\">一瞬千击！<br>你想千击？<br>玩儿蛋去！<br>来弄我噻！<br>来弄我噻！<br>来弄我噻！<br></span><br>";
 			$bid = 0;
 			$mode = 'command';
 			return;
-		}
+		}*/
 		
 		if ($edata ['pls'] != $pls) {
 			$log .= "<span class=\"yellow\">" . $edata ['name'] . "</span>已经离开了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
@@ -115,7 +121,9 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 			$log .= "<span class=\"red\">{$w_name}逃跑了！</span><br>";
 		}
 	} else {
-		extract ( $w_pdata, EXTR_PREFIX_ALL, 'w' );
+		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$bid'" );
+		$edata = $db->fetch_array ( $result );
+		extract ( $edata, EXTR_PREFIX_ALL, 'w' );
 		init_battle ( 1 );
 		include_once GAME_ROOT . './include/game/attr.func.php';
 		
@@ -220,13 +228,13 @@ function combat($w_pdata, $active = 1, $wep_kind = '') {
 		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pid'" );
 		$cdata = $db->fetch_array ( $result );
 		findcorpse ( $cdata );
-		$bid = 0;
+		//$bid = 0;
 		return;
 	} else {
 		$main = 'battle';
 		init_battle ( 1 );
 		$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
-		$bid = $hp == 0 ? $bid : 0;
+		$bid = $hp <= 0 ? $bid : 0;
 		return;
 	}
 

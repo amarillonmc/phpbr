@@ -232,15 +232,12 @@ function discover($schmode = 0) {
 				if($enemy_dice < ($find_obbs - $hide_r)) {
 					if($teamID&&(!$fog)&&($teamID == $edata['teamID'])){
 						$bid = $edata['pid'];
-						//$itmsk0 = $edata['pid'];
 						include_once GAME_ROOT.'./include/game/battle.func.php';
 						findteam($edata);
 						return;
 					} else {
 						$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf);
 						$bid = $edata['pid'];
-						//$itmsk0 = $edata['pid'];
-						
 						$active_dice = rand(0,99);
 						if($active_dice <  $active_r) {
 							include_once GAME_ROOT.'./include/game/battle.func.php';
@@ -248,7 +245,7 @@ function discover($schmode = 0) {
 							return;
 						} else {
 							include_once GAME_ROOT.'./include/game/combat.func.php';
-							combat($edata,0);
+							combat(0);
 							return;
 						}
 					}
@@ -259,8 +256,6 @@ function discover($schmode = 0) {
 					if($gamestate <40 &&(($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
 						
 						$bid = $edata['pid'];
-						//$itmsk0 = $edata['pid'];
-						
 						include_once GAME_ROOT.'./include/game/battle.func.php';
 						findcorpse($edata);
 						return;

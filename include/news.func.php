@@ -114,13 +114,13 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 			}else {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">不明原因</span>死亡";
 			}
-			
+			$dname = $typeinfo[$b].' '.$a;
 			if($b == 0) {
-				$dname = $a;
+				//$dname = $a;
 				$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
 				$lastword = $db->result($result, 0);
 			} else {
-				$dname = $typeinfo[$b].' '.$a;
+				//$dname = $typeinfo[$b].' '.$a;
 				$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
 			}
 

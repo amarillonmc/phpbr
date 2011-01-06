@@ -6,7 +6,7 @@ if(!defined('IN_GAME')) {
 }
 
 function death($death,$kname = '',$ktype = 0,$annex = '') {
-	global $now,$db,$tablepre,$alivenum,$deathnum,$name,$state,$type,$bid,$killmsginfo,$typeinfo,$hp;
+	global $now,$db,$tablepre,$alivenum,$deathnum,$name,$state,$type,$bid,$killmsginfo,$typeinfo,$hp,$pls;
 	if(!$death){return;}
 	$hp = 0;
 	if($death == 'N') { $state = 20; }
@@ -37,7 +37,14 @@ function death($death,$kname = '',$ktype = 0,$annex = '') {
 		$kname = '';
 		$killmsg = '';
 	}
-
+	
+	if(!$type) {
+		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$name'");
+		$lastword = $db->result($result, 0);
+		/*$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$name' AND type = '$type'");
+		$pls = $db->result($result, 0);*/
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$name','$pls','$lastword')");
+	}
 	addnews($now,'death'.$state,$name,$type,$kname,$annex);
 	//$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);
 	$alivenum--;
@@ -81,6 +88,12 @@ function kill($death,$dname,$dtype = 0,$dpid = 0,$annex = '') {
 			$lastword = $lwinfo[$dtype];
 		}
 			
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')");
+	}else{
+		$lwname = $typeinfo[$dtype].' '.$dname;
+		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$dname'");
+		$lastword = $db->result($result, 0);
+
 		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')");
 	}
 	

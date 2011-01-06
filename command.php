@@ -56,8 +56,10 @@ init_playerdata();
 
 
 $gamedata = array();
-
-$bid = ($mode == 'combat') ? $bid : 0;
+if($mode !== 'combat' && $mode !== 'corpse' && $mode !== 'senditem'){
+	$bid = 0;
+}
+//$bid = ($mode == 'combat') ? $bid : 0;
 
 if($command == 'menu') {
 	$mode = 'command';
@@ -143,7 +145,7 @@ if($command == 'menu') {
 	senditem();
 } elseif($mode == 'combat') {
 	include_once GAME_ROOT.'./include/game/combat.func.php';
-	combat($wid,1,$command);
+	combat(1,$command);
 } elseif($mode == 'rest') {
 	include_once GAME_ROOT.'./include/state.func.php';
 	rest($command);
@@ -152,7 +154,7 @@ if($command == 'menu') {
 	chgword($newmotto,$newlastword,$newkillmsg);
 } elseif($mode == 'corpse') {
 	include_once GAME_ROOT.'./include/game/itemmain.func.php';
-	getcorpse($wid,$command);
+	getcorpse($command);
 } elseif($mode == 'team') {
 	include_once GAME_ROOT.'./include/game/team.func.php';
 	$command($nteamID,$nteamPass);

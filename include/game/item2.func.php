@@ -131,13 +131,26 @@ function hack($itmn = 0) {
 
 function newradar($m = 0){
 	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack;
-	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num;
+	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen,$typeinfo;
 	
 	if(!$mode) {
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
-	for($i=0;$i<=count($plsinfo);$i++) {
+	$tdheight = 20;
+	$screenheight = count($plsinfo)*$tdheight;
+	$radarscreen = '<table height='.$screenheight.'px width=640px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
+	$radarscreen .= "<tr>
+		<td class=b2 height={$tdheight}px width=125px><div class=nttx></div></td>
+		<td class=b2 width=80px><div class=nttx>{$typeinfo[0]}</div></td>
+		<td class=b2 width=80px><div class=nttx>{$typeinfo[2]}</div></td>
+		<td class=b2 width=80px><div class=nttx>{$typeinfo[3]}</div></td>
+		<td class=b2 width=80px><div class=nttx>{$typeinfo[4]}</div></td>
+		<td class=b2 width=80px><div class=nttx>{$typeinfo[5]}</div></td>
+		<td class=b2 width=80px><div class=nttx>{$typeinfo[6]}</div></td>
+	</tr>";
+	for($i=0;$i<count($plsinfo);$i++) {
+		$radarscreen .= "<tr><td class=b2 height={$tdheight}px><div class=nttx>{$plsinfo[$i]}</div></td>";
 		if((array_search($i,$arealist) > $areanum) || $hack) {
 			if($i==$pls) {
 				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
@@ -151,8 +164,6 @@ function newradar($m = 0){
 				} else {
 					$pnum[$i] ='<span class="yellow b">-</span>';
 				}
-				
-				
 				for($j=2;$j<=6;$j++){
 					//${'npc'.$j.'num'}[$i] = "<span class=\"yellow b\">${'num'.$j}</span>";
 					if(${'num'.$j}){
@@ -188,8 +199,13 @@ function newradar($m = 0){
 		} else {
 			$pnum[$i] =$npc2num[$i] =$npc3num[$i] =$npc4num[$i] =$npc5num[$i] =$npc6num[$i] = '<span class="red b">×</span>';
 		}
+		$radarscreen .= "<td class=b3><div class=nttx>{$pnum[$i]}</div></td>";
+		for($j=2;$j<=6;$j++){
+			$radarscreen .= "<td class=b3><div class=nttx>{${'npc'.$j.'num'}[$i]}</div></td>";
+		}	
+		$radarscreen .= '</tr>';
 	}
-
+	$radarscreen .= '</tbody></table>';
 	$log .= '白色数字：该区域内的人数<br><span class="yellow b">黄色数字</span>：自己所在区域的人数<br><span class="red b">×</span>：禁区<br><br>';
 	$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
 	$main = 'radar';

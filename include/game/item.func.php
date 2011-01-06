@@ -880,12 +880,15 @@ elseif (strpos ( $itm, '磨刀石' ) !== false) {
 			$maxsk = $skill_keys [0];
 			if (($skill [$nowsk] != $skill [$maxsk]) && ($dice < 30)) {
 				$wepk = $maxsk;
+				$kind = "更改了{$wep}的<span class=\"yellow\">类别</span>！";
 			} elseif (($weps != $nosta) && ($dice2 < 70)) {
 				$weps += ceil ( $wepe / 2 );
+				$kind = "增强了{$wep}的<span class=\"yellow\">耐久</span>！";
 			} else {
 				$wepe += ceil ( $wepe / 2 );
+				$kind = "提高了{$wep}的<span class=\"yellow\">攻击力</span>！";
 			}
-			
+			$log .= "你使用了<span class=\"yellow\">$itm</span>，{$kind}";
 			addnews ( $now, 'newwep', $name, $itm, $wep );
 			$itms --;
 		} elseif ($itm == '■DeathNote■') {

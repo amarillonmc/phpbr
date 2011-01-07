@@ -642,7 +642,7 @@ $npcinfo = array
 			'itmk1' => 'Y',
 			'itme1' => 1,
 			'itms1' => 1,
-			),
+			)
 		),
 	),
 	
@@ -672,32 +672,32 @@ $npcinfo = array
 		'arb' => '键刃盔甲B',
 		'arbk' => 'DB',
 		'arbe' => 300,
-		'arbs' => 300,
-		'arbsk' => 'Aqe',
+		'arbs' => 0,
+		'arbsk' => 'Aq',
 		'arh' => '键刃盔甲H',
 		'arhk' => 'DH',
 		'arhe' => 144,
-		'arhs' => 300,
+		'arhs' => 0,
 		'arf' => '键刃盔甲F',
 		'arfk' => 'DF',
 		'arfe' => 144,
-		'arfs' => 300,
+		'arfs' => 0,
 		'ara' => '键刃盔甲A',
 		'arak' => 'DA',
 		'arae' => 144,
-		'aras' => 300,
-		'arask' => 'UIe',
+		'aras' => 0,
+		'arask' => 'UI',
 		'art' => 'WAYFINDER',
 		'artk' => 'A',
 		'arte' => 100,
-		'arts' => 300,
+		'arts' => 0,
 		'artsk' => 'H',
 		'sub' => array
 		(
 			0 => array
 			(
 			'name' => '残存的思念',
-			'icon' => 51,
+			'icon' => 77,
 			'wep' => '『大地之终』',
 			'wepk' => 'WK',
 			'wepe' => 80,
@@ -707,7 +707,7 @@ $npcinfo = array
 			'itmk1' => 'Y',
 			'itme1' => 1,
 			'itms1' => 0,
-			)
+			),
 		),
 	),
 );

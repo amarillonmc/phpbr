@@ -99,4 +99,11 @@ $cpass = & ${$tablepre.'pass'};
 $combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
 list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
 
+if($mode == 'quit') {
+	gsetcookie('user','');
+	gsetcookie('pass','');
+	header("Location: index.php");exit();
+
+}
+
 ?>

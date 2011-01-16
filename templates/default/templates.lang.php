@@ -33,6 +33,7 @@ $language = array
 	'enterbattlefield' => '进入常磐大逃杀战场',
 	'gamestart' => '游戏开始',
 	'enter' => '进入游戏',
+	'quit' => '账号退出',
 	'errormsg' => '出现错误',
 	'name' => '姓名',
 	'gender' => '性别',

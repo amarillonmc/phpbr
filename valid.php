@@ -28,6 +28,9 @@ if($mode == 'enter') {
 	if($db->num_rows($result)) {
 		gexit($_ERROR['player_exist'], __file__, __line__);
 	}
+	if ($gender !== 'm' && $gender !== 'f'){
+		$gender = 'm';
+	}
 	$validnum++;
 	$alivenum++;
 	$name = $cuser;
@@ -117,7 +120,7 @@ if($mode == 'enter') {
 //			$itm[5] = '这样的装备没问题么的靴子'; $itmk[5] = 'DF'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'I';
 //		break;
 //	}
-	if ($name == '四面') {
+	if ($name == '某四面') {
 		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
 		$att += 100;$def += 100;
 		$exp += 500;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;

@@ -152,13 +152,13 @@ function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 	$newsdata = substr_replace($newsdata,$news,53,0);
 	writeover($newsfile,$newsdata,'wb');
 	
-	/*if((strpos($n,'death') === 0)&&(!$b)) {
+	if(strpos($n,'death11') === 0) {
 		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
 		$lastword = $db->result($result, 0);
 		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");
-		$pls = $db->result($result, 0);
-		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$pls','$lastword')");
-	}*/
+		//$pls = $db->result($result, 0);
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$c','$lastword')");
+	}
 }
 
 function logsave($pid,$time,$log = ''){

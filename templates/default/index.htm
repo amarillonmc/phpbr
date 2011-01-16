@@ -1,10 +1,10 @@
 {template header}
 
 <table border="0" align="center">
-<tr><td><font class="yellow"><B>{lang homepage}：</B></font></td><td><a href="$homepage" class="evergreen" target="_blank">$homepage</a> MODDED By <u>冴月麟</u>　　</td></tr>
-<tr><td><font class="yellow"><B>{lang now}：</B></font></td><td><font class="evergreen">{lang gamedate}</font></td></tr>
-<tr><td><font class="yellow"><B>{lang adminmsg}：</B></font></td><td><font class="evergreen">$adminmsg</font></td></tr>
-<tr><td><font class="yellow"><B>{lang gameinfo}：</B></font></td><td><span class="evergreen2"><B>{lang numinfo} $gstate[$gamestate]</span><br></td></tr>
+<tr><td><span class="yellow">{lang homepage}：</span></td><td><a href="$homepage" class="evergreen" target="_blank">$homepage</a> MODDED By <u>冴月麟</u>　　</td></tr>
+<tr><td><span class="yellow">{lang now}：</span></td><td><span class="evergreen">{lang gamedate}</span></td></tr>
+<tr><td><span class="yellow">{lang adminmsg}：</span></td><td><span class="evergreen">$adminmsg</span></td></tr>
+<tr><td><span class="yellow">{lang gameinfo}：</span></td><td><span class="evergreen2">{lang numinfo}{$gstate[$gamestate]}</span></td></tr>
 </table>
 <div>
 <!--{if $gamestate > 10 }-->
@@ -41,11 +41,18 @@
 死亡总数：<span id="alivenum">$deathnum</span>
 <br />
 <!--{if $cuser}-->
+
+<br />{lang welcome}
 <form method="post" name="togame" action="game.php">
 <input type="hidden" name="mode" value="main">
-{lang welcome}
 <input type="submit" name="enter" value="{lang enter}">
 </form>
+
+<form method="post" name="quitgame" action="game.php">
+<input type="hidden" name="mode" value="quit">
+<input type="submit" name="quit" value="{lang quit}">
+</form>
+
 <!--{else}-->
 <form method="post" name="login" action="login.php">
 <input type="hidden" name="mode" value="main">

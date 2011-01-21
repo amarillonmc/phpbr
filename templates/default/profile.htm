@@ -6,7 +6,7 @@
 		<td width="105" colspan="2" class="b1"><div class=nttx>{lang weather}:$wthinfo[$weather]</div></td>
 		<td width="205" colspan="1" class="b1"><div class=nttx>{lang gamedate}<!--{if $gamestate == 40 }--><font color="red">{lang combo}</font><!--{/if}--></div></td>
 		</tr>
-	<tr><td rowspan="4" colspan="2" width="150" height="80" class="b3"><div class=nttx><img src="img/$iconImg" border="0" style="width:140;height:80"></div></td>
+	<tr><td rowspan="4" colspan="2" width="150" height="80" class="b3"><div class=nttx><img src="img/$iconImg" border="0" style="width:140;height:80" <!--{if $hp==0}-->style="filter:Xray()"<!--{/if}--> /></div></td>
 		<td width="60" class="b2"><div class=nttx>{lang level}</div></td>
 		<td width="100" class="b3"><div class=nttx>Lv. $lvl</div></td>
 		<td width="45" class="b2"><div class=nttx><!--{if $wp >= 25}-->{lang wp}{lang skill}<!--{else}--><span class="grey">{lang wp}{lang skill}</span><!--{/if}--></div></td>

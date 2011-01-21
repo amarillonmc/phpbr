@@ -70,9 +70,14 @@ function combat($active = 1, $wep_kind = '') {
 		}
 		
 		if ($message) {
-			$log .= "<span class=\"lime\">你对 " . $edata ['name'] . " 大喊：$message</span><br>";
+			foreach ( Array('<','>',';',',') as $value ) {
+				if(strpos($message,$value)!==false){
+					$message = str_replace ( $value, '', $message );
+				}
+			}
+			$log .= "<span class=\"lime\">你对{$edata ['name']}大喊：{$message}</span><br>";
 			if (! $edata ['type']) {
-				$w_log = "<span class=\"lime\">$name 对你大喊：$message</span>";
+				$w_log = "<span class=\"lime\">{$name}对你大喊：{$message}</span><br>";
 				logsave ( $edata ['pid'], $now, $w_log );
 			}
 		}

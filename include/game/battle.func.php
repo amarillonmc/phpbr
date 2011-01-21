@@ -126,8 +126,13 @@ function senditem(){
 	}
 
 	if($message){
-		$log .= "<span class=\"lime\">你对 ".$edata['name']." 说：$message</span><br>";
-		$w_log = "<span class=\"lime\">$name 对你说：$message</span>";
+		foreach ( Array('<','>',';',',') as $value ) {
+			if(strpos($message,$value)!==false){
+				$message = str_replace ( $value, '', $message );
+			}
+		}
+		$log .= "<span class=\"lime\">你对{$edata['name']}说：“{$message}”</span><br>";
+		$w_log = "<span class=\"lime\">{$name}对你说：“{$message}”</span><br>";
 		if(!$edata['type']){logsave($edata['pid'],$now,$w_log);}
 	}
 	

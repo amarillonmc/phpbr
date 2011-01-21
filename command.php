@@ -12,6 +12,9 @@ $result = $db->query("SELECT * FROM {$tablepre}players WHERE name = '$cuser' AND
 if(!$db->num_rows($result)) { header("Location: valid.php");exit(); }
 
 $pdata = $db->fetch_array($result);
+
+
+
 if($pdata['pass'] != $cpass) {
 	$tr = $db->query("SELECT `password` FROM {$tablepre}users WHERE username='$cuser'");
 	$tp = $db->fetch_array($tr);
@@ -149,6 +152,9 @@ if($command == 'menu') {
 } elseif($mode == 'rest') {
 	include_once GAME_ROOT.'./include/state.func.php';
 	rest($command);
+} elseif($mode == 'chgpassword') {
+	include_once GAME_ROOT.'./include/game/special.func.php';
+	chgpassword($oldpswd,$newpswd,$newpswd2);
 } elseif($mode == 'chgword') {
 	include_once GAME_ROOT.'./include/game/special.func.php';
 	chgword($newmotto,$newlastword,$newkillmsg);

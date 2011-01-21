@@ -155,9 +155,15 @@ function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 	if(strpos($n,'death11') === 0) {
 		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
 		$lastword = $db->result($result, 0);
-		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");
+		//$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");
 		//$pls = $db->result($result, 0);
 		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$c','$lastword')");
+	}	elseif(strpos($n,'death15') === 0 || strpos($n,'death16') === 0) {
+		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+		$lastword = $db->result($result, 0);
+		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");
+		$pls = $db->result($result, 0);
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$pls','$lastword')");
 	}
 }
 

@@ -13,7 +13,7 @@
 							
 							<td class="b1" colspan=2 width=190px><div class=nttx>$w_sNoinfo</div></td>
 							
-							<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/$w_iconImg" height=80px border="0" align="middle" <!--{if $w_isdead}-->style="filter:Xray()"<!--{/if}--> ></td>
+							<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/$w_iconImg" height=80px border="0" align="middle" <!--{if $w_hp==0}-->style="filter:Xray()"<!--{/if}--> /></td>
 						</tr>
 						<tr>
 							<td class="b2" width=65px height=20px><div class=nttx>{lang rage}</div></td>
@@ -50,7 +50,7 @@
 				<tr><td>
 					<table border="0" width=640px cellspacing="0" cellpadding="0" valign="middle">
 						<tr>
-							<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/$iconImg" height=80px border="0" align="middle"></td>
+							<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/$iconImg" height=80px border="0" align="middle" <!--{if $hp==0}-->style="filter:Xray()"<!--{/if}--> /></td>
 							<td class="b1" colspan=2 width=190px height=20px><div class=nttx>$typeinfo[$type]({$sexinfo[$gd]}{$sNo}号)</div></td>
 							
 							<td class="b1" colspan=2 width=150px><div class=nttx>$name</div></td>

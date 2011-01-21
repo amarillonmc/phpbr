@@ -129,7 +129,7 @@ function chat(mode,reftime) {
 		}
 	};
 	oXmlHttp.send(sBody);
-	if(mode == 'send'){$('chatmsg').value = '';}
+	if(mode == 'send'){$('chatmsg').value = '';$('sendmode').value = 'ref';}
 	rtime = reftime;
 	refchat = setTimeout("chat('ref',rtime)",rtime);
 }

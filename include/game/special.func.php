@@ -21,14 +21,28 @@ function chgword($nmotto,$nlastword,$nkillmsg) {
 	
 	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
 	$userinfo = $db->fetch_array($result);
+
+	foreach ( Array('<','>',';',',') as $value ) {
+		if(strpos($nmotto,$value)!==false){
+			$nmotto = str_replace ( $value, '', $nmotto );
+		}
+		if(strpos($nlastword,$value)!==false){
+			$nlastword = str_replace ( $value, '', $nlastword );
+		}
+		if(strpos($nkillmsg,$value)!==false){
+			$nkillmsg = str_replace ( $value, '', $nkillmsg );
+		}
+	}
+
+	
 	if($nmotto != $userinfo['motto']) {
-		$log .= '口头禅变更为<span class="yellow">'.$nmotto.'</span>。<br>';
+		$log .= $nmotto == '' ? '口头禅已清空。' : '口头禅变更为<span class="yellow">'.$nmotto.'</span>。<br>';
 	}
 	if($nlastword != $userinfo['lastword']) {
-		$log .= '遗言变更为<span class="yellow">'.$nlastword.'</span>。<br>';
+		$log .= $nlastword == '' ? '遗言已清空。' : '遗言变更为<span class="yellow">'.$nlastword.'</span>。<br>';
 	}
 	if($nkillmsg != $userinfo['killmsg']) {
-		$log .= '留言变更为<span class="yellow">'.$nkillmsg.'</span>。<br>';
+		$log .= $nkillmsg == '' ? '杀人留言已清空。' : '杀人留言变更为<span class="yellow">'.$nkillmsg.'</span>。<br>';
 	}
 
 	$db->query("UPDATE {$tablepre}users SET motto='$nmotto', lastword='$nlastword', killmsg='$nkillmsg' WHERE username='$name'");
@@ -36,6 +50,41 @@ function chgword($nmotto,$nlastword,$nkillmsg) {
 	$mode = 'command';
 	return;
 }
+
+function chgpassword($oldpswd,$newpswd,$newpswd2){
+	global $db,$tablepre,$name,$log;
+	
+	if (!$oldpswd || !$newpswd || !$newpswd2){
+		$log .= '放弃了修改密码。<br />';
+		$mode = 'command';
+		return;
+	} elseif ($newpswd !== $newpswd2) {
+		$log .= '<span class="red">两次输入的新密码不一致。</span><br />';
+		$mode = 'command';
+		return;
+	}
+	
+	$oldpswd = md5($oldpswd);$newpswd = md5($newpswd);
+	
+	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
+	$userinfo = $db->fetch_array($result);
+	
+	if($oldpswd == $userinfo['password']){
+		$db->query("UPDATE {$tablepre}users SET `password` ='$newpswd' WHERE username='$name'");
+		$log .= '<span class="yellow">密码已修改！</span>'.$newpswd.'<br />';
+		
+		//include_once GAME_ROOT.'./include/global.func.php';
+		
+		gsetcookie('pass',$newpswd);
+		$mode = 'command';
+		return;
+	}else{
+		$log .= '<span class="red">原密码输入错误！</span><br />';
+		$mode = 'command';
+		return;
+	}
+}
+
 
 function chginf($infpos){
 	global $log,$mode,$inf,$inf_sp,$sp,$infinfo;

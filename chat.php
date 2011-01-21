@@ -5,6 +5,10 @@ define('CURSCRIPT', 'chat');
 require_once './include/common.inc.php';
 require_once GAME_ROOT.'./include/JSON.php';
 
+if(!$cuser || !defined('IN_GAME')) {
+	exit('Not in game.');
+}
+
 if(($sendmode == 'send')&&$chatmsg) {
 	if(strpos($chatmsg,'/') === 0) {
 		$result = $db->query("SELECT groupid FROM {$tablepre}users WHERE username='$cuser'");

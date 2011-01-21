@@ -19,6 +19,18 @@ if($mode == 'enter') {
 		$result = $db->query("SELECT * FROM {$tablepre}users AS u, {$tablepre}players AS p WHERE u.ip='{$udata['ip']}' AND ( u.username=p.name AND p.type=0 AND p.hp>0)");
 		if($db->num_rows($result) >= $iplimit) { gexit($_ERROR['ip_limit'],__file__,__line__); }
 	}
+	
+	foreach ( Array('<','>',';',',') as $value ) {
+		if(strpos($motto,$value)!==false){
+			$motto = str_replace ( $value, '', $motto );
+		}
+		if(strpos($lastword,$value)!==false){
+			$lastword = str_replace ( $value, '', $lastword );
+		}
+		if(strpos($killmsg,$value)!==false){
+			$killmsg = str_replace ( $value, '', $killmsg );
+		}
+	}
 
 	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon', motto='$motto', killmsg='$killmsg', lastword='$lastword' WHERE username='".$udata['username']."'" );
 	if($validnum >= $validlimit) {
@@ -120,22 +132,22 @@ if($mode == 'enter') {
 //			$itm[5] = '这样的装备没问题么的靴子'; $itmk[5] = 'DF'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'I';
 //		break;
 //	}
-	if ($name == '某四面') {
+	if ($name == '某四面' || $name == 'Amarillo_NMC') {
 		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
 		$att += 100;$def += 100;
-		$exp += 500;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
-		$itm[1] = 'END BOSS HEAL'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
+		$exp += 2000;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
+		$itm[1] = '全恢复饮料'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
 		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
 		$itm[3] = '广域生命探测器'; $itmk[3] = 'R'; $itme[3] = 50; $itms[3] = 1;$itmsk[3] = 2;
-		$itm[4] = 'END BOSS PLASMA'; $itmk[4] = 'WG'; $itme[4] = 300; $itms[4] = 300;$itmsk[4] = 'ur';
+		$itm[4] = '凸眼鱼'; $itmk[4] = 'Y'; $itme[4] = 1; $itms[4] = 30;$itmsk[4] = '';
 		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
-		$wep = 'END BOSS KNIFE';$wepk = 'WK';$wepe = 300;$weps = 300;$wepsk = 'r';
+		$wep = '最终离子风暴枪';$wepk = 'WG';$wepe = 777;$weps = 777;$wepsk = 'er';
 		$arb = '能量装甲';$arbk = 'DB'; $arbe = 400; $arbs = 150; $arbsk = 'A';
 		$arh = '机动头盔';$arhk = 'DH'; $arhe = 200; $arhs = 150; $arhsk = 'UI';
 		$ara = '腕力增幅器';$arak = 'DA'; $arae = 200; $aras = 150; $arask = 'c';
 		$arf = '金属战靴';$arfk = 'DF'; $arfe = 200; $arfs = 150; $arfsk = 'qE';
 		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
-		$wp=$wk=$wg=$wc=$wd=$wf=200;
+		$wp=$wk=$wg=$wc=$wd=$wf=400;
 	}
 	
 	$state = 0;

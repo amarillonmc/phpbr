@@ -71,7 +71,7 @@ function chgpassword($oldpswd,$newpswd,$newpswd2){
 	
 	if($oldpswd == $userinfo['password']){
 		$db->query("UPDATE {$tablepre}users SET `password` ='$newpswd' WHERE username='$name'");
-		$log .= '<span class="yellow">密码已修改！</span>'.$newpswd.'<br />';
+		$log .= '<span class="yellow">密码已修改！</span><br />';
 		
 		//include_once GAME_ROOT.'./include/global.func.php';
 		

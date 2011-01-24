@@ -1,3 +1,10 @@
+2011/1/23
+进入游戏画面增加了头像和随机道具显示；（文件：validover.htm; templates.lang.php）
+增加了烧伤、冻结和麻痹的状态图标；（文件：game.func.php; hurt.gif; injured.gif; p.gif; u.gif; i.gif; e.gif; fine.gif; caution.gif; danger.gif; dead.gif）
+修复了选中队伍下拉框再提交会进入空页面的BUG；（文件：command.php）
+增加了NPC乱入功能，虽然暂时没用；（文件：addnpc_1.php; system.func.php; item.func.php）
+修正了帮助文件的一点小错误；（文件：help.htm）
+
 2011/1/20
 修正了点击发送消息按钮以后再在聊天框内输入文字会自动发送的BUG；修正了账号退出以后还能聊天的BUG；（文件：game.js; chat.php）
 NPC略有调整，将代码聚合体的装备改为全系防御，降低了思念的武器威力；（文件：npc_1.php）

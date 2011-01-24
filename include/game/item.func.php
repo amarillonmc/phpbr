@@ -938,6 +938,9 @@ elseif (strpos ( $itm, '磨刀石' ) !== false) {
 				$bid = 0;
 				death ( 'suiside', '', 0, $itm );
 			}
+		} elseif ($itm == 'NPC增加机') {
+			//include_once GAME_ROOT . './include/system.func.php';
+			//echo addnpc ( 7, 0,2);
 		} else {
 			$log .= " <span class=\"yellow\">$itm</span> 该如何使用呢？<br>";
 		}

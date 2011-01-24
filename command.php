@@ -92,7 +92,7 @@ if($command == 'menu') {
 		if($teamcmd == 'teamquit') {
 			include_once GAME_ROOT.'./include/game/team.func.php';
 			teamquit();
-		} else {
+		} elseif($teamcmd !== 'main') {
 			$mode = 'team';
 		}
 	}

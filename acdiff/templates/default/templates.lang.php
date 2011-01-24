@@ -2,7 +2,7 @@
 
 $language = array
 	(
-	'title' => '常 磐 大 逃 杀',
+	'title' => 'ACFUN 大 逃 杀',
 	'index' => '首页',
 	'fullwin' => '全屏模式',
 	'backindex' => '返回首页',
@@ -30,7 +30,7 @@ $language = array
 	'valid' => '入场手续',
 	'validover' => '入场表格填写完成',
 	'enternotice' => '进入会场',
-	'enterbattlefield' => '进入常磐大逃杀战场',
+	'enterbattlefield' => '进入ACFUN大逃杀战场',
 	'gamestart' => '游戏开始',
 	'enter' => '进入游戏',
 	'quit' => '账号退出',

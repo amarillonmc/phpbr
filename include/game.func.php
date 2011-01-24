@@ -48,59 +48,72 @@ function init_profile(){
 
 	$ardef = $arbe + $arhe + $arae + $arfe;
 	$infdata = '';
-	if($inf) {
+	
+	if(strpos($inf,'h') !== false || strpos($inf,'b') !== false ||strpos($inf,'a') !== false ||strpos($inf,'f') !== false){
 		//$infdata = '<span class="red b">';
+		$infimg .= '<img src="img/injured.gif" style="position:absolute;top:0;left:10;width:84;height:20">';
 		if(strpos($inf,'h') !== false){
 			$infdata .= $infinfo['h'];
-			$infimg .= '<img src="img/h.gif" style="position:absolute;top:0;left:4;width:146;height:19">';
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:0;left:121;width:37;height:37">';
 		}
 		if(strpos($inf,'a') !== false){
 			$infdata .= $infinfo['a'];
-			$infimg .= '<img src="img/a.gif" style="position:absolute;top:20;left:4;width:112;height:20">';
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:17;left:102;width:37;height:37">';
 		}
 		if(strpos($inf,'b') !== false){
 			$infdata .= $infinfo['b'];
-			$infimg .= '<img src="img/b.gif" style="position:absolute;top:40;left:4;width:146;height:20">';
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:43;left:121;width:37;height:37">';
 		}
 		if(strpos($inf,'f') !== false){
 			$infdata .= $infinfo['f'];
-			$infimg .= '<img src="img/f.gif" style="position:absolute;top:60;left:4;width:139;height:57">';
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:111;left:121;width:37;height:37">';
 		}
-		//$infdata .= '</span>';
-		if(strpos($inf,'p') !== false) {
-			$infdata .= $infinfo['p'];
-			//$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
-			$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
-		}
-		if(strpos($inf,'u') !== false) {
-			$infdata .= $infinfo['u'];
-			//$infdata .= "<span class=\"red b\">{$infinfo['u']}</span>";
-			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
-		}
-		if(strpos($inf,'i') !== false) {
-			$infdata .= $infinfo['i'];
-			//$infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
-			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
-		}
-		if(strpos($inf,'e') !== false) {
-			$infdata .= $infinfo['e'];
-			//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
-			//$infimg .= '<img src="img/p.gif" style="position:absolute;top:80;left:1;width:95;height:20">';
-		}
-	} 
+	} else {
+		$infimg .= '<img src="img/injured2.gif" style="position:absolute;top:0;left:10;width:84;height:20">';
+	}
+	//$infdata .= '</span>';
+	if(strpos($inf,'p') !== false) {
+		$infdata .= $infinfo['p'];
+		//$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+		$infimg .= '<img src="img/p.gif" style="position:absolute;top:20;left:4;width:98;height:20">';
+	} else {
+		$infimg .= '<img src="img/p2.gif" style="position:absolute;top:20;left:4;width:98;height:20">';
+	}
+	if(strpos($inf,'u') !== false) {
+		$infdata .= $infinfo['u'];
+		//$infdata .= "<span class=\"red b\">{$infinfo['u']}</span>";
+		$infimg .= '<img src="img/u.gif" style="position:absolute;top:40;left:11;width:81;height:20">';
+	} else {
+		$infimg .= '<img src="img/u2.gif" style="position:absolute;top:40;left:11;width:81;height:20">';
+	}
+	if(strpos($inf,'i') !== false) {
+		$infdata .= $infinfo['i'];
+		//$infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
+		$infimg .= '<img src="img/i.gif" style="position:absolute;top:60;left:13;width:77;height:20">';
+	} else {
+		$infimg .= '<img src="img/i2.gif" style="position:absolute;top:60;left:13;width:77;height:20">';
+	}
+	if(strpos($inf,'e') !== false) {
+		$infdata .= $infinfo['e'];
+		//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
+		$infimg .= '<img src="img/e.gif" style="position:absolute;top:80;left:2;width:101;height:20">';
+	} else {
+		$infimg .= '<img src="img/e2.gif" style="position:absolute;top:80;left:2;width:101;height:20">';
+	}
+
 
 	$hpcolor = 'clan';
 	if($hp <= 0 ){
-		$infimg .= '<img src="img/dead.gif" style="position:absolute;top:120;left:1;width:94;height:40">';
+		$infimg .= '<img src="img/dead.gif" style="position:absolute;top:120;left:6;width:94;height:40">';
 		$hpcolor = 'red';
 	} elseif($hp <= $mhp*0.2){
-		$infimg .= '<img src="img/danger.gif" style="position:absolute;top:120;left:0;width:95;height:37">';
+		$infimg .= '<img src="img/danger.gif" style="position:absolute;top:120;left:5;width:95;height:37">';
 		$hpcolor = 'red';
 	} elseif($hp <= $mhp*0.5){
-		$infimg .= '<img src="img/caution.gif" style="position:absolute;top:120;left:0;width:95;height:36">';
+		$infimg .= '<img src="img/caution.gif" style="position:absolute;top:120;left:5;width:95;height:36">';
 		$hpcolor = 'yellow';
 	} elseif($inf == ''){
-		$infimg .= '<img src="img/fine.gif" style="position:absolute;top:120;left:8;width:81;height:38">';
+		$infimg .= '<img src="img/fine.gif" style="position:absolute;top:120;left:12;width:81;height:38">';
 	}
 	
 	if($sp <= $msp*0.2){

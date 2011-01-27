@@ -306,7 +306,7 @@ function itemuse($itmn) {
 				include_once GAME_ROOT . './include/state.func.php';
 				$killmsg = death ( 'poison', $wdata ['name'], $wdata ['type'], $itm );
 				$log .= "你被<span class=\"red\">" . $wdata ['name'] . "</span>毒死了！";
-				$log .= "<span class=\"yellow\">{$wdata['name']}对你说：“{$killmsg}”</span><br>";
+				if($killmsg){$log .= "<span class=\"yellow\">{$wdata['name']}对你说：“{$killmsg}”</span><br>";}
 			} else {
 				$bid = 0;
 				include_once GAME_ROOT . './include/state.func.php';
@@ -678,7 +678,7 @@ function itemuse($itmn) {
 			$skill_minimum = 100;
 			$skill_limit = 300;
 			$dice = rand ( - 10, 10 );
-			$ws_sum = $wp + $wk + $wg + $wc + $wd;
+			$ws_sum = $wp + $wk + $wg + $wc + $wd + $wf;
 			if ($ws_sum < $skill_minimum * 5) {
 				$mefct = $itme;
 			} elseif ($ws_sum < $skill_limit * 5) {
@@ -922,12 +922,12 @@ elseif (strpos ( $itm, '磨刀石' ) !== false) {
 				death ( 'button', '', 0, $itm );
 			}
 		} elseif ($itm == '装有H173的注射器') {
-			global $wp, $wk, $wg, $wc, $wd, $club, $bid;
+			global $wp, $wk, $wg, $wc, $wd, $wf, $club, $bid;
 			$log .= '你考虑了一会，<br>把袖子卷了起来，给自己注射了H173。<br>';
 			$deathdice = rand ( 0, 8192 );
 			if ($deathdice > 8190) {
 				$log .= '你突然感觉到一种不可思议的力量贯通全身！<br>';
-				$wp = $wk = $wg = $wc = $wd = 300;
+				$wp = $wk = $wg = $wc = $wd = $wf=300;
 				$club = 15;
 				addnews ( $now, 'suisidefail', $name );
 				$itm = $itmk = $itmsk = '';

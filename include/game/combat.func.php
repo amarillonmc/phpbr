@@ -22,7 +22,10 @@ function combat($active = 1, $wep_kind = '') {
 		} else {
 			$wep_kind = $w1;
 		}
+	} elseif (strpos($wepk,$wep_kind)===false && $wep_kind != 'back'){
+		$wep_kind = substr ( $wepk, 1, 1 );
 	}
+	
 	$wep_temp = $wep;
 	
 	if ($active) {
@@ -228,7 +231,7 @@ function combat($active = 1, $wep_kind = '') {
 			$log .= npc_chat ( $w_type,$w_name, 'death' );
 		}
 		$log .= "<span class=\"red\">{$w_name}被你杀死了！</span><br>";
-		$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";
+		if($killmsg){$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";}
 		include_once GAME_ROOT . './include/game/battle.func.php';
 		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pid'" );
 		$cdata = $db->fetch_array ( $result );
@@ -289,13 +292,13 @@ function attack($wep_kind = 'N', $active = 0) {
 			
 			$damage = get_original_dmg ( '', 'w_', $attack, $defend, $wep_skill, $wep_kind );
 			
-			checkarb ( $damage, $wep_kind, $w_def_key );
 			//if ($wep_kind == 'D') {爆炸伤害做到属性里面去了
 			//	$damage += $wepe;
 			//} elseif ($wep_kind == 'F') {
 			if ($wep_kind == 'F') {
 				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
 			}
+			checkarb ( $damage, $wep_kind, $w_def_key );
 			$damage *= $damage_p;
 			
 			$damage = $damage > 1 ? round ( $damage ) : 1;
@@ -382,13 +385,14 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			
 			$damage = get_original_dmg ( 'w_', '', $attack, $defend, $w_wep_skill, $w_wep_kind );
 			
-			checkarb ( $damage, $w_wep_kind, $def_key );
+			
 			//if ($w_wep_kind == 'D') {
 			//	$damage += $w_wepe;
 			//} elseif ($w_wep_kind == 'F') {
 			if ($w_wep_kind == 'F') {
 				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
 			}
+			checkarb ( $damage, $w_wep_kind, $def_key );
 			$damage *= $damage_p;
 			
 			$damage = $damage > 1 ? round ( $damage ) : 1;
@@ -431,7 +435,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			$killmsg = death ( $w_wep_kind, $w_name, $w_type, $w_wep_temp );
 			if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
 				$log .= npc_chat ( $w_type,$w_name, 'kill' );
-			} else {
+			} elseif($killmsg) {
 				$log .= "<span class=\"yellow\">{$w_name}对你说：“{$killmsg}”</span><br>";
 			}
 		}
@@ -1008,12 +1012,12 @@ function get_inf($nm, $ht, $wp_kind) {
 						${$w . 'combat_inf'} .= $inf_att;
 					}
 					$log .= "{$nm}的<span class=\"red\">$infinfo[$inf_att]</span>部受伤了！<br>";
-					global $name,$w_name;
-					if($nm == '你'){
-						addnews($now,'inf',$w_name,$name,$inf_att);
-					}else{
-						addnews($now,'inf',$name,$w_name,$inf_att);
-					}					
+//					global $name,$w_name;
+//					if($nm == '你'){
+//						addnews($now,'inf',$w_name,$name,$inf_att);
+//					}else{
+//						addnews($now,'inf',$name,$w_name,$inf_att);
+//					}					
 				}
 			}
 		}

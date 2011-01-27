@@ -2,7 +2,7 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 5){
+if($mygroup < 2){
 	exit($_ERROR['no_power']);
 }
 
@@ -18,6 +18,8 @@ if($command == 'pcmng') {
 } elseif($command == 'newsmng') {
 } elseif($command == 'infomng') {
 	include_once GAME_ROOT.'./include/admin/infomng.php';
+} elseif($command == 'antiAFKmng') {
+	include_once GAME_ROOT.'./include/admin/antiAFKmng.php';
 } elseif($command == 'sttimemng') {
 	include_once GAME_ROOT.'./include/admin/sttimemng.php';
 } else {
@@ -31,6 +33,7 @@ echo <<<EOT
 <!--<input type="radio" name="command" id="chatmng" value="chatmng"><a onclick=sl('chatmng'); href="javascript:void(0);" >聊天管理</a><br>-->
 <!--<input type="radio" name="command" id="newsmng" value="newsmng"><a onclick=sl('newsmng'); href="javascript:void(0);" >新闻管理</a><br>-->
 <input type="radio" name="command" id="infomng" value="infomng"><a onclick=sl('infomng'); href="javascript:void(0);" >游戏状态同步（用于激活，生存或死亡人数与实际不符时）</a><br>
+<input type="radio" name="command" id="antiAFKmng" value="antiAFKmng"><a onclick=sl('antiAFKmng'); href="javascript:void(0);" >启动反挂机功能</a><br>
 <input type="radio" name="command" id="sttimemng" value="sttimemng"><a onclick=sl('sttimemng'); href="javascript:void(0);" >设置下局时间</a><br>
 <input type="submit" name="submit" value="提交">
 </form>

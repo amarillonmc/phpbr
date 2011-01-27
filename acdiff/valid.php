@@ -132,7 +132,7 @@ if($mode == 'enter') {
 //			$itm[5] = '这样的装备没问题么的靴子'; $itmk[5] = 'DF'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'I';
 //		break;
 //	}
-	if ($name == 'Amarillo_NMC') {
+	if ($name == '某四面' || $name == 'Amarillo_NMC') {
 		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
 		$att += 100;$def += 100;
 		$exp += 2000;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
@@ -141,7 +141,7 @@ if($mode == 'enter') {
 		$itm[3] = '广域生命探测器'; $itmk[3] = 'R'; $itme[3] = 50; $itms[3] = 1;$itmsk[3] = 2;
 		$itm[4] = '凸眼鱼'; $itmk[4] = 'Y'; $itme[4] = 1; $itms[4] = 30;$itmsk[4] = '';
 		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
-		$wep = '简称为UCW的三弦';$wepk = 'WK';$wepe = 333;$weps = 333;$wepsk = 'r';
+		$wep = '最终离子风暴枪';$wepk = 'WG';$wepe = 777;$weps = 777;$wepsk = 'er';
 		$arb = '能量装甲';$arbk = 'DB'; $arbe = 400; $arbs = 150; $arbsk = 'A';
 		$arh = '机动头盔';$arhk = 'DH'; $arhe = 200; $arhs = 150; $arhsk = 'UI';
 		$ara = '腕力增幅器';$arak = 'DA'; $arae = 200; $aras = 150; $arask = 'c';
@@ -152,6 +152,7 @@ if($mode == 'enter') {
 	
 	$state = 0;
 	$bid = 0;
+
 	$inf = $teamID = $teamPass = '';
 	$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('$name','$pass','$type','$endtime','$gd','$sNo','$icon','$club','$hp','$mhp','$sp','$msp','$att','$def','$pls','$lvl','$exp','$money','$bid','$inf','$rage','$pose','$tactic','$state','$killnum','$wp','$wk','$wg','$wc','$wd','$wf','$teamID','$teamPass','$wep','$wepk','$wepe','$weps','$arb','$arbk','$arbe','$arbs','$arh','$arhk','$arhe','$arhs','$ara','$arak','$arae','$aras','$arf','$arfk','$arfe','$arfs','$art','$artk','$arte','$arts','$itm[0]','$itmk[0]','$itme[0]','$itms[0]','$itm[1]','$itmk[1]','$itme[1]','$itms[1]','$itm[2]','$itmk[2]','$itme[2]','$itms[2]','$itm[3]','$itmk[3]','$itme[3]','$itms[3]','$itm[4]','$itmk[4]','$itme[4]','$itms[4]','$itm[5]','$itmk[5]','$itme[5]','$itms[5]','$wepsk','$arbsk','$arhsk','$arask','$arfsk','$artsk','$itmsk[0]','$itmsk[1]','$itmsk[2]','$itmsk[3]','$itmsk[4]','$itmsk[5]')");
 	$db->query("UPDATE {$tablepre}users SET lastgame='$gamenum' WHERE username='$name'");

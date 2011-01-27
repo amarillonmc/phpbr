@@ -1,3 +1,21 @@
+2011/1/27
+新增反挂机功能，权限4的管理员可以进行操作。并且将设置下局时间所需的权限改为2；（文件：system.php; gamemng.php; sttimemng.php; antiAFKmng.php; global.func.php; state.func.php; news.func.php; end.php）
+各系防具有时无法发挥作用是故意的，因而帮助文件修改；（文件：help.htm）
+玩家在聊天框说遗言时会显示参战者头衔；（文件：state.func.php）
+紧急修复了因修正武器改系BUG而产生的无法逃跑BUG；（文件：combat.func.php）
+
+2011/1/26
+修复了递送物品会造成对方灵熟归零的严重BUG；修复了L5状态不加灵熟的BUG；修复了全系能力药没把灵熟计算在内的BUG；（文件：battle.func.php; item.func.php）
+替换了地图，修改了地图样式，地图上的地区位置会根据游戏设置自动改变；（文件：map.php; map.htm; style_1.css）
+修改了地区名、地区位置和地区介绍；（文件：system.php; search.func.php）
+为花菱商厦和对天使用作战本部分别添加了商店和医院功能，同时修复了不管什么地方都可以静养的BUG；（文件：command.htm; itemmain.func.php; command.php）
+修复了遇到敌人之后依然可以无视队伍递送物品以及武器改系的BUG；（文件：battle.func.php; combat.func.php）
+取消了一般受伤的提示；（文件：combat.func.php）
+
+2011/1/24
+现在如果遗言和杀人台词留空，信息提示将会相应改变；（文件：news.func.php; combat.func.php; item.func.php; itemmain.func.php）
+修改了密码错误的提示；（文件：system.php）
+
 2011/1/23
 进入游戏画面增加了头像和随机道具显示；（文件：validover.htm; templates.lang.php）
 增加了烧伤、冻结和麻痹的状态图标；（文件：game.func.php; hurt.gif; injured.gif; p.gif; u.gif; i.gif; e.gif; fine.gif; caution.gif; danger.gif; dead.gif）

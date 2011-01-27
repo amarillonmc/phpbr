@@ -111,7 +111,9 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因伪装成核弹按钮的蛋疼机关被炸死";
 			} elseif($news == 'death31'){
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因L5发作自己挠破喉咙身亡！";
-			}else {
+			} elseif($news == 'death32'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，躲藏于<span class=\"red\">$plsinfo[$c]</span>的<span class=\"yellow\">$a</span><span class=\"red\">挂机时间过长</span>，被常磐大逃杀特殊部队处刑而死！";
+			} else {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">不明原因</span>死亡";
 			}
 			$dname = $typeinfo[$b].' '.$a;
@@ -123,8 +125,11 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 				//$dname = $typeinfo[$b].' '.$a;
 				$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
 			}
-
-			$newsinfo .= "<span class=\"yellow\">【{$dname}：“{$lastword}”】</span><br>\n";
+			if(!$lastword){
+				$newsinfo .= "<span class=\"yellow\">【{$dname} 什么都没说就死去了。】</span><br>\n";
+			}else{
+				$newsinfo .= "<span class=\"yellow\">【{$dname}：“{$lastword}”】</span><br>\n";
+			}
 		} elseif($news == 'poison') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"purple\">{$a}食用了{$b}下毒的{$c}</span><br>\n";
 		} elseif($news == 'trap') {

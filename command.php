@@ -78,8 +78,12 @@ if($command == 'menu') {
 		$item = substr($command,3);
 		itemuse($item);
 	} elseif(strpos($command,'rest') === 0) {
-		$state = substr($command,4,1);
-		$mode = 'rest';
+		if($command=='rest3' && $pls != 11 && $pls != 19){
+			$log .= '<span class="yellow">你所在的位置并非医院，不能静养！</span><br>';
+		}else{
+			$state = substr($command,4,1);
+			$mode = 'rest';
+		}
 	} elseif($command == 'itemmain') {
 		$mode = $itemcmd;
 	} elseif($command == 'special') {

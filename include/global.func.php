@@ -152,7 +152,7 @@ function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 	$newsdata = substr_replace($newsdata,$news,53,0);
 	writeover($newsfile,$newsdata,'wb');
 	
-	if(strpos($n,'death11') === 0) {
+	if(strpos($n,'death11') === 0  || strpos($n,'death32') === 0) {
 		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
 		$lastword = $db->result($result, 0);
 		//$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");

@@ -41,9 +41,10 @@ function death($death,$kname = '',$ktype = 0,$annex = '') {
 	if(!$type) {
 		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$name'");
 		$lastword = $db->result($result, 0);
+		$lwname = $typeinfo[$type].' '.$name;
 		/*$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$name' AND type = '$type'");
 		$pls = $db->result($result, 0);*/
-		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$name','$pls','$lastword')");
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')");
 	}
 	addnews($now,'death'.$state,$name,$type,$kname,$annex);
 	//$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);

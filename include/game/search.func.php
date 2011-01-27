@@ -96,7 +96,7 @@ function move($moveto = 99) {
 			return;
 		}
 	}*/
-	$log .= $areainfo[$pls];
+	$log .= $areainfo[$pls].'<br>';
 	if(($gamestate>=40)&&($pose!=3)){
 		discover(100);
 	} else {
@@ -212,7 +212,7 @@ function discover($schmode = 0) {
 			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid'");
 		}
 		if(!$db->num_rows($result)){
-			$log .= '周围没有一个人。<br>';
+			$log .= '<span class="yellow">周围一个人都没有。</span><br>';
 			$mode = 'command';
 			return;
 		}
@@ -278,7 +278,7 @@ function discover($schmode = 0) {
 			$mapitem = openfile($mapfile);
 			$itemnum = sizeof($mapitem) - 1;
 			if($itemnum <= 0){
-				$log .= "周围找不到任何物品。<br>";
+				$log .= '<span class="yellow">周围找不到任何物品。</span><br>';
 				$mode = 'command';
 				return;
 			}

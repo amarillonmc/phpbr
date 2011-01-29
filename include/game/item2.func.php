@@ -137,8 +137,16 @@ function newradar($m = 0){
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
+	
 	$tdheight = 20;
 	$screenheight = count($plsinfo)*$tdheight;
+	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0");
+	while($cd = $db->fetch_array($result)) {
+		$chdata[] = $cd;
+	}
+	foreach ($chdata as $data){
+		$radar[$data['pls']][$data['type']]+=1;
+	}
 	$radarscreen = '<table height='.$screenheight.'px width=640px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
 	$radarscreen .= "<tr>
 		<td class=b2 height={$tdheight}px width=125px><div class=nttx></div></td>
@@ -153,11 +161,13 @@ function newradar($m = 0){
 		$radarscreen .= "<tr><td class=b2 height={$tdheight}px><div class=nttx>{$plsinfo[$i]}</div></td>";
 		if((array_search($i,$arealist) > $areanum) || $hack) {
 			if($i==$pls) {
-				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				$num0 = $db->num_rows($result);
+				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
+				//$num0 = $db->num_rows($result);
+				$num0 = $radar[$i][0];
 				for($j=2;$j<=6;$j++){
-					$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
-					${'num'.$j} = $db->num_rows($result);
+					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
+					//${'num'.$j} = $db->num_rows($result);
+					${'num'.$j} = $radar[$i][$j];
 				}
 				if($num0){
 					$pnum[$i] ="<span class=\"yellow b\">$num0</span>";
@@ -173,11 +183,13 @@ function newradar($m = 0){
 					}
 				}
 			} elseif($m == 2) {
-				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				$num0 = $db->num_rows($result);
+				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
+				//$num0 = $db->num_rows($result);
+				$num0 = $radar[$i][0];
 				for($j=2;$j<=6;$j++){
-					$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
-					${'num'.$j} = $db->num_rows($result);
+					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
+					//${'num'.$j} = $db->num_rows($result);
+					${'num'.$j} = $radar[$i][$j];
 				}
 				if($num0){
 					$pnum[$i] =$num0;

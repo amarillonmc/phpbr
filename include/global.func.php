@@ -108,26 +108,38 @@ function dir_clear($dir) {
 //读取文件
 function readover($filename,$method="rb"){
 	strpos($filename,'..')!==false && exit('Forbidden');
-	if($handle=fopen($filename,$method)){
-		flock($handle,LOCK_SH);
-		$filedata=fread($handle,filesize($filename));
+	//$filedata=file_get_contents($filename);
+	$handle=fopen($filename,$method);
+	if(flock($handle,LOCK_SH)){
+		$filedata='';
+		while (!feof($handle)) {
+   		$filedata .= fread($handle, 8192);
+		}
+		//$filedata.=fread($handle,filesize($filename));
 		fclose($handle);
-	}
+	} else {exit ('Read file error.');}
 	return $filedata;
 }
+
 //写入文件
 function writeover($filename,$data,$method="rb+",$iflock=1,$check=1,$chmod=1){
 	$check && strpos($filename,'..')!==false && exit('Forbidden');
 	touch($filename);
 	$handle=fopen($filename,$method);
 	if($iflock){
-		flock($handle,LOCK_EX);
+		if(flock($handle,LOCK_EX)){
+			fwrite($handle,$data);
+			if($method=="rb+") ftruncate($handle,strlen($data));
+			fclose($handle); 
+		} else {exit ('Write file error.');}
+	} else {
+		fwrite($handle,$data);
+		if($method=="rb+") ftruncate($handle,strlen($data));
+		fclose($handle); 
 	}
-	fwrite($handle,$data);
-	if($method=="rb+") ftruncate($handle,strlen($data));
-	flock($handle, LOCK_UN); 
 	$chmod && chmod($filename,0777);
 }
+
 //打开文件，以数组形式返回
 function openfile($filename){
 	$filedata=readover($filename);
@@ -135,15 +147,16 @@ function openfile($filename){
 	$filedb=explode("<:game:>",$filedata);
 	$count=count($filedb);
 	if($filedb[$count-1]==''||$filedb[$count-1]=="\r"){unset($filedb[$count-1]);}
-	if(empty($filedb)){$filedb[0]="";}
+	if(empty($filedb)){$filedb[0]='';}
 	return $filedb;
 }
+
 
 function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 	global $now,$db,$tablepre;
 	$t = $t ? $t : $now;
 	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
-	$newsdata = file_get_contents($newsfile);
+	$newsdata = readover($newsfile); //file_get_contents($newsfile);
 	if(is_array($a)) {
 		$news = "$t,$n,".implode('-',$a).",$b,$c,$d,\n";
 	} elseif(isset($n)) {
@@ -227,7 +240,11 @@ function getchat($last,$team='',$limit=0) {
 		} elseif($chat['type'] == '1') {
 			$msg = "<span class=\"clan\">【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		} elseif($chat['type'] == '3') {
-			$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']}：{$chat['msg']} ".date("\(H:i:s\)",$chat['time']).'</span><br>';
+			if ($chat['msg']){
+				$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']}：{$chat['msg']} ".date("\(H:i:s\)",$chat['time']).'</span><br>';
+			} else {
+				$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']} 什么都没说就死去了 ".date("\(H:i:s\)",$chat['time']).'</span><br>';
+			}
 		} elseif($chat['type'] == '4') {
 			$msg = "<span class=\"yellow\">【{$chatinfo[$chat['type']]}】：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		}

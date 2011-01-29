@@ -26,7 +26,7 @@ function itemfind() {
 				$wdata = $db->fetch_array($result);
 				$killmsg = death('trap',$wdata['name'],$wdata['type'],$itm0);
 				$log .= "你被<span class=\"red\">".$wdata['name']."</red>设置的陷阱杀死了！";
-				$log .= "<span class=\"yellow\">{$wdata['name']} 对你说：“{$killmsg}”</span><br>";
+				if($killmsg){$log .= "<span class=\"yellow\">{$wdata['name']} 对你说：“{$killmsg}”</span><br>";}
 				$itm0 = $itmk0 = $itmsk0 = '';
 				$itme0 = $itms0 = 0;
 				return;
@@ -57,10 +57,10 @@ function itemfind() {
 
 
 function itemget() {
-	global $log,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
+	global $log,$nosta,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
 	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
-	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB|M|V)/',$itmk0)){
+	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB|M|V)/',$itmk0) && $itms0 !== $nosta){
 		for($i = 1;$i <= 5;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
@@ -72,7 +72,7 @@ function itemget() {
 				return;
 			}
 		}
-	} elseif(preg_match('/^H|^P/',$itmk0)){
+	} elseif(preg_match('/^H|^P/',$itmk0) && $itms0 !== $nosta){
 		$sameitem = array();
 		for($i = 1;$i <= 5;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i};
@@ -390,7 +390,7 @@ function itembuy($item,$shop,$bnum=1) {
 		$log .= '要购买的道具不存在！<br>';
 		return;
 	}
-	if($pls != 0 && $pls != 14) {
+	if($pls != 0 && $pls != 14 && $pls != 27) {
 		$log .= '你所在的位置没有商店。<br>';
 		return;
 	}

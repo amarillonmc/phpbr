@@ -1,3 +1,8 @@
+2011/1/29
+紧急修复了获得无限耐物品并且合并会导致物品消失的BUG；（文件：itemmain.func.php）
+修改了生命探测器的判断逻辑，减少了数据库调用，加快了探测器运行的速度；（文件：item2.func.php）
+试验性修改了进行状况崩溃的BUG，同时修改了用户遗言为空时的聊天框显示；（文件：global.func.php）
+
 2011/1/27
 新增反挂机功能，权限4的管理员可以进行操作。并且将设置下局时间所需的权限改为2；（文件：system.php; gamemng.php; sttimemng.php; antiAFKmng.php; global.func.php; state.func.php; news.func.php; end.php）
 各系防具有时无法发挥作用是故意的，因而帮助文件修改；（文件：help.htm）
@@ -6,7 +11,7 @@
 
 2011/1/26
 修复了递送物品会造成对方灵熟归零的严重BUG；修复了L5状态不加灵熟的BUG；修复了全系能力药没把灵熟计算在内的BUG；（文件：battle.func.php; item.func.php）
-替换了地图，修改了地图样式，地图上的地区位置会根据游戏设置自动改变；（文件：map.php; map.htm; style_1.css）
+替换了地图，修改了地图样式，地图上的地区位置会根据游戏设置自动改变（未完成）；（文件：map.php; map.htm; style_1.css）
 修改了地区名、地区位置和地区介绍；（文件：system.php; search.func.php）
 为花菱商厦和对天使用作战本部分别添加了商店和医院功能，同时修复了不管什么地方都可以静养的BUG；（文件：command.htm; itemmain.func.php; command.php）
 修复了遇到敌人之后依然可以无视队伍递送物品以及武器改系的BUG；（文件：battle.func.php; combat.func.php）

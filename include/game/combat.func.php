@@ -249,7 +249,7 @@ function combat($active = 1, $wep_kind = '') {
 }
 
 function attack($wep_kind = 'N', $active = 0) {
-	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo, ${$skillinfo [$wep_kind]}, $wepimprate;
+	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate;
 	global $name, $lvl, $gd, $pid, $pls, $hp, $sp, $rage, $exp, $club, $att, $inf, $message;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
 	global $w_arbe, $w_arbsk, $w_arhe, $w_arae, $w_arfe;
@@ -276,6 +276,7 @@ function attack($wep_kind = 'N', $active = 0) {
 	$att_key = getatkkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk, $is_wpg );
 	
 	$w_def_key = getdefkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk );
+	global ${$skillinfo [$wep_kind]};
 	$wep_skill = & ${$skillinfo [$wep_kind]};
 	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $club, $inf );
 	
@@ -338,13 +339,12 @@ function attack($wep_kind = 'N', $active = 0) {
 	check_GCDF_wep ( '你', $hit_time [0], $wep, $wep_kind, $wepk, $wepe, $weps, $wepsk );
 	
 	addnoise ( $wep_kind, $wepsk, $now, $pls, $pid, $w_pid, $wep_kind );
-	
 	$wep_skill ++;
 	return $damage;
 }
 
 function defend($w_wep_kind = 'N', $active = 0) {
-	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo, ${'w_' . $skillinfo [$w_wep_kind]}, $wepimprate;
+	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate;
 	global $w_name, $w_lvl, $w_gd, $w_pid, $pls, $w_hp, $w_sp, $w_rage, $w_exp, $w_club, $w_att, $w_inf;
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk;
 	global $arbe, $arbsk, $arhe, $arae, $arfe;
@@ -368,6 +368,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	
 	$w_att_key = getatkkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk, $is_wpg );
 	$def_key = getdefkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk );
+	global ${'w_' . $skillinfo [$w_wep_kind]};
 	$w_wep_skill = & ${'w_' . $skillinfo [$w_wep_kind]};
 	$hitrate = get_hitrate ( $w_wep_kind, $w_wep_skill, $w_club, $w_inf );
 	$damage_p = get_damage_p ( $w_rage, $w_club, '', $w_att_key, $w_type, $w_name );

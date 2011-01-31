@@ -264,6 +264,87 @@ function addarea($areatime) {
 	}
 }
 
+function add_once_area($atime) {
+	//实际上GAMEOVER的判断是在common.inc.php里
+	global $db,$tablepre,$now,$gamestate,$areaesc,$arealist,$areanum,$arealimit,$areaadd,$plsinfo,$weather,$hack,$validnum,$alivenum,$deathnum;
+	
+	if (($gamestate > 10)&&($now > $atime)) {
+		$plsnum = sizeof($plsinfo) - 1;
+		if(($areanum >= $arealimit*$areaadd)&&($validnum<=0)) {//无人参加GAMEOVER不是因为这里，这里只是保险。
+			gameover($atime,'end4');
+			return;
+		} elseif(($areanum + $areaadd) >= $plsnum) {
+			$areaaddlist = array_slice($arealist,$areanum+1);
+			$areanum = $plsnum;
+			$weather = rand(0,9);
+			addnews($atime,'addarea',$areaaddlist,$weather);
+			$query = $db->query("SELECT * FROM {$tablepre}players WHERE type=0 AND hp>0");
+			while($sub = $db->fetch_array($query)) {
+				$pid = $sub['pid'];
+				$hp = 0;
+				$state = 11;
+				$deathpls = $sub['pls'];
+				$bid = 0;
+				$endtime = $atime;
+				$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', endtime='$endtime' WHERE pid=$pid");
+				addnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
+			}
+			$db->free_result($query);
+			$alivenum = 0;
+			$dquery = $db->query("SELECT pid FROM {$tablepre}players WHERE hp<=0");
+			$deathnum = $db->num_rows($dquery);
+			$db->free_result($dquery);
+			gameover($atime,'end1');
+			return;
+		} else {
+			$weather = rand(0,9);
+			if($hack > 0){$hack--;}
+			$areaaddlist = array_slice($arealist,$areanum+1,$areaadd);
+			$areanum += $areaadd;
+			movehtm();
+			addnews($atime,'addarea',$areaaddlist,$weather);
+			$str_arealist = implode(',',array_slice($arealist,0,$areanum+1));
+			$query = $db->query("SELECT * FROM {$tablepre}players WHERE pls IN ($str_arealist) AND hp>0");
+			while($sub = $db->fetch_array($query)) {
+				$pid = $sub['pid'];
+				if(!$sub['type']) {
+					if(($gamestate >= 40)||(!$areaesc&&($sub['tactic']!=4))) {
+					$hp = 0;
+					$state = 11;
+					$deathpls = $sub['pls'];
+					$bid = 0;
+					$endtime = $atime;
+					$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', endtime='$endtime' WHERE pid=$pid");
+					addnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
+					$deathnum++;
+					} else {
+					$pls = $arealist[rand($areanum+1,$plsnum)];
+					$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid ");
+					}
+				} elseif($sub['type'] != 1 && $sub['type'] != 7 && $sub['type'] != 9) {
+					$pls = $arealist[rand($areanum+1,$plsnum)];
+					$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid");
+				}
+			}
+			$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);
+			if(($alivenum == 1)&&($gamestate >= 30)) { 
+				gameover($atime);
+				return;
+			} elseif(($alivenum <= 0)&&($gamestate >= 30)) {
+				gameover($atime,'end1');
+				return $atime;
+			} else {
+				rs_game(16+32);
+				//$areatime += $areahour*3600;
+				//addarea($areatime);
+				return;
+			}
+		}
+	} else {
+		return;
+	}
+}
+
 function runquery($sql) {
 	global $dbcharset, $tablepre, $db;
 
@@ -303,6 +384,8 @@ function createtable($sql, $dbcharset) {
 function gameover($time = 0, $mode = '', $winname = '') {
 	global $gamestate,$winmode,$alivenum,$winner,$now,$gamenum,$db,$tablepre,$gamenum,$starttime,$validnum,$hdamage,$hplayer;
 	if($gamestate < 10){return;}
+	$gamestate = 0;
+	save_gameinfo();
 	if((!$mode)||(($mode==2)&&(!$winname))) {
 		if($validnum <= 0) {
 			$alivenum = 0;
@@ -347,7 +430,7 @@ function gameover($time = 0, $mode = '', $winname = '') {
 		$pdata = $db->fetch_array($result);
 		$result2 = $db->query("SELECT motto FROM {$tablepre}users WHERE username='$winner'");
 		$pdata['motto'] = $db->result($result2, 0);
-		$result3 = $db->query("SELECT name,killnum FROM {$tablepre}players WHERE type=0 AND hp>0  order by killnum desc, lvl desc limit 1");
+		$result3 = $db->query("SELECT name,killnum FROM {$tablepre}players WHERE type=0 order by killnum desc, lvl desc limit 1");
 		$hk = $db->fetch_array($result3);
 		$pdata['hkill'] = $hk['killnum'];
 		$pdata['hkp'] = $hk['name'];
@@ -363,7 +446,7 @@ function gameover($time = 0, $mode = '', $winname = '') {
 
 
 	//echo '**游戏结束**';
-	$gamestate = 0;
+	//$gamestate = 0;
 	addnews($time, "end$winmode" , $winner);
 	addnews($time, 'gameover',$gamenum);
 	writeover(GAME_ROOT."./gamedata/bak/{$gamenum}_newsinfo.php",readover(GAME_ROOT.'./gamedata/newsinfo.php'),'wb+');

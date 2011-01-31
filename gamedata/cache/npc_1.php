@@ -159,7 +159,7 @@ $npcinfo = array
 			'name' => '思念体-海马 濑人',
 			'icon' => 13,
 			'gd' => 'm',
-			'wep' => '正版青眼白龙卡',
+			'wep' => '【逆转的女神】',
 			'wepk' => 'WC',
 			'wepe' => 100,
 			'weps' => 200,
@@ -253,8 +253,8 @@ $npcinfo = array
 			'icon' => 21,
 			'wep' => 'COSPLAY用枪',
 			'wepk' => 'WG',
-			'wepe' => 50,
-			'weps' => 50,
+			'wepe' => 40,
+			'weps' => 40,
 			),
 		1 => array
 			(
@@ -262,8 +262,8 @@ $npcinfo = array
 			'icon' => 22,
 			'wep' => '钉棍棒',
 			'wepk' => 'WP',
-			'wepe' => 30,
-			'weps' => 15,
+			'wepe' => 40,
+			'weps' => 40,
 			),
 		2 => array
 			(
@@ -271,8 +271,8 @@ $npcinfo = array
 			'icon' => 24,
 			'wep' => '银色流动之羽',
 			'wepk' => 'WK',
-			'wepe' => 35,
-			'weps' => 10,
+			'wepe' => 40,
+			'weps' => 40,
 			),
 		3 => array
 			(
@@ -280,8 +280,8 @@ $npcinfo = array
 			'icon' => 23,
 			'wep' => '精灵球的复制品',
 			'wepk' => 'WC',
-			'wepe' => 10,
-			'weps' => 50,
+			'wepe' => 40,
+			'weps' => 40,
 			),
 		),
 	),
@@ -659,7 +659,7 @@ $npcinfo = array
 	9 => array
 		(
 		'mode' => 1,
-		'num' => 1,
+		'num' => 5,
 		'pass' => 'bra',
 		'club' => 0,
 		'bid' => 0,
@@ -672,10 +672,10 @@ $npcinfo = array
 		'teampsss' => '',
 		'gd' => 'm',
 		'pls' => 26,
-		'mhp' => 40000,
+		'mhp' => 10000,
 		'msp' => 400,
 		'att' => 500,
-		'def' => 800,
+		'def' => 500,
 		'lvl' => 60,
 		'skill' => 500,
 		'money' => 1,
@@ -707,11 +707,11 @@ $npcinfo = array
 		(
 			0 => array
 			(
-			'name' => '残存的思念-改',
+			'name' => '量产的思念',
 			'icon' => 51,
-			'wep' => '『Key of Invincible Boss』',
+			'wep' => '『K.I.B.劣化版』',
 			'wepk' => 'WK',
-			'wepe' => 4000,
+			'wepe' => 3000,
 			'weps' => 999,
 			'wepsk' => 'd',
 			'itm1' => '我打败残留的思念了！',

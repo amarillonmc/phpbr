@@ -63,10 +63,22 @@ if($gamestate == 10) {
 		save_gameinfo();
 	}
 }
+//if (($gamestate > 10)&&($now > $areatime)) {
+//	include_once GAME_ROOT.'./include/system.func.php';
+//	addarea($areatime);
+//	save_gameinfo();
+//}
+
 if (($gamestate > 10)&&($now > $areatime)) {
 	include_once GAME_ROOT.'./include/system.func.php';
-	addarea($areatime);
-	save_gameinfo();
+	while($now>$areatime){
+		$o_areatime = $areatime;
+		$areatime += $areahour*3600;
+		save_gameinfo();
+		add_once_area($o_areatime);
+		save_gameinfo();
+	}
+	//addarea($areatime);
 }
 
 if($gamestate == 20) {
@@ -86,6 +98,9 @@ if((($gamestate == 30)&&($alivenum <= $combolimit))||($deathlimit&&($gamestate <
 	save_gameinfo();
 }
 
+$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
+list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
+
 if($gamestate == 40) {
 	if($alivenum <= 1) {
 		include_once GAME_ROOT.'./include/system.func.php';
@@ -95,9 +110,6 @@ if($gamestate == 40) {
 
 $cuser = & ${$tablepre.'user'};
 $cpass = & ${$tablepre.'pass'};
-
-$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
-list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
 
 if($mode == 'quit') {
 

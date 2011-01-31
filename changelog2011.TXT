@@ -1,3 +1,11 @@
+2011/1/31
+修复了用枪殴打敌人伤害只有1而且不加熟练度的问题；（文件：combat.func.php）
+试验性修改了禁区多次刷新的BUG；（文件：common.inc.php; system.func.php）
+修复了NPC只要不在后台就会到处乱跑无视$mode的BUG，不过$mode确实是废了；（文件：system.func.php）
+降低了药剂的价格，提高了毒药的价格；将电池出现时间调到0禁；（文件：shopitem_1.func.php）
+将思念劣化然后数量增加了，斩系去死；（文件：npc_1.php）
+修复了最后幸存时不能记录最高伤害的问题，同时把本场最多杀人者的判断范围从生存者改为全部玩家；（文件：common.inc.php; system.func.php）
+
 2011/1/29
 紧急修复了获得无限耐物品并且合并会导致物品消失的BUG；（文件：itemmain.func.php）
 修改了生命探测器的判断逻辑，减少了数据库调用，加快了探测器运行的速度；（文件：item2.func.php）

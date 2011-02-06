@@ -38,7 +38,30 @@ function event(){
 	} elseif($pls == 4) { //邮电局
 	} elseif($pls == 5) { //消防署
 	} elseif($pls == 6) { //观音堂
-	} elseif($pls == 7) { //清水池
+		$log = ($log . "隶属于时空部门G的特殊部队『天使』正在实弹演习！
+										<BR>你被卷入了弹幕中！<BR>");
+		if($dice1 == 1){
+		$log = ($log . "擦弹成功了。<BR>");
+		}
+		else{
+		$log = ($log . "擦弹……怎么可能啊！<BR>
+		你被少女们打成了筛子！<BR>");
+			$inf = str_replace('hbaf','',$inf);
+			$inf = ($inf . "hbaf");
+			if($dice2 == 36){
+				$log = ($log . "弹幕击中了要害！<BR>你吐出一大口鲜血。<BR>");
+				$hp = 1;
+			}
+			if($dice2 <= 30){
+			$log = ($log . "黑洞激光造成你冻结了！<BR>");
+			$inf = str_replace('i','',$inf);
+			$inf = ($inf . "i");
+			if($dice2 <= 25){
+			$log = ($log . "环形激光导致你烧伤了！<BR>");
+			$inf = str_replace('u','',$inf);
+		$inf = ($inf . "u");}}
+	$log = ($log . "你遍体鳞伤地逃走了。<BR>");}}
+			elseif($pls == 7) { //清水池
 		$log = ($log . "糟糕，脚下滑了一下！<BR>");
 		if($dice1 <= 3){
 			$dice2 += 10;

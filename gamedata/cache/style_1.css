@@ -19,7 +19,14 @@ input {cursor: crosshair;}
 .b5 {BORDER: #000 0px none; color: #fff; text-align: center; border-right: #111 5px solid;font: 10pt "微软雅黑" serif;}
 .map {background-color:rgba(17,17,17,0.5); *BACKGROUND:#111; *filter:alpha(opacity=50);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
 .map2 {BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
+.maptdred {background-color:rgba(255,0,0,0.25); *BACKGROUND:#f00; *filter:alpha(opacity=25);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
+.maptdyellow {background-color:rgba(255,255,0,0.25); *BACKGROUND:#ff0; *filter:alpha(opacity=25);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
+.maptdlime {background-color:rgba(0,255,0,0.2); *BACKGROUND:#0f0; *filter:alpha(opacity=20);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
+.mapspanred{color:#f00;position:relative;font-size: 9pt;line-height:16px}
+.mapspanlime{color:#0f0;position:relative;font-size: 9pt;line-height:16px}
+.mapspanyellow{color:#ff0;position:relative;font-size: 9pt;line-height:16px}
 .admin td {BORDER: #000 3px transparent; TEXT-ALIGN: center; BACKGROUND: RGB(64,172,140); COLOR: #fff; border-right: #111 5px solid;font: 10pt "微软雅黑" serif;}
+
 
 .clit {color: #feea23; font:18pt "微软雅黑" serif; }
 .yellow{color:#ffff00; font: bold 10pt "微软雅黑" serif;line-height:16px}
@@ -33,7 +40,6 @@ input {cursor: crosshair;}
 .evergreen2{color:#98fb98;font:18pt "微软雅黑" serif;}
 .dmg {color:#ff0000;font: bold 10pt "微软雅黑" serif;}
 .grey{color:#999; font: bold 10pt "微软雅黑" serif;line-height:16px}
-
 
 
 #main {

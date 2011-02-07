@@ -8,10 +8,12 @@
 	align="middle" style="filter: Xray()">
 <BR>
 <p><span class="yellow b">$motto</span></p>
+
 <p><!--{if $dinfo[$state]}-->$dinfo[$state]<!--{else}-->你莫名地死了。这应该是BUG，请通知管理员。<!--{/if}--></p>
 <p>死亡时间：$dtime<br>
 凶手：<!--{if $kname && $state>=20}-->$kname<!--{else}-->无<!--{/if}--><br>
 </p>
+<!--{if $state == 33}--><p><img src="img/gradius.jpg" align="middle" /></p><!--{/if}-->
 <p><span class="evergreen2">祝下次游戏好运！</span></p>
 
 <!--{elseif $gamestate === 0}-->

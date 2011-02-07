@@ -5,21 +5,25 @@ if(!defined('IN_GAME')) {
 }
 
 
-
-function  parse_news($start = 1, $range = 0 , $file = '') {
-	global $week,$newsfile,$nowep,$db,$tablepre,$lwinfo,$plsinfo,$wthinfo,$typeinfo,$exdmginf;
-	$file = $file ? $file : $newsfile;	
-	$ninfo = openfile($file);
-	$r = sizeof($ninfo) - 1;
-	if($range && ($range <= $r)) {
-		$r = $range;
+function  nparse_news($start = 1, $range = 0 , $type = '') {
+	global $week,$nowep,$db,$tablepre,$lwinfo,$plsinfo,$wthinfo,$typeinfo,$exdmginf;
+	//$file = $file ? $file : $newsfile;	
+	//$ninfo = openfile($file);
+	$result = $db->query("SELECT * FROM {$tablepre}newsinfo ORDER BY nid DESC");
+	//$r = sizeof($ninfo) - 1;
+	$rnum=$db->num_rows($result);
+	if($range && ($range <= $rnum)) {
+		$nnum = $range;
+	} else{
+		$nnum = $rnum;
 	}
 	$newsinfo = '<ul>';
 	$nday = 0;
-	for($i = $start;$i <= $r;$i++) {
-		list($time,$news,$a,$b,$c,$d) = explode(',',$ninfo[$i]);
+	//for($i = $start;$i <= $r;$i++) {
+	for($i = 0;$i < $nnum;$i++) {
+		$news0=$db->fetch_array($result);
+		$time=$news0['time'];$news=$news0['news'];$a=$news0['a'];$b=$news0['b'];$c=$news0['c'];$d=$news0['d'];$e=$news0['e'];
 		list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$time));
-
 		if($day != $nday) {
 			$newsinfo .= "<span class=\"evergreen\"><B>{$month}月{$day}日(星期$week[$wday])</B></span><br>";
 			$nday = $day;
@@ -41,7 +45,7 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}将<span class=\"yellow\">$c</span>赠送给了{$b}</span><br>\n";
 		} elseif($news == 'addarea') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，增加禁区：";
-			$alist = explode('-',$a);
+			$alist = explode('_',$a);
 			foreach($alist as $ar) {
 				$newsinfo .= "$plsinfo[$ar] ";
 			}
@@ -113,22 +117,24 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因L5发作自己挠破喉咙身亡！";
 			} elseif($news == 'death32'){
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，躲藏于<span class=\"red\">$plsinfo[$c]</span>的<span class=\"yellow\">$a</span><span class=\"red\">挂机时间过长</span>，被常磐大逃杀特殊部队处刑而死！";
+			} elseif($news == 'death33'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因卷入特殊部队『天使』的实弹演习，遭坠落机体碾压而死";
 			} else {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">不明原因</span>死亡";
 			}
 			$dname = $typeinfo[$b].' '.$a;
-			if($b == 0) {
-				//$dname = $a;
-				$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
-				$lastword = $db->result($result, 0);
-			} else {
-				//$dname = $typeinfo[$b].' '.$a;
-				$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
-			}
-			if(!$lastword){
-				$newsinfo .= "<span class=\"yellow\">【{$dname} 什么都没说就死去了。】</span><br>\n";
+//			if($b == 0) {
+//				//$dname = $a;
+//				$lwresult = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+//				$lastword = $db->result($lwresult, 0);
+//			} else {
+//				//$dname = $typeinfo[$b].' '.$a;
+//				$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
+//			}
+			if(!$e){
+				$newsinfo .= "<span class=\"yellow\">【{$dname} 什么都没说就死去了】</span><br>\n";
 			}else{
-				$newsinfo .= "<span class=\"yellow\">【{$dname}：“{$lastword}”】</span><br>\n";
+				$newsinfo .= "<span class=\"yellow\">【{$dname}：“{$e}”】</span><br>\n";
 			}
 		} elseif($news == 'poison') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"purple\">{$a}食用了{$b}下毒的{$c}</span><br>\n";
@@ -171,7 +177,5 @@ function  parse_news($start = 1, $range = 0 , $file = '') {
 	return $newsinfo;
 		
 }
-
-
 
 ?>

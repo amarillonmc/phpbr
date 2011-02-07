@@ -32,11 +32,11 @@
 <br />
 <input type="radio" name="command" id="rest1" value="rest1"><a onclick=sl('rest1'); href="javascript:void(0);">睡眠</a>
 <input type="radio" name="command" id="rest2" value="rest2"><a onclick=sl('rest2'); href="javascript:void(0);">治疗</a>
-<!--{if $pls == 11 || $pls == 19}--><input type="radio" name="command" id="rest3" value="rest3"><a onclick=sl('rest3'); href="javascript:void(0);">静养</a><!--{/if}-->
+<!--{if in_array($pls,$hospitals)}--><input type="radio" name="command" id="rest3" value="rest3"><a onclick=sl('rest3'); href="javascript:void(0);">静养</a><!--{/if}-->
 <br />
 <input type="radio" name="command" id="special" value="special"><select name="sp_cmd" onclick=sl('special'); href="javascript:void(0);">
 	<option value="main" selected>■ 特殊 ■</option>
-	<!--{if $pls == 0 || $pls == 14 || $pls == 27}--><option value="sp_shop">商　店</option><!--{/if}-->
+	<!--{if in_array($pls,$shops)}--><option value="sp_shop">商　店</option><!--{/if}-->
 	<option value="sp_pose">基础姿态</option>
 	<option value="sp_tac">应战策略</option>
 	<option value="sp_word">留言变更</option>

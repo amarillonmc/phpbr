@@ -67,7 +67,7 @@ if($mode == 'enter') {
 	$icon = $icon ? $icon : rand(1,$iconlimit);
 	$club = makeclub();
 
-	$arb = $gd == 'm' ? '红队制服' : '蓝队制服';
+	$arb = $gd == 'm' ? '男生校服' : '女生校服';
 	$arbk = 'DB'; $arbe = 5; $arbs = 15; $arbsk = '';
 	$arh = $ara = $arf = $art = '';
 	$arhk = $arak = $arfk = $artk = '';
@@ -76,8 +76,8 @@ if($mode == 'enter') {
 	$arhs = $aras = $arfs = $arts = 0;
 	
 	for ($i=0; $i<6; $i++){$itm[$i] = $itmk[$i] = $itmsk[$i] = ''; $itme[$i] = $itms[$i] = 0;}
-	$itm[1] = '面包'; $itmk[1] = 'HH'; $itme[1] = 100; $itms[1] = 30;
-	$itm[2] = '矿泉水'; $itmk[2] = 'HS'; $itme[2] = 100; $itms[2] = 30;
+	$itm[1] = '面包'; $itmk[1] = 'HH'; $itme[1] = 100; $itms[1] = 25;
+	$itm[2] = '矿泉水'; $itmk[2] = 'HS'; $itme[2] = 100; $itms[2] = 15;
 
 	$weplist = openfile(config('stwep',$gamecfg));
 	do { 
@@ -156,7 +156,7 @@ if($mode == 'enter') {
 	$inf = $teamID = $teamPass = '';
 	$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('$name','$pass','$type','$endtime','$gd','$sNo','$icon','$club','$hp','$mhp','$sp','$msp','$att','$def','$pls','$lvl','$exp','$money','$bid','$inf','$rage','$pose','$tactic','$state','$killnum','$wp','$wk','$wg','$wc','$wd','$wf','$teamID','$teamPass','$wep','$wepk','$wepe','$weps','$arb','$arbk','$arbe','$arbs','$arh','$arhk','$arhe','$arhs','$ara','$arak','$arae','$aras','$arf','$arfk','$arfe','$arfs','$art','$artk','$arte','$arts','$itm[0]','$itmk[0]','$itme[0]','$itms[0]','$itm[1]','$itmk[1]','$itme[1]','$itms[1]','$itm[2]','$itmk[2]','$itme[2]','$itms[2]','$itm[3]','$itmk[3]','$itme[3]','$itms[3]','$itm[4]','$itmk[4]','$itme[4]','$itms[4]','$itm[5]','$itmk[5]','$itme[5]','$itms[5]','$wepsk','$arbsk','$arhsk','$arask','$arfsk','$artsk','$itmsk[0]','$itmsk[1]','$itmsk[2]','$itmsk[3]','$itmsk[4]','$itmsk[5]')");
 	$db->query("UPDATE {$tablepre}users SET lastgame='$gamenum' WHERE username='$name'");
-	addnews($now,'newpc',$name,"{$sexinfo[$gd]}{$sNo}号",$ip);
+	naddnews($now,'newpc',$name,"{$sexinfo[$gd]}{$sNo}号",$ip);
 
 
 	$gamestate = $validnum < $validlimit ? 20 : 30;

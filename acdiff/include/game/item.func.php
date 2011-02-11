@@ -723,6 +723,15 @@ function itemuse($itmn) {
 				$itme = $itms = 0;
 			}
 		}
+	} elseif ( strpos( $itmk,'EW' ) ===0 )	{
+		include_once GAME_ROOT . './include/game/item2.func.php';
+		wthchange ( $itm,$itmsk);
+		$itms--;
+		if ($itms <= 0) {
+			$log .= "<span class=\"red\">$itm</span>用光了。<br>";
+			$itm = $itmk = $itmsk = '';
+			$itme = $itms = 0;
+		}
 	} elseif (strpos ( $itmk, 'Y' ) === 0) {
 		if ($itm == '电池') {
 			//功能需要修改，改为选择道具使用YE类型道具可充电
@@ -751,17 +760,7 @@ function itemuse($itmn) {
 				}
 			}
 			return;
-		} /*elseif($itm == '解毒剂') {
-			global $inf,$infinfo;
-			if(strpos($inf, 'p') !== false){
-				$inf = str_replace('p', '', $inf);
-				$log .= "使用了<span class=\"red\">$itm</span> ，<span class=\"red\">".$infinfo['p']."</span>状态解除了。<br>";
-			} else {
-				$log .= "使用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
-			}
-			$itms--;  
-		}*/
-elseif (strpos ( $itm, '磨刀石' ) !== false) {
+		} elseif (strpos ( $itm, '磨刀石' ) !== false) {
 			global $wep, $wepk, $wepe, $weps, $wepsk;
 			if (strpos ( $wepk, 'K' ) == 1) {
 				$dice = rand ( 0, 49 );

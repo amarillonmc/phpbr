@@ -143,7 +143,7 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 		} elseif($news == 'corpseclear') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了凸眼鱼，{$b}具尸体被吸走了！</span><br>\n";
 		} elseif($news == 'wthchange') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了天侯棒，天气变成了<span class=\"red\">$wthinfo[$b]</span>！</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了{$c}，天气变成了{$wthinfo[$b]}！</span><br>\n";
 		} elseif($news == 'newwep') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用{$b}，改造了<span class=\"yellow\">$c</span>！</span><br>\n";
 		} elseif($news == 'itemmix') {

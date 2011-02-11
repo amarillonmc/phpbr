@@ -1,3 +1,15 @@
+2011/2/9
+修改了地图道具：减少野生陷阱而增加可拾取陷阱的数量，增加地雷数量和水的数量；（文件：mapitem_1.php;）
+增加毒针的攻击力和耐久；（文件：maxitem_1.php）
+修改了合成方式，现在合成材料如果是装备则会直接用光而不是减耐久；（文件：itemmain.php）
+添加了天气控制类物品，天候棒的类型也改成了这个；（文件：news.func.php; system.php; item.func.php; item2.func.php）
+
+2011/2/8
+修复了圣gradius学园会造成重复写受伤状态的BUG，冴冴真天然；同时修改了event的字色；（文件：event.func.php）
+添加了“不可装填”属性；（文件：system.php; item.func.php）
+试验性修复开局自动刷禁区的问题，我真天然；（文件：system.func.php）
+修改了地图道具和初始物品，射系快去哭；（文件：mapitem_1.php; stitem_1.php）
+
 2011/2/6
 将地图道具改为数据库模式；（文件：mapitem.sql; system.func.php; search.func.php; itemmain.func.php）
 修改了追击、扒尸、送物品BUG的提示信息；（文件：combat.func.php; itemmain.func.php; battle.func.php）

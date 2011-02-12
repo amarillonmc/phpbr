@@ -43,8 +43,73 @@ function poison($itmn = 0) {
 	return;
 }
 
-function elec($itmn = 0) {
+function wthchange($itm,$itmsk){
+	global $now,$log,$weather, $wthinfo, $name;
+	if($itmsk==99){$weather = rand ( 0, 13 );}//随机全天气
+	elseif($itmsk==98){$weather = rand ( 10, 13 );}//随机恶劣天气
+	elseif($itmsk==97){$weather = rand ( 0, 9 );}//随机一般天气
+	elseif($itmsk==96){$weather = rand ( 8, 9 );}//随机起雾天气
+	elseif(!empty($itmsk) && is_numeric($itmsk)){
+		if($itmsk >=0 && $itmsk < count($wthinfo)){
+			$weather = $itmsk;
+		}else{$weather = 0;}
+	}
+	else{$weather = 0;}
+	include_once GAME_ROOT . './include/system.func.php';
+	save_gameinfo ();
+	naddnews ( $now, 'wthchange', $name, $weather, $itm );
+	$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br />";
 }
+
+//function elec(&$itm,&$itmk,&$itme,&$itms,&$itmsk) {
+//	global $log,$name,$now;
+//	if(strpos( $itmk,'EW' ) ===0){
+//		global $weather, $wthinfo, $name;
+//		if($itmsk==99){$weather = rand ( 0, 13 );}//随机全天气
+//		elseif($itmsk==98){$weather = rand ( 10, 13 );}//随机恶劣天气
+//		elseif($itmsk==97){$weather = rand ( 0, 9 );}//随机一般天气
+//		elseif($itmsk==96){$weather = rand ( 8, 9 );}//随机起雾天气
+//		elseif(!empty($itmsk) && is_numeric($itmsk)){
+//			if($itmsk >=0 && $itmsk < count($wthinfo)){
+//				$weather = $itmsk;
+//			}else{$weather = 0;}
+//		}
+//		else{$weather = 0;}
+//		include_once GAME_ROOT . './include/system.func.php';
+//		save_gameinfo ();
+//		naddnews ( $now, 'wthchange', $name, $weather, $itm );
+//		$log .= "你启动了{$itm}。<br />天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br />";
+//	} elseif (strpos($itmk,'EC') ===0){
+//		global $hack,$hack_obbs,$club,$alivenum,$deathnum,$hp,$state;
+//		$hack_dice = rand(0,99);
+//		if(($hack_dice < $hack_obbs)||(($club == 7)&&($hack_dice<95))) {
+//			$hack = 1;
+//			$log .= '入侵禁区控制系统成功了！全部禁区都被解除了！<br>';
+//			include_once GAME_ROOT.'./include/system.func.php';
+//			movehtm();
+//			naddnews($now,'hack',$name);
+//			save_gameinfo();
+//		} else {
+//			$log .= '可是，入侵禁区控制系统失败了……<br>';
+//		}
+//		
+//		$hack_dice2 = rand(0,99);
+//
+//		if($hack_dice2 < 5) {
+//			$log .= '由于你的不当操作，禁区系统防火墙锁定了你的电脑并远程引爆了它。幸好你本人的位置并没有被发现。<br>';
+//			$itm = $itmk = $itmsk = '';
+//			$itme = $itms = 0;
+//		} elseif($hack_dice2 < 8) {
+//			$itm = $itmk = $itmsk = '';
+//			$itme = $itms = 0;
+//			$log .= "<span class=\"evergreen\">“小心隔墙有耳哦。”</span>——林无月<br>";
+//			include_once GAME_ROOT.'./include/state.func.php';
+//			$log .= '你擅自入侵禁区控制系统，被控制系统远程消灭！<br>';
+//			death('hack');
+//		}
+//	}
+//	return;
+//}
 
 function hack($itmn = 0) {
 	global $log,$hack,$hack_obbs,$club,$now,$name,$alivenum,$deathnum,$hp,$state;

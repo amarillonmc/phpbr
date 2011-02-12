@@ -763,10 +763,13 @@ function itemuse($itmn) {
 		} elseif (strpos ( $itm, '磨刀石' ) !== false) {
 			global $wep, $wepk, $wepe, $weps, $wepsk;
 			if (strpos ( $wepk, 'K' ) == 1) {
-				$dice = rand ( 0, 49 );
-				if ($dice >= 10) {
+				$dice = rand ( 0, 100 );
+				if ($dice >= 150) {
 					$wepe += $itme;					
 					$log .= "使用了<span class=\"yellow\">$itm</span>，<span class=\"yellow\">$wep</span>的攻击力变成了<span class=\"yellow\">$wepe</span>。<br>";
+					if (strpos ( $wep, '锋利的' ) === false) {
+						$wep = '锋利的'.$wep;
+					}
 				} else {
 					$wepe -= ceil ( $itme / 2 );
 					if ($wepe <= 0) {
@@ -777,9 +780,7 @@ function itemuse($itmn) {
 						$log .= "<span class=\"red\">$itm</span>使用失败，<span class=\"red\">$wep</span>的攻击力变成了<span class=\"red\">$wepe</span>。<br>";
 					}
 				}
-				if (strpos ( $wep, '锋利的' ) === false) {
-					$wep = '锋利的'.$wep;
-				}
+				
 				$itms --;
 			} else {
 				$log .= '你没装备锐器，不能使用磨刀石。<br>';
@@ -787,10 +788,13 @@ function itemuse($itmn) {
 		} elseif (preg_match ( "/钉$/", $itm )) {
 			global $wep, $wepk, $wepe, $weps, $wepsk;
 			if (preg_match ( "/棍棒$/", $wep ) && ($wepk == 'WP')) {
-				$dice = rand ( 0, 49 );
+				$dice = rand ( 0, 100 );
 				if ($dice >= 10) {
 					$wepe += $itme;
 					$log .= "使用了<span class=\"yellow\">$itm</span>，<span class=\"yellow\">$wep</span>的攻击力变成了<span class=\"yellow\">$wepe</span>。<br>";
+					if (strpos ( $wep, '钉' ) === false) {
+						$wep = str_replace ( '棍棒', '钉棍棒', $wep );
+					}
 				} else {
 					$wepe -= ceil ( $itme / 2 );
 					if ($wepe <= 0) {
@@ -801,9 +805,7 @@ function itemuse($itmn) {
 						$log .= "<span class=\"red\">$itm</span>使用失败，<span class=\"red\">$wep</span>的攻击力变成了<span class=\"red\">$wepe</span>。<br>";
 					}
 				}
-				if (strpos ( $wep, '钉' ) === false) {
-					$wep = str_replace ( '棍棒', '钉棍棒', $wep );
-				}
+				
 				$itms --;
 			} else {
 				$log .= '你没装备棍棒，不能安装钉子。<br>';

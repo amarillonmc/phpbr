@@ -282,8 +282,11 @@ function itemmerge($itn1,$itn2){
 			$log .= "你合并了 <span class=\"yellow\">$it2</span>。";
 			$mode = 'command';
 			return;
-		} else {
+		} elseif($itk1!=$itk2||$itsk1!=$itsk2) {
 			$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>不是同类型同属性物品，不能合并！";
+			$mode = 'itemmerge';
+		} else{
+			$log .= "<span class=\"yellow\">$it1</span>与<span class=\"yellow\">$it2</span>完全是两个东西，想合并也不可能啊……";
 			$mode = 'itemmerge';
 		}
 	} else {
@@ -368,8 +371,8 @@ function itemreduce($item){
 	}
 
 	if(!$itms) { return; }
-
-	$itms--;
+	if(preg_match('/^(WC|WD|WF|Y|C|X|TN|GB|H|V|M)/',$itmk)){$itms--;}
+	else{$itms=0;}
 	if($itms <= 0) {
 		$itms = 0;
 		$log .= "<span class=\"red\">$itm</span>用光了。<br>";

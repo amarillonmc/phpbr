@@ -144,6 +144,8 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了凸眼鱼，{$b}具尸体被吸走了！</span><br>\n";
 		} elseif($news == 'wthchange') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了{$c}，天气变成了{$wthinfo[$b]}！</span><br>\n";
+		} elseif($news == 'syswthchg') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">东风谷 早苗使奇迹降临了！天气变成了{$wthinfo[$a]}！</span><br>\n";
 		} elseif($news == 'newwep') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用{$b}，改造了<span class=\"yellow\">$c</span>！</span><br>\n";
 		} elseif($news == 'itemmix') {

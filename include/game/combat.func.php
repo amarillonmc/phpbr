@@ -721,7 +721,7 @@ function getdefkey($w, $ah, $ab, $aa, $af, $at, $atkind) {
 		}
 	}
 	foreach ($ex_dmg_def as $value) {
-		if (strpos ( $eqpkey, $value ) !== false) {
+		if (strpos ( $eqpkey, $value ) !== false || strpos ( $eqpkey, 'a' ) !== false) {
 			$defcdt .= '_'.$value;
 		}
 	}

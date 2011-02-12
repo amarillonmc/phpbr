@@ -598,6 +598,7 @@
 <br>
 <span class="yellow">『合成专用』</span> 用来合成更高级道具的物品，单独携带是没有任何作用的。<br>
 <span class="yellow">『陷阱』</span> 使用后会在当前地区设下陷阱。<br>
+<span class="yellow">『天气控制』</span> 使用后将改变当前天气。<br>
 <span class="yellow">『特殊』</span> 有特殊用途的道具，详情见“特殊道具”部分</p>
 
 
@@ -605,7 +606,7 @@
 
 <p>武器分为<span class="yellow">殴、斩、射、投、爆、灵</span>六系。不同的武器之间的特性差异很大，详情见下表。</p>
 
-<table cellSpacing=0 cellPadding=0 height=295px width=1100px>
+<table cellSpacing=0 cellPadding=0 height=295px width=1140px>
 	<tr>
 		<td class="b1" height=20px width=160px>
 		<div class="nttx">武器种类</div>
@@ -613,8 +614,8 @@
 		<td class="b1" width=60px>
 		<div class="nttx">射程</div>
 		</td>
-		<td class="b1" width=60px>
-		<div class="nttx">伤害</div>
+		<td class="b1" width=100px>
+		<div class="nttx">伤害成长</div>
 		</td>
 		<td class="b1" width=100px>
 		<div class="nttx">初始命中</div>
@@ -680,7 +681,7 @@
 		</td>
 		<td class="b3">
 		<div class="nttx">武器攻击力普遍较高，伤害浮动大；<br>
-		能够用磨刀石加强武器；</div>
+		能够用磨刀石加强武器；<br>能在固定地点取得高级装备；</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">武器容易损坏，耐久普遍低下；</div>
@@ -776,7 +777,7 @@
 		<div class="nttx"><span class="red">最近</span></div>
 		</td>
 		<td class="b3">
-		<div class="nttx"><span class="lime">中等</span></div>
+		<div class="nttx"><span class="lime">低</span></div>
 		</td>
 		<td class="b3">
 		<div class="nttx"><span class="clan">最高</span></div>
@@ -812,6 +813,7 @@
 根据射系武器所拥有的属性的不同，需要的子弹类型也不同，请注意收集。<BR>
 带“火焰”、“冰冻”或者“电击”属性的射系武器，分别需要火焰弹药、冻气弹药和枪械电池。<BR>
 除此之外，连续攻击的射系武器属于“机枪”，需要机枪子弹。这些类型之外的射系武器属于手枪，用手枪子弹就可以装填。<BR>
+此外，还存在属性为“一发”的枪械，这种枪械不能装填弹药，弹药用尽就永远无法作为枪械攻击。<BR>
 根据子弹类型的不同，弹夹上限也不同。<BR>
 装填子弹的方法是装备射系武器并「使用」子弹。<BR>
 <BR>
@@ -1819,6 +1821,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 <p><a name="道具合成"><span class="subtitle2">17.道具合成</span></a></p>
 
 <p>可以将某些物品合成为另一种物品，只要名称正确即可合成。合成道具成功则可增加爆熟。</p>
+<p>合成成功时，如果所用的材料是武器或者防具，则会将整个材料耗尽；其他情况下，材料的耐久会减1。</p>
 <p><span class="lime">常见补给合成表</span>：</p>
 <table cellSpacing=0 cellPadding=0>
 	<tr>
@@ -1916,7 +1919,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">KEY系儿童套餐</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">命体恢复/1000/2</div>
+		<div class="nttx">命体恢复/500/4</div>
 		</td>
 	</tr>
 	<tr>
@@ -1979,7 +1982,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">毒针</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">锐器/15/4/带毒</div>
+		<div class="nttx">锐器/30/7/带毒</div>
 		</td>
 	</tr>
 	<tr>
@@ -1999,7 +2002,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">★简易火焰放射器★</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">远程武器/70/5/火焰</div>
+		<div class="nttx">远程武器/72/10/火焰</div>
 		</td>
 	</tr>
 	<tr>
@@ -2019,7 +2022,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">观铃的嘎哦嘎哦恐龙喷火分队</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">远程武器/217/1/火焰连击</div>
+		<div class="nttx">远程武器/217/10/火焰连击</div>
 		</td>
 	</tr>
 		<tr>
@@ -2039,7 +2042,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">☆火焰瓶☆</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投掷武器/50/20/燃烧</div>
+		<div class="nttx">投掷武器/50/24/火焰爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2139,7 +2142,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">★炸药★</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/75/25/爆炸</div>
+		<div class="nttx">爆炸物/95/45/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2159,7 +2162,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">★炸药★</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/75/25/爆炸</div>
+		<div class="nttx">爆炸物/95/45/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2219,7 +2222,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">☆自爆电池☆</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/140/10/爆炸</div>
+		<div class="nttx">爆炸物/140/14/爆炸</div>
 		</td>
 	</tr>
 
@@ -2321,7 +2324,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">梦符『梦想妙珠』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/40/∞/爆炸</div>
+		<div class="nttx">灵力武器/30/∞/连击</div>
 		</td>
 	</tr>
 	<tr>
@@ -2341,10 +2344,29 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">星符『星尘狂欢』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/40/∞/火焰</div>
+		<div class="nttx">灵力武器/50/∞/火焰</div>
 		</td>
 	</tr>
-
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">空白符卡</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆守矢神签☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">秘术『一子单传的弹幕』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">灵力武器/50/∞/爆炸</div>
+		</td>
+	</tr>
 	<tr>
 		<td class="b3" height=20px>
 		<div class="nttx">空白符卡</div>
@@ -2362,7 +2384,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">时符『Private Square』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/80/∞/冻气</div>
+		<div class="nttx">灵力武器/120/∞/冻气</div>
 		</td>
 	</tr>
 	<tr>
@@ -2382,27 +2404,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">幽鬼剑『妖童饿鬼之断食』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/120/∞</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="b3" height=20px>
-		<div class="nttx">空白符卡</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">★守矢神签★</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">－</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">→</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">秘术『一子单传的弹幕』</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">灵力武器/70/∞/爆炸</div>
+		<div class="nttx">灵力武器/120/∞/重击辅助</div>
 		</td>
 	</tr>
 	<tr>
@@ -2422,7 +2424,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">风符『风神一扇』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/200/∞</div>
+		<div class="nttx">灵力武器/210/∞</div>
 		</td>
 	</tr>
 	<tr>
@@ -2648,7 +2650,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">天然属性也是很可怕的！</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/159/3/爆炸天然</div>
+		<div class="nttx">爆炸物/160/60/天然爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2668,7 +2670,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">KEY催泪弹</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/1800/1/爆炸天然</div>
+		<div class="nttx">爆炸物/3600/4/天然爆炸</div>
 		</td>
 	</tr>
 </table>
@@ -2711,7 +2713,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">纯真之剑</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">锐器/61/61</div>
+		<div class="nttx">锐器/150/40</div>
 		</td>
 	</tr>
 	<tr>
@@ -2731,7 +2733,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">热情之枪</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投掷兵器/51/55</div>
+		<div class="nttx">投掷兵器/150/80</div>
 		</td>
 	</tr>
 	<tr>
@@ -2771,7 +2773,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">喷发的斗志</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/88/50/爆炸</div>
+		<div class="nttx">爆炸物/150/80/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2791,7 +2793,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">炙热的手套</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">腕部防具/81/20</div>
+		<div class="nttx">腕部防具/150/80</div>
 		</td>
 	</tr>
 	<tr>
@@ -2811,7 +2813,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">坚强戒指</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">腕部防具/80/22</div>
+		<div class="nttx">腕部防具/150/80</div>
 		</td>
 	</tr>
 	<tr>
@@ -2831,7 +2833,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">活力之靴</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">足部防具/79/24</div>
+		<div class="nttx">足部防具/150/80</div>
 		</td>
 	</tr>
 
@@ -2932,7 +2934,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">黄色的宝石枪</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">远程武器/150/150</div>
+		<div class="nttx">远程武器/240/150/电击</div>
 		</td>
 	</tr>
 	<tr>
@@ -2952,7 +2954,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">红色的宝石刀</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">锐器/150/150/火焰</div>
+		<div class="nttx">锐器/240/150/火焰</div>
 		</td>
 	</tr>
 	<tr>
@@ -2972,7 +2974,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">蓝色的宝石锤</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">钝器/150/150/冻气</div>
+		<div class="nttx">钝器/240/150/冻气</div>
 		</td>
 	</tr>
 	<tr>
@@ -2992,7 +2994,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">绿色的宝石镖</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投掷武器/150/150/冻气</div>
+		<div class="nttx">投掷武器/240/150/带毒</div>
 		</td>
 	</tr>
 	<tr>
@@ -3012,7 +3014,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">金色的宝石炸弹</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/140/50/火焰爆炸</div>
+		<div class="nttx">爆炸物/240/150/火焰爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -3032,7 +3034,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">银色的宝石护甲</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">身体防具/150/150/防火防冻</div>
+		<div class="nttx">身体防具/240/150/防火防冻</div>
 		</td>
 	</tr>
 
@@ -3053,7 +3055,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">水晶宝石盾</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">腕部防具/150/150</div>
+		<div class="nttx">腕部防具/240/150/防殴防投</div>
 		</td>
 	</tr>
 	<tr>
@@ -3073,7 +3075,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">珍珠头盔</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">头部防具/150/150</div>
+		<div class="nttx">头部防具/240/150/防斩防爆</div>
 		</td>
 	</tr>
 	<tr>
@@ -3093,7 +3095,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">钻石靴子</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">足部防具/150/150</div>
+		<div class="nttx">足部防具/240/150/防弹防符</div>
 		</td>
 	</tr>
 	<tr>
@@ -3110,10 +3112,10 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">→</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">粉红色的项链</div>
+		<div class="nttx">深红色的项链</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">同志饰物/150/150</div>
+		<div class="nttx">饰物/240/150/全属性防御</div>
 		</td>
 	</tr>
 	<tr>
@@ -3130,10 +3132,10 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">→</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">深蓝色的项链</div>
+		<div class="nttx">蔚蓝色的项链</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">热恋饰物/150/150</div>
+		<div class="nttx">饰物/240/150/HP制御</div>
 		</td>
 	</tr>
 </table>
@@ -3500,20 +3502,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">无</div>
 		</td>
 	</tr>
-	<tr>
-		<td class="b2" height=20px>
-		<div class="nttx">天候棒</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">使用后，将天气强制转化为冰雹、龙卷风、瘴气或者暴风雪的其中一种。</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">商店出售</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-	</tr>
+
 	<tr>
 		<td class="b2" height=20px>
 		<div class="nttx">■DeathNote■</div>

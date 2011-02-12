@@ -30,9 +30,9 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 		}
 
 		if($news == 'newgame') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">第{$a}回常磐大逃杀开始了</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">第{$a}回ACFUN大逃杀开始了</span><br>\n";
 		} elseif($news == 'gameover') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">第{$a}回常磐大逃杀结束了</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">第{$a}回ACFUN大逃杀结束了</span><br>\n";
 		} elseif($news == 'newpc') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}({$b})进入了大逃杀战场</span><br>\n";
 		} elseif($news == 'teammake') {
@@ -116,9 +116,9 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 			} elseif($news == 'death31'){
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因L5发作自己挠破喉咙身亡！";
 			} elseif($news == 'death32'){
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，躲藏于<span class=\"red\">$plsinfo[$c]</span>的<span class=\"yellow\">$a</span><span class=\"red\">挂机时间过长</span>，被常磐大逃杀特殊部队处刑而死！";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，躲藏于<span class=\"red\">$plsinfo[$c]</span>的<span class=\"yellow\">$a</span><span class=\"red\">挂机时间过长</span>，被在外等待的愤怒的玩家们私刑处死！";
 			} elseif($news == 'death33'){
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因卷入特殊部队『天使』的实弹演习，遭坠落机体碾压而死";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因卷入特殊部队『天使』的实弹演习，被坠落的少女和机体“亲吻”而死";
 			} else {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">不明原因</span>死亡";
 			}
@@ -143,7 +143,9 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 		} elseif($news == 'corpseclear') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了凸眼鱼，{$b}具尸体被吸走了！</span><br>\n";
 		} elseif($news == 'wthchange') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了天侯棒，天气变成了<span class=\"red\">$wthinfo[$b]</span>！</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了{$c}，天气变成了{$wthinfo[$b]}！</span><br>\n";
+		} elseif($news == 'syswthchg') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">东风谷 早苗使奇迹降临了！天气变成了{$wthinfo[$a]}！</span><br>\n";
 		} elseif($news == 'newwep') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用{$b}，改造了<span class=\"yellow\">$c</span>！</span><br>\n";
 		} elseif($news == 'itemmix') {
@@ -159,7 +161,7 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 		} elseif($news == 'delcp') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}的尸体被时空特使别动队销毁了</span><br>\n";
 		} elseif($news == 'editpc') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}得到了常磐之灵加护！</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}被猴子进行了生化改造！</span><br>\n";
 		} elseif($news == 'suisidefail') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}注射了H173，却由于RP太高进入了发狂状态！！</span><br>\n";
 		} elseif($news == 'inf') {

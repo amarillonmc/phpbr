@@ -108,7 +108,7 @@
 <p>以下就是关于这款游戏的基本说明，包括游戏的操作方式、游戏过程、基本的道具资料以及NPC资料。<BR>
 部分内容并未在此说明，则是为了保留一点神秘感，增加游戏的趣味性。</p>
 <p>注意，以下帮助文档中的所有资料，都是ACFUN大逃杀v.2.65版本的资料，如果版本号更新则可能出现变动。一切数据以游戏为准，本帮助文档仅供参考。<BR>
-本帮助参考了CSIEBR的帮助文档，并且感谢玩家<span class="evergreen">死亡荆棘</span>的协助。<BR>
+本帮助参考了CSIEBR的帮助文档，并且感谢所有参与撰写帮助的玩家的协助。<BR>
 <BR>
 </p>
 
@@ -212,7 +212,7 @@
 
 当禁区数量增加到一定程度，或者在游戏中死亡的玩家和NPC总数超过一定数目时，都将使游戏进入<span class="yellow">“连斗阶段”</span>。<br>
 当前服务器的设定是<span class="yellow">禁区增加三次</span>或者<span class="yellow">死亡100人</span>则进入连斗，别的服务器可能会有所调整。<br>
-进入连斗以后，<span class="yellow">游戏停止激活</span>，<span class="yellow">所有尸体消失且无法再摸到尸体</span>，<span class="yellow">所有队伍解散</span>，剩下的人必须决一死战。<br>
+进入连斗以后，<span class="yellow">游戏停止激活</span>，<span class="yellow">所有尸体消失且无法再摸到尸体</span>，<span class="yellow">所有队伍解散</span>，<span class="yellow">躲避姿态也无法回避禁区</span>，剩下的人必须决一死战。<br>
 同时禁区还会继续增加，如果全部地区都变为禁区，那么所有的参与者都会死亡，这局游戏将没有胜利者。</p>
 <br>
 <p><a name="游戏界面"><span class="subtitle2">4.游戏界面</span></a></p>
@@ -549,7 +549,7 @@
 			<div class="nttx">重视躲避</div>
 			</TD>
 			<TD class="b3">
-			<div class="nttx">增加回避概率的策略，同时还能躲避禁区</div>
+			<div class="nttx">增加回避概率的策略，在游戏没进入连斗时还能躲避禁区</div>
 			</TD>
 			<TD class="b3">
 			<div class="nttx"><span class="yellow">↓↓↓</span></div>
@@ -1314,7 +1314,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 <BR>
 <p><a name="毒药和陷阱"><span class="subtitle2">15.毒药和陷阱</span></a></p>
 
-<p>陷阱类道具：「使用」之后可以在所在的区域设下陷阱，设置的同时可以增加经验值和爆系熟练度。<BR>
+<p>陷阱类道具：「使用」之后可以在所在的区域设下陷阱，设置的同时可以增加经验值和爆系熟练度。陷阱也可能被其他玩家回避。如果未触发陷阱，玩家还能拾取该陷阱。<BR>
 毒药：「使用」后可对大部份回复物品下毒。<BR>
 自己设的陷阱可能会被自己触发，自己下毒的食物可能会被自己捡到并且误食，所以在设下陷阱或是下毒的时候要谨慎。<BR>
 陷阱类道具会造成不超过道具效果值的伤害，下毒的食物会造成与食物效果值一样的伤害。</p>
@@ -1428,7 +1428,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">无</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">设置陷阱有熟练度和经验值加成；合成爆炸物有数量加成</div>
+		<div class="nttx">设置陷阱有熟练度和经验值加成；合成爆炸物有数量加成；陷阱回避概率上升。</div>
 		</td>
 	</tr>
 	<tr>
@@ -1985,6 +1985,26 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">锐器/30/7/带毒</div>
 		</td>
 	</tr>
+		<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">《哲♂学》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">增幅设备</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">森之妖精的棍棒</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">钝器/150/50/连击</div>
+		</td>
+	</tr>
 	<tr>
 		<td class="b3" height=20px>
 		<div class="nttx">打火机</div>
@@ -2042,7 +2062,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">☆火焰瓶☆</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投掷武器/50/24/火焰爆炸</div>
+		<div class="nttx">投掷武器/60/24/火焰爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2142,7 +2162,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">★炸药★</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/95/45/爆炸</div>
+		<div class="nttx">爆炸物/105/60/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2162,7 +2182,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">★炸药★</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/95/45/爆炸</div>
+		<div class="nttx">爆炸物/105/60/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2182,7 +2202,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">水鸳鸯</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/20/24/爆炸</div>
+		<div class="nttx">爆炸物/32/32/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2202,7 +2222,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">☆仙女棒☆</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/50/50/爆炸</div>
+		<div class="nttx">爆炸物/60/60/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2222,7 +2242,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">☆自爆电池☆</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/140/14/爆炸</div>
+		<div class="nttx">爆炸物/140/28/爆炸</div>
 		</td>
 	</tr>
 
@@ -2243,7 +2263,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">简易毒气弹</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆炸物/70/5/带毒爆炸</div>
+		<div class="nttx">爆炸物/70/12/带毒爆炸</div>
 		</td>
 	</tr>
 
@@ -2733,7 +2753,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">热情之枪</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投掷兵器/150/80</div>
+		<div class="nttx">远程武器/150/40</div>
 		</td>
 	</tr>
 	<tr>
@@ -2914,7 +2934,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">绿宝石方块</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">合成中间产物/1/1</div>
+		<div class="nttx">合成中间产物/1/2</div>
 		</td>
 	</tr>
 	<tr>
@@ -3031,10 +3051,10 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">→</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">银色的宝石护甲</div>
+		<div class="nttx">银色的宝石符卡</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">身体防具/240/150/防火防冻</div>
+		<div class="nttx">灵力武器/240/150/冻气</div>
 		</td>
 	</tr>
 

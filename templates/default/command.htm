@@ -1,10 +1,10 @@
 <input type="hidden" name="mode" value="command">
 现在想要做什么？<br /><br />
-<input type="radio" name="command" id="move" value="move" checked><select name="moveto" onclick=sl('move'); href="javascript:void(0);">
+<input type="radio" name="command" id="move" value="move"><select name="moveto" onclick=sl('move'); href="javascript:void(0);">
 {template move}
 </select><br />
 <!--{if array_search($pls,$arealist) > $areanum || $hack}-->
-<input type="radio" name="command" id="search" value="search"><a onclick=sl('search'); href="javascript:void(0);" >搜寻</a><br />
+<input type="radio" name="command" id="search" value="search" checked><a onclick=sl('search'); href="javascript:void(0);" >搜寻</a><br />
 <!--{/if}-->
 <!--{if $itms1}-->
 &nbsp;<input type="radio" name="command" id="itm1" value="itm1"><a onclick=sl('itm1'); href="javascript:void(0);" >$itm1/$itme1/$itms1 {lang useitem}</a><br />

@@ -34,6 +34,12 @@ $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 $db->select_db($dbname);
 require_once GAME_ROOT.'./gamedata/system.php';
+require_once './gamedata/validlimit.php';
+foreach($nmlimit as $value){
+	if(!empty($value) && strpos($username,$value)!==false){
+		gexit($_ERROR['banned_name'],__file__,__line__);
+	}
+}
 if(preg_match("[,|>|<|;]",$username)){
 	gexit($_ERROR['invalid_name'],__file__,__line__);
 } elseif(!$username||!$password) {
@@ -50,7 +56,14 @@ if(preg_match("[,|>|<|;]",$username)){
 	} elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
 		$onlineip = $_SERVER['REMOTE_ADDR'];
 	}
-
+	foreach($iplimit as $value){
+		if(!empty($value) &&  strpos($value,'*')!==false){
+			$value = str_replace('*','',$value);
+		}
+		if(strpos($onlineip,$value)!==false){
+			gexit($_ERROR['banned_ip'],__file__,__line__);
+		}
+	}
 	$password = md5($password);
 	$groupid = 1;
 	$credits = 0;
@@ -66,8 +79,6 @@ if(preg_match("[,|>|<|;]",$username)){
 			gexit($_ERROR['user_ban'],__file__,__line__);
 		} elseif($userdata['password'] != $password) {
 			gexit($_ERROR['login_check'],__file__,__line__);
-		} else {
-
 		}
 	}
 	gsetcookie('user',$username);

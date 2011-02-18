@@ -67,7 +67,7 @@ if($mode == 'enter') {
 	$icon = $icon ? $icon : rand(1,$iconlimit);
 	$club = makeclub();
 
-	$arb = $gd == 'm' ? '红队制服' : '蓝队制服';
+	$arb = $gd == 'm' ? '男生校服' : '女生校服';
 	$arbk = 'DB'; $arbe = 5; $arbs = 15; $arbsk = '';
 	$arh = $ara = $arf = $art = '';
 	$arhk = $arak = $arfk = $artk = '';
@@ -138,7 +138,7 @@ if($mode == 'enter') {
 		$exp += 2000;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
 		$itm[1] = '全恢复饮料'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
 		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
-		$itm[3] = '广域生命探测器'; $itmk[3] = 'R'; $itme[3] = 50; $itms[3] = 1;$itmsk[3] = 2;
+		$itm[3] = '奇怪的按钮'; $itmk[3] = 'Z'; $itme[3] = 1; $itms[3] = 1;$itmsk[3] = '';
 		$itm[4] = '凸眼鱼'; $itmk[4] = 'Y'; $itme[4] = 1; $itms[4] = 30;$itmsk[4] = '';
 		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
 		$wep = '最终离子风暴枪';$wepk = 'WG';$wepe = 777;$weps = 777;$wepsk = 'er';

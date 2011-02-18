@@ -284,7 +284,7 @@ function itemuse($itmn) {
 			$inf .= 'p';
 		}
 		$hp -= $damage;
-		if ($itmsk) {
+		if ($itmsk && is_numeric($itmsk)) {
 			$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$itmsk'" );
 			$wdata = $db->fetch_array ( $result );
 			$log .= "糟糕，<span class=\"yellow\">$itm</span>中被<span class=\"yellow\">{$wdata['name']}</span>掺入了毒药！你受到了<span class=\"dmg\">$damage</span>点伤害！<br>";
@@ -324,10 +324,11 @@ function itemuse($itmn) {
 		}
 	
 	} elseif (strpos ( $itmk, 'T' ) === 0) {
-		global $pls, $exp, $upexp, $wd, $club,$lvl;
-		$mapfile = GAME_ROOT . "./gamedata/mapitem/{$pls}mapitem.php";
-		$itemdata = "$itm,TO,$itme,1,$pid,\n";
-		writeover ( $mapfile, $itemdata, 'ab' );
+		global $pls, $exp, $upexp, $wd, $club,$lvl,$db,$tablepre;
+		//$mapfile = GAME_ROOT . "./gamedata/mapitem/{$pls}mapitem.php";
+		//$itemdata = "$itm,TO,$itme,1,$pid,\n";
+		//writeover ( $mapfile, $itemdata, 'ab' );
+		$db->query("INSERT INTO {$tablepre}{$pls}mapitem (itm, itmk, itme, itms, itmsk) VALUES ('$itm', 'TO', '$itme', '1', '$pid')");
 		$log .= "设置了陷阱<span class=\"red\">$itm</span>。<br>小心，自己也很难发现。<br>";
 		//echo $exp;
 		if($club == 5){$exp += 2;$wd+=2;}
@@ -621,7 +622,7 @@ function itemuse($itmn) {
 			global $att;
 			$att_min = 200;
 			$att_limit = 500;
-			$dice = rand ( - 20, 20 );
+			$dice = rand ( - 5, 5 );
 			if ($att < $att_min) {
 				$mefct = $itme;
 			} elseif ($att < $att_limit) {
@@ -629,7 +630,7 @@ function itemuse($itmn) {
 			} else {
 				$mefct = 0;
 			}
-			if ($mefct < 20) {
+			if ($mefct < 5) {
 				if ($mefct < $dice) {
 					$mefct = - $dice;
 				}
@@ -640,7 +641,7 @@ function itemuse($itmn) {
 			global $def;
 			$def_min = 200;
 			$def_limit = 500;
-			$dice = rand ( - 20, 20 );
+			$dice = rand ( - 5, 5 );
 			if ($def < $def_min) {
 				$mefct = $itme;
 			} elseif ($def < $def_limit) {
@@ -648,7 +649,7 @@ function itemuse($itmn) {
 			} else {
 				$mefct = 0;
 			}
-			if ($mefct < 20) {
+			if ($mefct < 5) {
 				if ($mefct < $dice) {
 					$mefct = - $dice;
 				}
@@ -732,7 +733,7 @@ function itemuse($itmn) {
 			$itm = $itmk = $itmsk = '';
 			$itme = $itms = 0;
 		}
-	} elseif (strpos ( $itmk, 'Y' ) === 0) {
+	} elseif (strpos ( $itmk, 'Y' ) === 0||strpos ( $itmk, 'Z' ) === 0) {
 		if ($itm == '电池') {
 			//功能需要修改，改为选择道具使用YE类型道具可充电
 			$flag = false;
@@ -764,7 +765,7 @@ function itemuse($itmn) {
 			global $wep, $wepk, $wepe, $weps, $wepsk;
 			if (strpos ( $wepk, 'K' ) == 1) {
 				$dice = rand ( 0, 100 );
-				if ($dice >= 150) {
+				if ($dice >= 15) {
 					$wepe += $itme;					
 					$log .= "使用了<span class=\"yellow\">$itm</span>，<span class=\"yellow\">$wep</span>的攻击力变成了<span class=\"yellow\">$wepe</span>。<br>";
 					if (strpos ( $wep, '锋利的' ) === false) {
@@ -861,14 +862,16 @@ function itemuse($itmn) {
 			naddnews ( $now, 'corpseclear', $name, $cnum );
 			$log .= "使用了<span class=\"yellow\">$itm</span>。<br>突然刮起了一阵怪风，把地上的尸体都吹走了！<br>";
 			$itms --;
-		} elseif ($itm == '天候棒') {
-			global $weather, $wthinfo, $name;
-			$weather = rand ( 10, 13 );
-			include_once GAME_ROOT . './include/system.func.php';
-			save_gameinfo ();
-			naddnews ( $now, 'wthchange', $name, $weather );
-			$log .= "你转动了几下天候棒。<br>天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br>";
-			$itms --;
+			
+//		} elseif ($itm == '天候棒') {
+//			global $weather, $wthinfo, $name;
+//			$weather = rand ( 10, 13 );
+//			include_once GAME_ROOT . './include/system.func.php';
+//			save_gameinfo ();
+//			naddnews ( $now, 'wthchange', $name, $weather );
+//			$log .= "你转动了几下天候棒。<br>天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br>";
+//			$itms --;
+
 		} elseif ($itm == '武器师安雅的奖赏') {
 			global $wep, $wepk, $wepe, $weps, $wepsk, $wp, $wk, $wg, $wc, $wd, $wf;
 			if (! $weps || ! $wepe) {
@@ -910,9 +913,9 @@ function itemuse($itmn) {
 			gameover ( $now, 'end3', $name );
 		} elseif ($itm == '奇怪的按钮') {
 			global $bid;
-			$button_dice = rand ( 0, 10 );
-			if ($button_dice < 4) {
-				$log .= "你按下了 <span class=\"yellow\">$itm</span> ，不过好像什么都没有发生！";
+			$button_dice = rand ( 1, 10 );
+			if ($button_dice < 5) {
+				$log .= "你按下了<span class=\"yellow\">$itm</span>，不过好像什么都没有发生！";
 				$itm = $itmk = $itmsk = '';
 				$itme = $itms = 0;
 			} elseif ($button_dice < 8) {
@@ -921,8 +924,8 @@ function itemuse($itmn) {
 				$url = 'end.php';
 				include_once GAME_ROOT . './include/system.func.php';
 				gameover ( $now, 'end5', $name );
-			} elseif ($button_dice < 10) {
-				$log .= '呃？好像什么也没发生啊？<br>咦？按钮上的标签写着什么？请勿按按钮？<br>';
+			} else {
+				$log .= '好像什么也没发生嘛？<br>咦，按钮上的标签写着什么？“危险，勿触”……？<br>';
 				include_once GAME_ROOT . './include/state.func.php';
 				$log .= '呜哇，按钮爆炸了！<br>';
 				$bid = 0;
@@ -948,6 +951,44 @@ function itemuse($itmn) {
 		} elseif ($itm == 'NPC增加机') {
 			//include_once GAME_ROOT . './include/system.func.php';
 			//echo addnpc ( 7, 0,2);
+		} elseif ($itm == '水果刀') {
+			$flag = false;
+			
+			for($i = 1; $i <= 5; $i ++) {
+				global ${'itm' . $i}, ${'itmk' . $i},${'itms' . $i},${'itme' . $i},$wk;
+				foreach(Array('香蕉','苹果','西瓜') as $fruit){
+					
+					if ( strpos ( ${'itm' . $i} , $fruit ) !== false && strpos ( ${'itm' . $i} , '皮' ) === false && (strpos ( ${'itmk' . $i} , 'H' ) === 0 || strpos ( ${'itmk' . $i} , 'P' ) === 0 )) {
+						if($wk >= 120){
+							$log .= "练过刀就是好啊。你娴熟地削着果皮。<br><span class=\"yellow\">${'itm'.$i}</span>变成了<span class=\"yellow\">★残骸★</span>！<br>咦为什么会出来这种东西？算了还是不要吐槽了。<br>";
+							${'itm' . $i} = '★残骸★';
+							${'itme' . $i} *= rand(2,4);
+							${'itms' . $i} *= rand(3,5);
+							$flag = true;
+							$wk++;
+						}else{
+							$log .= "想削皮吃<span class=\"yellow\">${'itm'.$i}</span>，没想到削完发现只剩下一堆果皮……<br>手太笨拙了啊。<br>";
+							${'itm' . $i} = str_replace($fruit, $fruit.'皮',${'itm' . $i} );
+							${'itmk' . $i} = 'TN';
+							${'itms' . $i} *= rand(2,4);
+							$flag = true;
+							$wk++;
+						}
+						break;
+					}
+				}
+				if($flag == true) {break;};
+			}
+			if (! $flag) {
+				$log .= '包裹里没有水果。<br>';
+			} else {
+				$dice = rand(1,5);
+				if($dice==1){
+					$log .= "<span class=\"red\">$itm</span>变钝了，无法再使用了。<br>";
+					$itm = $itmk = $itmsk = '';
+					$itme = $itms = 0;
+				}
+			}
 		} else {
 			$log .= " <span class=\"yellow\">$itm</span> 该如何使用呢？<br>";
 		}

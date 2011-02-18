@@ -5,7 +5,7 @@
 <input type="radio" name="command" id="shop" value="shop"><a onclick=sl('shop'); href="javascript:void(0);" onmouseover="status=' ';return true;">返回列表</a><br><br>
 <!--{loop $itemdata $idata}-->
 <!--{if $idata}-->
-<a onclick=sl("$idata[0]"); href="javascript:void(0);" onmouseover="status=' ';return true;"><input type="radio" name="command" id="$idata[0]" value="$idata[0]">$idata[3]/$idata[5]/$idata[6] 【价:$idata[2],数:$idata[1]】</a><br>
+<a onclick=sl("$idata[0]"); href="javascript:void(0);" onmouseover="status=' ';return true;"><input type="radio" name="command" id="$idata[0]" value="$idata[0]">$idata[3]/$iteminfo[$idata[4]]/$idata[5]/$idata[6] 【价:$idata[2],数:$idata[1]】</a><br>
 <!--{/if}-->
 <!--{/loop}-->
 <!--{if $shop==1||$shop==2||$shop==6||$shop==7||$shop==8||$shop==10||$shop==11||$shop==12}-->

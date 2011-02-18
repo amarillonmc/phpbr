@@ -26,7 +26,7 @@ if($command == 'check') {
 } elseif($command == 'find') {
 	$start = getstart($start,$pagemode);
 	if($checkmode == 'ip') {
-		$result = $db->query("SELECT * FROM {$tablepre}users WHERE ip='$checkinfo' ORDER BY uid DESC LIMIT $start,$showlimit");
+		$result = $db->query("SELECT * FROM {$tablepre}users WHERE ip LIKE '%{$checkinfo}%' ORDER BY uid DESC LIMIT $start,$showlimit");
 	} else {
 		$result = $db->query("SELECT * FROM {$tablepre}users WHERE username LIKE '%{$checkinfo}%' ORDER BY uid DESC LIMIT $start,$showlimit");
 	}
@@ -98,7 +98,7 @@ $gmlist
 <input type="radio" name="command" id="find" value="find" checked><a onclick=sl('find'); href="javascript:void(0);" >按<select name="checkmode">
 	<option value="username" selected>用户名<br />
 	<option value="ip">用户IP<br />
-</select>查找用户<input size="30" type="text" name="checkinfo" id="checkinfo" maxlength="30"></a><br><br>
+</select>查找用户</a><input size="30" type="text" name="checkinfo" id="checkinfo" maxlength="30" /><br><br>
 <input type="radio" name="command" id="check" value="check"><a onclick=sl('check'); href="javascript:void(0);" >按
 	<select name="urorder">
 	<option value="groupid" selected>用户所属组<br />

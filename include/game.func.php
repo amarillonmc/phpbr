@@ -100,6 +100,13 @@ function init_profile(){
 	} else {
 		$infimg .= '<img src="img/e2.gif" style="position:absolute;top:80;left:2;width:101;height:20">';
 	}
+	if(strpos($inf,'w') !== false) {
+		$infdata .= $infinfo['w'];
+		//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
+		$infimg .= '<img src="img/w.gif" style="position:absolute;top:100;left:3;width:100;height:20">';
+	} else {
+		$infimg .= '<img src="img/w2.gif" style="position:absolute;top:100;left:3;width:100;height:20">';
+	}
 
 
 	$hpcolor = 'clan';

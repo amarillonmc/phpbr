@@ -5,23 +5,25 @@ if(!defined('IN_GAME')) {
 }
 
 
-function  nparse_news($start = 1, $range = 0 , $type = '') {
-	global $week,$nowep,$db,$tablepre,$lwinfo,$plsinfo,$wthinfo,$typeinfo,$exdmginf;
+function  nparse_news($start = 0, $range = 0  ){//$type = '') {
+	global $week,$nowep,$db,$tablepre,$lwinfo,$plsinfo,$wthinfo,$typeinfo,$exdmginf,$newslimit;
 	//$file = $file ? $file : $newsfile;	
 	//$ninfo = openfile($file);
-	$result = $db->query("SELECT * FROM {$tablepre}newsinfo ORDER BY nid DESC");
+	$range = $range == 0 ? $newslimit : $range ;
+	$result = $db->query("SELECT * FROM {$tablepre}newsinfo ORDER BY nid DESC LIMIT $start,$range");
 	//$r = sizeof($ninfo) - 1;
-	$rnum=$db->num_rows($result);
-	if($range && ($range <= $rnum)) {
-		$nnum = $range;
-	} else{
-		$nnum = $rnum;
-	}
+//	$rnum=$db->num_rows($result);
+//	if($range && ($range <= $rnum)) {
+//		$nnum = $range;
+//	} else{
+//		$nnum = $rnum;
+//	}
 	$newsinfo = '<ul>';
 	$nday = 0;
 	//for($i = $start;$i <= $r;$i++) {
-	for($i = 0;$i < $nnum;$i++) {
-		$news0=$db->fetch_array($result);
+	//for($i = 0;$i < $nnum;$i++) {
+	while($news0=$db->fetch_array($result)) {
+		//$news0=$db->fetch_array($result);
 		$time=$news0['time'];$news=$news0['news'];$a=$news0['a'];$b=$news0['b'];$c=$news0['c'];$d=$news0['d'];$e=$news0['e'];
 		list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$time));
 		if($day != $nday) {
@@ -65,7 +67,7 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 		} elseif($news == 'end4') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">无人参加，游戏自动结束</span><br>\n";
 		} elseif($news == 'end5') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}无意中引爆了核弹，本次游戏无人生还</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}引爆了核弹，毁坏了虚拟战场</span><br>\n";
 		} elseif(strpos($news,'death') === 0) {
 			if($news == 'death11') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因滞留在<span class=\"red\">禁区【{$plsinfo[$c]}】</span>死亡";
@@ -112,7 +114,7 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 			} elseif($news == 'death28') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"yellow\">$d</span>意外身亡";
 			} elseif($news == 'death30') {
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因伪装成核弹按钮的蛋疼机关被炸死";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因误触伪装成核弹按钮的蛋疼机关被炸死";
 			} elseif($news == 'death31'){
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因L5发作自己挠破喉咙身亡！";
 			} elseif($news == 'death32'){
@@ -163,7 +165,7 @@ function  nparse_news($start = 1, $range = 0 , $type = '') {
 		} elseif($news == 'delcp') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}的尸体被时空特使别动队销毁了</span><br>\n";
 		} elseif($news == 'editpc') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}被猴子进行了生化改造！</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}遭到了黑幕的生化改造！</span><br>\n";
 		} elseif($news == 'suisidefail') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}注射了H173，却由于RP太高进入了发狂状态！！</span><br>\n";
 		} elseif($news == 'inf') {

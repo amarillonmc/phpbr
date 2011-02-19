@@ -1,5 +1,15 @@
 2011/2/18
 增加了屏蔽特定用户名和特定IP段的功能；（validlimit.php; admin.php; validlimitmng.php;login.php;system.php）
+现在按IP搜索不用输入完整IP了，可以模糊查找（urlist.php）
+将爆系初始命中率下调了5%；（combatcfg.php）
+加入了音波属性和混乱异常状态；音波枪的子弹是枪械电池；（system.php; combatcfg_1.php; item.func.php;game.func.php;w.gif;w2.gif）
+加入了全恢复药剂和混乱药剂，药剂的逻辑修改；部分道具附加音波属性；学园特殊事件增加混乱；（system.php; item.func.php; shopitem_1.php; stitem_1.php; mapitem_1.php;maxitem_1.php）
+略改动进行状况词句；（news.func.php）
+修改了IP封禁的判断模式，现在如果输入的封禁IP段只有1个数字则会被忽略；（login.php）
+NPC数值修改，给猴子的武器加了音波属性，给猴子加了防投防弹；（npc_1.php）
+修复了游戏结束时历史记录只能记录50条消息的问题；（system.func.php）
+
+将火焰枪和冰冻枪的弹药统一修改为压缩气罐；（system.php; mapitem_1.php; shopitem_1.php; stitem_1.php; item.func.php）
 
 2011/2/17
 修复了拾取没电的PC或者探测器会遇到“获取物品信息错误！”的问题；（itemmain.func.php）

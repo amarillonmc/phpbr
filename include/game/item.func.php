@@ -354,7 +354,7 @@ function itemuse($itmn) {
 			$mode = 'command';
 			return;
 		}
-		if (strpos ( $wepsk, 'e' ) !== false) {
+		if (strpos ( $wepsk, 'e' ) !== false || strpos ( $wepsk, 'w' ) !== false) {
 			if ($itmk == 'GBe') {
 				$bulletnum = 10;
 			} else {
@@ -362,16 +362,8 @@ function itemuse($itmn) {
 				$mode = 'command';
 				return;
 			}
-		} elseif (strpos ( $wepsk, 'i' ) !== false) {
+		} elseif (strpos ( $wepsk, 'i' ) !== false || strpos ( $wepsk, 'u' ) !== false) {
 			if ($itmk == 'GBi') {
-				$bulletnum = 10;
-			} else {
-				$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>";
-				$mode = 'command';
-				return;
-			}
-		} elseif (strpos ( $wepsk, 'u' ) !== false) {
-			if ($itmk == 'GBu') {
 				$bulletnum = 10;
 			} else {
 				$log .= "<span class=\"red\">枪械类型和弹药类型不匹配。</span><br>";
@@ -429,8 +421,34 @@ function itemuse($itmn) {
 			$log .= $itm . '没有电了，请先充电。<br>';
 		}
 	} elseif (strpos ( $itmk, 'C' ) === 0) {
-		global $inf, $exdmginf;
-		if (strpos ( $itm, '烧伤药剂' ) === 0) {
+		global $inf, $exdmginf,$ex_inf;
+		$ck=substr($itmk,1,1);
+		if($ck == 'a'){
+			$flag=false;
+			$log .= "服用了<span class=\"red\">$itm</span>。<br>";
+			foreach ($ex_inf as $value) {
+				if(strpos ( $inf, $value ) !== false){
+					$inf = str_replace ( $value, '', $inf );
+					$log .= "{$exdmginf[$value]}状态解除了。<br>";
+					$flag=true;
+				}
+			}
+			if(!$flag){
+				$log .= '但是什么也没发生。<br>';
+			}
+		}elseif(in_array($ck,$ex_inf)){
+			if(strpos ( $inf, $ck ) !== false){
+				$inf = str_replace ( $ck, '', $inf );
+				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf[$ck]}状态解除了。<br>";
+			}else{
+				$log .= "服用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
+			}
+		}else{
+			$log .= "服用了<span class=\"red\">$itm</span>……发生了什么？<br>";
+		}
+		
+		$itms --;
+		/*if (strpos ( $itm, '烧伤药剂' ) === 0) {
 			if (strpos ( $inf, 'u' ) !== false) {
 				$inf = str_replace ( 'u', '', $inf );
 				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf['u']}状态解除了。<br>";
@@ -465,10 +483,28 @@ function itemuse($itmn) {
 			}
 			$itms --;
 		
+		} elseif (strpos ( $itm, '清醒药剂' ) === 0) {
+			if (strpos ( $inf, 'w' ) !== false) {
+				$inf = str_replace ( 'w', '', $inf );
+				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf['w']}状态解除了。<br>";
+			} else {
+				$log .= "服用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
+			}
+			$itms --;
+		
+		} elseif (strpos ( $itm, '全恢复药剂' ) === 0) {
+			if (strpos ( $inf, 'w' ) !== false) {
+				$inf = str_replace ( 'w', '', $inf );
+				$log .= "服用了<span class=\"red\">$itm</span>，{$exdmginf['w']}状态解除了。<br>";
+			} else {
+				$log .= "服用了<span class=\"red\">$itm</span>，但是什么效果也没有。<br>";
+			}
+			$itms --;
+		
 		} else {
 			$log .= "服用了<span class=\"red\">$itm</span>……发生了什么？<br>";
 			$itms --;
-		}
+		}*/
 		if ($itms <= 0) {
 			$log .= "<span class=\"red\">$itm</span>用光了。<br>";
 			$itm = $itmk = $itmsk = '';
@@ -788,7 +824,7 @@ function itemuse($itmn) {
 			}
 		} elseif (preg_match ( "/钉$/", $itm )) {
 			global $wep, $wepk, $wepe, $weps, $wepsk;
-			if (preg_match ( "/棍棒$/", $wep ) && ($wepk == 'WP')) {
+			if (( strpos ( $wep, '棍棒' ) !== false) && ($wepk == 'WP')) {
 				$dice = rand ( 0, 100 );
 				if ($dice >= 10) {
 					$wepe += $itme;
@@ -949,8 +985,8 @@ function itemuse($itmn) {
 				death ( 'suiside', '', 0, $itm );
 			}
 		} elseif ($itm == 'NPC增加机') {
-			//include_once GAME_ROOT . './include/system.func.php';
-			//echo addnpc ( 7, 0,2);
+			include_once GAME_ROOT . './include/system.func.php';
+			echo addnpc ( 10, 0,1);
 		} elseif ($itm == '水果刀') {
 			$flag = false;
 			

@@ -75,7 +75,7 @@ $rageinfo = Array('平静','愤怒','暴怒','已经死亡');
 $wepeinfo = Array('不值一提','略有威胁','威力可观','无敌神器');
 $poseinfo = Array('通常','攻击姿态','防守姿态','探索姿态','隐藏姿态','治疗姿态');
 $tacinfo = Array('通常','','重视防御','重视反击','重视躲避');
-$typeinfo = Array(0=>'参战者',1=>'董事长',2=>'全息幻象',3=>'各路党派',4=>'非作战人员',5=>'代码聚合体',6=>'游魂',7=>'首席执行官',8=>'管理员',9=>'活动盔甲',10=>'科学监察官');
+$typeinfo = Array(0=>'参战者',1=>'董事长',2=>'全息幻象',3=>'各路党派',4=>'非作战人员',5=>'代码聚合体',6=>'黑幕',7=>'首席执行官',8=>'管理员',9=>'活动盔甲',10=>'科学监察官');
 $killmsginfo = Array(0=>'',1=>'你还不懂得运用你的力量，咱为此感到惋惜。',2=>'猎杀任务执行中。',3=>'你弱爆了！',4=>'啊……对不起！对不起！',5=>'记住，轻敌可是会死的。',6=>'忘记历史就意味着背叛，背叛就意味着……死亡。',7=>'你的实力还远远不及董事长的脚根呢。',8=>'死吧。',9=>'Let the darkness DIE!!',10=>'这是我必须做的事，抱歉的说。');
 $lwinfo = Array(
 	0 => '',
@@ -97,15 +97,15 @@ $lwinfo = Array(
 	9 => '我已经没有什么可以教给你的了。',
 	10 => '哇呼！Dangerous situation，撤退吧。'
 );
-$infinfo = Array('b' => '<span class="red">胸</span>', 'h' => '<span class="red">头</span>', 'a' => '<span class="red">腕</span>', 'f' => '<span class="red">足</span>', 'p' => '<span class="purple">毒</span>', 'u' => '<span class="red">烧</span>', 'i' => '<span class="clan">冻</span>', 'e' => '<span class="yellow">麻</span>');
+$infinfo = Array('b' => '<span class="red">胸</span>', 'h' => '<span class="red">头</span>', 'a' => '<span class="red">腕</span>', 'f' => '<span class="red">足</span>', 'p' => '<span class="purple">毒</span>', 'u' => '<span class="red">烧</span>', 'i' => '<span class="clan">冻</span>', 'e' => '<span class="yellow">麻</span>','w' => '<span class="grey">乱</span>');
 $attinfo = Array('N' => '徒手殴打', 'P' => '殴打','K' => '斩刺', 'G' => '射击', 'C' => '投掷', 'D' => '设置引信伏击', 'F' => '释放灵力攻击');
 $skillinfo = Array('N' => 'wp', 'P' => 'wp', 'K' => 'wk', 'G' => 'wg', 'C' => 'wc', 'D' => 'wd', 'F'=> 'wf');
 //$rangeinfo = Array('N' => 'S', 'P' => 'S', 'K' => 'S', 'G' => 'M', 'C' => 'M', 'D' => 'L', 'F'=> 'M'); #各种攻击方式的射程，移动到combatcfg.php
 $restinfo = Array('通常','睡眠','治疗','静养');
 $noiseinfo = Array('G' => '枪声', 'D' => '爆炸声', 'F'=>'灵气');
-$exdmgname = Array('p' => '毒性攻击', 'u' => '火焰燃烧', 'i'=>'冻气缠绕', 'd'=>'爆炸','e'=>'电击');
-$exdmginf = Array('h' => '<span class="red">头部受伤</span>', 'b' => '<span class="red">胸部受伤</span>', 'a'=> '<span class="red">腕部受伤</span>', 'f'=> '<span class="red">足部受伤</span>', 'p'=> '<span class="purple">中毒</span>', 'u'=> '<span class="red">烧伤</span>', 'i'=> '<span class="clan">冻结</span>', 'e'=> '<span class="yellow">身体麻痹</span>');
-$infwords = Array('h' => '<span class="red">头部受伤</span>', 'b' => '<span class="red">胸部受伤</span>', 'a'=> '<span class="red">腕部受伤</span>', 'f'=> '<span class="red">足部受伤</span>', 'p'=> '<span class="purple">毒发</span>', 'u'=> '<span class="red">烧伤发作</span>', 'i'=> '<span class="clan">冻结影响</span>', 'e'=> '<span class="yellow">身体麻痹</span>');
+$exdmgname = Array('p' => '毒性攻击', 'u' => '火焰燃烧', 'i'=>'冻气缠绕', 'd'=>'爆炸','e'=>'电击','w'=>'音波攻击');
+$exdmginf = Array('h' => '<span class="red">头部受伤</span>', 'b' => '<span class="red">胸部受伤</span>', 'a'=> '<span class="red">腕部受伤</span>', 'f'=> '<span class="red">足部受伤</span>', 'p'=> '<span class="purple">中毒</span>', 'u'=> '<span class="red">烧伤</span>', 'i'=> '<span class="clan">冻结</span>', 'e'=> '<span class="yellow">身体麻痹</span>', 'w'=> '<span class="grey">混乱</span>');
+$infwords = Array('h' => '<span class="red">头部受伤</span>', 'b' => '<span class="red">胸部受伤</span>', 'a'=> '<span class="red">腕部受伤</span>', 'f'=> '<span class="red">足部受伤</span>', 'p'=> '<span class="purple">毒发</span>', 'u'=> '<span class="red">烧伤发作</span>', 'i'=> '<span class="clan">冻结影响</span>', 'e'=> '<span class="yellow">身体麻痹</span>', 'w'=> '<span class="grey">混乱</span>');
 $chatinfo = Array(0 => '全员', 1 => '队伍', 2 => '密语', 3 => '遗言', 4 => '公告', 5 => '系统');
 $npcchat = Array(
 	1 => Array(
@@ -268,16 +268,20 @@ $iteminfo = Array(
 	'PS2' => '体力恢复',
 	'PB2' => '命体恢复',
 	'R' => '探测仪器',
-	'C' => '药剂',
+	'Ca' => '万能药剂',
+	'Cp' => '解毒药剂',
+	'Cu' => '烧伤药剂',
+	'Ci' => '解冻药剂',
+	'Ce' => '麻痹药剂',
+	'Cw' => '清醒药剂',
 	'TO' => '陷阱',
 	'TN' => '陷阱',
 	'Y' => '特殊',
 	'Z' => '特殊',#不可合并
 	'GB' => '手枪弹药',
 	'GBr' => '机枪弹药',
-	'GBu' => '火焰弹药',
-	'GBi' => '冰冻弹药',
-	'GBe' => '电气弹药',
+	'GBi' => '气体弹药',
+	'GBe' => '能源弹药',
 	'X'=> '合成专用',
 	'VV'=> '全系提升',
 	'VP'=> '殴熟提升',
@@ -312,6 +316,7 @@ $itemspkinfo = Array(
 	'e' => '电击',	
 	'E' => '绝缘',
 	'd' => '爆炸',
+	'w' => '音波',
 	'o' => '一发',
 	'p' => '带毒',
 	'q' => '防毒',
@@ -319,7 +324,8 @@ $itemspkinfo = Array(
 	'U' => '防火',
 	'i' => '冻气',
 	'I' => '防冻',
-	'H' => 'HP制御',
+	'W' => '隔音',
+	'H' => 'HP制御',	
 	'z' => '天然',
 	);
 $shops = Array(0,14,27);

@@ -145,20 +145,25 @@ function event(){
 				$log = ($log . "并且，少女们的弹幕击中了要害！<BR><span class=\"red\">你感觉小命差点就交代在这里了</span>。<BR>");
 				$hp = 1;
 			}
-			elseif($dice2 >= 34){
+			elseif($dice2 >= 36){
 				$log = ($log . "并且，黑洞激光造成你<span class=\"clan\">冻结</span>了！<BR>");
 				$inf = str_replace('i','',$inf);
 				$inf = ($inf . 'i');
 			}
-			elseif($dice2 >= 29){
+			elseif($dice2 >= 32){
 				$log = ($log . "并且，环形激光导致你<span class=\"red\">烧伤</span>了！<BR>");
 				$inf = str_replace('u','',$inf);
 				$inf = ($inf . 'u');
 			}
-			elseif($dice2 >= 24){
+			elseif($dice2 >= 27){
 				$log = ($log . "并且，精神震荡弹导致你<span class=\"yellow\">全身麻痹</span>了！<BR>");
 				$inf = str_replace('e','',$inf);
 				$inf = ($inf . 'e');
+			}
+			elseif($dice2 >= 23){
+				$log = ($log . "并且，音波装备导致你<span class=\"grey\">混乱</span>了！<BR>");
+				$inf = str_replace('w','',$inf);
+				$inf = ($inf . 'w');
 			}
 			else{
 				$log = ($log . "并且，干扰用强袭装备导致你<span class=\"purple\">中毒</span>了！<BR>");

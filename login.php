@@ -57,12 +57,19 @@ if(preg_match("[,|>|<|;]",$username)){
 		$onlineip = $_SERVER['REMOTE_ADDR'];
 	}
 	foreach($iplimit as $value){
-		if(!empty($value) &&  strpos($value,'*')!==false){
-			$value = str_replace('*','',$value);
+		$ippart=explode('.',$value);
+		if(count($ippart)>1 && count($ippart)<4){//保证IP段有2-4个
+			$value=str_replace('*','',implode('.',$ippart));
+			if(strpos($onlineip,$value)===0){
+				gexit($_ERROR['banned_ip'],__file__,__line__);
+			}
 		}
-		if(strpos($onlineip,$value)!==false){
-			gexit($_ERROR['banned_ip'],__file__,__line__);
-		}
+//		if(!empty($value) &&  strpos($value,'*')!==false){
+//			$value = str_replace('*','',$value);
+//		}
+//		if(strpos($onlineip,$value)!==false){
+//			gexit($_ERROR['banned_ip'],__file__,__line__);
+//		}
 	}
 	$password = md5($password);
 	$groupid = 1;

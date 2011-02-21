@@ -1,9 +1,14 @@
+2011/2/21
+修改了地图道具，现在方块系列开局刷15个，1禁刷20个，希望能推迟金色炸弹的出现时间（mapitem_1.php）
+去除了金色宝石炸弹的火焰属性（maxitem_1.php; help.htm）
+修改了灵魂的结晶的数值；（maxitem_1.php; help.htm）
+
 2011/2/20
 增强了反注入机制，现在输入单引号和双引号则会被直接屏蔽或者显示错误提示；（login.php; valid.php; special.func.php）
 顺便修复了优胜列表物品效果显示值无法超过255的问题（bra.sql）
 修改了被动作战的信息提示；（combat.func.php）
 修复了能够在游戏准备阶段以后修改游戏开始时间的问题；（sttimemng.php）
-重新编排了各管理功能所需的权限；（ infomng.php; urlist.php; validlimit.php; wthmng.php）
+重新编排了各管理功能所需的权限；（ infomng.php; urlist.php; validlimitmng.php; wthmng.php;mapitemmng.php;gamemng.php）
 修改了商店部分补给的价格；（shopitem_1.php）
 把爆系初始命中率调回60%（combatcfg.php）
 调低了天降软妹的概率（event.func.php）

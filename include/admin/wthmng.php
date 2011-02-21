@@ -2,7 +2,7 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 5){
+if($mygroup < 3){
 	exit($_ERROR['no_power']);
 }
 global $wth,$now;

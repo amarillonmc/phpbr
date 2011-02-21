@@ -195,7 +195,7 @@ function hack($itmn = 0) {
 }*/
 
 function newradar($m = 0){
-	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack;
+	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack,$gamestate;
 	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen,$typeinfo;
 	
 	if(!$mode) {
@@ -232,7 +232,7 @@ function newradar($m = 0){
 				for($j=2;$j<=6;$j++){
 					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
 					//${'num'.$j} = $db->num_rows($result);
-					${'num'.$j} = $radar[$i][$j];
+					${'num'.$j} = $gamestate == 50 ? 0 : $radar[$i][$j];
 				}
 				if($num0){
 					$pnum[$i] ="<span class=\"yellow b\">$num0</span>";
@@ -254,7 +254,7 @@ function newradar($m = 0){
 				for($j=2;$j<=6;$j++){
 					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
 					//${'num'.$j} = $db->num_rows($result);
-					${'num'.$j} = $radar[$i][$j];
+					${'num'.$j} =  $gamestate == 50 ? 0 : $radar[$i][$j];
 				}
 				if($num0){
 					$pnum[$i] =$num0;

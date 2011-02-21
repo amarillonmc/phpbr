@@ -40,7 +40,7 @@ foreach($nmlimit as $value){
 		gexit($_ERROR['banned_name'],__file__,__line__);
 	}
 }
-if(preg_match("[,|>|<|;]",$username)){
+if(preg_match("[,|>|<|;|'|\"]",$username)){
 	gexit($_ERROR['invalid_name'],__file__,__line__);
 } elseif(!$username||!$password) {
 	gexit($_ERROR['login_info'],__file__,__line__);

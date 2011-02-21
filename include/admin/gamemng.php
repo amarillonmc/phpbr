@@ -34,7 +34,7 @@ echo <<<EOT
 <input type="radio" name="command" id="npcmng" value="npcmng"><a onclick=sl('npcmng'); href="javascript:void(0);" >NPC管理</a><br>
 <!--<input type="radio" name="command" id="shopmng" value="shopmng"><a onclick=sl('shopmng'); href="javascript:void(0);" >商店管理</a><br>-->
 <!--<input type="radio" name="command" id="mapmng" value="mapmng"><a onclick=sl('mapmng'); href="javascript:void(0);" >地图管理</a><br>-->
-<input type="radio" name="command" id="mapitemmng" value="mapitemmng"><a onclick=sl('mapitemmng'); href="javascript:void(0);" >地图道具管理</a><br>
+<!--<input type="radio" name="command" id="mapitemmng" value="mapitemmng"><a onclick=sl('mapitemmng'); href="javascript:void(0);" >地图道具管理</a><br>-->
 <input type="radio" name="command" id="wthmng" value="wthmng"><a onclick=sl('wthmng'); href="javascript:void(0);" >当前天气管理</a><br>
 <!--<input type="radio" name="command" id="chatmng" value="chatmng"><a onclick=sl('chatmng'); href="javascript:void(0);" >聊天管理</a><br>-->
 <!--<input type="radio" name="command" id="newsmng" value="newsmng"><a onclick=sl('newsmng'); href="javascript:void(0);" >新闻管理</a><br>-->

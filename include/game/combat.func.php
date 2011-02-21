@@ -175,29 +175,14 @@ function combat($active = 1, $wep_kind = '') {
 					$w_inf_log .= "敌人的攻击造成你{$w_inf_words}了！<br>";
 				}
 			}
-			/*if (strpos ( $w_combat_inf, 'p' ) !== false) {
-				$w_inf_log .= "敌人的攻击造成你{$exdmginf['p']}了！<br>";
-			}
-			if (strpos ( $w_combat_inf, 'u' ) !== false) {
-				$w_inf_log .= "敌人的攻击造成你{$exdmginf['u']}了！<br>";
-			}
-			if (strpos ( $w_combat_inf, 'i' ) !== false) {
-				$w_inf_log .= "敌人的攻击造成你{$exdmginf['i']}了！<br>";
-			}
-			if (strpos ( $w_combat_inf, 'h' ) !== false) {
-				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[h]</span>部受伤了！<br>";
-			}
-			if (strpos ( $w_combat_inf, 'b' ) !== false) {
-				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[b]</span>部受伤了！<br>";
-			}
-			if (strpos ( $w_combat_inf, 'a' ) !== false) {
-				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[a]</span>部受伤了！<br>";
-			}
-			if (strpos ( $w_combat_inf, 'f' ) !== false) {
-				$w_inf_log .= "敌人的攻击使你的<span class=\"red\">$infinfo[f]</span>部受伤了！<br>";
-			}*/
+
 		}
-		$w_log = "与手持<span class=\"red\">$wep_temp</span>的<span class=\"yellow\">$name</span>发生战斗！<br>你受到其<span class=\"yellow\">$att_dmg</span>点攻击，对其造成<span class=\"yellow\">$def_dmg</span>点反击。<br>$w_inf_log";
+		if($active){
+			$w_log = "手持<span class=\"red\">$wep_temp</span>的<span class=\"yellow\">$name</span>向你袭击！<br>你受到其<span class=\"yellow\">$att_dmg</span>点攻击，对其做出了<span class=\"yellow\">$def_dmg</span>点反击。<br>$w_inf_log";
+		}else{
+			$w_log = "你发现了手持<span class=\"red\">$wep_temp</span>的<span class=\"yellow\">$name</span>并且先发制人！<br>你对其做出<span class=\"yellow\">$def_dmg</span>点攻击，受到其<span class=\"yellow\">$att_dmg</span>点反击。<br>$w_inf_log";
+		}
+		
 		logsave ( $w_pid, $now, $w_log );
 	}
 	
@@ -300,13 +285,14 @@ function attack($wep_kind = 'N', $active = 0) {
 		}
 		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
-			if ($hit_time [1] == 2) {
-				$dmg_p = 1.8;
-			} elseif ($hit_time [1] == 3) {
-				$dmg_p = 2.5;
-			} else {
-				$dmg_p = 2.5 + 0.5 * ($hit_time [1] - 3);
-			}
+//			if ($hit_time [1] == 2) {
+//				$dmg_p = 2;
+//			} elseif ($hit_time [1] == 3) {
+//				$dmg_p = 2.8;
+//			} else {
+//				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+//			}
+			$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.1;
 			$damage = round ( $damage * $dmg_p );
 			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
 		} else {
@@ -395,13 +381,14 @@ function defend($w_wep_kind = 'N', $active = 0) {
 		
 		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
-			if ($hit_time [1] == 2) {
-				$dmg_p = 1.8;
-			} elseif ($hit_time [1] == 3) {
-				$dmg_p = 2.5;
-			} else {
-				$dmg_p = 2.5 + 0.5 * ($hit_time [1] - 3);
-			}
+//			if ($hit_time [1] == 2) {
+//				$dmg_p = 2;
+//			} elseif ($hit_time [1] == 3) {
+//				$dmg_p = 2.8;
+//			} else {
+//				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+//			}
+			$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.1;
 			$damage = round ( $damage * $dmg_p );
 			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
 		} else {

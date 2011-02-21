@@ -20,7 +20,7 @@ if($mode == 'enter') {
 		if($db->num_rows($result) >= $iplimit) { gexit($_ERROR['ip_limit'],__file__,__line__); }
 	}
 	
-	foreach ( Array('<','>',';',',') as $value ) {
+	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
 		if(strpos($motto,$value)!==false){
 			$motto = str_replace ( $value, '', $motto );
 		}
@@ -148,6 +148,12 @@ if($mode == 'enter') {
 		$arf = '金属战靴';$arfk = 'DF'; $arfe = 200; $arfs = 150; $arfsk = 'qE';
 		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
 		$wp=$wk=$wg=$wc=$wd=$wf=400;
+	} elseif (strpos($name,'闹球肾')!==false){
+		$msp-=200;$mhp-=200;$sp-=200;$hp-=200;
+		$att-=50;$def-=50;
+		$money=0;
+		$itm[1] = '请自重'; $itmk[1] = 'PH2'; $itme[1] = 100; $itms[1] = 30; $itmsk[1] = 267;
+		$itm[2] = '请自重'; $itmk[2] = 'PS2'; $itme[2] = 100; $itms[2] = 30; $itmsk[2] = 267;
 	}
 	
 	$state = 0;

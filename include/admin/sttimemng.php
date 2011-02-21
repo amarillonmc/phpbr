@@ -6,7 +6,8 @@ if($mygroup < 2){
 	exit($_ERROR['no_power']);
 }
 
-if($subcmd=='edit'){
+
+if($subcmd=='edit' && !$gamestate){
 	$settime = mktime((int)$_POST['sethour'],(int)$_POST['setmin'],0,(int)$_POST['setmonth'],(int)$_POST['setday'],(int)$_POST['setyear']);
 	if($settime <= $now){
 		echo '开始时间不能早于当前时间。<br>';
@@ -16,7 +17,6 @@ if($subcmd=='edit'){
 		echo '游戏开始时间设置成功。<br>';
 	}
 }
-
 
 if($gamestate) {
 	echo '本局游戏尚未结束，不能设置时间。<br>';
@@ -30,6 +30,8 @@ if($gamestate) {
 	$stmonth++;
 	$styear += 1900;
 }
+
+
 
 ?>
 

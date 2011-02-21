@@ -1,3 +1,16 @@
+2011/2/20
+增强了反注入机制，现在输入单引号和双引号则会被直接屏蔽或者显示错误提示；（login.php; valid.php; special.func.php）
+顺便修复了优胜列表物品效果显示值无法超过255的问题（bra.sql）
+修改了被动作战的信息提示；（combat.func.php）
+修复了能够在游戏准备阶段以后修改游戏开始时间的问题；（sttimemng.php）
+重新编排了各管理功能所需的权限；（ infomng.php; urlist.php; validlimit.php; wthmng.php）
+修改了商店部分补给的价格；（shopitem_1.php）
+把爆系初始命中率调回60%（combatcfg.php）
+调低了天降软妹的概率（event.func.php）
+修改了部分NPC的数值，微小改动；（npc_1.php）
+现在进入死斗模式之后，生命探测器也无法看到NPC了（item2.func.php）
+修改了帮助文档（help.htm）
+
 2011/2/18
 增加了屏蔽特定用户名和特定IP段的功能；（validlimit.php; admin.php; validlimitmng.php;login.php;system.php）
 现在按IP搜索不用输入完整IP了，可以模糊查找（urlist.php）

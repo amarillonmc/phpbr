@@ -22,7 +22,7 @@ function chgword($nmotto,$nlastword,$nkillmsg) {
 	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
 	$userinfo = $db->fetch_array($result);
 
-	foreach ( Array('<','>',';',',') as $value ) {
+	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
 		if(strpos($nmotto,$value)!==false){
 			$nmotto = str_replace ( $value, '', $nmotto );
 		}

@@ -2,7 +2,7 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 5){
+if($mygroup < 6){
 	exit($_ERROR['no_power']);
 }
 $dir = GAME_ROOT.'./gamedata/';

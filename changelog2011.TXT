@@ -10,12 +10,15 @@ NPC数值修改，给猴子的武器加了音波属性，给猴子加了防投�
 修复了游戏结束时历史记录只能记录50条消息的问题；（system.func.php）
 
 将火焰枪和冰冻枪的弹药统一修改为压缩气罐；（system.php; mapitem_1.php; shopitem_1.php; stitem_1.php; item.func.php）
+减少了中级NPC的熟练度和攻击力（npc_1.php）
+加入了死斗模式，进入死斗模式以后将无法再遇到NPC，也不会遇到学园的特殊事件；同时修改了遇敌率的设定（common.inc.php;system.php; system.func.php;search.func.php; news.func.php; item.func.php; event.func.php ;templates.lang.php; profile.htm; news.htm; help.htm）
+在冴冴和四面身上装了启动死斗模式的钥匙；（npc_1.php）
 
 2011/2/17
 修复了拾取没电的PC或者探测器会遇到“获取物品信息错误！”的问题；（itemmain.func.php）
 因为改动了幽香的头衔造成幽香无口了，现在已经修复；（system.php）
 在商店中添加水果刀，同时修改了妖精驿站的药片的掉落方式；（mapitem_1.php; shopitem_1.php）
-当PHP版本大于5.2.0时，游戏将采用PHP内置JSON函数，大大提高了运行速度；（global.func.php;news.php;command.php;chat.php）
+当PHP版本大于5.2.0时，游戏将采用PHP内置JSON函数，大大提高了运行速度；（global.func.php; news.php; command.php; chat.php）
 钉子判断修改，现在只要殴系武器名称里有棍棒字样就能加钉；（item.func.php）
 略微修改了进行状况的读取方式；（news.func.php; news.php）
 

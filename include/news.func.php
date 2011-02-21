@@ -56,6 +56,8 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}启动了hack程序，全部禁区解除！</span><br>\n";
 		} elseif($news == 'combo') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">游戏进入连斗阶段！</span><br>\n";
+		} elseif($news == 'duel') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">游戏进入死斗阶段！</span><br>\n";
 		} elseif($news == 'end0') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">游戏出现故障，意外结束</span><br>\n";
 		} elseif($news == 'end1') {
@@ -144,6 +146,8 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}中了{$b}设置的陷阱{$c}</span><br>\n";
 		} elseif($news == 'trapmiss') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}回避了{$b}设置的陷阱{$c}</span><br>\n";
+		} elseif($news == 'duelkey') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}使用了{$b}，启动了死斗程序！</span><br>\n";
 		} elseif($news == 'corpseclear') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了凸眼鱼，{$b}具尸体被吸走了！</span><br>\n";
 		} elseif($news == 'wthchange') {

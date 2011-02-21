@@ -44,6 +44,8 @@ require_once GAME_ROOT.'./gamedata/system.php';
 require_once GAME_ROOT.'./gamedata/gameinfo.php';
 require_once config('gamecfg',$gamecfg);
 
+//$gamestate状态：0-上局游戏结束；10-新游戏准备阶段；20-游戏开放激活；30-游戏停止激活；40-游戏连斗；50-游戏死斗。
+
 if(!$gamestate) { 
 	if(($starttime)&&($now > $starttime - $startmin*60)) {
 		$gamenum++;
@@ -106,7 +108,7 @@ if((($gamestate == 30)&&($alivenum <= $combolimit))||($deathlimit&&($gamestate <
 $combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
 list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
 
-if($gamestate == 40) {
+if($gamestate == 40 || $gamestate == 50) {
 	if($alivenum <= 1) {
 		include_once GAME_ROOT.'./include/system.func.php';
 		gameover();
@@ -123,5 +125,4 @@ if($mode == 'quit') {
 	header("Location: index.php");exit();
 
 }
-
 ?>

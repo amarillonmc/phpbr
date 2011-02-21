@@ -947,6 +947,18 @@ function itemuse($itmn) {
 			$url = 'end.php';
 			include_once GAME_ROOT . './include/system.func.php';
 			gameover ( $now, 'end3', $name );
+		} elseif ($itm == '代码聚合体的ID卡') {
+			include_once GAME_ROOT . './include/system.func.php';
+			$duelstate = duel($now,$itm);
+			if($duelstate == 50){
+				$log .= "<span class=\"yellow\">你使用了{$itm}。</span><br><span class=\"evergreen\">“干得不错呢，看来咱应该专门为你清扫一下战场……”</span><br><span class=\"evergreen\">“所有的NPC都离开战场了。好好享受接下来的杀戮吧，祝你好运。”</span>——林无月<br>";
+				$itm = $itmk = $itmsk = '';
+				$itme = $itms = 0;
+			}elseif($duelstate == 51){
+				$log .= "你使用了<span class=\"yellow\">{$itm}</span>，不过什么反应也没有。<br><span class=\"evergreen\">“咱已经帮你准备好舞台了，请不要要求太多哦。”</span>——林无月<br>";
+			} else {
+				$log .= "你使用了<span class=\"yellow\">{$itm}</span>，不过什么反应也没有。<br><span class=\"evergreen\">“表演的时机还没到呢，请再忍耐一下吧。”</span>——林无月<br>";
+			}
 		} elseif ($itm == '奇怪的按钮') {
 			global $bid;
 			$button_dice = rand ( 1, 10 );

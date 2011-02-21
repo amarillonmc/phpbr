@@ -46,6 +46,7 @@ $language = array
 	'att' => '攻击力',
 	'def' => '防御力',
 	'combo' => '连斗',
+	'duel' => '死斗',
 	'exp' => '经验值',
 	'weather' => '天气',
 	'status' => '状态',

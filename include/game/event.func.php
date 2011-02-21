@@ -109,68 +109,73 @@ function event(){
 	} elseif($pls == 19) { //精灵中心
 	} elseif($pls == 20) { //春之镇
 	} elseif($pls == 21) { //圣Gradius学园
-		$log = ($log . "隶属于时空部门G的特殊部队『天使』正在实弹演习！<BR>你被卷入了弹幕中！<BR>");
-		if($dice1 <= 1){
-			$log = ($log . "在弹幕的狂风中，你有惊无险地回避着弹幕，总算擦弹成功了。<BR>");
-			if($dice2 >=39){
-				$log = ($log . "咦，头顶上……好像有一名少女被弹幕击中了……？<BR>“对不起、对不起！”伴随着焦急的道歉声，少女以及她乘坐的机体向你笔直坠落下来。<br>你还来不及反应，重达数十吨的机体便直接落在了你的头上。<br>");
-				include_once GAME_ROOT . './include/state.func.php';
-				death('gradius');
-				return;
-			}
-		}
-		else{
-			$log = ($log . "在弹幕的狂风中，你徒劳地试图回避弹幕……<BR>擦弹什么的根本做不到啊！<BR>你被少女们打成了筛子！<BR>");
-			global $infwords;
-			$infcache = '';
-			foreach(Array('h','b','a','f') as $value){
-				$dice3=rand(0,10);
-				if($dice3<=6){
-					$inf = str_replace($value,'',$inf);
-					$infcache .= $value;
-					$log .= "<span class=\"red\">弹幕造成你{$infwords[$value]}了！</span><br />";
+		global $gamestate;
+		if($gamestate < 50){
+			$log = ($log . "隶属于时空部门G的特殊部队『天使』正在实弹演习！<BR>你被卷入了弹幕中！<BR>");
+			if($dice1 <= 1){
+				$log = ($log . "在弹幕的狂风中，你有惊无险地回避着弹幕，总算擦弹成功了。<BR>");
+				if($dice2 >=39){
+					$log = ($log . "咦，头顶上……好像有一名少女被弹幕击中了……？<BR>“对不起、对不起！”伴随着焦急的道歉声，少女以及她乘坐的机体向你笔直坠落下来。<br>你还来不及反应，重达数十吨的机体便直接落在了你的头上。<br>");
+					include_once GAME_ROOT . './include/state.func.php';
+					death('gradius');
+					return;
 				}
 			}
-			if(empty($infcache)){
-				$inf = str_replace('b','',$inf);
-				$inf .= 'b';
-				$log .= "<span class=\"red\">弹幕造成你胸部受伤了！</span><br />";
-			} else {$inf .= $infcache;}
-//			$inf = str_replace('h','',$inf);
-//			$inf = str_replace('b','',$inf);
-//			$inf = str_replace('a','',$inf);
-//			$inf = str_replace('f','',$inf);
-//			$inf = ($inf . 'hbaf');
-			if($dice2 >= 39){
-				$log = ($log . "并且，少女们的弹幕击中了要害！<BR><span class=\"red\">你感觉小命差点就交代在这里了</span>。<BR>");
-				$hp = 1;
-			}
-			elseif($dice2 >= 36){
-				$log = ($log . "并且，黑洞激光造成你<span class=\"clan\">冻结</span>了！<BR>");
-				$inf = str_replace('i','',$inf);
-				$inf = ($inf . 'i');
-			}
-			elseif($dice2 >= 32){
-				$log = ($log . "并且，环形激光导致你<span class=\"red\">烧伤</span>了！<BR>");
-				$inf = str_replace('u','',$inf);
-				$inf = ($inf . 'u');
-			}
-			elseif($dice2 >= 27){
-				$log = ($log . "并且，精神震荡弹导致你<span class=\"yellow\">全身麻痹</span>了！<BR>");
-				$inf = str_replace('e','',$inf);
-				$inf = ($inf . 'e');
-			}
-			elseif($dice2 >= 23){
-				$log = ($log . "并且，音波装备导致你<span class=\"grey\">混乱</span>了！<BR>");
-				$inf = str_replace('w','',$inf);
-				$inf = ($inf . 'w');
-			}
 			else{
-				$log = ($log . "并且，干扰用强袭装备导致你<span class=\"purple\">中毒</span>了！<BR>");
-				$inf = str_replace('p','',$inf);
-				$inf = ($inf . 'p');
+				$log = ($log . "在弹幕的狂风中，你徒劳地试图回避弹幕……<BR>擦弹什么的根本做不到啊！<BR>你被少女们打成了筛子！<BR>");
+				global $infwords;
+				$infcache = '';
+				foreach(Array('h','b','a','f') as $value){
+					$dice3=rand(0,10);
+					if($dice3<=6){
+						$inf = str_replace($value,'',$inf);
+						$infcache .= $value;
+						$log .= "<span class=\"red\">弹幕造成你{$infwords[$value]}了！</span><br />";
+					}
+				}
+				if(empty($infcache)){
+					$inf = str_replace('b','',$inf);
+					$inf .= 'b';
+					$log .= "<span class=\"red\">弹幕造成你胸部受伤了！</span><br />";
+				} else {$inf .= $infcache;}
+	//			$inf = str_replace('h','',$inf);
+	//			$inf = str_replace('b','',$inf);
+	//			$inf = str_replace('a','',$inf);
+	//			$inf = str_replace('f','',$inf);
+	//			$inf = ($inf . 'hbaf');
+				if($dice2 >= 39){
+					$log = ($log . "并且，少女们的弹幕击中了要害！<BR><span class=\"red\">你感觉小命差点就交代在这里了</span>。<BR>");
+					$hp = 1;
+				}
+				elseif($dice2 >= 36){
+					$log = ($log . "并且，黑洞激光造成你<span class=\"clan\">冻结</span>了！<BR>");
+					$inf = str_replace('i','',$inf);
+					$inf = ($inf . 'i');
+				}
+				elseif($dice2 >= 32){
+					$log = ($log . "并且，环形激光导致你<span class=\"red\">烧伤</span>了！<BR>");
+					$inf = str_replace('u','',$inf);
+					$inf = ($inf . 'u');
+				}
+				elseif($dice2 >= 27){
+					$log = ($log . "并且，精神震荡弹导致你<span class=\"yellow\">全身麻痹</span>了！<BR>");
+					$inf = str_replace('e','',$inf);
+					$inf = ($inf . 'e');
+				}
+				elseif($dice2 >= 23){
+					$log = ($log . "并且，音波装备导致你<span class=\"grey\">混乱</span>了！<BR>");
+					$inf = str_replace('w','',$inf);
+					$inf = ($inf . 'w');
+				}
+				else{
+					$log = ($log . "并且，干扰用强袭装备导致你<span class=\"purple\">中毒</span>了！<BR>");
+					$inf = str_replace('p','',$inf);
+					$inf = ($inf . 'p');
+				}
+				$log = ($log . "你遍体鳞伤、连滚带爬地逃走了。<BR>");
 			}
-			$log = ($log . "你遍体鳞伤、连滚带爬地逃走了。<BR>");
+		} else {
+			$log = ($log . "特殊部队『天使』的少女们不知道去了哪里。<BR>");
 		}
 	} elseif($pls == 22) { //初始之树
 	} elseif($pls == 23) { //幻想世界

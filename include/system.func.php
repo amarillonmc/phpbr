@@ -425,6 +425,23 @@ function createtable($sql, $dbcharset) {
 		(mysql_get_server_info() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=$dbcharset" : " TYPE=$type");
 }
 
+function duel($time = 0,$keyitm = ''){
+	global $now,$gamestate,$name;
+	if($gamestate < 30){
+		return 30;
+	} elseif($gamestate >= 50) {
+		return 51;
+	}	else{
+		$time = $time == 0 ? $now : $time;
+		$gamestate = 50;
+		save_gameinfo();
+		naddnews($time,'duelkey',$name,$keyitm);
+		naddnews($time,'duel');
+		return 50;
+	}
+	
+}
+
 function gameover($time = 0, $mode = '', $winname = '') {
 	global $gamestate,$winmode,$alivenum,$winner,$now,$gamenum,$db,$tablepre,$gamenum,$starttime,$validnum,$hdamage,$hplayer;
 	if($gamestate < 10){return;}

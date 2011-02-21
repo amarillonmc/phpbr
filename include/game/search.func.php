@@ -97,11 +97,18 @@ function move($moveto = 99) {
 		}
 	}*/
 	$log .= $areainfo[$pls].'<br>';
-	if(($gamestate>=40)&&($pose!=3)){
-		discover(100);
-	} else {
-		discover(70);
-	}
+	$enemyrate = 70;
+	if($gamestate == 40){$enemyrate += 10;}
+	elseif($gamestate == 50){$enemyrate += 15;}
+	if($pose==3){$enemyrate -= 20;}
+	elseif($pose==4){$enemyrate += 10;}
+	discover($enemyrate);
+//	$log .= '遇敌率'.$enemyrate.'%<br>';
+//	if(($gamestate>=40)&&($pose!=3)){
+//		discover(90);
+//	} else {
+//		discover(70);
+//	}
 	return;
 
 }
@@ -182,11 +189,18 @@ function search(){
 			return;
 		}
 	}*/
-	if(($gamestate>=40)&&($pose!=3)) {
-		discover(100);
-	} else {
-		discover(30);
-	}
+	$enemyrate = 40;
+	if($gamestate == 40){$enemyrate += 20;}
+	elseif($gamestate == 50){$enemyrate += 30;}
+	if($pose==3){$enemyrate -= 20;}
+	elseif($pose==4){$enemyrate += 10;}
+	discover($enemyrate);
+//	$log .= '遇敌率'.$enemyrate.'%<br>';
+//	if(($gamestate>=40)&&($pose!=3)) {
+//		discover(75);
+//	} else {
+//		discover(30);
+//	}
 	return;
 
 }
@@ -204,13 +218,14 @@ function discover($schmode = 0) {
 	include_once GAME_ROOT.'./include/game/attr.func.php';
 
 	$mode_dice = rand(0,99);
-	if($mode_dice < $schmode ) {
-		global $pid,$corpse_obbs,$teamID,$fog,$gamestate,$bid;
-		if($gamestate < 40) {
-			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid' AND pid!='$bid'");
-		} else {
-			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid'");
-		}
+	if($mode_dice < $schmode) {
+		global $pid,$corpse_obbs,$teamID,$fog,$bid,$gamestate;
+//		if($gamestate < 40) {
+//			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid' AND pid!='$bid'");
+//		} else {
+//			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid'");
+//		}
+		$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid'");
 		if(!$db->num_rows($result)){
 			$log .= '<span class="yellow">周围一个人都没有。</span><br>';
 			$mode = 'command';
@@ -226,47 +241,55 @@ function discover($schmode = 0) {
 		foreach($enemyarray as $enum){
 			$db->data_seek($result, $enum);
 			$edata = $db->fetch_array($result);
-			if($edata['hp'] > 0) {
-				$hide_r = get_hide_r($weather,$pls,$edata['pose'],$edata['tactic'],$edata['club'],$edata['inf']);
-				$enemy_dice = rand(0,99);
-				if($enemy_dice < ($find_obbs - $hide_r)) {
-					if($teamID&&(!$fog)&&($teamID == $edata['teamID'])){
-						$bid = $edata['pid'];
-						include_once GAME_ROOT.'./include/game/battle.func.php';
-						findteam($edata);
-						return;
-					} else {
-						$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf);
-						$bid = $edata['pid'];
-						$active_dice = rand(0,99);
-						if($active_dice <  $active_r) {
+			if(!$edata['type'] || $gamestate < 50){
+				if($edata['hp'] > 0) {
+					$hide_r = get_hide_r($weather,$pls,$edata['pose'],$edata['tactic'],$edata['club'],$edata['inf']);
+					$enemy_dice = rand(0,99);
+					if($enemy_dice < ($find_obbs - $hide_r)) {
+						if($teamID&&(!$fog)&&($teamID == $edata['teamID'])){
+							$bid = $edata['pid'];
 							include_once GAME_ROOT.'./include/game/battle.func.php';
-							findenemy($edata);
+							findteam($edata);
 							return;
 						} else {
-							include_once GAME_ROOT.'./include/game/combat.func.php';
-							combat(0);
+							$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf);
+							$bid = $edata['pid'];
+							$active_dice = rand(0,99);
+							if($active_dice <  $active_r) {
+								include_once GAME_ROOT.'./include/game/battle.func.php';
+								findenemy($edata);
+								return;
+							} else {
+								include_once GAME_ROOT.'./include/game/combat.func.php';
+								combat(0);
+								return;
+							}
+						}
+					}else{
+						$hideflag = true;
+					}
+				} else {
+					$corpse_dice = rand(0,99);
+					if($corpse_dice < $corpse_obbs) {
+						if($gamestate <40 &&(($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
+							
+							$bid = $edata['pid'];
+							include_once GAME_ROOT.'./include/game/battle.func.php';
+							findcorpse($edata);
+							return;
+						} else {
+							discover(50);
 							return;
 						}
 					}
 				}
-			} else {
-				$corpse_dice = rand(0,99);
-				if($corpse_dice < $corpse_obbs) {
-					if($gamestate <40 &&(($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
-						
-						$bid = $edata['pid'];
-						include_once GAME_ROOT.'./include/game/battle.func.php';
-						findcorpse($edata);
-						return;
-					} else {
-						discover(50);
-						return;
-					}
-				}
 			}
 		}
-		$log .= '似乎有人隐藏着……<br>';
+		if($hideflag == true){
+			$log .= '似乎有人隐藏着……<br>';
+		}else{
+			$log .= '<span class="yellow">周围一个人都没有。</span><br>';
+		}
 		$mode = 'command';
 		return;
 	} else {
@@ -313,7 +336,6 @@ function discover($schmode = 0) {
 			$log .= "但是什么都没有发现。<br>";
 		}
 	}
-	$log .= $dblock;
 	$mode = 'command';
 	return;
 

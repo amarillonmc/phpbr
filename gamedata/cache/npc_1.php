@@ -729,7 +729,7 @@ $npcinfo = array
 			'itmk1' => 'Y',
 			'itme1' => 1,
 			'itms1' => 1,
-			)
+			),
 		),
 	),
 	
@@ -795,7 +795,7 @@ $npcinfo = array
 			'itmk1' => 'Y',
 			'itme1' => 1,
 			'itms1' => 1,
-			)
+			),
 			
 			1 => array
 			(

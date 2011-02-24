@@ -729,7 +729,7 @@ $npcinfo = array
 			'itmk1' => 'Y',
 			'itme1' => 1,
 			'itms1' => 1,
-			)
+			),
 		),
 	),
 	
@@ -756,7 +756,7 @@ $npcinfo = array
 		'att' => 200,
 		'def' => 1200,
 		'lvl' => 24,
-		'skill' => 100,
+		'skill' => 40,
 		'money' => 5,
 		'arb' => '职人的荣耀B',
 		'arbk' => 'DB',

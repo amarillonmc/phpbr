@@ -199,8 +199,9 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		
 		if (${$perfix . 'sp'}+$spup >= ${$perfix . 'msp'}) {
 			$spup =  ${$perfix . 'msp'} - ${$perfix . 'sp'};
-			${$perfix . 'sp'} += $spup;
+			
 		}
+		${$perfix . 'sp'} += $spup;
 		if ($skname) {
 			$sklog = "，{$sklanginfo[$skname]}+{$sklup}";
 		}

@@ -1,6 +1,13 @@
+2011/3/6
+现在回避姿态能提高陷阱的回避率了（itemmain.func.php）
+增加了探雷属性，现在部分装备可以提高回避陷阱的概率；（itemmain.func.php; help.htm）
+增加了探雷器，调整了属性防御饰品的价格，修改了凸眼鱼和小黄书的价格；（shopitem_1.php）
+
+
 2011/3/5
 现在各系擅长的称号在升级时可以增加熟练度了；（system.php; help.htm; state.func.php）
 修改了合成公式，增加了射系和灵系合成武器；（maxitem_1.php; help.htm）
+
 
 应玩家要求调低了陷阱概率，调高了回避概率（search.func.php; itemmain.func.php; gamecfg_1.php）
 修复了雷达不能显示古人一栏的“？”和红叉的问题（item2.func.php）

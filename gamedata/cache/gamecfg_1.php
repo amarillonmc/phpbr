@@ -17,7 +17,7 @@ $validlimit = 150;
 //连斗时的人数限制
 $combolimit = 15;
 //连斗时的死亡人数限制
-$deathlimit = 50;
+$deathlimit = 15;
  
 // 等级提升基本经验值 
 $baseexp = 9;
@@ -45,8 +45,12 @@ $teamj_sp = 25;
 $teamlimit = 5;
 
 //随机事件几率(百分比)
-$event_obbs = 10;
-//道具发现基础几率(百分比)
+$event_obbs = 5;
+//强制踩陷阱最小几率(百分比)
+$trap_min_obbs = 1;
+//强制踩陷阱最大几率(百分比)
+$trap_max_obbs = 40;
+//道具发现基础几率(百分比);道具敌人尸体这几个貌似是废的，没用
 $item_obbs = 60;
 //敌人发现基础几率(百分比)
 $enemy_obbs = 70;

@@ -33,17 +33,37 @@ function init_playerdata(){
 
 function init_profile(){
 	global $inf,$infinfo,$hp,$mhp,$sp,$msp,$infdata,$infimg,$hpcolor,$spcolor,$newhpimg,$newspimg,$ardef,$arbe,$arhe,$arae,$arfe;
+	global $iteminfo,$wepk,$arbk,$arhk,$arak,$arfk,$artk,$itmk0,$itmk1,$itmk2,$itmk3,$itmk4,$itmk5;
 	global $itemspkinfo,$wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk,$itmsk0,$itmsk1,$itmsk2,$itmsk3,$itmsk4,$itmsk5;
 	global $nospk,$wepsk_words,$arbsk_words,$arhsk_words,$arask_words,$arfsk_words,$artsk_words,$itmsk0_words,$itmsk1_words,$itmsk2_words,$itmsk3_words,$itmsk4_words,$itmsk5_words;
+	global $wepk_words,$arbk_words,$arhk_words,$arak_words,$arfk_words,$artk_words,$itmk0_words,$itmk1_words,$itmk2_words,$itmk3_words,$itmk4_words,$itmk5_words;
 	foreach (Array('wepsk','arbsk','arhsk','arask','arfsk','artsk','itmsk0','itmsk1','itmsk2','itmsk3','itmsk4','itmsk5') as $sk_value) {
 		if(${$sk_value} && is_numeric(${$sk_value}) == false){
 			${$sk_value.'_words'} = '';
 			for ($i = 0; $i < strlen($sk_value); $i++) {
 				${$sk_value.'_words'} .= $itemspkinfo[substr(${$sk_value},$i,1)];
 			}
+			
 		} else {
 			${$sk_value.'_words'} =$nospk;
 		}
+	}
+	
+	foreach (Array('wepk','arbk','arhk','arak','arfk','artk','itmk0','itmk1','itmk2','itmk3','itmk4','itmk5') as $k_value) {
+		if(${$k_value}){
+			${$k_value.'_words'} = '';
+			
+			foreach($iteminfo as $info_key => $info_value){
+				if(strpos(${$k_value},$info_key)===0){
+					${$k_value.'_words'} = $info_value;
+					break;
+				}
+				
+			}
+		} else {
+			${$k_value.'_words'} = '';
+		}
+		
 	}
 
 	$ardef = $arbe + $arhe + $arae + $arfe;

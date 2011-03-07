@@ -1,3 +1,33 @@
+2011/3/5
+现在各系擅长的称号在升级时可以增加熟练度了；（system.php; help.htm; state.func.php）
+修改了合成公式，增加了射系和灵系合成武器；（maxitem_1.php; help.htm）
+
+应玩家要求调低了陷阱概率，调高了回避概率（search.func.php; itemmain.func.php; gamecfg_1.php）
+修复了雷达不能显示古人一栏的“？”和红叉的问题（item2.func.php）
+
+2011/3/3
+修改了陷阱概率，现在地图上每一件开启的陷阱都会使踩陷阱概率+0.5%，最高是50%（search.func.php; gamecfg_1.php）
+调整了小黄书、凸眼鱼和驱云弹的价格和出现时间（shopitem_1.php）
+
+2011/2/27
+修改了两位古人的能力值，调低了攻击力且去掉了全系防御；（npc_1.php）
+修改了雷达，现在雷达可以显示两位古人的位置了；（item2.func.php）
+将遭遇陷阱改为概率事件，只要当前地图上有陷阱就有概率踩到，概率与陷阱个数以及当前地图道具总数无关；（search.func.php; gamecfg_1.php）
+修改了受到陷阱伤害的逻辑，现在自己设置的陷阱比较容易被自己回避和重复利用；（itemmain.func.php）
+修改了物品类型的显示方式；（game.func.php; profile.htm; itemfind.htm; special.func.php; shop.htm; battle.func.php; corpse.htm）
+添加了一些东西……不过还没完成；
+修改了帮助文档；（help.htm）
+
+2011/2/23
+添加了其他玩家主动攻击被杀死时的提示；（combat.func.php）
+把小黄书的价格调整为3200；（shopitem_1.php）
+修正了一发属性可以装填子弹的BUG；（item.func.php）
+现在属性防具有一定概率无法发挥效果了；（combat.func.php; help.htm）
+
+2011/2/22
+修复了增加禁区之后游戏结束时无法记录最高伤害的问题（commin.inc.php）
+喵的，注入你妹，现在直接用函数gkillquotes()把一系列半角符号全部替换掉，让你们注入去！（global.func.php; login.php;valid.php; common.inc.php）
+
 2011/2/21
 修改了地图道具，现在方块系列开局刷15个，1禁刷20个，希望能推迟金色炸弹的出现时间（mapitem_1.php）
 去除了金色宝石炸弹的火焰属性（maxitem_1.php; help.htm）

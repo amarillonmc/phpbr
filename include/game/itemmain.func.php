@@ -8,67 +8,103 @@ if(!defined('IN_GAME')) {
 function itemfind() {
 	global $mode,$log,$cmd,$iteminfo,$itm0,$itmk0,$itme0,$itms0,$itmsk0;
 	
-	if(!$itm0||!$itmk0||!$itme0||!$itms0){
+	if(!$itm0||!$itmk0||!$itms0){
 		$log .= '获取物品信息错误！';
 		$mode = 'command';
 		return;
 	}
 	if($itmk0 == 'TO') {
-		global $name,$now,$hp,$db,$tablepre,$bid,$lvl;
+		global $name,$now,$hp,$db,$tablepre,$bid,$lvl,$pid,$type;
+		$playerflag = $itmsk0 ? true : false;
+		$selflag = $itmsk0 == $pid ? true : false;
 		$dice=rand(0,99);
-		$escrate = $club == 5 ? 12 + $lvl/5 : $lvl/5;
+		$escrate = $club == 5 ? 30 + $lvl/3 : 10+ $lvl/3;
+		$escrate = $selflag ? $escrate + 50 : $escrate; //自己设置的陷阱容易躲避
+		
+		if($playerflag && !$selflag){
+			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
+			$wdata = $db->fetch_array($result);
+			$trname = $wdata['name'];$trtype = $wdata['type'];$trperfix = '<span class="yellow">'.$trname.'</span>设置的';
+		}elseif($selflag){
+			$trname = $name;$trtype = $pid;$trperfix = '你自己设置的';
+		}else{
+			$trname = $trtype = $trperfix = '';
+		}
+			
 		if($dice >= $escrate){
+			$bid = $itmsk0;
 			$damage = round(rand(0,$itme0/2)+($itme0/2));
 			$hp -= $damage;
+			
+			if($playerflag){naddnews($now,'trap',$name,$trname,$itm0);}
+			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+
 			if($hp <= 0) {
-				
-				$log .= "糟糕，你触发了陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 				include_once GAME_ROOT.'./include/state.func.php';
-				if($itmsk0) {
-					$bid = $itmsk0;
-					$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
-					$wdata = $db->fetch_array($result);
-					naddnews($now,'trap',$name,$wdata['name'],$itm0);
-					$killmsg = death('trap',$wdata['name'],$wdata['type'],$itm0);
-					$log .= "你被<span class=\"red\">".$wdata['name']."</red>设置的陷阱杀死了！";
-					if($killmsg){$log .= "<span class=\"yellow\">{$wdata['name']} 对你说：“{$killmsg}”</span><br>";}
-					$itm0 = $itmk0 = $itmsk0 = '';
-					$itme0 = $itms0 = 0;
-					return;
-				} else {
-					$bid = 0;
-					death('trap','','',$itm0);
-					$itm0 = $itmk0 = $itmsk0 = '';
-					$itme0 = $itms0 = 0;
-					return;
-				}
-			} elseif($itmsk0) {
-				$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
-				$wdata = $db->fetch_array($result);
-				$log .= "糟糕，你触发了<span class=\"yellow\">{$wdata['name']}</span>设置的陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
-				naddnews($now,'trap',$name,$wdata['name'],$itm0);
-			} else {
-				$log .= "糟糕，你触发了陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+				$killmsg = death('trap',$trname,$trtype,$itm0);
+				$log .= "你被{$trperfix}陷阱杀死了！";
+				if($killmsg && !$selflag){
+					$log .= "<span class=\"yellow\">{$trname}对你说：“{$killmsg}”</span><br>";
+				}				
 			}
 			$itm0 = $itmk0 = $itmsk0 = '';
 			$itme0 = $itms0 = 0;
 			return;
+				
+//			if($hp <= 0) {
+//				$log .= "糟糕，你触发了陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+//				include_once GAME_ROOT.'./include/state.func.php';
+//				if($itmsk0) {
+//					$bid = $itmsk0;
+//					$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
+//					$wdata = $db->fetch_array($result);
+//					naddnews($now,'trap',$name,$wdata['name'],$itm0);
+//					$killmsg = death('trap',$wdata['name'],$wdata['type'],$itm0);
+//					if($itmsk0 != $pid){
+//						$log .= "你被<span class=\"red\">".$wdata['name']."</red>设置的陷阱杀死了！";
+//						if($killmsg){$log .= "<span class=\"yellow\">{$wdata['name']}对你说：“{$killmsg}”</span><br>";}
+//					}else{
+//						$log .= '你被你自己设置的陷阱杀死了！';
+//					}
+//					$itm0 = $itmk0 = $itmsk0 = '';
+//					$itme0 = $itms0 = 0;
+//					return;
+//				} else {
+//					$bid = 0;
+//					death('trap','','',$itm0);
+//					$itm0 = $itmk0 = $itmsk0 = '';
+//					$itme0 = $itms0 = 0;
+//					return;
+//				}
+//			} elseif($itmsk0) {
+//				$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
+//				$wdata = $db->fetch_array($result);
+//				if($itmsk0 != $pid){
+//					$log .= "糟糕，你触发了<span class=\"yellow\">{$wdata['name']}</span>设置的陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+//				}else{
+//					$log .= "糟糕，你触发了你自己设置的陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+//				}
+//				naddnews($now,'trap',$name,$wdata['name'],$itm0);
+//			} else {
+//				$log .= "糟糕，你触发了陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+//			}
+//			$itm0 = $itmk0 = $itmsk0 = '';
+//			$itme0 = $itms0 = 0;
+//			return;
 		} else {
-			if($itmsk0){
-				$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
-				$wdata = $db->fetch_array($result);
-				naddnews($now,'trapmiss',$name,$wdata['name'],$itm0);
-				$trapfrom = '<span class="yellow">'.$wdata['name'].'</span>设置的';
+			if($playerflag){
+				naddnews($now,'trapmiss',$name,$trname,$itm0);
 			}
 			$dice = rand(0,99);
 			$fdrate = $club == 5 ? 30 + $lvl/4 : 5 + $lvl/4;
+			$fdrate = $selflag ? $fdrate + 50 : $fdrate;
 			if($dice < $fdrate){
-				$log .= "你发现了{$trapfrom}陷阱<span class=\"yellow\">$itm0</span>，不过你并没有触发它。陷阱看上去还可以重复使用。<br>";
+				$log .= "你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>，不过你并没有触发它。陷阱看上去还可以重复使用。<br>";
 				$itmsk0 = '';$itmk0 = 'TN';
 				$mode = 'itemfind';
 				return;
 			}else{
-				$log .= "你触发了{$trapfrom}陷阱<span class=\"yellow\">$itm0</span>，不过你成功地回避了陷阱。<br>";
+				$log .= "你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>，不过你成功地回避了陷阱。<br>";
 				$itm0 = $itmk0 = $itmsk0 = '';
 				$itme0 = $itms0 = 0;
 				$mode = 'command';
@@ -79,8 +115,6 @@ function itemfind() {
 		$mode = 'itemfind';
 		return;
 	}
-
-	
 }
 
 

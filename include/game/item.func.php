@@ -354,7 +354,11 @@ function itemuse($itmn) {
 			$mode = 'command';
 			return;
 		}
-		if (strpos ( $wepsk, 'e' ) !== false || strpos ( $wepsk, 'w' ) !== false) {
+		if (strpos ( $wepsk, 'o' ) !== false) {
+			$log .= "<span class=\"red\">{$wep}不能装填弹药。</span><br>";
+			$mode = 'command';
+			return;
+		} elseif (strpos ( $wepsk, 'e' ) !== false || strpos ( $wepsk, 'w' ) !== false) {
 			if ($itmk == 'GBe') {
 				$bulletnum = 10;
 			} else {

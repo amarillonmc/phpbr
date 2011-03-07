@@ -22,17 +22,17 @@ function chgword($nmotto,$nlastword,$nkillmsg) {
 	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
 	$userinfo = $db->fetch_array($result);
 
-	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
-		if(strpos($nmotto,$value)!==false){
-			$nmotto = str_replace ( $value, '', $nmotto );
-		}
-		if(strpos($nlastword,$value)!==false){
-			$nlastword = str_replace ( $value, '', $nlastword );
-		}
-		if(strpos($nkillmsg,$value)!==false){
-			$nkillmsg = str_replace ( $value, '', $nkillmsg );
-		}
-	}
+//	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
+//		if(strpos($nmotto,$value)!==false){
+//			$nmotto = str_replace ( $value, '', $nmotto );
+//		}
+//		if(strpos($nlastword,$value)!==false){
+//			$nlastword = str_replace ( $value, '', $nlastword );
+//		}
+//		if(strpos($nkillmsg,$value)!==false){
+//			$nkillmsg = str_replace ( $value, '', $nkillmsg );
+//		}
+//	}
 
 	
 	if($nmotto != $userinfo['motto']) {
@@ -143,7 +143,7 @@ function chkpoison($itmn){
 
 
 function shoplist($sn) {
-	global $gamecfg,$mode,$itemdata,$areanum,$areaadd;
+	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo;
 	$file = GAME_ROOT."./gamedata/shopitem/{$sn}shopitem.php";
 	$itemlist = openfile($file);
 	$in = count($itemlist);
@@ -156,10 +156,35 @@ function shoplist($sn) {
 			if($areanum < $it*$areaadd) {
 				$itemdata[$i] = '';
 			} else {
-				$itemdata[$i] = array($i,$num,$price,$iname,$ik,$ieff,$ista,$isk);
+				foreach($iteminfo as $info_key => $info_value){
+					if(strpos($ik,$info_key)===0){
+						$ikind_words = $info_value;
+						break;
+					}
+				}
+				$isk_words = '';
+				if($isk && ! is_numeric($isk)){
+					for ($j = 0; $j < strlen($isk); $j++) {
+						$isk_words .= $itemspkinfo[substr($isk,$j,1)];
+					}
+				}
+				$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
 			}
 		} else {
-			$itemdata[$i] = array($i,$num,$price,$iname,$ikind,$ieff,$ista,$isk);
+			foreach($iteminfo as $info_key => $info_value){
+				if(strpos($ikind,$info_key)===0){
+					$ikind_words = $info_value;
+					break;
+				}
+				
+			}
+			$isk_words = '';
+			if($isk && ! is_numeric($isk)){
+				for ($j = 0; $j < strlen($isk); $j++) {
+					$isk_words .= $itemspkinfo[substr($isk,$j,1)];
+				}
+			}
+			$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
 		}
 	}
 	$mode = 'shop';

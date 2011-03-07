@@ -1,0 +1,57 @@
+<?php
+if(!defined('IN_GAME')) exit('Access Denied');
+$npcinfo = array
+	( 
+	'能美·库特莉亚芙卡' => array
+		(
+		'name' => '斯特鲁加茨基娅博士',
+		'icon' => 7,
+		'mode' => 1,
+		'club' => 7,
+		'type' => 10,
+		'inf' => '',
+		'rage' => 160,
+		'pose'=> 1,
+		'tactic' => 3,
+		'mhp' => 8100,
+		'msp' => 500,
+		'att' => 600,
+		'def' => 400,
+		'lvl' => 60,
+		'skill' => 800,
+		'money' => 20000,
+		'wep' => '极地质子暴风雪',
+		'wepk' => 'WG',
+		'wepe' => 900,
+		'weps' => 900,
+		'wepsk' => 'iedr',
+		'arb' => '强袭宇航服',
+		'arbk' => 'DB',
+		'arbe' => 2400,
+		'arbs' => 200,
+		'arbsk' => 'Aa',
+		'arh' => '特莱明感应设备',
+		'arhk' => 'DH',
+		'arhe' => 300,
+		'arhs' => 150,
+		'arf' => '火箭助推器',
+		'arfk' => 'DF',
+		'arfe' => 700,
+		'arfs' => 150,
+		'ara' => '旅伴号浮游炮',
+		'arak' => 'DA',
+		'arae' => 1200,
+		'aras' => 150,
+		'arask' => 'c',
+		'art' => '焦黑的齿轮',
+		'artk' => 'A',
+		'arte' => 1,
+		'arts' => 1,
+		'artsk' => 'H',
+		'itm1' => '斯特鲁加茨基娅的ID卡',
+		'itmk1' => 'Z',
+		'itme1' => 1,
+		'itms1' => 1
+	)
+);
+?>

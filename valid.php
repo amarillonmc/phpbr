@@ -20,17 +20,17 @@ if($mode == 'enter') {
 		if($db->num_rows($result) >= $iplimit) { gexit($_ERROR['ip_limit'],__file__,__line__); }
 	}
 	
-	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
-		if(strpos($motto,$value)!==false){
-			$motto = str_replace ( $value, '', $motto );
-		}
-		if(strpos($lastword,$value)!==false){
-			$lastword = str_replace ( $value, '', $lastword );
-		}
-		if(strpos($killmsg,$value)!==false){
-			$killmsg = str_replace ( $value, '', $killmsg );
-		}
-	}
+//	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
+//		if(strpos($motto,$value)!==false){
+//			$motto = str_replace ( $value, '', $motto );
+//		}
+//		if(strpos($lastword,$value)!==false){
+//			$lastword = str_replace ( $value, '', $lastword );
+//		}
+//		if(strpos($killmsg,$value)!==false){
+//			$killmsg = str_replace ( $value, '', $killmsg );
+//		}
+//	}
 
 	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon', motto='$motto', killmsg='$killmsg', lastword='$lastword' WHERE username='".$udata['username']."'" );
 	if($validnum >= $validlimit) {
@@ -136,24 +136,18 @@ if($mode == 'enter') {
 		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
 		$att += 100;$def += 100;
 		$exp += 2000;$money = 10000;$rage = 255;$pose = 1;$tactic = 3;
-		$itm[1] = '全恢复饮料'; $itmk[1] = 'HB'; $itme[1] = 1000; $itms[1] = 1000;$itmsk[1] = 'z';
+		$itm[1] = '全恢复饮料'; $itmk[1] = 'HB'; $itme[1] = 1800; $itms[1] = 900; $itmsk[1] = 'z';
 		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
-		$itm[3] = '超光速快子雷达'; $itmk[3] = 'R'; $itme[3] = 15; $itms[3] = 1;$itmsk[3] = 2;
+		$itm[3] = '超光速快子雷达'; $itmk[3] = 'R'; $itme[3] = 25; $itms[3] = 1;$itmsk[3] = 2;
 		$itm[4] = '凸眼鱼'; $itmk[4] = 'Y'; $itme[4] = 1; $itms[4] = 30;$itmsk[4] = '';
 		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
-		$wep = '最终离子风暴枪';$wepk = 'WG';$wepe = 777;$weps = 777;$wepsk = 'er';
-		$arb = '能量装甲';$arbk = 'DB'; $arbe = 400; $arbs = 150; $arbsk = 'A';
-		$arh = '机动头盔';$arhk = 'DH'; $arhe = 200; $arhs = 150; $arhsk = 'UI';
-		$ara = '腕力增幅器';$arak = 'DA'; $arae = 200; $aras = 150; $arask = 'c';
-		$arf = '金属战靴';$arfk = 'DF'; $arfe = 200; $arfs = 150; $arfsk = 'qE';
+		$wep = '电磁量子加速器';$wepk = 'WG';$wepe = 4321;$weps = 987;$wepsk = 'redo';
+		$arb = '能量装甲';$arbk = 'DB'; $arbe = 1600; $arbs = 150; $arbsk = 'A';
+		$arh = '机动头盔';$arhk = 'DH'; $arhe = 1200; $arhs = 150; $arhsk = 'UI';
+		$ara = '腕力增幅器';$arak = 'DA'; $arae = 1200; $aras = 150; $arask = 'c';
+		$arf = '金属战靴';$arfk = 'DF'; $arfe = 1200; $arfs = 150; $arfsk = 'qE';
 		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
-		$wp=$wk=$wg=$wc=$wd=$wf=400;
-	} elseif (strpos($name,'闹球肾')!==false){
-		$msp-=200;$mhp-=200;$sp-=200;$hp-=200;
-		$att-=50;$def-=50;
-		$money=0;
-		$itm[1] = '请自重'; $itmk[1] = 'PH2'; $itme[1] = 100; $itms[1] = 30; $itmsk[1] = 267;
-		$itm[2] = '请自重'; $itmk[2] = 'PS2'; $itme[2] = 100; $itms[2] = 30; $itmsk[2] = 267;
+		$wp=$wk=$wg=$wc=$wd=$wf=900;
 	}
 	
 	$state = 0;

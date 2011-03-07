@@ -202,7 +202,7 @@ function newradar($m = 0){
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
-	
+	$npctplist = Array(2,3,4,5,6,11);
 	$tdheight = 20;
 	$screenheight = count($plsinfo)*$tdheight;
 	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0");
@@ -214,14 +214,12 @@ function newradar($m = 0){
 	}
 	$radarscreen = '<table height='.$screenheight.'px width=640px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
 	$radarscreen .= "<tr>
-		<td class=b2 height={$tdheight}px width=125px><div class=nttx></div></td>
-		<td class=b2 width=80px><div class=nttx>{$typeinfo[0]}</div></td>
-		<td class=b2 width=80px><div class=nttx>{$typeinfo[2]}</div></td>
-		<td class=b2 width=80px><div class=nttx>{$typeinfo[3]}</div></td>
-		<td class=b2 width=80px><div class=nttx>{$typeinfo[4]}</div></td>
-		<td class=b2 width=80px><div class=nttx>{$typeinfo[5]}</div></td>
-		<td class=b2 width=80px><div class=nttx>{$typeinfo[6]}</div></td>
-	</tr>";
+		<td class=b2 height={$tdheight}px width=120px><div class=nttx></div></td>
+		<td class=b2><div class=nttx>{$typeinfo[0]}</div></td>";
+	foreach ($npctplist as $value){
+		$radarscreen .= "<td class=b2><div class=nttx>{$typeinfo[$value]}</div></td>";
+	}
+	$radarscreen .= '</tr>';
 	for($i=0;$i<count($plsinfo);$i++) {
 		$radarscreen .= "<tr><td class=b2 height={$tdheight}px><div class=nttx>{$plsinfo[$i]}</div></td>";
 		if((array_search($i,$arealist) > $areanum) || $hack) {
@@ -229,7 +227,7 @@ function newradar($m = 0){
 				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
 				//$num0 = $db->num_rows($result);
 				$num0 = $radar[$i][0];
-				for($j=2;$j<=6;$j++){
+				foreach ($npctplist as $j){
 					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
 					//${'num'.$j} = $db->num_rows($result);
 					${'num'.$j} = $gamestate == 50 ? 0 : $radar[$i][$j];
@@ -239,7 +237,7 @@ function newradar($m = 0){
 				} else {
 					$pnum[$i] ='<span class="yellow b">-</span>';
 				}
-				for($j=2;$j<=6;$j++){
+				foreach ($npctplist as $j){
 					//${'npc'.$j.'num'}[$i] = "<span class=\"yellow b\">${'num'.$j}</span>";
 					if(${'num'.$j}){
 					${'npc'.$j.'num'}[$i] ="<span class=\"yellow b\">${'num'.$j}</span>";
@@ -251,7 +249,7 @@ function newradar($m = 0){
 				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
 				//$num0 = $db->num_rows($result);
 				$num0 = $radar[$i][0];
-				for($j=2;$j<=6;$j++){
+				foreach ($npctplist as $j){
 					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
 					//${'num'.$j} = $db->num_rows($result);
 					${'num'.$j} =  $gamestate == 50 ? 0 : $radar[$i][$j];
@@ -262,7 +260,7 @@ function newradar($m = 0){
 					$pnum[$i] ='-';
 				}
 				//$pnum[$i] ="$num0";
-				for($j=2;$j<=6;$j++){
+				foreach ($npctplist as $j){
 					//${'npc'.$j.'num'}[$i] = "${'num'.$j}";;
 					if(${'num'.$j}){
 					${'npc'.$j.'num'}[$i] =${'num'.$j};
@@ -271,13 +269,19 @@ function newradar($m = 0){
 					}
 				}
 			} else {
-				$pnum[$i] =$npc2num[$i] =$npc3num[$i] =$npc4num[$i] =$npc5num[$i] =$npc6num[$i] ='？';
+				$pnum[$i] = '？';
+				foreach ($npctplist as $j){
+					${'npc'.$j.'num'}[$i] = '？';
+				}
 			}
 		} else {
-			$pnum[$i] =$npc2num[$i] =$npc3num[$i] =$npc4num[$i] =$npc5num[$i] =$npc6num[$i] = '<span class="red b">×</span>';
+			$pnum[$i] = '<span class="red b">×</span>';
+			foreach ($npctplist as $j){
+				${'npc'.$j.'num'}[$i] = '<span class="red b">×</span>';
+			}
 		}
 		$radarscreen .= "<td class=b3><div class=nttx>{$pnum[$i]}</div></td>";
-		for($j=2;$j<=6;$j++){
+		foreach ($npctplist as $j){
 			$radarscreen .= "<td class=b3><div class=nttx>{${'npc'.$j.'num'}[$i]}</div></td>";
 		}	
 		$radarscreen .= '</tr>';

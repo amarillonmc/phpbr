@@ -66,11 +66,11 @@ function combat($active = 1, $wep_kind = '') {
 		}
 		
 		if ($message) {
-			foreach ( Array('<','>',';',',') as $value ) {
-				if(strpos($message,$value)!==false){
-					$message = str_replace ( $value, '', $message );
-				}
-			}
+//			foreach ( Array('<','>',';',',') as $value ) {
+//				if(strpos($message,$value)!==false){
+//					$message = str_replace ( $value, '', $message );
+//				}
+//			}
 			$log .= "<span class=\"lime\">你对{$edata ['name']}大喊：{$message}</span><br>";
 			if (! $edata ['type']) {
 				$w_log = "<span class=\"lime\">{$name}对你大喊：{$message}</span><br>";
@@ -101,20 +101,20 @@ function combat($active = 1, $wep_kind = '') {
 				$counter_dice = rand ( 0, 99 );
 				if ($counter_dice < $counter) {
 					$log .= "<span class=\"red\">{$w_name}的反击！</span><br>";
-					if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-						$log .= npc_chat ( $w_type,$w_name, 'defend' );
-					}
+					
+					$log .= npc_chat ( $w_type,$w_name, 'defend' );
+					
 					$def_dmg = defend ( $w_wep_kind );
 				} else {
-					if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-						$log .= npc_chat ( $w_type,$w_name, 'escape' );
-					}
+					
+					$log .= npc_chat ( $w_type,$w_name, 'escape' );
+					
 					$log .= "<span class=\"red\">{$w_name}处于无法反击的状态，逃跑了！</span><br>";
 				}
 			} else {
-				if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-					$log .= npc_chat ( $w_type,$w_name, 'cannot' );
-				}
+				
+				$log .= npc_chat ( $w_type,$w_name, 'cannot' );
+				
 				$log .= "<span class=\"red\">{$w_name}攻击范围不足，不能反击，逃跑了！</span><br>";
 			}
 		
@@ -130,9 +130,9 @@ function combat($active = 1, $wep_kind = '') {
 		
 		$log .= "<span class=\"red\">$w_name</span>突然向你袭来！<br>";
 		
-		if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-			$log .= npc_chat ( $w_type,$w_name, 'attack' );
-		}
+		
+		$log .= npc_chat ( $w_type,$w_name, 'attack' );
+		
 		
 		$w_w1 = substr ( $w_wepk, 1, 1 );
 		$w_w2 = substr ( $w_wepk, 2, 1 );
@@ -182,6 +182,9 @@ function combat($active = 1, $wep_kind = '') {
 		}else{
 			$w_log = "你发现了手持<span class=\"red\">$wep_temp</span>的<span class=\"yellow\">$name</span>并且先发制人！<br>你对其做出<span class=\"yellow\">$def_dmg</span>点攻击，受到其<span class=\"yellow\">$att_dmg</span>点反击。<br>$w_inf_log";
 		}
+		if($hp == 0){
+			$w_log .= "<span class=\"yellow\">$name</span><span class=\"red\">被你杀死了！</span><br>";
+		}
 		
 		logsave ( $w_pid, $now, $w_log );
 	}
@@ -205,9 +208,8 @@ function combat($active = 1, $wep_kind = '') {
 		$killnum ++;
 		include_once GAME_ROOT . './include/state.func.php';
 		$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
-		if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-			$log .= npc_chat ( $w_type,$w_name, 'death' );
-		}
+		$log .= npc_chat ( $w_type,$w_name, 'death' );
+		
 		$log .= "<span class=\"red\">{$w_name}被你杀死了！</span><br>";
 		if($killmsg){$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";}
 		include_once GAME_ROOT . './include/game/battle.func.php';
@@ -414,11 +416,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			$w_killnum ++;
 			include_once GAME_ROOT . './include/state.func.php';
 			$killmsg = death ( $w_wep_kind, $w_name, $w_type, $w_wep_temp );
-			if ($w_type == 1 || $w_type == 5 || $w_type == 6|| $w_type == 7) {
-				$log .= npc_chat ( $w_type,$w_name, 'kill' );
-			} elseif($killmsg) {
-				$log .= "<span class=\"yellow\">{$w_name}对你说：“{$killmsg}”</span><br>";
-			}
+			$log .= npc_chat ( $w_type,$w_name, 'kill' );
 		}
 	} else {
 		$damage = 0;
@@ -481,9 +479,9 @@ function get_damage_p(&$rg, $cl = 0, $msg = '', $atkcdt, $type, $nm) {
 	}
 	if ($cri_dice <= $max_dice && $rg >= $rg_m) {
 		global $log;
-		if ($type == 1 || $type == 5 || $type == 6|| $type == 7) {
-			$log .= npc_chat ( $type,$nm, 'critical' );
-		}
+		
+		$log .= npc_chat ( $type,$nm, 'critical' );
+		
 		if ($nm == '你') {
 			$log .= "{$nm}消耗<span class=\"yellow\">$rg_m</span>点怒气，<span class=\"red\">{$cri_word}</span>！";
 		} else {
@@ -567,8 +565,9 @@ function checkarb(&$dmg, $w, $ar) {
 		if ($dice < 90) {
 			$dmg /= 2;
 			$log .= "攻击被防具抵消了！";
-		
-		//$log .= "<span class=\"red\">攻击被防具抵消了！</span>";
+
+		}else{
+			$log .= "防具没能发挥防御效果！";
 		}
 	}
 	return;
@@ -762,7 +761,11 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 					$e_dmg =  round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
 				}
 				//$e_dmg += round ( ($we / ($we + $wdmg) + $ws / ($ws + $sdmg)) * rand ( 100 - $fluc, 100 + $fluc ) / 200 * $bdmg * $wk_dmg_p );
-				if (strpos ( $dky, $def ) === false) {
+				$ex_def_dice = rand(0,99);
+				if (strpos ( $dky, $def ) === false || $ex_def_dice > 90) {
+					if(strpos ( $dky, $def ) !== false){
+						$log .= "属性防御装备没能发挥应有的作用！";
+					}
 					if (strpos ( $inf, $ex_dmg_sign ) !== false && $punish > 1) {
 						$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害倍增！";
 						$e_dmg *= $punish;
@@ -1083,16 +1086,9 @@ function check_gender($nm_a, $nm_d, $gd_a, $gd_d, $a_ky) {
 }
 
 function npc_chat($type,$nm, $mode) {
-	global $npcchaton;
-	if ($npcchaton) {
+	global $npccanchat,$npcchaton;
+	if ($npcchaton && in_array($type,$npccanchat)) {
 		global $npcchat, $w_itmsk0, $w_hp, $w_mhp;
-//		if ($type == 1|| $type == 7) {
-//			$npcwords = '<span class="evergreen">';
-//		} elseif ($type == 5 || $type == 6) {
-//			$npcwords = '<span class="yellow">';
-//		} else {
-//			$npcwords = '<span>';
-//		}
 		$chatcolor = $npcchat[$type][$nm]['color'];
 		if(!empty($chatcolor)){
 			$npcwords = "<span class = \"{$chatcolor}\">";
@@ -1140,41 +1136,12 @@ function npc_chat($type,$nm, $mode) {
 				$npcwords .= "{$nm}对你说道：{$npcchat[$type][$nm][13]}<br>";
 				break;
 		}
-		/*if ($mode == 'attack') {
-			if (empty ( $w_itmsk0 )) {
-				$npcwords .= "{$npcchat[$type][0]}<br>";
-				$w_itmsk0 = '1';
-			} elseif ($w_hp > ($w_mhp / 2)) {
-				$dice = rand ( 1, 2 );
-				$npcwords .= "{$npcchat[$type][$dice]}<br>";
-			} else {
-				$dice = rand ( 3, 4 );
-				$npcwords .= "{$npcchat[$type][$dice]}<br>";
-			}
-		} elseif ($mode == 'defend') {
-			if (empty ( $w_itmsk0 )) {
-				$npcwords .= "{$npcchat[$type][0]}<br>";
-				$w_itmsk0 = '1';
-			} elseif ($w_hp > ($w_mhp / 2)) {
-				$dice = rand ( 5, 6 );
-				$npcwords .= "{$npcchat[$type][$dice]}<br>";
-			} else {
-				$dice = rand ( 7, 8 );
-				$npcwords .= "{$npcchat[$type][$dice]}<br>";
-			}
-		} elseif ($mode == 'death') {
-			$npcwords .= "{$npcchat[$type][9]}<br>";
-		} elseif ($mode == 'escape') {
-			$npcwords .= "{$npcchat[$type][10]}<br>";
-		} elseif ($mode == 'cannot') {
-			$npcwords .= "{$npcchat[$type][11]}<br>";
-		} elseif ($mode == 'critical') {
-			$npcwords .= "{$npcchat[$type][12]}<br>";
-		}*/
 		$npcwords .= '</span>';
 		return $npcwords;
 	} else {
 		return;
 	}
 }
+
+
 ?>

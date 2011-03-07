@@ -604,4 +604,5 @@ function addnpc($type,$sub,$num=1,$time=0) {
 	return $i;
 }
 
+
 ?>

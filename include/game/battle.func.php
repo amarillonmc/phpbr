@@ -72,7 +72,7 @@ function findteam(&$w_pdata){
 }
 
 function findcorpse(&$w_pdata){
-	global $log,$mode,$main,$battle_title,$cmd,$bid,$iteminfo;
+	global $log,$mode,$main,$battle_title,$cmd,$bid,$iteminfo,$itemspkinfo;
 	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
 	if($w_pdata['pid'] !== $bid){
@@ -88,7 +88,26 @@ function findcorpse(&$w_pdata){
 	//$bid = $w_pid;
 	$main = 'battle';
 	$log .= '你发现了<span class="red">'.$w_name.'</span>的尸体！<br>';
-
+	foreach (Array('w_wepk','w_arbk','w_arhk','w_arak','w_arfk','w_artk','w_itmk0','w_itmk1','w_itmk2','w_itmk3','w_itmk4','w_itmk5') as $w_k_value) {
+		if(${$w_k_value}){
+			foreach($iteminfo as $info_key => $info_value){
+				if(strpos(${$w_k_value},$info_key)===0){
+					${$w_k_value.'_words'} = $info_value;
+					break;
+				}
+			}
+		}
+	}
+	foreach (Array('w_wepsk','w_arbsk','w_arhsk','w_arask','w_arfsk','w_artsk','w_itmsk0','w_itmsk1','w_itmsk2','w_itmsk3','w_itmsk4','w_itmsk5') as $w_sk_value) {
+		${$w_sk_value.'_words'} = '';
+		if(${$w_sk_value} && ! is_numeric(${$w_sk_value})){
+			
+			for ($i = 0; $i < strlen($w_sk_value); $i++) {
+				${$w_sk_value.'_words'} .= $itemspkinfo[substr(${$w_sk_value},$i,1)];
+			}
+			
+		}
+	}
 	include template('corpse');
 	$cmd = ob_get_contents();
 	ob_clean();
@@ -131,11 +150,11 @@ function senditem(){
 	}
 
 	if($message){
-		foreach ( Array('<','>',';',',') as $value ) {
-			if(strpos($message,$value)!==false){
-				$message = str_replace ( $value, '', $message );
-			}
-		}
+//		foreach ( Array('<','>',';',',') as $value ) {
+//			if(strpos($message,$value)!==false){
+//				$message = str_replace ( $value, '', $message );
+//			}
+//		}
 		$log .= "<span class=\"lime\">你对{$edata['name']}说：“{$message}”</span><br>";
 		$w_log = "<span class=\"lime\">{$name}对你说：“{$message}”</span><br>";
 		if(!$edata['type']){logsave($edata['pid'],$now,$w_log);}

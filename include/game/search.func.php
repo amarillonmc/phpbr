@@ -206,7 +206,7 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$bid,$db,$tablepre;
+	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate;
 	$event_dice = rand(0,99);
 	if($event_dice < $event_obbs){
 		include_once GAME_ROOT.'./include/game/event.func.php';
@@ -214,7 +214,63 @@ function discover($schmode = 0) {
 		$mode = 'command';
 		return;
 	}
-	
+	$trap_dice=rand(0,99);//随机数，开始判断是否踩陷阱
+	if($trap_dice < $trap_max_obbs){ //踩陷阱概率最大值
+		$trapresult = $db->query("SELECT * FROM {$tablepre}{$pls}mapitem WHERE itmk = 'TO'");
+		$trpnum = $db->num_rows($trapresult);
+		if($trpnum){//看地图上有没有陷阱
+			$real_trap_obbs = $trap_min_obbs + $trpnum/4;
+			if($pose==1){$real_trap_obbs+=1;}
+			elseif($pose==3){$real_trap_obbs+=3;}//攻击和探索姿势略容易踩陷阱
+			if($gamestate >= 40){$real_trap_obbs+=3;}//连斗以后略容易踩陷阱
+			if($pls == 0){$real_trap_obbs+=15;}//在后台非常容易踩陷阱
+			//$log .= "踩陷阱概率：{$real_trap_obbs}%<br>";
+			if($trap_dice < $real_trap_obbs){//踩陷阱判断
+				$itemno = rand(0,$trpnum-1);
+				$db->data_seek($trapresult,$itemno);
+				$mi=$db->fetch_array($trapresult);
+				global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
+				$itm0=$mi['itm'];
+				$itmk0=$mi['itmk'];
+				$itme0=$mi['itme'];
+				$itms0=$mi['itms'];
+				$itmsk0=$mi['itmsk'];
+				$iid=$mi['iid'];
+				$db->query("DELETE FROM {$tablepre}{$pls}mapitem WHERE iid='$iid'");
+				if($itms0){
+					include_once GAME_ROOT.'./include/game/itemmain.func.php';
+					itemfind();
+					return;
+				}
+			}
+		}
+	}
+//	$trap_dice =  rand(0,99);
+//	if($pose==1){$trap_dice-=5;}
+//	elseif($pose==3){$trap_dice-=8;}//攻击和探索姿势略容易踩陷阱
+//	if($gamestate >= 40){$trap_dice-=5;}//连斗以后略容易踩陷阱
+//	if($trap_dice < $trap_obbs){
+//		$result = $db->query("SELECT * FROM {$tablepre}{$pls}mapitem WHERE itmk = 'TO'");
+//		$trpnum = $db->num_rows($result);
+//		if($trpnum){
+//			$itemno = rand(0,$trpnum-1);
+//			$db->data_seek($result,$itemno);
+//			$mi=$db->fetch_array($result);
+//			global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
+//			$itm0=$mi['itm'];
+//			$itmk0=$mi['itmk'];
+//			$itme0=$mi['itme'];
+//			$itms0=$mi['itms'];
+//			$itmsk0=$mi['itmsk'];
+//			$iid=$mi['iid'];
+//			$db->query("DELETE FROM {$tablepre}{$pls}mapitem WHERE iid='$iid'");
+//			if($itms0){
+//				include_once GAME_ROOT.'./include/game/itemmain.func.php';
+//				itemfind();
+//				return;
+//			}
+//		}
+//	}
 	include_once GAME_ROOT.'./include/game/attr.func.php';
 
 	$mode_dice = rand(0,99);
@@ -302,7 +358,7 @@ function discover($schmode = 0) {
 			//$itemnum = sizeof($mapitem) - 1;
 //			$result = $db->query("SELECT * FROM {$tablepre}mapitem WHERE map='$pls'");
 //			$itemnum = $db->num_rows($result);
-			$result = $db->query("SELECT * FROM {$tablepre}{$pls}mapitem");
+			$result = $db->query("SELECT * FROM {$tablepre}{$pls}mapitem WHERE itmk != 'TO'");
 			$itemnum = $db->num_rows($result);
 			if($itemnum <= 0){
 				$log .= '<span class="yellow">周围找不到任何物品。</span><br>';

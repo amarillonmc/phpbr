@@ -74,7 +74,7 @@ function combat($active = 1, $wep_kind = '') {
 			$log .= "<span class=\"lime\">你对{$edata ['name']}大喊：{$message}</span><br>";
 			if (! $edata ['type']) {
 				$w_log = "<span class=\"lime\">{$name}对你大喊：{$message}</span><br>";
-				logsave ( $edata ['pid'], $now, $w_log );
+				logsave ( $edata ['pid'], $now, $w_log ,'c');
 			}
 		}
 		
@@ -186,7 +186,7 @@ function combat($active = 1, $wep_kind = '') {
 			$w_log .= "<span class=\"yellow\">$name</span><span class=\"red\">被你杀死了！</span><br>";
 		}
 		
-		logsave ( $w_pid, $now, $w_log );
+		logsave ( $w_pid, $now, $w_log ,'b');
 	}
 	
 	if (($att_dmg > $hdamage) && ($att_dmg >= $def_dmg)) {

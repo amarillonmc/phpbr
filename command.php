@@ -2,15 +2,8 @@
 
 define('CURSCRIPT', 'game');
 
-//function getmicrotime()
-//{
-//	list($usec, $sec) = explode(" ",microtime());
-//	return ((float)$usec + (float)$sec);
-//}
-//$time_start = getmicrotime(); 
-
-require_once './include/common.inc.php';
-require_once GAME_ROOT.'./include/JSON.php';
+require_once './include/common.inc.php';//$t_s=getmicrotime();
+//require_once GAME_ROOT.'./include/JSON.php';
 require_once GAME_ROOT.'./include/game.func.php';
 require_once config('combatcfg',$gamecfg);
 
@@ -35,15 +28,16 @@ if($pdata['pass'] != $cpass) {
 if(($pdata['hp'] <= 0)||($gamestate === 0)) {
 	$gamedata['url'] = 'end.php';
 	ob_clean();
-	$json = new Services_JSON();
-	$jgamedata = $json->encode($gamedata);
+	$jgamedata = compatible_json_encode($gamedata);
+//	$json = new Services_JSON();
+//	$jgamedata = $json->encode($gamedata);
 	echo $jgamedata;
 	ob_end_flush();
 	exit;
 }
 
 extract($pdata);
-
+$log = ' ';//初始化$log，一个原因是防止注入bug，另一个原因是不这样做的话，作战画面之后会残留一部分文字……我也不知道为什么
 if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
 	if(($now-$noisetime) < 60) {
 		$noisesec = $now - $noisetime;
@@ -53,11 +47,16 @@ if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$
 		$log .= "<span class=\"yellow b\">{$noisemin}分钟前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
 	}
 }
+//$log2 = readover(GAME_ROOT."./gamedata/log/$pid.log");
+//if($log2 != '\n'){
+//	$log .= $log2;
+//	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
+//}
 
-$log2 = readover(GAME_ROOT."./gamedata/log/$pid.log");
-if($log2 != '\n'){
-	$log .= $log2;
-	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
+$result = $db->query("SELECT * FROM {$tablepre}log WHERE toid = '$pid' AND isnew = 1 ORDER BY time,lid");
+$db->query("UPDATE {$tablepre}log SET isnew = 0 WHERE toid = '$pid' AND isnew = 1");
+while($logtemp = $db->fetch_array($result)){
+	$log .= date("H:i:s",$logtemp['time']).'，'.$logtemp['log'].'<br />';
 }
 
 init_playerdata();
@@ -224,11 +223,6 @@ if($url){$gamedata['url'] = $url;}
 $gamedata['pls'] = $plsinfo[$pls];
 $gamedata['anum'] = $alivenum;
 
-//init_profile();
-//$time_end = getmicrotime();
-//$mtime = ($time_end - $time_start)*1000;
-//$log .= "执行时间： $mtime 毫秒<br>";
-
 ob_clean();
 $main ? include template($main) : include template('profile');
 $gamedata['main'] = ob_get_contents();
@@ -236,9 +230,13 @@ $gamedata['main'] = ob_get_contents();
 $gamedata['log'] = $log;
 
 ob_clean();
-$json = new Services_JSON();
-$jgamedata = $json->encode($gamedata);
+$jgamedata = compatible_json_encode($gamedata);
+//$json = new Services_JSON();
+//$jgamedata = $json->encode($gamedata);
 echo $jgamedata;
 ob_end_flush();
+
+//$t_e=getmicrotime();
+//putmicrotime($t_s,$t_e,'news_time');
 
 ?>

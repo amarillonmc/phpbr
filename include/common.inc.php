@@ -17,11 +17,12 @@ $now = time() + $moveut*3600;
 list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$now));
 
 $magic_quotes_gpc = get_magic_quotes_gpc();
-extract(gaddslashes($_COOKIE));
-extract(gaddslashes($_POST));
+extract(gkillquotes($_COOKIE));
+extract(gkillquotes($_POST));
 if(!$magic_quotes_gpc) {
 	$_FILES = gaddslashes($_FILES);
 }
+
 
 if($attackevasive) {
 	include_once GAME_ROOT.'./include/security.inc.php';
@@ -41,6 +42,7 @@ unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 $db->select_db($dbname);
 
 require_once GAME_ROOT.'./gamedata/system.php';
+require_once GAME_ROOT.'./gamedata/resources.php';
 require_once GAME_ROOT.'./gamedata/gameinfo.php';
 require_once config('gamecfg',$gamecfg);
 
@@ -74,6 +76,9 @@ if($gamestate == 10) {
 //	save_gameinfo();
 //}
 
+$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
+list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
+
 if (($gamestate > 10)&&($now > $areatime)) {
 	include_once GAME_ROOT.'./include/system.func.php';
 	while($now>$areatime){
@@ -85,6 +90,8 @@ if (($gamestate > 10)&&($now > $areatime)) {
 	}
 	//addarea($areatime);
 }
+
+
 
 if($gamestate == 20) {
 	$arealimit = $arealimit > 0 ? $arealimit : 1; 
@@ -104,9 +111,6 @@ if((($gamestate == 30)&&($alivenum <= $combolimit))||($deathlimit&&($gamestate <
 	naddnews($now,'combo');
 	
 }
-
-$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
-list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
 
 if($gamestate == 40 || $gamestate == 50) {
 	if($alivenum <= 1) {

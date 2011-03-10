@@ -29,7 +29,7 @@ $mixinfo = array
 	array('stuff' => array('『高性能环形激光』','增幅设备','巨大透镜'),'result' => array('【质子撞击炮】','WG',450,200,'udo'),),
 	array('stuff' => array('『高性能黑洞激光』','增幅设备','巨大透镜'),'result' => array('【重力冲击炮】','WG',450,240,'ido'),),
 	array('stuff' => array('『高性能双重激光』','增幅设备','巨大透镜'),'result' => array('【最终鬼畜兵器】','WG',640,200,'uido'),),
-	array('stuff' => array('早苗面包','像围棋子一样的饼干','浓厚粘稠果汁'),'result' => array('KEY系儿童套餐','HB',500,4,),),
+	array('stuff' => array('早苗面包','像围棋子一样的饼干','浓厚粘稠果汁'),'result' => array('KEY系儿童套餐','HB',333,10,),),
 	array('stuff' => array('红色方块','绿色方块','蓝色方块'),'result' => array('纯真之剑','WK',150,40,),),
 	array('stuff' => array('红色方块','黄色方块','金色方块'),'result' => array('热情之枪','WG',150,40,),),
 	array('stuff' => array('蓝色方块','黄色方块','水晶方块'),'result' => array('温柔的关怀','HB',150,80,),),
@@ -77,6 +77,6 @@ $mixinfo = array
 	array('stuff' => array('《哲♂学》','增幅设备'),'result' => array('森之妖精的棍棒','WP',150,50,'r'),),
 	array('stuff' => array('时符『Private Square』','幻之刃'),'result' => array('『咲夜的世界』','WF',140,'∞','id'),),
 	array('stuff' => array('时符『Private Square』','永恒飞刃'),'result' => array('『Eternal Meek』','WF',80,'∞','ir'),),
-	array('stuff' => array('幽鬼剑『妖童饿鬼之断食』','☆楼观剑☆','☆白楼剑☆'),'result' => array('奥义『西行春风斩』','WF',240,'∞','ud'),),
+	array('stuff' => array('幽鬼剑『妖童饿鬼之断食』','☆楼观剑☆','☆白楼剑☆'),'result' => array('空观剑『六根清净斩』','WF',360,'∞','r'),),
 	);
 ?>

@@ -141,56 +141,139 @@ function chkpoison($itmn){
 	return;
 }
 
-
 function shoplist($sn) {
 	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo;
-	$file = GAME_ROOT."./gamedata/shopitem/{$sn}shopitem.php";
-	$itemlist = openfile($file);
-	$in = count($itemlist);
-	for($i=1;$i<$in;$i++){
-		list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$itemlist[$i]);
-		if(($num<=0)||($price<=0)){
-			$itemdata[$i] = '';
-		} elseif (strpos($ikind,'_') !== false) {
-			list($ik,$it) = explode('_',$ikind);
-			if($areanum < $it*$areaadd) {
-				$itemdata[$i] = '';
-			} else {
-				foreach($iteminfo as $info_key => $info_value){
-					if(strpos($ik,$info_key)===0){
-						$ikind_words = $info_value;
-						break;
-					}
-				}
-				$isk_words = '';
-				if($isk && ! is_numeric($isk)){
-					for ($j = 0; $j < strlen($isk); $j++) {
-						$isk_words .= $itemspkinfo[substr($isk,$j,1)];
-					}
-				}
-				$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
+	global $db,$tablepre;
+	$arean = floor($areanum / $areaadd); 
+	$result=$db->query("SELECT * FROM {$tablepre}shopitem WHERE kind = '$sn' AND area <= '$arean' AND num > '0' AND price > '0'");
+	$shopnum = $db->num_rows($result);
+	for($i=0;$i< $shopnum;$i++){
+		$itemlist = $db->fetch_array($result);
+		$itemdata[$i]['sid']=$itemlist['sid'];
+		$itemdata[$i]['kind']=$itemlist['kind'];
+		$itemdata[$i]['num']=$itemlist['num'];
+		$itemdata[$i]['price']=$itemlist['price'];
+		$itemdata[$i]['area']=$itemlist['area'];
+		$itemdata[$i]['item']=$itemlist['item'];
+		$itemdata[$i]['itme']=$itemlist['itme'];
+		$itemdata[$i]['itms']=$itemlist['itms'];
+		//list($sid,$kind,$num,$price,$area,$item,$itmk,$itme,$itms,$itmsk)=explode(',',$itemlist);
+		foreach($iteminfo as $info_key => $info_value){
+			if(strpos($itemlist['itmk'],$info_key)===0){
+				$itemdata[$i]['itmk_words'] = $info_value;
+				break;
 			}
-		} else {
-			foreach($iteminfo as $info_key => $info_value){
-				if(strpos($ikind,$info_key)===0){
-					$ikind_words = $info_value;
-					break;
-				}
-				
-			}
-			$isk_words = '';
-			if($isk && ! is_numeric($isk)){
-				for ($j = 0; $j < strlen($isk); $j++) {
-					$isk_words .= $itemspkinfo[substr($isk,$j,1)];
-				}
-			}
-			$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
 		}
+		$itemdata[$i]['itmsk_words'] = '';
+		if($itemlist['itmsk'] && ! is_numeric($itemlist['itmsk'])){
+			for ($j = 0; $j < strlen($itemlist['itmsk']); $j++) {
+				$itemdata[$i]['itmsk_words'] .= $itemspkinfo[substr($itemlist['itmsk'],$j,1)];
+			}
+		}
+		//$itemdata[$i] = array('sid' => $sid, 'kind' => $kind,'num' => $num, 'price' => $price, 'area' => $area, 'item' => $item,'itmk_words' => $itmk_words,'itme' => $itme, 'itms' => $itms,'itmsk_words' => $itmsk_words);
 	}
+	
 	$mode = 'shop';
 
 	return;
+	//$file = GAME_ROOT."./gamedata/shopitem/{$sn}shopitem.php";
+	//$itemlist = openfile($file);
+	//$in = count($itemlist);
+//	for($i=1;$i<$in;$i++){
+//		list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$itemlist[$i]);
+//		if(($num<=0)||($price<=0)){
+//			$itemdata[$i] = '';
+//		} elseif (strpos($ikind,'_') !== false) {
+//			list($ik,$it) = explode('_',$ikind);
+//			if($areanum < $it*$areaadd) {
+//				$itemdata[$i] = '';
+//			} else {
+//				foreach($iteminfo as $info_key => $info_value){
+//					if(strpos($ik,$info_key)===0){
+//						$ikind_words = $info_value;
+//						break;
+//					}
+//				}
+//				$isk_words = '';
+//				if($isk && ! is_numeric($isk)){
+//					for ($j = 0; $j < strlen($isk); $j++) {
+//						$isk_words .= $itemspkinfo[substr($isk,$j,1)];
+//					}
+//				}
+//				$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
+//			}
+//		} else {
+//			foreach($iteminfo as $info_key => $info_value){
+//				if(strpos($ikind,$info_key)===0){
+//					$ikind_words = $info_value;
+//					break;
+//				}
+//				
+//			}
+//			$isk_words = '';
+//			if($isk && ! is_numeric($isk)){
+//				for ($j = 0; $j < strlen($isk); $j++) {
+//					$isk_words .= $itemspkinfo[substr($isk,$j,1)];
+//				}
+//			}
+//			$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
+//		}
+//	}
+//	$mode = 'shop';
+//
+//	return;
 
 }
+
+//function shoplist($sn) {
+//	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo;
+//	$file = GAME_ROOT."./gamedata/shopitem/{$sn}shopitem.php";
+//	$itemlist = openfile($file);
+//	$in = count($itemlist);
+//	for($i=1;$i<$in;$i++){
+//		list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$itemlist[$i]);
+//		if(($num<=0)||($price<=0)){
+//			$itemdata[$i] = '';
+//		} elseif (strpos($ikind,'_') !== false) {
+//			list($ik,$it) = explode('_',$ikind);
+//			if($areanum < $it*$areaadd) {
+//				$itemdata[$i] = '';
+//			} else {
+//				foreach($iteminfo as $info_key => $info_value){
+//					if(strpos($ik,$info_key)===0){
+//						$ikind_words = $info_value;
+//						break;
+//					}
+//				}
+//				$isk_words = '';
+//				if($isk && ! is_numeric($isk)){
+//					for ($j = 0; $j < strlen($isk); $j++) {
+//						$isk_words .= $itemspkinfo[substr($isk,$j,1)];
+//					}
+//				}
+//				$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
+//			}
+//		} else {
+//			foreach($iteminfo as $info_key => $info_value){
+//				if(strpos($ikind,$info_key)===0){
+//					$ikind_words = $info_value;
+//					break;
+//				}
+//				
+//			}
+//			$isk_words = '';
+//			if($isk && ! is_numeric($isk)){
+//				for ($j = 0; $j < strlen($isk); $j++) {
+//					$isk_words .= $itemspkinfo[substr($isk,$j,1)];
+//				}
+//			}
+//			$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
+//		}
+//	}
+//	$mode = 'shop';
+//
+//	return;
+//
+//}
 
 ?>

@@ -12,7 +12,11 @@ function rs_game($mode = 0) {
 	if ($mode & 1) {
 		//echo " - 消息初始化 - ";
 		//清空玩家log
-		dir_clear("{$dir}log/");
+		//dir_clear("{$dir}log/");
+		
+		$sql = file_get_contents("{$sqldir}log.sql");
+		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
+		runquery($sql);
 		//清空聊天信息
 		$sql = file_get_contents("{$sqldir}chat.sql");
 		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
@@ -177,25 +181,43 @@ function rs_game($mode = 0) {
 	}
 	if ($mode & 32) {
 		//echo " - 商店初始化 - ";
-		global $checkstr;
-		dir_clear("{$dir}shopitem/");
+		$sql = file_get_contents("{$sqldir}shopitem.sql");
+		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
+		runquery($sql);
+		
 		$file = config('shopitem',$gamecfg);
 		$shoplist = openfile($file);
-		$type = 0;
-		$in = count($shoplist);
-		for($i=1;$i<$in;$i++) {
-			list($a,$b) = explode(',',$shoplist[$i]);
-			if(($a == '0')&&((int)$b>$type)) {
-				$type = $b;
-				$shopitem[$type] = $checkstr;
-			} else {
-				$shopitem[$type] .= $shoplist[$i];
+		$qry = '';
+		foreach($shoplist as $lst){
+			list($kind,$num,$price,$area,$item,$itmk,$itme,$itms,$itmsk)=explode(',',$lst);
+			if($kind != 0){
+				$qry .= "('$kind','$num','$price','$area','$item','$itmk','$itme','$itms','$itmsk'),";
 			}
 		}
-		foreach($shopitem as $s => $sdata) {
-			$sfile = GAME_ROOT."./gamedata/shopitem/{$s}shopitem.php";
-			writeover($sfile,$sdata,'ab');
+		if(!empty($qry)){
+			$qry = "INSERT INTO {$tablepre}shopitem (kind,num,price,area,item,itmk,itme,itms,itmsk) VALUES ".substr($qry, 0, -1);
 		}
+		$db->query($qry);
+		
+//		global $checkstr;
+//		dir_clear("{$dir}shopitem/");
+//		$file = config('shopitem',$gamecfg);
+//		$shoplist = openfile($file);
+//		$type = 0;
+//		$in = count($shoplist);
+//		for($i=1;$i<$in;$i++) {
+//			list($a,$b) = explode(',',$shoplist[$i]);
+//			if(($a == '0')&&((int)$b>$type)) {
+//				$type = $b;
+//				$shopitem[$type] = $checkstr;
+//			} else {
+//				$shopitem[$type] .= $shoplist[$i];
+//			}
+//		}
+//		foreach($shopitem as $s => $sdata) {
+//			$sfile = GAME_ROOT."./gamedata/shopitem/{$s}shopitem.php";
+//			writeover($sfile,$sdata,'ab');
+//		}
 	}
 }
 

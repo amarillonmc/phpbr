@@ -30,7 +30,7 @@ function move($moveto = 99) {
 	}
 	//if(strpos($inf, 'f') !== false){ $movesp += 5; }
 	//if(strpos($inf, 'i') !== false){ $movesp += 15; }
-	if($club == 6){ $movesp -= 3; }
+	if($club == 6){ $movesp -= 10; }
 
 	
 	if($sp <= $movesp){
@@ -132,7 +132,7 @@ function search(){
 	}
 	//if(strpos($inf, 'a') !== false){ $schsp += 5; }
 	//if(strpos($inf, 'i') !== false){ $schsp += 15; }
-	if($club == 10){ $schsp -= 3; }
+	if($club == 10){ $schsp -= 10; }
 	
 
 	if($sp <= $schsp){

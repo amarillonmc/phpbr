@@ -4,7 +4,7 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
-function gaddslashes($string, $force = 0) {
+function gaddslashes($string, $force = 0) {//充其量是给数组加反斜杠的函数
 	if(!$GLOBALS['magic_quotes_gpc'] || $force) {
 		if(is_array($string)) {
 			foreach($string as $key => $val) {
@@ -13,6 +13,26 @@ function gaddslashes($string, $force = 0) {
 		} else {
 			$string = addslashes($string);
 			$string = htmlspecialchars($string,ENT_NOQUOTES);
+		}
+	}
+	return $string;
+}
+
+function gkillquotes($string) {
+	if(is_array($string)) {
+		foreach($string as $key => $val) {
+			$string[$key] = gkillquotes($val);
+		}
+	} else {
+		if(!$GLOBALS['magic_quotes_gpc']) {
+			foreach(Array('\'','"','&','#','<','>','\\',';',',') as $value){
+				$string = str_replace($value,'',$string);
+			}
+
+		}else{
+			foreach(Array('\\\'','\\"','&','#','<','>','\\\\',';',',') as $value){
+				$string = str_replace($value,'',$string);
+			}
 		}
 	}
 	return $string;
@@ -211,11 +231,20 @@ function naddnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
 	$db->query("INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ('$t','$n','$a','$b','$c','$d','$e')");
 }
 
-function logsave($pid,$time,$log = ''){
-	$logfile = GAME_ROOT."./gamedata/log/$pid.log";
-	$date = date("H:i:s",$time);
-	$logdata = "{$date}，{$log}<br>\n";
-	writeover($logfile,$logdata,'ab+');
+function logsave($pid,$time,$log = '',$type = 's'){
+//	$logfile = GAME_ROOT."./gamedata/log/$pid.log";
+//	$date = date("H:i:s",$time);
+//	$logdata = "{$date}，{$log}<br>\n";
+//	writeover($logfile,$logdata,'ab+');
+	
+	global $db,$tablepre;
+	$ldata['toid']=$pid;
+	$ldata['type']=$type;
+	$ldata['time']=$time;
+	$ldata['log']=$log;
+	$ldata['isnew']=1;
+	//$db->query("INSERT INTO {$tablepre}log (toid,type,`time`,log) VALUES ('$pid','$type','$time','$log')");
+	$db->array_insert("{$tablepre}log", $ldata);
 	return;	
 }
 
@@ -284,6 +313,27 @@ function getchat($last,$team='',$limit=0) {
 	return $chatdata;
 }
 
+function compatible_json_encode($data){	//自动选择使用内置函数或者自定义函数，结合JSON.php可做到兼容低版本PHP
+	if(PHP_VERSION < '5.2.0'){
+		require_once GAME_ROOT.'./include/JSON.php';
+		$json = new Services_JSON();
+		$jdata = $json->encode($data);
+	} else{
+		$jdata = json_encode($data);
+	}
+	return $jdata;	
+}
 
+//function getmicrotime()
+//{
+//	list($usec, $sec) = explode(" ",microtime());
+//	return ((float)$usec + (float)$sec);
+//}
+//
+//function putmicrotime($t_s,$t_e,$file)
+//{
+//	$mtime = ($t_e - $t_s)*1000;
+//	writeover( $file.'.txt',"执行时间：$mtime 毫秒 \n",'ab');
+//}
 
 ?>

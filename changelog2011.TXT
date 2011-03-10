@@ -1,8 +1,18 @@
+2011/3/7
+修改了地图上部分剑的耐久，增加了少量探测装备和道具；（mapitem_1.php）
+更新了数据库类，加入了一些实用方法；（db_mysql.class.php）
+将玩家之间的作战讯息改为数据库储存，不知道能不能让速度快些？（global.func.php; log.sql; game.php; command.php; state.func.php;combat.func.php; battle.func.php）
+将商店改为数据库储存；（shopitem_1.php; system.func.php; shop.htm; special.func.php; itemmain.func.php）
+现在拾到有数量的武器时，如果跟装备着的武器一样，则可以直接合并；（itemmain.func.php）
+将system.php拆分成了两个文件，这样修改资源就不会波及到站长留言了；（system.php; resources.php; common.inc.php）
+现在投爆灵系武器作为合成材料时也会全部用完了；（itemmain.func.php）
+修改部分道具的合成公式；（itemmix_1.php; help.htm）
+开局道具增加方块（stitem_1.php）
+
 2011/3/6
 现在回避姿态能提高陷阱的回避率了（itemmain.func.php）
 增加了探雷属性，现在部分装备可以提高回避陷阱的概率；（itemmain.func.php; help.htm）
 增加了探雷器，调整了属性防御饰品的价格，修改了凸眼鱼和小黄书的价格；（shopitem_1.php）
-
 
 2011/3/5
 现在各系擅长的称号在升级时可以增加熟练度了；（system.php; help.htm; state.func.php）

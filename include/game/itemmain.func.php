@@ -105,15 +105,25 @@ function itemget() {
 	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
 	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB|M|V)/',$itmk0) && $itms0 !== $nosta){
-		for($i = 1;$i <= 5;$i++){
-			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
-			if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
-				${'itms'.$i} += $itms0;
-				$log .= "与包裹里的<span class=\"yellow\">$itm0</span>合并了。";
-				$itm0 = $itmk0 = $itmsk0 = '';
-				$itme0 = $itms0 = 0;
-				$mode = 'command';
-				return;
+		global $wep,$wepk,$wepe,$weps,$wepsk;
+		if($wep == $itm0 && $wepk == $itmk0 && $wepe == $itme0 && $wepsk == $itmsk0){
+			$weps += $itms0;
+			$log .= "与装备着的武器<span class=\"yellow\">$wep</span>合并了。";
+			$itm0 = $itmk0 = $itmsk0 = '';
+			$itme0 = $itms0 = 0;
+			$mode = 'command';
+			return;
+		}else{
+			for($i = 1;$i <= 5;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
+					${'itms'.$i} += $itms0;
+					$log .= "与包裹里的<span class=\"yellow\">$itm0</span>合并了。";
+					$itm0 = $itmk0 = $itmsk0 = '';
+					$itme0 = $itms0 = 0;
+					$mode = 'command';
+					return;
+				}
 			}
 		}
 	} elseif(preg_match('/^H|^P/',$itmk0) && $itms0 !== $nosta){
@@ -400,7 +410,7 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 	return;
 }
 
-function itemreduce($item){
+function itemreduce($item){ //只限合成使用！！
 	global $log;
 	if(strpos($item,'itm') === 0) {
 		$itmn = substr($item,3,1);
@@ -415,7 +425,7 @@ function itemreduce($item){
 	}
 
 	if(!$itms) { return; }
-	if(preg_match('/^(WC|WD|WF|Y|C|X|TN|GB|H|V|M)/',$itmk)){$itms--;}
+	if(preg_match('/^(Y|C|X|TN|GB|H|V|M)/',$itmk)){$itms--;}
 	else{$itms=0;}
 	if($itms <= 0) {
 		$itms = 0;
@@ -429,10 +439,12 @@ function itemreduce($item){
 
 function itembuy($item,$shop,$bnum=1) {
 	global $log,$name,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$pls,$shops;
-
-	$file = GAME_ROOT."./gamedata/shopitem/{$shop}shopitem.php";
-	$itemlist = openfile($file);
-	$iteminfo = $itemlist[$item];
+	global $db,$tablepre;
+	$result=$db->query("SELECT * FROM {$tablepre}shopitem WHERE sid = '$item'");
+	$iteminfo = $db->fetch_array($result);
+	//$file = GAME_ROOT."./gamedata/shopitem/{$shop}shopitem.php";
+	//$itemlist = openfile($file);
+	//$iteminfo = $itemlist[$item];
 	if(!$iteminfo) {
 		$log .= '要购买的道具不存在！<br>';
 		return;
@@ -443,44 +455,49 @@ function itembuy($item,$shop,$bnum=1) {
 //		return;
 //	}
 	$bnum = (int)$bnum;
-	list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$iteminfo);
-	if($num <= 0) {
+	//list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$iteminfo);
+	if($iteminfo['num'] <= 0) {
 		$log .= '此物品已经售空！<br>';
 		return;
 	} elseif($bnum<=0) {
 		$log .= '购买数量必须为大于0的整数。<br>';
 		return;
-	} elseif($bnum>$num) {
+	} elseif($bnum>$iteminfo['num']) {
 		$log .= '购买数量必须小于存货数量。<br>';
 		return;
-	} elseif($money < $price*$bnum) {
+	} elseif($money < $iteminfo['price']*$bnum) {
 		$log .= '你的钱不够，不能购买此物品！<br>';
 		return;
-	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$ikind)&&$bnum>1) {
+	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$iteminfo['itmk'])&&$bnum>1) {
 		$log .= '此物品一次只能购买一个。<br>';
 		return;
+	}elseif($iteminfo['area']> $areanum/$areaadd){
+		$log .= '此物品尚未开放出售！<br>';
+		return;
 	}
-	if (strpos($ikind,'_') !== false) {
-		list($ik,$it) = explode('_',$ikind);
-		if($areanum < $it*$areaadd) {
-			$log .= '此物品尚未开放出售！<br>';
-			return;
-		}
-	} else {
-		$ik = $ikind;
-	}
-
-	$num-=$bnum;
-	$money -= $price*$bnum;
-	$itemlist[$item] = "$num,$price,$iname,$ikind,$ieff,$ista,$isk,\n";
-	writeover($file,implode('',$itemlist));
-	naddnews($now,'itembuy',$name,$iname);
+//	if (strpos($ikind,'_') !== false) {
+//		list($ik,$it) = explode('_',$ikind);
+//		if($areanum < $it*$areaadd) {
+//			$log .= '此物品尚未开放出售！<br>';
+//			return;
+//		}
+//	} else {
+//		$ik = $ikind;
+//	}
+	$inum = $iteminfo['num']-$bnum;
+	$sid = $iteminfo['sid'];
+	$db->query("UPDATE {$tablepre}shopitem SET num = '$inum' WHERE sid = '$sid'");
+//	$num-=$bnum;
+	$money -= $iteminfo['price']*$bnum;
+//	$itemlist[$item] = "$num,$price,$iname,$ikind,$ieff,$ista,$isk,\n";
+//	writeover($file,implode('',$itemlist));
+	naddnews($now,'itembuy',$name,$iteminfo['item']);
 	$log .= "购买成功。";
-	$itm0 = $iname;
-	$itmk0 = $ik;
-	$itme0 = $ieff;
-	$itms0 = $ista*$bnum;
-	$itmsk0 = $isk;
+	$itm0 = $iteminfo['item'];
+	$itmk0 = $iteminfo['itmk'];
+	$itme0 = $iteminfo['itme'];
+	$itms0 = $iteminfo['itms']*$bnum;
+	$itmsk0 = $iteminfo['itmsk'];
 
 	itemget();	
 	return;

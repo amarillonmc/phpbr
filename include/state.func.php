@@ -211,7 +211,7 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		} elseif (! $w_type) {
 			global $w_pid, $now;
 			$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$spup}！</span><br>";
-			logsave ( $w_pid, $now, $w_log );
+			logsave ( $w_pid, $now, $w_log,'s');
 		}
 	} elseif ($lvl >= 255) {
 		$lvl = 255;

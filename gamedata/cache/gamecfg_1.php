@@ -17,7 +17,7 @@ $validlimit = 150;
 //连斗时的人数限制
 $combolimit = 15;
 //连斗时的死亡人数限制
-$deathlimit = 15;
+$deathlimit = 233;
  
 // 等级提升基本经验值 
 $baseexp = 9;

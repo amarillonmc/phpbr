@@ -21,6 +21,8 @@ if($pdata['pass'] != $cpass) {
 	}
 }
 
+
+
 if(($pdata['hp'] <= 0)||($gamestate === 0)) {
 	header("Location: end.php");exit();
 }
@@ -30,6 +32,7 @@ extract($pdata);
 init_playerdata();
 init_profile();
 
+$log = '';
 if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
 	if(($now-$noisetime) < 60) {
 		$noisesec = $now - $noisetime;
@@ -40,15 +43,22 @@ if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$
 	}
 }
 
-if(file_exists(GAME_ROOT."./gamedata/log/$pid.log")){
-	$log2 = readover(GAME_ROOT."./gamedata/log/$pid.log");
-	if($log2 != '\n');{
-		$log .= $log2;
-		writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
-	}
-} else {
-	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
+//if(file_exists(GAME_ROOT."./gamedata/log/$pid.log")){
+//	$log2 = readover(GAME_ROOT."./gamedata/log/$pid.log");
+//	if($log2 != '\n');{
+//		$log .= $log2;
+//		writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
+//	}
+//} else {
+//	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
+//}
+
+$result = $db->query("SELECT * FROM {$tablepre}log WHERE toid = '$pid' AND isnew = 1 ORDER BY time,lid");
+$db->query("UPDATE {$tablepre}log SET isnew = 0 WHERE toid = '$pid' AND isnew = 1");
+while($logtemp = $db->fetch_array($result)){
+	$log .= date("H:i:s",$logtemp['time']).'，'.$logtemp['log'].'<br />';
 }
+
 
 $chatdata = getchat(0,$teamID);
 

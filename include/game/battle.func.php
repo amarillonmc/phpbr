@@ -157,7 +157,7 @@ function senditem(){
 //		}
 		$log .= "<span class=\"lime\">你对{$edata['name']}说：“{$message}”</span><br>";
 		$w_log = "<span class=\"lime\">{$name}对你说：“{$message}”</span><br>";
-		if(!$edata['type']){logsave($edata['pid'],$now,$w_log);}
+		if(!$edata['type']){logsave($edata['pid'],$now,$w_log,'c');}
 	}
 	
 	if($command != 'back'){
@@ -188,7 +188,7 @@ function senditem(){
 				${'w_itmsk'.$i} = $itmsk;
 				$log .= "你将<span class=\"yellow\">${'w_itm'.$i}</span>送给了<span class=\"yellow\">$w_name</span>。<br>";
 				$w_log = "<span class=\"yellow\">$name</span>将<span class=\"yellow\">${'w_itm'.$i}</span>送给了你。";
-				if(!$w_type){logsave($w_pid,$now,$w_log);}
+				if(!$w_type){logsave($w_pid,$now,$w_log,'t');}
 				naddnews($now,'senditem',$name,$w_name,$itm);
 				w_save($w_pid);
 				$itm = $itmk = $itmsk = '';

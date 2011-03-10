@@ -367,16 +367,16 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 	}
 
 	$mixitem = array();
-	if(${'itm'.$m1}) { $mixitem[] = ${'itm'.$m1}; }
-	if(${'itm'.$m2}) { $mixitem[] = ${'itm'.$m2}; }
-	if(${'itm'.$m3}) { $mixitem[] = ${'itm'.$m3}; }
+	if(${'itm'.$m1}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$)/','',${'itm'.$m1}); }
+	if(${'itm'.$m2}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$)/','',${'itm'.$m2}); }
+	if(${'itm'.$m3}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$)/','',${'itm'.$m3}); }
 
 	if(sizeof($mixitem) < 2){
 		$log .= '至少需要2个道具才能进行合成！';
 		$mode = 'itemmix';
 		return;
 	}
-
+	
 	include_once config('mixitem',$gamecfg);
 	$mixflag = false;
 	foreach($mixinfo as $minfo) {

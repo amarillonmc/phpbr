@@ -2,7 +2,8 @@
 
 define('CURSCRIPT', 'game');
 
-require_once './include/common.inc.php';//$t_s=getmicrotime();
+require_once './include/common.inc.php';
+//$t_s=getmicrotime();
 //require_once GAME_ROOT.'./include/JSON.php';
 require_once GAME_ROOT.'./include/game.func.php';
 require_once config('combatcfg',$gamecfg);
@@ -237,6 +238,6 @@ echo $jgamedata;
 ob_end_flush();
 
 //$t_e=getmicrotime();
-//putmicrotime($t_s,$t_e,'news_time');
+//putmicrotime($t_s,$t_e,'cmd_time');
 
 ?>

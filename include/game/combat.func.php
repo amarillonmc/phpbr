@@ -58,9 +58,12 @@ function combat($active = 1, $wep_kind = '') {
 			$mode = 'command';
 			return;
 		} elseif ($edata ['hp'] <= 0) {
+			global $corpseprotect,$gamestate;
 			$log .= "<span class=\"red\">" . $edata ['name'] . "</span>已经死亡，不能被攻击。<br>";
-			include_once GAME_ROOT . './include/game/battle.func.php';
-			findcorpse ( $edata );
+			if($edata['endtime'] < $now -$corpseprotect && $gamestate < 40){
+				include_once GAME_ROOT . './include/game/battle.func.php';
+				findcorpse ( $edata );
+			}
 			$bid = 0;
 			return;
 		}
@@ -880,9 +883,9 @@ function get_WF_p($w, $clb, $we) {
 	} else {
 		$we = $we > 0 ? $we : 1;
 		if ($clb == 9) {
-			$spd0 = round ( 0.2*$we);
+			$spd0 = round ( 0.4*$we);
 		} else {
-			$spd0 = round ( 0.25*$we);
+			$spd0 = round ( 0.5*$we);
 		}
 		if ($spd0 >= ${$w . 'sp'}) {
 			$spd = ${$w . 'sp'} - 1;

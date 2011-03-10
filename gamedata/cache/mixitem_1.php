@@ -75,8 +75,8 @@ $mixinfo = array
 	array('stuff' => array('空白符卡','【触手的萃取液】','《东方永夜抄》'),'result' => array('紫奥义『弹幕结界』','WF',222,'∞','rd'),),
 	array('stuff' => array('风见 幽香的ID卡','坂持 金发的ID卡','御坂 美琴的ID卡'),'result' => array('游戏解除钥匙','Y',1,1,),),
 	array('stuff' => array('《哲♂学》','增幅设备'),'result' => array('森之妖精的棍棒','WP',150,50,'r'),),
-	array('stuff' => array('时符『Private Square』','幻之刃'),'result' => array('『咲夜的世界』','WF',140,'∞','id'),),
-	array('stuff' => array('时符『Private Square』','永恒飞刃'),'result' => array('『Eternal Meek』','WF',80,'∞','ir'),),
+	array('stuff' => array('时符『Private Square』','幻之刃','永恒飞刃'),'result' => array('『收缩的世界』','WF',155,'∞','ir'),),
+	array('stuff' => array('幻符【杀人玩偶】','★时停怀表★','永恒飞刃'),'result' => array('幻葬『夜雾幻影杀人鬼』','WC',180,'∞','ir'),),
 	array('stuff' => array('幽鬼剑『妖童饿鬼之断食』','☆楼观剑☆','☆白楼剑☆'),'result' => array('空观剑『六根清净斩』','WF',360,'∞','r'),),
 	);
 ?>

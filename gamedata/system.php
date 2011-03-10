@@ -11,10 +11,10 @@ $allowcsscache = 1;
 //站长留言
 $adminmsg = 'AC大逃杀<br>
 感谢Acg_Xilin提供服务器空间<br>
-<h1>当前版本为 2.91 SP5</h1><br>
-讨论群：101336468<br>
+<h1>当前版本为 2.92 SP1</h1><br>
+<strike>讨论群：101336468</strike><br>上面那个群已满，分群：120405311<br>
 <h3>10分钟没动作可能被反挂机系统抹杀，请注意！</h3>
-<img src = "gjzs.jpg" />';
+<iframe width="100%" height="260" class="share_self"  frameborder="0" scrolling="no" src="http://service.t.sina.com.cn/widget/WeiboShow.php?width=0&height=260&fansRow=0&ptype=1&speed=100&skin=10&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=1583697851&verifier=d5e5b6db"></iframe>';
 //游戏开始方式 0=后台手动开始，1=每天固定时间始，2=上局结束后，间隔固定时间开始
 $startmode = 0;
 //游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔时间，>0
@@ -51,6 +51,8 @@ $npcchaton = 1;
 $npccanchat = Array(1,5,6,7,10);
 //反挂机系统间隔时间，单位分钟
 $antiAFKertime=10;
+//尸体保护时间，单位秒
+$corpseprotect=10;
 
 /*template settings*/
 //模板编号。默认为1

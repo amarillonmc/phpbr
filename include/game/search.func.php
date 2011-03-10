@@ -206,7 +206,7 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate;
+	global $now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect;
 	$event_dice = rand(0,99);
 	if($event_dice < $event_obbs){
 		include_once GAME_ROOT.'./include/game/event.func.php';
@@ -327,7 +327,8 @@ function discover($schmode = 0) {
 				} else {
 					$corpse_dice = rand(0,99);
 					if($corpse_dice < $corpse_obbs) {
-						if($gamestate <40 &&(($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
+						
+						if($gamestate <40 && $edata['endtime'] < $now - $corpseprotect && (($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
 							
 							$bid = $edata['pid'];
 							include_once GAME_ROOT.'./include/game/battle.func.php';

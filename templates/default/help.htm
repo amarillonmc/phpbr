@@ -141,7 +141,7 @@
 	<DD>答：钱可以在商店购买装备或者道具。<br>
 	进入游戏时会自动给每个玩家发一定数量的金钱，NPC身上也有大量金钱，杀死玩家或者NPC就能拿到他身上携带的金钱。<br>
 	除此之外，没有别的获得金钱的方式。<br>
-	不同游戏版本里，商店的位置并不完全一样。ACFUN大逃杀里，在“管理后台”与“光坂高校”选择“特殊”下拉框的“商店”就能够进入商店了。
+	不同游戏版本里，商店的位置并不完全一样。ACFUN大逃杀里，在“无月之影”、“光坂高校”或者“花菱商厦”选择“特殊”下拉框的“商店”就能够进入商店了。
 	<DT>问：能组队吗？怎么组队？怎样加入队伍？怎么给队友东西？给队友钱？
 	<DD>答：在游戏进入“连斗”阶段之前都可以组队，进入“连斗”之后所有队伍自动解散并且无法再组队，此时玩家只能自相残杀。<BR>
 	想创立队伍或加入队伍请选“队伍”指令。<BR>
@@ -153,7 +153,7 @@
 	<DT>问：体力耗尽了！生命值快归零了！怎样回复体力和生命？
 	<DD>答：回复体力和生命有三种办法：吃补给品、睡眠/治疗/静养，以及等级提升。<BR>
 	游戏开局会发面包和矿泉水，分别能回复生命和体力。游戏各地区地面上也散布有大量的补给品，不过可能带毒，服用后反而损失生命。<BR>
-	如果补给耗尽，选择“睡眠”指令并提交可以随时间回复体力，选“治疗”指令则是回复生命，在“ACFUN镇医院”还可以选择“静养”指令，同时回复体力和生命。<BR>
+	如果补给耗尽，选择“睡眠”指令并提交可以随时间回复体力，选“治疗”指令则是回复生命，在“精灵中心”以及“对天使用作战本部”还可以选择“静养”指令，同时回复体力和生命。<BR>
 	点击“提交”能看到回复量，在回复时，无法进行其他行动；点击“返回”并提交则返回作战状态。<BR>
 	此外，等级提升时也能回复少量体力和生命值。<BR>
 	<DT>问：受伤了怎么办？中毒怎么办？
@@ -280,8 +280,11 @@
 <span class="yellow">『应战策略』</span> 更改自己的应战策略，各种应战策略的详情见下文。<br>
 <span class="yellow">『留言变更』</span> 修改自己的座右铭，杀人留言和遗言。<br>
 <span class="yellow">『包扎伤口』</span>
-如果在战斗中受伤，可以使用此功能处理伤口。包扎伤口要消耗25点体力，如果体力不足则无法包扎。<br>
-<span class="yellow">『查毒』</span> 检查饮食中是否有毒，只有特性为“黑衣组织”时才能使用具有此功能。</p>
+如果在战斗中受伤，可以使用此功能处理伤口。包扎每处伤口要消耗25点体力，如果体力不足则无法包扎。<br>
+<span class="yellow">『武器带电』</span>  给装备着的武器附加“电击”属性，只有特性为“锡安成员”时才具有此功能。需要消耗1个电池/探测器电池
+。<br>
+<span class="yellow">『查毒』</span> 检查饮食中是否有毒，只有特性为“黑衣组织”时才具有此功能。<br>
+<span class="yellow">『武器淬毒』</span> 给装备着的武器附加“带毒”属性，只有特性为“黑衣组织”时才具有此功能。需要消耗1个毒药。</p>
 
 
 <p><span class="lime">“队伍”</span>：<br>
@@ -731,7 +734,7 @@
 		<div class="nttx"><span class="yellow">低</span></div>
 		</td>
 		<td class="b3">
-		<div class="nttx"><span class="clan">高</span></div>
+		<div class="nttx"><span class="clan">最高</span></div>
 		</td>
 		<td class="b3">
 		<div class="nttx"><span class="red">最低</span></div>
@@ -1173,7 +1176,7 @@
 	</tr>
 	<tr>
 		<td class="b2" height=20px>
-		<div class="nttx">必杀辅助</div>
+		<div class="nttx">重击辅助</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">减少重击和发动必杀技消耗的怒气，增加重击发生的概率</div>
@@ -1404,13 +1407,9 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">种类</div>
 		</td>
 		<td class="b1">
-		<div class="nttx">熟练度变化</div>
-		</td>
+		<div class="nttx">被动特性</div></td>
 		<td class="b1">
-		<div class="nttx">能力值变化</div>
-		</td>
-		<td class="b1">
-		<div class="nttx">特殊能力</div>
+		<div class="nttx">主动技能</div>
 		</td>
 	</tr>
 	<tr>
@@ -1421,10 +1420,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">一般</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">殴熟+25</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">升级时额外增加殴熟</div>
+		<div class="nttx">殴熟+25；升级时额外增加殴熟</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1438,10 +1434,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">一般</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">斩熟+25</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">升级时额外增加斩熟</div>
+		<div class="nttx">斩熟+25；升级时额外增加斩熟</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1455,10 +1448,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">一般</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">射熟+25</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">升级时额外增加射熟</div>
+		<div class="nttx">射熟+25；升级时额外增加射熟</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1472,10 +1462,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">一般</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投熟+25</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">升级时额外增加投熟</div>
+		<div class="nttx">投熟+25；升级时额外增加投熟</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1489,13 +1476,10 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">一般</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">爆熟+25</div>
+		<div class="nttx">爆熟+25；升级时额外增加爆熟；设置陷阱有熟练度和经验值加成；合成爆炸物有数量加成；陷阱回避概率上升。</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">升级时额外增加爆熟</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">设置陷阱有熟练度和经验值加成；合成爆炸物有数量加成；陷阱回避概率上升。</div>
+		<div class="nttx">无</div>
 		</td>
 	</tr>
 	<tr>
@@ -1506,10 +1490,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">一般</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵熟+25</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">升级时额外增加灵熟</div>
+		<div class="nttx">灵熟+25；升级时额外增加灵熟</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">能自由控制怒气使用必杀技</div>
@@ -1523,10 +1504,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">移动体力消耗减少</div>
+		<div class="nttx">移动体力消耗减少；陷阱回避率增加</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1540,10 +1518,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">探索体力消耗减少</div>
+		<div class="nttx">探索体力消耗减少；遭遇陷阱几率减少</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1557,13 +1532,10 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
+		<div class="nttx">hack成功率极高，且不会导致严重后果；合成电子设备有效果加成；探雷装备效率提高；电气属性致伤率增加；</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">hack成功率极高；合成移动PC或者广域生命探测器有效果加成；探雷装备的使用效率提高</div>
+		<div class="nttx">能够用电池或探测器电池为武器增加电击属性</div>
 		</td>
 	</tr>
 	<tr>
@@ -1574,13 +1546,24 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
+		<div class="nttx">下毒伤害加成；毒属性致伤率增加；</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
+		<div class="nttx">能够查毒；能够用毒药为武器增加带毒属性</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">冥土追魂</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">下毒伤害加成；毒属性攻击命中率加成；能够查毒；合成补给品有数量加成</div>
+		<div class="nttx">特殊</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">使用补给品效果、合成补给品耐久，以及睡眠、治疗、静养恢复数值都有加成；</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">能够快速包扎全身伤口</div>
 		</td>
 	</tr>
 	<tr>
@@ -1591,10 +1574,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">全系熟练+10</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">升级时额外增加全系熟练</div>
+		<div class="nttx">全系熟练+10；升级时额外增加全系熟练</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1608,10 +1588,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">初始资金500元</div>
+		<div class="nttx">初始资金500元；购买物品所需金钱数下降</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
@@ -1625,16 +1602,13 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">生命值上限+100且成长率更高</div>
+		<div class="nttx">生命值上限+100；生命最大值成长率更高</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
 		</td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td class="b2" height=20px>
 		<div class="nttx">根性兄贵</div>
 		</td>
@@ -1642,14 +1616,11 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">无</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">体力值上限+200且升级时回复更多体力</div>
+		<div class="nttx">体力值上限+200；升级时体力最大值成长且恢复更多体力</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">无</div>
-	</tr>
+	</tr>-->
 </table>
 <br>
 <BR>
@@ -2052,6 +2023,26 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">锐器/32/10/带毒</div>
 		</td>
 	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">《北斗神拳》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">【北斗百裂拳】</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">【北斗有情破颜拳】</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">钝器/300/100/重击辅助爆炸连击</div>
+		</td>
+	</tr>
 		<tr>
 		<td class="b3" height=20px>
 		<div class="nttx">《哲♂学》</div>
@@ -2172,6 +2163,26 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">远程武器/640/200/火焰冻气爆炸一发</div>
 		</td>
 	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">【最终鬼畜兵器】</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『奥丁巨核装备』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">增幅设备</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">【霜火协奏曲】</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">远程武器/1024/256/火焰冻气音波爆炸连击</div>
+		</td>
+	</tr>
 		<tr>
 		<td class="b3" height=20px>
 		<div class="nttx">汽油</div>
@@ -2194,46 +2205,6 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 	</tr>
 	<tr>
 		<td class="b3" height=20px>
-		<div class="nttx">《小黄的草帽》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">《小黄的钓鱼竿》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">《小黄的行军靴》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">→</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">《小黄的精灵球》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">投掷武器/233/∞</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="b3" height=20px>
-		<div class="nttx">《小黄的精灵球》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">《小黄的收服特训》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">－</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">→</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">《小黄的超级球》</div>
-		</td>
-		<td class="b3">
-		<div class="nttx">投掷武器/233/∞/连击</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="b3" height=20px>
 		<div class="nttx">幻之使魔</div>
 		</td>
 		<td class="b3">
@@ -2249,7 +2220,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">灵魂的结晶</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">投掷武器/180/120/音波连击</div>
+		<div class="nttx">投掷武器/180/240/音波连击</div>
 		</td>
 	</tr>
 	<tr>
@@ -2611,7 +2582,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">『收缩的世界』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/155/∞/冻气连击</div>
+		<div class="nttx">灵力武器/120/∞/冻气连击</div>
 		</td>
 	</tr>
 	<tr>
@@ -2673,6 +2644,26 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		</td>
 		<td class="b3">
 		<div class="nttx">灵力武器/222/∞/连击爆炸</div>
+		</td>
+	</tr>
+	<tr>
+	<td class="b3" height=20px>
+		<div class="nttx">★荆棘式电子地雷★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">增幅设备</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★一发逆转神话★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">陷阱/9999/1</div>
 		</td>
 	</tr>
 </table>
@@ -2776,6 +2767,149 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		</td>
 		<td class="b3">
 		<div class="nttx">特殊/1/1</div>
+		</td>
+	</tr>
+</table>
+<br>
+<br>
+<p><span class="yellow">小黄系列合成表</span>：</p>
+<table cellSpacing=0 cellPadding=0>
+	<tr>
+		<td class="b1" height=20px>
+		<div class="nttx">合成材料一</div>
+		</td>
+		<td class="b1">
+		<div class="nttx">合成材料二</div>
+		</td>
+		<td class="b1">
+		<div class="nttx">合成材料三</div>
+		</td>
+		<td class="b1"></td>
+		<td class="b1">
+		<div class="nttx">合成结果</div>
+		</td>
+		<td class="b1">
+		<div class="nttx">用途</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">白色的羽毛</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">金色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">凤凰之羽</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">锐器/20/200/火焰</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">白色的羽毛</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">银色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">露琪亚之羽</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">锐器/20/200/冻气爆炸</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">《小黄的草帽》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的钓鱼竿》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的行军靴》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的精灵球》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/233/∞</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">《小黄的精灵球》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的收服特训》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的超级球》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/233/∞/连击</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">《小黄的草帽》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">凤凰之羽</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">露琪亚之羽</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的常磐之力》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">饰物/233/∞/重击辅助</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">《小黄的超级球》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的常磐之力》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">《小黄的大师球》</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/466/∞/重击辅助爆炸连击</div>
 		</td>
 	</tr>
 </table>

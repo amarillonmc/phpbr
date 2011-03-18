@@ -210,10 +210,15 @@ function itemuse($itmn) {
 			$log .= "卸下了饰品<span class=\"red\">$itm</span>，装备了<span class=\"yellow\">$art</span>。<br>";
 		}
 	} elseif (strpos ( $itmk, 'HS' ) === 0) {
-		global $sp, $msp;
+		global $sp, $msp,$club;
 		if ($sp < $msp) {
 			$oldsp = $sp;
-			$sp += $itme;
+			if($club == 16){
+				$spup = round($itme*2.5);
+			}else{
+				$spup = $itme;
+			}
+			$sp += $spup;
 			$sp = $sp > $msp ? $msp : $sp;
 			$oldsp = $sp - $oldsp;
 			$log .= "你使用了<span class=\"red\">$itm</span>，恢复了<span class=\"yellow\">$oldsp</span>点体力。<br>";
@@ -229,10 +234,15 @@ function itemuse($itmn) {
 			$log .= '你的体力不需要恢复。<br>';
 		}
 	} elseif (strpos ( $itmk, 'HH' ) === 0) {
-		global $hp, $mhp;
+		global $hp, $mhp,$club;
 		if ($hp < $mhp) {
 			$oldhp = $hp;
-			$hp += $itme;
+			if($club == 16){
+				$hpup = round($itme*2.5);
+			}else{
+				$hpup = $itme;
+			}
+			$hp += $hpup;
 			$hp = $hp > $mhp ? $mhp : $hp;
 			$oldhp = $hp - $oldhp;
 			$log .= "你使用了<span class=\"red\">$itm</span>，恢复了<span class=\"yellow\">$oldhp</span>点生命。<br>";
@@ -249,14 +259,19 @@ function itemuse($itmn) {
 			$log .= '你的生命不需要恢复。<br>';
 		}
 	} elseif (strpos ( $itmk, 'HB' ) === 0) {
-		global $hp, $mhp, $sp, $msp;
+		global $hp, $mhp, $sp, $msp,$club;
 		if (($hp < $mhp) || ($sp < $msp)) {
+			if($club == 16){
+				$bpup = round($itme*2.5);
+			}else{
+				$bpup = $itme;
+			}
 			$oldsp = $sp;
-			$sp += $itme;
+			$sp += $bpup;
 			$sp = $sp > $msp ? $msp : $sp;
 			$oldsp = $sp - $oldsp;
 			$oldhp = $hp;
-			$hp += $itme;
+			$hp += $bpup;
 			$hp = $hp > $mhp ? $mhp : $hp;
 			$oldhp = $hp - $oldhp;
 			$log .= "你使用了<span class=\"red\">$itm</span>，恢复了<span class=\"yellow\">$oldhp</span>点生命和<span class=\"yellow\">$oldsp</span>点体力。<br>";

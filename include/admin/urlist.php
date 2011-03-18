@@ -87,7 +87,33 @@ if($command == 'check') {
 			echo "无法删除用户 $name 。";
 		}
 	}
-} elseif($command == 'edit') {
+}  elseif($command == 'del2') {
+	$result = $db->query("SELECT username,uid FROM {$tablepre}users WHERE lastgame = 0 AND groupid<='$mygroup' LIMIT 1000");
+	while($ddata = $db->fetch_array($result)){
+		$n = $ddata['username'];$u = $ddata['uid'];
+		adminlog('delur',$n);
+		echo " 用户 $n 被删除。<br>";
+		$db->query("DELETE FROM {$tablepre}users WHERE uid='$u'");
+		
+	}
+//	$i = $db->affected_rows();
+//	adminlog('delng');
+//	echo "$i名用户被删除。<br>";
+//	for($i=0;$i<$showlimit;$i++){
+//		if(isset(${'user_'.$i})) {
+//			$urlist[] = ${'user_'.$i};
+//		}
+//	}
+//	foreach($urlist as $n => $name) {
+//		$db->query("DELETE FROM {$tablepre}users WHERE username='$name' AND groupid<='$mygroup'");
+//		if($db->affected_rows()){
+//			adminlog('delur',$name);
+//			echo " 用户 $name 被删除。<br>";
+//		} else {
+//			echo "无法删除用户 $name 。";
+//		}
+//	}
+}elseif($command == 'edit') {
 	echo '此功能尚未开放！';
 } else {
 
@@ -105,6 +131,7 @@ $gmlist
 	<option value="lastgame">最新游戏<br />
 	<option value="uid">用户编号<br />
 </select>查看用户列表</a><br>
+<input type="radio" name="command" id="del2" value="del2"><a onclick=sl('del2'); href="javascript:void(0);" >删除未使用账户（每次1000个）</a><br>
 <input type="submit" name="submit" value="提交">
 </form>
 EOT;

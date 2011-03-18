@@ -68,10 +68,10 @@ class dbstuff {
 //		return $this->query ($query);
 //	}
 	
-	function delete($dbname, $where){
-		$query = "DELETE FROM {$dbname} WHERE {$where}";
-		return $this->query ($query);
-	}
+//	function delete($dbname, $where){
+//		$query = "DELETE FROM {$dbname} WHERE {$where}";
+//		return $this->query ($query);
+//	}
 	
 	function array_insert($dbname, $data){ //根据$data的键和键值插入数据
 		$query = "INSERT INTO {$dbname} ";
@@ -87,7 +87,7 @@ class dbstuff {
 		return $query;
 	}
 	
-function array_update($dbname, $data, $where){ //根据$data的键和键值更新数据
+	function array_update($dbname, $data, $where){ //根据$data的键和键值更新数据
 		$query = "UPDATE {$dbname} SET ";
 		foreach ($data as $key => $value) {
 			$query .= "{$key} = '{$value}',";
@@ -96,6 +96,7 @@ function array_update($dbname, $data, $where){ //根据$data的键和键值更�
 		$this->query ($query);
 		return $query;
 	}
+
 	
 /*	function select_fetch_array($dbname, $fields = '*', $where = '', $limit = '') { //返回二维数组
 		$query = "SELECT {$fields} FROM {$dbname} ";

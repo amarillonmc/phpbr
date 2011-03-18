@@ -53,12 +53,11 @@ if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$
 //	$log .= $log2;
 //	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
 //}
-
-$result = $db->query("SELECT * FROM {$tablepre}log WHERE toid = '$pid' AND isnew = 1 ORDER BY time,lid");
-$db->query("UPDATE {$tablepre}log SET isnew = 0 WHERE toid = '$pid' AND isnew = 1");
+$result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
 while($logtemp = $db->fetch_array($result)){
 	$log .= date("H:i:s",$logtemp['time']).'，'.$logtemp['log'].'<br />';
 }
+$db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
 
 init_playerdata();
 
@@ -95,8 +94,15 @@ if($command == 'menu') {
 		if($sp_cmd == 'sp_word'){
 			include_once GAME_ROOT.'./include/game/special.func.php';
 			getword();
-		} 
-		$mode = $sp_cmd;
+			$mode = $sp_cmd;
+		}elseif($sp_cmd == 'sp_adtsk'){
+			include_once GAME_ROOT.'./include/game/special.func.php';
+			adtsk();
+			$mode = 'command';
+		}else{
+			$mode = $sp_cmd;
+		}
+		
 	} elseif($command == 'team') {
 		if($teamcmd == 'teamquit') {
 			include_once GAME_ROOT.'./include/game/team.func.php';

@@ -152,26 +152,28 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		//升级判断
 		$lvup = 1 + floor ( ($exp - $up_exp_temp) / $baseexp / 2 );
 		$lvup = $lvup > 255 - $lvl ? 255 - $lvl : $lvup;
-		$lvuphp = $lvupatt = $lvupdef = $sklup = $spup = 0;
+		$lvuphp = $lvupatt = $lvupdef = $lvupskill = $lvupsp = $lvupspref = 0;
 		for($i = 0; $i < $lvup; $i += 1) {
 			if (${$perfix . 'club'} == 13) {
-				$lvuphp += rand ( 12, 14 );
+				$lvuphp += rand ( 14, 18 );
 			} else {
 				$lvuphp += rand ( 8, 10 );
 			}
+			$lvupsp += rand( 4,6);
 			$lvupatt += rand ( 2, 4 );
 			$lvupdef += rand ( 3, 5 );
 			if ($skname == 'all') {
-				$sklup += rand ( 2, 4 );
+				$lvupskill += rand ( 2, 4 );
 			} elseif ($skname == 'wd' || $skname == 'wf') {
-				$sklup += rand ( 3, 5 );
+				$lvupskill += rand ( 3, 5 );
 			}elseif($skname){
-				$sklup += rand ( 4, 6 );
+				$lvupskill += rand ( 4, 6 );
 			}
 			if (${$perfix . 'club'} == 14) {
-				$spup += (${$perfix . 'msp'} * 0.25);
+				$lvupspref += round(${$perfix . 'msp'} * 0.25);
+				
 			} else {
-				$spup += (${$perfix . 'msp'} * 0.1);
+				$lvupspref += round(${$perfix . 'msp'} * 0.1);
 			}
 		
 		}
@@ -184,33 +186,35 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		${$perfix . 'upexp'} = $up_exp_temp;
 		${$perfix . 'hp'} += $lvuphp;
 		${$perfix . 'mhp'} += $lvuphp;
+		${$perfix . 'sp'} += $lvupsp;
+		${$perfix . 'msp'} += $lvupsp;
 		${$perfix . 'att'} += $lvupatt;
 		${$perfix . 'def'} += $lvupdef;
 		if ($skname == 'all') {
-			${$perfix . 'wp'} += $sklup;
-			${$perfix . 'wk'} += $sklup;
-			${$perfix . 'wg'} += $sklup;
-			${$perfix . 'wc'} += $sklup;
-			${$perfix . 'wd'} += $sklup;
-			${$perfix . 'wf'} += $sklup;
+			${$perfix . 'wp'} += $lvupskill;
+			${$perfix . 'wk'} += $lvupskill;
+			${$perfix . 'wg'} += $lvupskill;
+			${$perfix . 'wc'} += $lvupskill;
+			${$perfix . 'wd'} += $lvupskill;
+			${$perfix . 'wf'} += $lvupskill;
 		} elseif ($skname) {
-			${$perfix . $skname} += $sklup;
+			${$perfix . $skname} += $lvupskill;
 		}
 		
-		if (${$perfix . 'sp'}+$spup >= ${$perfix . 'msp'}) {
-			$spup =  ${$perfix . 'msp'} - ${$perfix . 'sp'};
+		if (${$perfix . 'sp'}+$lvupspref >= ${$perfix . 'msp'}) {
+			$lvupspref =  ${$perfix . 'msp'} - ${$perfix . 'sp'};
 			
 		}
-		${$perfix . 'sp'} += $spup;
+		${$perfix . 'sp'} += $lvupspref;
 		if ($skname) {
-			$sklog = "，{$sklanginfo[$skname]}+{$sklup}";
+			$sklog = "，{$sklanginfo[$skname]}+{$lvupskill}";
 		}
 		if ($isplayer) {
 			global $log;
-			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$spup}！</span><br>";
+			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}！</span><br>";
 		} elseif (! $w_type) {
 			global $w_pid, $now;
-			$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$spup}！</span><br>";
+			$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}！</span><br>";
 			logsave ( $w_pid, $now, $w_log,'s');
 		}
 	} elseif ($lvl >= 255) {
@@ -235,12 +239,12 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			$lvup = 1+floor(($exp - $up_exp_temp)/$baseexp/2);
 			$lvup = $lvup > 255-$lvl ? 255-$lvl : $lvup;
 			//$log .="$lvup<br>";
-			$lvuphp = $lvupatt = $lvupdef = $sklup =0;
+			$lvuphp = $lvupatt = $lvupdef = $lvupskill =0;
 			
 			for ($i=0;$i<$lvup;$i+=1){
 				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
 				if($skname){
-					$sklup += rand(3,5);
+					$lvupskill += rand(3,5);
 				}
 				$sp += ($msp * 0.1);
 			}
@@ -250,10 +254,10 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			$upexp=$up_exp_temp;
 			$hp += $lvuphp;$mhp += $lvuphp;
 			$att += $lvupatt;$def += $lvupdef;
-			${$skname} += $sklup;
+			${$skname} += $lvupskill;
 			if($sp >= $msp){$sp = $msp;}
 			if($skname){
-				$sklog = "，{$skilllaninfo[$skname]}+{$sklup}";
+				$sklog = "，{$skilllaninfo[$skname]}+{$lvupskill}";
 			}
 			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}！</span><br>";
 		} else {
@@ -265,11 +269,11 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			}
 			$lvup = 1+floor(($exp - $up_exp_temp)/$baseexp/2);
 			$lvup = $lvup > 255-$lvl ? 255-$lvl : $lvup;
-			$lvuphp = $lvupatt = $lvupdef = $sklup = 0;
+			$lvuphp = $lvupatt = $lvupdef = $lvupskill = 0;
 			for ($i=0;$i<$lvup;$i+=1){
 				$lvuphp += rand(8,10);$lvupatt += rand(2,4);$lvupdef += rand(3,5);
 				if($skname){
-					$sklup += rand(3,5);
+					$lvupskill += rand(3,5);
 				}
 				$w_sp += ($w_msp * 0.1);
 			}
@@ -279,11 +283,11 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			$w_upexp=$up_exp_temp;
 			$w_hp += $lvuphp;$w_mhp += $lvuphp;
 			$w_att += $lvupatt;$w_def += $lvupdef;
-			${'w_'.$skname} += $sklup;
+			${'w_'.$skname} += $lvupskill;
 			if($w_sp >= $w_msp){$w_sp = $w_msp;}
 			if(!$w_type){
 				if($skname){
-					$sklog = "，{$skilllaninfo[$skname]}+{$sklup}";
+					$sklog = "，{$skilllaninfo[$skname]}+{$lvupskill}";
 				}
 				$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命+{$lvuphp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}！</span><br>";
 				logsave($w_pid,$now,$w_log);
@@ -297,7 +301,7 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 
 
 function rest($command) {
-	global $now, $log, $mode, $cmd, $state, $endtime, $hp, $mhp, $sp, $msp, $sleep_time, $heal_time, $restinfo, $pose, $inf;
+	global $now, $log, $mode, $cmd, $state, $endtime, $hp, $mhp, $sp, $msp, $sleep_time, $heal_time, $restinfo, $pose, $inf,$club;
 	
 	if ($state == 1) {
 		$resttime = $now - $endtime;
@@ -309,6 +313,9 @@ function rest($command) {
 		}
 		if (strpos ( $inf, 'b' ) !== false) {
 			$upsp = round ( $upsp / 2 );
+		}
+		if ($club ==16){
+			$upsp *= 2;
 		}
 		$sp += $upsp;
 		if ($sp >= $msp) {
@@ -327,6 +334,9 @@ function rest($command) {
 		if (strpos ( $inf, 'b' ) !== false) {
 			$uphp = round ( $uphp / 2 );
 		}
+		if ($club ==16){
+			$uphp *= 2;
+		}
 		$hp += $uphp;
 		if ($hp >= $mhp) {
 			$hp = $mhp;
@@ -344,6 +354,9 @@ function rest($command) {
 		if (strpos ( $inf, 'b' ) !== false) {
 			$upsp = round ( $upsp / 2 );
 		}
+		if ($club ==16){
+			$upsp *= 2;
+		}
 		$sp += $upsp;
 		if ($sp >= $msp) {
 			$sp = $msp;
@@ -356,6 +369,9 @@ function rest($command) {
 		}
 		if (strpos ( $inf, 'b' ) !== false) {
 			$uphp = round ( $uphp / 2 );
+		}
+		if ($club ==16){
+			$uphp *= 2;
 		}
 		$hp += $uphp;
 		if ($hp >= $mhp) {

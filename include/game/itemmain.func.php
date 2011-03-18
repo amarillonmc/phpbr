@@ -19,10 +19,11 @@ function itemfind() {
 		$playerflag = $itmsk0 ? true : false;
 		$selflag = $itmsk0 == $pid ? true : false;
 		$dice=rand(0,99);
-		$escrate = $club == 5 ? 25 + $lvl/3 : 8+ $lvl/3;
+		$escrate = $club == 5 ? 25 + $lvl/3 : 8 + $lvl/3;
+		$escrate = $club == 6 ? $escrate + 15 : $escrate;
 		$escrate = $tactic == 4 ? $escrate + 20 : $escrate;
 		$escrate = $selflag ? $escrate + 50 : $escrate; //自己设置的陷阱容易躲避
-		
+		//echo '回避率：'.$escrate.'%';
 		$def_key = $wepsk.$arbsk.$arhsk.$arask.$arfsk.$artsk;
 		
 		if(strpos($def_key,'M') !== false){
@@ -30,7 +31,7 @@ function itemfind() {
 			if($club == 7){//电脑社使用探雷器效率增加
 				$escrate += 45;
 			}else{
-				$escrate += 30;
+				$escrate += 35;
 			}
 		}
 		$escrate = $escrate >= 90 ? 90 : $escrate;
@@ -366,10 +367,20 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 		return;
 	}
 
+	
+	$mi1=${'itm'.$m1};$mi2=${'itm'.$m2};$mi3=${'itm'.$m3};
+	foreach(Array('/^锋利的/','/^电气/','/^毒性/','/-改$/') as $value){
+		if($mi1){$mi1 = preg_replace($value,'',$mi1);}
+		if($mi2){$mi2 = preg_replace($value,'',$mi2);}
+		if($mi3){$mi3 = preg_replace($value,'',$mi3);}
+	}
 	$mixitem = array();
-	if(${'itm'.$m1}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$)/','',${'itm'.$m1}); }
-	if(${'itm'.$m2}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$)/','',${'itm'.$m2}); }
-	if(${'itm'.$m3}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$)/','',${'itm'.$m3}); }
+	if($mi1) { $mixitem[] = $mi1; }
+	if($mi2) { $mixitem[] = $mi2; }
+	if($mi3) { $mixitem[] = $mi3; }
+//	if(${'itm'.$m1}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$|^电气|^毒性)/','',${'itm'.$m1}); }
+//	if(${'itm'.$m2}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$|^电气|^毒性)/','',${'itm'.$m2}); }
+//	if(${'itm'.$m3}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$|^电气|^毒性)/','',${'itm'.$m3}); }
 
 	if(sizeof($mixitem) < 2){
 		$log .= '至少需要2个道具才能进行合成！';
@@ -403,7 +414,7 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 		//else { $wd+=1; }
 		$wd+=1;
 		if((strpos($itmk0,'WD') === 0)&&($club == 5)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*1.5); }
-		elseif((strpos($itmk0,'H') === 0)&&($club == 8)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*1.5); }
+		elseif((strpos($itmk0,'H') === 0)&&($club == 16)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*2); }
 		elseif(($itm0 == '移动PC' || $itm0 == '广域生命探测器') && ($club == 7)){ $itme0 *= 3; }
 		itemget();
 	}
@@ -438,10 +449,11 @@ function itemreduce($item){ //只限合成使用！！
 
 
 function itembuy($item,$shop,$bnum=1) {
-	global $log,$name,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$pls,$shops;
+	global $log,$name,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$pls,$shops,$club;
 	global $db,$tablepre;
 	$result=$db->query("SELECT * FROM {$tablepre}shopitem WHERE sid = '$item'");
 	$iteminfo = $db->fetch_array($result);
+	$price = $club == 11 ? round($iteminfo['price']*0.75) : $iteminfo['price'];
 	//$file = GAME_ROOT."./gamedata/shopitem/{$shop}shopitem.php";
 	//$itemlist = openfile($file);
 	//$iteminfo = $itemlist[$item];
@@ -465,7 +477,7 @@ function itembuy($item,$shop,$bnum=1) {
 	} elseif($bnum>$iteminfo['num']) {
 		$log .= '购买数量必须小于存货数量。<br>';
 		return;
-	} elseif($money < $iteminfo['price']*$bnum) {
+	} elseif($money < $price*$bnum) {
 		$log .= '你的钱不够，不能购买此物品！<br>';
 		return;
 	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$iteminfo['itmk'])&&$bnum>1) {
@@ -488,7 +500,7 @@ function itembuy($item,$shop,$bnum=1) {
 	$sid = $iteminfo['sid'];
 	$db->query("UPDATE {$tablepre}shopitem SET num = '$inum' WHERE sid = '$sid'");
 //	$num-=$bnum;
-	$money -= $iteminfo['price']*$bnum;
+	$money -= $price*$bnum;
 //	$itemlist[$item] = "$num,$price,$iname,$ikind,$ieff,$ista,$isk,\n";
 //	writeover($file,implode('',$itemlist));
 	naddnews($now,'itembuy',$name,$iteminfo['item']);

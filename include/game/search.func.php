@@ -5,7 +5,7 @@ if(!defined('IN_GAME')) {
 }
 
 function move($moveto = 99) {
-	global $log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
+	global $lvl,$log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
 	
 
 	$plsnum = sizeof($plsinfo);
@@ -30,7 +30,13 @@ function move($moveto = 99) {
 	}
 	//if(strpos($inf, 'f') !== false){ $movesp += 5; }
 	//if(strpos($inf, 'i') !== false){ $movesp += 15; }
-	if($club == 6){ $movesp -= 10; }
+	if($club == 6){
+		if($lvl>=20){
+			$movesp -= 14;
+		}else{
+			$movesp -= 10+floor($lvl/5);
+		}
+	}
 
 	
 	if($sp <= $movesp){
@@ -114,7 +120,7 @@ function move($moveto = 99) {
 }
 
 function search(){
-	global $log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp,$mhp,$inf;
+	global $lvl,$log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp,$mhp,$inf;
 	
 	
 	if(array_search($pls,$arealist) <= $areanum && !$hack){
@@ -132,8 +138,14 @@ function search(){
 	}
 	//if(strpos($inf, 'a') !== false){ $schsp += 5; }
 	//if(strpos($inf, 'i') !== false){ $schsp += 15; }
-	if($club == 10){ $schsp -= 10; }
-	
+	if($club == 10){
+		if($lvl>=20){
+			$schsp -= 14;
+		}else{
+			$schsp -= 10+floor($lvl/5);
+		}
+	}
+
 
 	if($sp <= $schsp){
 		$log .= "体力不足，不能探索！<br>还是先睡会儿吧！<br>";
@@ -224,7 +236,8 @@ function discover($schmode = 0) {
 			elseif($pose==3){$real_trap_obbs+=3;}//攻击和探索姿势略容易踩陷阱
 			if($gamestate >= 40){$real_trap_obbs+=3;}//连斗以后略容易踩陷阱
 			if($pls == 0){$real_trap_obbs+=15;}//在后台非常容易踩陷阱
-			//$log .= "踩陷阱概率：{$real_trap_obbs}%<br>";
+			if($club == 10){$real_trap_obbs-=5;}//人肉搜索称号遭遇陷阱概率减少
+			//echo "踩陷阱概率：{$real_trap_obbs}%";
 			if($trap_dice < $real_trap_obbs){//踩陷阱判断
 				$itemno = rand(0,$trpnum-1);
 				$db->data_seek($trapresult,$itemno);

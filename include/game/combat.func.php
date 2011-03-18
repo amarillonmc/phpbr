@@ -263,7 +263,7 @@ function attack($wep_kind = 'N', $active = 0) {
 	$wep_skill = & ${$skillinfo [$wep_kind]};
 	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $club, $inf );
 	
-	$damage_p = get_damage_p ( $rage, $club, $message, $att_key, 0, '你' );
+	$damage_p = get_damage_p ( $rage, $att_key, 0, '你' , $club, $message);
 	$hit_time = get_hit_time ( $att_key, $wep_skill, $hitrate, $wep_kind, $weps, $infobbs [$wep_kind], $wepimprate [$wep_kind], $is_wpg );
 	if ($hit_time [1] > 0) {
 		$gender_dmg_p = check_gender ( '你', $w_name, $gd, $w_gd, $att_key );
@@ -290,14 +290,14 @@ function attack($wep_kind = 'N', $active = 0) {
 		}
 		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
-//			if ($hit_time [1] == 2) {
-//				$dmg_p = 2;
-//			} elseif ($hit_time [1] == 3) {
-//				$dmg_p = 2.8;
-//			} else {
-//				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
-//			}
-			$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.1;
+			if ($hit_time [1] == 2) {
+				$dmg_p = 2;
+			} elseif ($hit_time [1] == 3) {
+				$dmg_p = 2.8;
+			} else {
+				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+			}
+			//$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.2;
 			$damage = round ( $damage * $dmg_p );
 			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
 		} else {
@@ -355,7 +355,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	global ${'w_' . $skillinfo [$w_wep_kind]};
 	$w_wep_skill = & ${'w_' . $skillinfo [$w_wep_kind]};
 	$hitrate = get_hitrate ( $w_wep_kind, $w_wep_skill, $w_club, $w_inf );
-	$damage_p = get_damage_p ( $w_rage, $w_club, '', $w_att_key, $w_type, $w_name );
+	$damage_p = get_damage_p ( $w_rage, $w_att_key, $w_type, $w_name , $w_club);
 	$hit_time = get_hit_time ( $w_att_key, $w_wep_skill, $hitrate, $w_wep_kind, $w_weps, $infobbs [$w_wep_kind], $wepimprate [$w_wep_kind], $is_wpg );
 	
 	if ($hit_time [1] > 0) {
@@ -386,14 +386,14 @@ function defend($w_wep_kind = 'N', $active = 0) {
 		
 		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
-//			if ($hit_time [1] == 2) {
-//				$dmg_p = 2;
-//			} elseif ($hit_time [1] == 3) {
-//				$dmg_p = 2.8;
-//			} else {
-//				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
-//			}
-			$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.1;
+			if ($hit_time [1] == 2) {
+				$dmg_p = 2;
+			} elseif ($hit_time [1] == 3) {
+				$dmg_p = 2.8;
+			} else {
+				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+			}
+			//$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.2;
 			$damage = round ( $damage * $dmg_p );
 			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
 		} else {
@@ -450,12 +450,12 @@ function get_original_dmg($w1, $w2, $att, $def, $ws, $wp_kind) {
 	return $damage;
 }
 
-function get_damage_p(&$rg, $cl = 0, $msg = '', $atkcdt, $type, $nm) {
+function get_damage_p(&$rg, $atkcdt, $type, $nm,$cl = 0, $msg = '' ) {
 	$cri_dice = rand ( 0, 99 );
 	if ($cl == 9) {
 		$rg_m = 50;
 		$dmg_p = 2;
-		if ($msg || $rg >= 255) {
+		if (!empty($msg) || $rg >= 255) {
 			$max_dice = 100;
 		} elseif ($type != 0) {
 			$max_dice = 40;
@@ -475,7 +475,7 @@ function get_damage_p(&$rg, $cl = 0, $msg = '', $atkcdt, $type, $nm) {
 	}
 	
 	if (strpos ( $atkcdt, "c" ) !== false) {
-		$rg_m = 10;
+		$rg_m = $cl == 9 ? 20 : 10;
 		if ($max_dice != 0) {
 			$max_dice += 30;
 		}
@@ -759,6 +759,7 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 				$wk_dmg_p = $ex_good_wep [$ex_dmg_sign] == $wk ? 2 : 1;
 				$e_dmg = $bdmg + $we/$wdmg + $ws/$sdmg; 
 				if($mdmg>0){
+					//$e_dmg = $e_dmg > $mdmg ? round($wk_dmg_p*$mdmg*rand(100 - $fluc, 100 + $fluc)/100) : round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
 					$e_dmg = round($wk_dmg_p*$mdmg*($e_dmg/($e_dmg+$mdmg/2))*rand(100 - $fluc, 100 + $fluc)/100);
 				} else{
 					$e_dmg =  round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
@@ -883,9 +884,9 @@ function get_WF_p($w, $clb, $we) {
 	} else {
 		$we = $we > 0 ? $we : 1;
 		if ($clb == 9) {
-			$spd0 = round ( 0.4*$we);
+			$spd0 = round ( 0.25*$we);
 		} else {
-			$spd0 = round ( 0.5*$we);
+			$spd0 = round ( 0.3*$we);
 		}
 		if ($spd0 >= ${$w . 'sp'}) {
 			$spd = ${$w . 'sp'} - 1;

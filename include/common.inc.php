@@ -43,7 +43,7 @@ $db->select_db($dbname);
 
 require_once GAME_ROOT.'./gamedata/system.php';
 require_once GAME_ROOT.'./gamedata/resources.php';
-require_once GAME_ROOT.'./gamedata/gameinfo.php';
+include_once GAME_ROOT.'./gamedata/gameinfo.php';
 require_once config('gamecfg',$gamecfg);
 
 //$gamestate状态：0-上局游戏结束；10-新游戏准备阶段；20-游戏开放激活；30-游戏停止激活；40-游戏连斗；50-游戏死斗。

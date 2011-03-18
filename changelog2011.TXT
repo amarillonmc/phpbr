@@ -1,8 +1,27 @@
+2011/3/14
+略微加强了CEO的防御力；（npc_1.php）
+修改了帮助文档；（help.htm）
+修正了合成物品的判断，现在多重前缀的道具也能作为合成材料了；（itemmain.func.php）
+提高了冥土追魂的补给加成，再次减少了音速和搜索的体力消耗，增加了肌肉兄贵的生命成长率；删去了根性兄贵称号；（item.func.php; search.func.php; help.htm）
+现在所有称号升级时都能增加体力上限了；（state.func.php; ）
+增加了斩系武器艾丽的镰刀等，增加了殴系武器东方电气笛等，为容嬷嬷的针等武器加了属性，修改了灵魂结晶的耐久，修改了投系伤害系数，修改了部分合成道具，修改了中级NPC掉落殴斩武器的数值；增加了小黄的超级球系列（mapitem.php;mixitem.php; combatcfg.php; npc_1.php）
+削弱了连击和属性攻击的伤害；（combat.func.php; combatcfg.php）
+
+
+2011/3/13
+增加了冥土追魂称号、修改了黑衣、锡安、根性的称号能力；增加了改造武器的功能；（valid.php; itemmain.func.php; search.func.php; item.func.php;item2.func.php; resources.php; special.func.php; sp_inf.htm; help.htm;command.htm;command.php;）
+现在用户名过长会显示相应的错误信息了；（login.php; resources.php）
+必杀技自动释放的BUG偶尔还会出现，尝试修复了；（combat.func.php）
+
+
 2011/3/9
 添加了尸体保护机制，尸体掉在地上以后10秒内别人是碰不到的，凸眼鱼也吸不走（system.php; search.func.php; combat.func.php;item.func.php）
 略微降低了灵系的初期命中率，将灵系武器攻击的体力消耗翻倍；（combatcfg_1.php; combat.func.php）
 现在带前缀和后缀的合成材料也能按公式合成了；（itemmain.func.php）
 加入了电击鞭，增加了部分合成道具；（mapitem_1.php; maxitem_1.php; help.htm）
+
+删除了数据库里不需要的索引；修改了玩家讯息的数据库结构；（mapitem.sql; shopitem.sql; log.sql; player.sql; game.php; command.php; global.func.php）
+修改了灵系的体力消耗值；修改了陷阱回避率（combat.func.php; itemmain.func.php; ）
 
 2011/3/7
 修改了地图上部分剑的耐久，增加了少量探测装备和道具；（mapitem_1.php）

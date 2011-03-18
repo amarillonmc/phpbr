@@ -13,9 +13,9 @@ if(PHP_VERSION < '4.3.0') {
 require_once GAME_ROOT.'./include/global.func.php';
 require_once GAME_ROOT.'./config.inc.php';
 
-extract(gaddslashes($_COOKIE));
-extract(gaddslashes($_POST));
-extract(gaddslashes($_GET));
+extract(gkillquotes($_COOKIE));
+extract(gkillquotes($_POST));
+extract(gkillquotes($_GET));
 
 if($attackevasive) {
 	include_once GAME_ROOT.'./include/security.inc.php';
@@ -34,16 +34,19 @@ $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 $db->select_db($dbname);
 require_once GAME_ROOT.'./gamedata/system.php';
+require_once GAME_ROOT.'./gamedata/resources.php';
 require_once './gamedata/validlimit.php';
 foreach($nmlimit as $value){
 	if(!empty($value) && strpos($username,$value)!==false){
 		gexit($_ERROR['banned_name'],__file__,__line__);
 	}
 }
-if(preg_match("[,|>|<|;|'|\"]",$username)){
-	gexit($_ERROR['invalid_name'],__file__,__line__);
-} elseif(!$username||!$password) {
+if(!$username||!$password) {
 	gexit($_ERROR['login_info'],__file__,__line__);
+} elseif(preg_match("[,|>|<|;|'|\"]",$username)){
+	gexit($_ERROR['invalid_name'],__file__,__line__);
+} elseif(mb_strlen($username,'utf-8')>15) {
+	gexit($_ERROR['long_name'],__file__,__line__);
 } else{
 	include_once GAME_ROOT.'./gamedata/system.php';
 

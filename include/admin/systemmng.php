@@ -46,11 +46,11 @@ if($command == 'edit') {
 	echo '游戏参数修改完毕。';
 }
 
-for($i=0;$i<=2;$i++){
+for($i=0;$i<=3;$i++){
 	if($i==$startmode){
-		$startmode_input .= "<input type=\"radio\" name=\"startmode\" value=\"$i\" checked>".$lang['startmode_'.$i];
+		$startmode_input .= "<input type=\"radio\" name=\"startmode\" value=\"$i\" checked>".$lang['startmode_'.$i].'<br>';
 	} else {
-		$startmode_input .= "<input type=\"radio\" name=\"startmode\" value=\"$i\">".$lang['startmode_'.$i];
+		$startmode_input .= "<input type=\"radio\" name=\"startmode\" value=\"$i\">".$lang['startmode_'.$i].'<br>';
 	}
 }
 

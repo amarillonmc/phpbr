@@ -236,8 +236,17 @@ function rs_sttime() {
 		$starttime = mktime($nexthour,$startmin,0,$month,$nextday,$year);
 	} elseif($startmode == 2) {
 		$starthour = $starthour> 0 ? $starthour : 1;
+		$startmin = $startmin> 0 ? $startmin : 1;
 		$nexthour = $hour + $starthour;
 		$starttime = mktime($nexthour,$startmin,0,$month,$day,$year);
+	} elseif($startmode == 3) {
+		$starthour = $starthour> 0 ? $starthour : 1;
+		$nextmin = $min + $starthour;
+		$nexthour = $hour;
+		if($nextmin % 60 == 0){
+			$nextmin +=1;
+		}
+		$starttime = mktime($nexthour,$nextmin,0,$month,$day,$year);
 	} else {
 		$starttime = 0;
 	}

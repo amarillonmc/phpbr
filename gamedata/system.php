@@ -15,10 +15,10 @@ $adminmsg = 'AC大逃杀<br>
 <strike>讨论群：101336468</strike><br>上面那个群已满，分群：120405311<br>
 <h3>10分钟没动作可能被反挂机系统抹杀，请注意！</h3>
 <iframe width="100%" height="260" class="share_self"  frameborder="0" scrolling="no" src="http://service.t.sina.com.cn/widget/WeiboShow.php?width=0&height=260&fansRow=0&ptype=1&speed=100&skin=10&isTitle=0&noborder=0&isWeibo=1&isFans=1&uid=1583697851&verifier=d5e5b6db"></iframe>';
-//游戏开始方式 0=后台手动开始，1=每天固定时间始，2=上局结束后，间隔固定时间开始
-$startmode = 0;
-//游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔时间，>0
-$starthour = 0;
+//游戏开始方式 0=后台手动开始，1=每天固定时间开始，2=上局结束后，间隔固定小时后的整点开始，3=上局结束后，间隔固定分钟开始
+$startmode = 3;
+//游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔小时，>0，如果$startmode = 3，表示间隔分钟，>0
+$starthour = 10;
 //游戏开始的分钟数，范围1~59
 $startmin = 5;
 //游戏所用配置文件

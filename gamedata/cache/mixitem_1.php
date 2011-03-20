@@ -64,7 +64,7 @@ $mixinfo = array
 	array('stuff' => array('针筒','疗伤药'),'result' => array('治疗针','HH',120,1,),),
 	array('stuff' => array('针筒','毒药'),'result' => array('毒针','WK',32,10,'p'),),
 	array('stuff' => array('白色的羽毛','金色方块'),'result' => array('凤凰之羽','WK',20,200,'u'),),
-	array('stuff' => array('白色的羽毛','银色方块'),'result' => array('露琪亚之羽','WK',20,200,'id'),),
+	array('stuff' => array('白色的羽毛','银色方块'),'result' => array('露琪亚之羽','WK',50,200,'i'),),
 	array('stuff' => array('凤凰之羽','露琪亚之羽','《小黄的草帽》'),'result' => array('《小黄的常磐之力》','A',233,'∞','c'),),
 	array('stuff' => array('《小黄的超级球》','《小黄的常磐之力》'),'result' => array('《小黄的大师球》','WC',466,'∞','cdr'),),
 	array('stuff' => array('喷雾器罐','毒药'),'result' => array('简易毒气弹','WD',70,12,'dp'),),

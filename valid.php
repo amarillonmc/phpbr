@@ -189,9 +189,9 @@ if($mode == 'enter') {
 }
 
 function makeclub() {
-	global $wp,$wk,$wg,$wc,$wd,$wf,$money,$mhp,$msp,$hp,$sp;
+	global $wp,$wk,$wg,$wc,$wd,$wf,$money,$mhp,$msp,$hp,$sp,$att,$def;
 	$wp = $wk = $wg = $wc = $wd = $wf = 0;
-	$dice = rand(0,100);
+	$dice = rand(0,105);
 	if($dice < 10)		{$club = 1;$wp = 25;}//殴25
 	elseif($dice < 20)	{$club = 2;$wk = 25;}//斩25
 	elseif($dice < 30)	{$club = 3;$wc = 25;}//投25
@@ -205,8 +205,8 @@ function makeclub() {
 	elseif($dice < 85)	{$club = 11;$money = 500;}//出击钱数500
 	elseif($dice < 90)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 10;}//全熟练10
 	elseif($dice < 95)	{$club = 13;$mhp = $mhp + 100;$hp = $mhp;}//生命上限提高100
-	//elseif($dice < 100)	{$club = 14;$msp = $msp + 200;$sp = $msp;}//体力上限提高200
-	elseif($dice <= 100) {$club = 16;}//回复量增加
+	elseif($dice < 100)	{$club = 14;$att = $att + 50;$def = $def + 50;}//攻防+50
+	elseif($dice <= 105) {$club = 16;}//回复量增加
 	else				{$club = makeclub();}
 	return $club;
 }

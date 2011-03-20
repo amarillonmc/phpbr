@@ -1,11 +1,20 @@
+﻿2011/3/16
+交换了0禁和1禁地图上方块的数量；（mapitem_1.php）
+将肌肉兄贵改为攻防加成，根性兄贵回归并改为生命加成也就是原本肌肉兄贵的定位；（state.func.php; valid.php; help.htm; resources.php）
+增加了删除未进入游戏的玩家的功能（urlist.php）
+增加了“间隔开始”指令，可以使游戏结束后间隔固定时间开始并且回避整点（system.func.php; system.php; admin.lang.php; systemmng.php）
+修改了露琪亚之羽的属性（mixitem_1.php; help.htm）
+增加神秘物品，商店中的技能书数量大幅度减少，L5的熟练修改为1500.
+
 2011/3/14
+
 略微加强了CEO的防御力；（npc_1.php）
 修改了帮助文档；（help.htm）
 修正了合成物品的判断，现在多重前缀的道具也能作为合成材料了；（itemmain.func.php）
 提高了冥土追魂的补给加成，再次减少了音速和搜索的体力消耗，增加了肌肉兄贵的生命成长率；删去了根性兄贵称号；（item.func.php; search.func.php; help.htm）
 现在所有称号升级时都能增加体力上限了；（state.func.php; ）
 增加了斩系武器艾丽的镰刀等，增加了殴系武器东方电气笛等，为容嬷嬷的针等武器加了属性，修改了灵魂结晶的耐久，修改了投系伤害系数，修改了部分合成道具，修改了中级NPC掉落殴斩武器的数值；增加了小黄的超级球系列（mapitem.php;mixitem.php; combatcfg.php; npc_1.php）
-削弱了连击和属性攻击的伤害；（combat.func.php; combatcfg.php）
+
 
 
 2011/3/13

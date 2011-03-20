@@ -1005,7 +1005,7 @@ function itemuse($itmn) {
 			$deathdice = rand ( 0, 8192 );
 			if ($deathdice > 8190) {
 				$log .= '你突然感觉到一种不可思议的力量贯通全身！<br>';
-				$wp = $wk = $wg = $wc = $wd = $wf=300;
+				$wp = $wk = $wg = $wc = $wd = $wf=1500;
 				$club = 15;
 				naddnews ( $now, 'suisidefail', $name );
 				$itm = $itmk = $itmsk = '';

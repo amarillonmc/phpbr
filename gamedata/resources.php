@@ -23,7 +23,7 @@ $mltwk = '泛用兵器';
 $gstate = Array(0 => '已结束',10 => '即将开始',20 => '开放激活',30 => '人数已满',40=> '连斗中',50=>'死斗中');
 $gwin = Array(0 => '程序故障', 1 => '全部死亡',2 => '最后幸存',3 => '锁定解除',4 => '无人参加',5 => '核爆全灭');
 $week = Array('日','一','二','三','四','五','六');
-$clubinfo = Array(0=>'无',1=>'铁拳无敌',2=>'见敌必斩',3=>'灌篮高手',4=>'狙击鹰眼',5=>'拆弹专家',6=>'音速小子',7=>'锡安成员',8=>'黑衣组织',9=>'超能力者',10=>'人肉搜索', 11=>'富家子弟',12=> '天赋异禀',13=> '肌肉兄贵' ,14=>'根性兄贵',15=>'<span class="red">L5状态</span>');
+$clubinfo = Array(0=>'无',1=>'铁拳无敌',2=>'见敌必斩',3=>'灌篮高手',4=>'狙击鹰眼',5=>'拆弹专家',6=>'音速小子',7=>'锡安成员',8=>'黑衣组织',9=>'超能力者',10=>'人肉搜索', 11=>'富家子弟',12=> '天赋异禀',13=> '根性兄贵' ,14=>'肌肉兄贵',15=>'<span class="red">L5状态</span>',16=>'冥土追魂');
 $wthinfo = Array('晴天','大晴','多云','小雨','暴雨','台风','雷雨','下雪','起雾','浓雾','<span class="yellow">瘴气</span>','<span class="red">龙卷风</span>','<span class="clan">暴风雪</span>','<span class="blue">冰雹</span>');
 $sexinfo = Array('m' => '男生', 'f' => '女生');
 $hpinfo = Array('并无大碍','伤痕累累','生命危险','已经死亡');
@@ -57,7 +57,6 @@ $lwinfo = Array(
 );
 $infinfo = Array('b' => '<span class="red">胸</span>', 'h' => '<span class="red">头</span>', 'a' => '<span class="red">腕</span>', 'f' => '<span class="red">足</span>', 'p' => '<span class="purple">毒</span>', 'u' => '<span class="red">烧</span>', 'i' => '<span class="clan">冻</span>', 'e' => '<span class="yellow">麻</span>','w' => '<span class="grey">乱</span>');
 $attinfo = Array('N' => '徒手殴打', 'P' => '殴打','K' => '斩刺', 'G' => '射击', 'C' => '投掷', 'D' => '设置引信伏击', 'F' => '释放灵力攻击');
-
 $skillinfo = Array('N' => 'wp', 'P' => 'wp', 'K' => 'wk', 'G' => 'wg', 'C' => 'wc', 'D' => 'wd', 'F'=> 'wf');
 //$rangeinfo = Array('N' => 'S', 'P' => 'S', 'K' => 'S', 'G' => 'M', 'C' => 'M', 'D' => 'L', 'F'=> 'M'); #各种攻击方式的射程，移动到combatcfg.php
 $restinfo = Array('通常','睡眠','治疗','静养');
@@ -299,6 +298,7 @@ $itemspkinfo = Array(
 	'u' => '火焰',
 	'W' => '隔音',
 	'w' => '音波',
+	'Z' => '菁英',
 	'z' => '天然',
 	);
 $shops = Array(0,14,27);
@@ -421,6 +421,7 @@ $_ERROR = Array
 	'invalid_name' => '用户名含有非法字符，请重新输入',
 	'banned_name' => '用户名含有违禁用语，请更改用户名',
 	'banned_ip' => '此IP已被封禁，请与管理员联系',
+	'long_name' => '用户名过长，请重新输入用户名'
 	);
 
 ?>

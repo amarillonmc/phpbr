@@ -160,8 +160,14 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 				$lvuphp += rand ( 8, 10 );
 			}
 			$lvupsp += rand( 4,6);
-			$lvupatt += rand ( 2, 4 );
-			$lvupdef += rand ( 3, 5 );
+			if (${$perfix . 'club'} == 14) {
+				$lvupatt += rand ( 4, 6 );
+				$lvupdef += rand ( 5, 8 );
+			} else {
+				$lvupatt += rand ( 2, 4 );
+				$lvupdef += rand ( 3, 5 );
+			}
+			
 			if ($skname == 'all') {
 				$lvupskill += rand ( 2, 4 );
 			} elseif ($skname == 'wd' || $skname == 'wf') {
@@ -169,13 +175,7 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 			}elseif($skname){
 				$lvupskill += rand ( 4, 6 );
 			}
-			if (${$perfix . 'club'} == 14) {
-				$lvupspref += round(${$perfix . 'msp'} * 0.25);
-				
-			} else {
-				$lvupspref += round(${$perfix . 'msp'} * 0.1);
-			}
-		
+			$lvupspref += round(${$perfix . 'msp'} * 0.1);		
 		}
 		$lvl += $lvup;
 		$up_exp_temp = round ( (2 * $lvl + 1) * $baseexp );

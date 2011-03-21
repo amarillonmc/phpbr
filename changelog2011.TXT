@@ -1,10 +1,27 @@
-﻿2011/3/16
+2011/3/21
+修改了管理后台关于开局模式的提示；（admin.lang.php）
+现在如果rs_game失败即游戏无法重置时不会使游戏进入准备阶段（common.inc.php）
+修改了gameinfo和combatinfo的结构，添加了验证语句；（global.func.php; common.inc.php; gameinfo.php; combatinfo.php）
+修改了部分导致Warning和Notice的错误；（common.inc.php; game.func.php; login.php; map.php;battle.func.php; special.func.php; combat.func.php; alive.php; config.inc.php）
+把账号退出的功能从common.inc.php改到game.php和login.php里面；删掉了gzip压缩功能（反正从来没启动过）（common.inc.php; game.php; login.php;）
+
+2011/3/19
+现在自动调整开局时间能够回避速1禁了；（system.func.php）
+现在禁区并非整点，而是间隔固定时间了；（global.func.php; common.inc.php; system.func.php）
+添加了调整服务器分钟时差的功能；（common.inc.php; configmng.php; config.inc.php）
+略提高了射系的熟练伤害加成，降低了灵系的熟练伤害加成；（combatcfg_1.php）
+调整了各称号开局的能力加成：灵爆开局熟练减为20，其他系30，天赋15；肌肉兄贵开局攻防+100，根性兄贵开局HP+200；将音速和搜索合并；冥土追魂称号增加治疗特殊状态能力（valid.php; combat.func.php; special.func.php; resources.php; sp_inf.htm; help.htm）
+修复了组建和加入队伍不会消耗体力的BUG；（team.func.php）
+对安装程序进行了修改，清空已经不用的文件夹时不会返回错误信息；（install.php）
+修改了某个衣服的属性；（item.func.php; shopitem_1.php; mapitem_1.php;）
+修改了部分死法的文字显示；（end.php）
+
+2011/3/16
 交换了0禁和1禁地图上方块的数量；（mapitem_1.php）
 将肌肉兄贵改为攻防加成，根性兄贵回归并改为生命加成也就是原本肌肉兄贵的定位；（state.func.php; valid.php; help.htm; resources.php）
 增加了删除未进入游戏的玩家的功能（urlist.php）
 增加了“间隔开始”指令，可以使游戏结束后间隔固定时间开始并且回避整点（system.func.php; system.php; admin.lang.php; systemmng.php）
 修改了露琪亚之羽的属性（mixitem_1.php; help.htm）
-增加神秘物品，商店中的技能书数量大幅度减少，L5的熟练修改为1500.
 
 2011/3/14
 

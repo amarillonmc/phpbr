@@ -1104,9 +1104,9 @@ loginit('adminlog');
 loginit('newsinfo');
 
 dir_clear('./gamedata/bak');
-dir_clear('./gamedata/log');
-dir_clear('./gamedata/mapitem');
-dir_clear('./gamedata/shopitem');
+//dir_clear('./gamedata/log');
+//dir_clear('./gamedata/mapitem');
+//dir_clear('./gamedata/shopitem');
 dir_clear('./gamedata/templates');
 
 echo $lang['init_game'];

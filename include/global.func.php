@@ -252,7 +252,7 @@ function save_gameinfo() {
 	if(!isset($gamenum)||!isset($gamestate)){return;}
 	if($alivenum < 0){$alivenum = 0;}
 	if($deathnum < 0){$deathnum = 0;}
-	$gameinfo = "<?php\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\n?>";
+	$gameinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\n?>";
 	$dir = GAME_ROOT.'./gamedata/';
 	if($fp = fopen("{$dir}gameinfo.php", 'w')) {
 		if(flock($fp,LOCK_EX)) {
@@ -271,7 +271,8 @@ function save_gameinfo() {
 
 function save_combatinfo(){
 	global $hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
-	$combatinfo = "{$hdamage},{$hplayer},{$noisetime},{$noisepls},{$noiseid},{$noiseid2},{$noisemode},\n";
+	$combatinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$hdamage = {$hdamage};\n\$hplayer = '{$hplayer}';\n\$noisetime = {$noisetime};\n\$noisepls = {$noisepls};\n\$noiseid = {$noiseid};\n\$noiseid2 = {$noiseid2};\n\$noisemode = '{$noisemode}';\n\n?>";
+	//$combatinfo = "{$hdamage},{$hplayer},{$noisetime},{$noisepls},{$noiseid},{$noiseid2},{$noisemode},\n";
 	$dir = GAME_ROOT.'./gamedata/';
 	if($fp = fopen("{$dir}combatinfo.php", 'w')) {
 		if(flock($fp,LOCK_EX)) {
@@ -325,16 +326,16 @@ function compatible_json_encode($data){	//自动选择使用内置函数或者�
 	return $jdata;	
 }
 
-function getmicrotime()
-{
-	list($usec, $sec) = explode(" ",microtime());
-	return ((float)$usec + (float)$sec);
-}
-
-function putmicrotime($t_s,$t_e,$file)
-{
-	$mtime = ($t_e - $t_s)*1000;
-	writeover( $file.'.txt',"执行时间：$mtime 毫秒 \n",'ab');
-}
+//function getmicrotime()
+//{
+//	list($usec, $sec) = explode(" ",microtime());
+//	return ((float)$usec + (float)$sec);
+//}
+//
+//function putmicrotime($t_s,$t_e,$file)
+//{
+//	$mtime = ($t_e - $t_s)*1000;
+//	writeover( $file.'.txt',"执行时间：$mtime 毫秒 \n",'ab');
+//}
 
 ?>

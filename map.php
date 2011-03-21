@@ -6,7 +6,7 @@ require_once './include/common.inc.php';
 
 $mapvcoordinate = Array('A','B','C','D','E','F','G','H','I','J');
 
-for($i=0;$i<=count($plsinfo);$i++){
+for($i=0;$i<count($plsinfo);$i++){
 	if($hack || array_search($i,$arealist) > ($areanum + $areaadd)){
 		$plscolor[$i] = 'mapspanlime';
 	} elseif(array_search($i,$arealist) <= $areanum) {

@@ -76,6 +76,8 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 	
 	return $killmsg;
 }
+
+
 function kill($death, $dname, $dtype = 0, $dpid = 0, $annex = '') {
 	global $now, $db, $tablepre, $alivenum, $deathnum, $name, $w_state, $type, $pid, $typeinfo, $pls, $lwinfo;
 	

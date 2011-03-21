@@ -6,13 +6,13 @@
 	$dbhost = 'localhost';			// database server
 						// 数据库服务器
 
-	$dbuser = 'root';			// database username
+	$dbuser = 'acdts';			// database username
 						// 数据库用户名
 
-	$dbpw = '';			// database password
+	$dbpw = 'yylrmz123';			// database password
 						// 数据库密码
 
-	$dbname = 'acbra20b';			// database name
+	$dbname = 'acdts';			// database name
 						// 数据库名
 
 	$dbreport = 1;				// send db error report? 1=yes
@@ -40,7 +40,7 @@
 	$pconnect = true;				// persistent database connection, 0=off, 1=on
 						// 数据库持久连接 false=关闭, true=打开
 
-	$gamefounder = '某四面';			// super administrator's UID
+	$gamefounder = 'Amarillo_NMC';			// super administrator's UID
 						// 游戏创始人 UID, 可以支持多个创始人，之间使用 “,” 分隔。
 						// 如果不设置游戏创始人，则管理员之间可以相互编辑，具体权力差别请见游戏使用文档
 
@@ -55,7 +55,7 @@
 // [EN] !ATTENTION! Do NOT modify following after your board was settle down
 // [CH] 游戏投入使用后不能修改的变量
 
-	$tablepre = 'acbra_';   			// 表名前缀, 同一数据库安装多个游戏请修改此处
+	$tablepre = 'acbra2_';   			// 表名前缀, 同一数据库安装多个游戏请修改此处
 						// table prefix, modify this when you are installingmore than 1 Discuz! in the same database.
 		
 	$authkey = 'bra';		//game encrypt key ,the same of plus key
@@ -79,10 +79,10 @@
 	$tplrefresh = 1;			// auto check validation of templates, 0=off, 1=on
 						// 模板自动刷新开关 0=关闭, 1=打开, 在不修改页面的情况下可以关闭
 
-	$bbsurl = '';    //the bbs url for the game plus
+	$bbsurl = 'http://124.228.254.234/acdts/';    //the bbs url for the game plus
 									//安装游戏插件的论坛地址
 
-	$gameurl = '';    // the url of game program files,for the full-window mode
+	$gameurl = 'http://124.228.254.234/acdts/';    // the url of game program files,for the full-window mode
 									//游戏程序地址，用于全屏模式
 
 	$homepage = 'http://www.amarilloviridian.co.cc/';      // game homepage

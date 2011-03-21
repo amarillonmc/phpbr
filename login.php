@@ -1,41 +1,53 @@
 <?php
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(E_ERROR);
 set_magic_quotes_runtime(0);
-//ini_set('date.timezone','Asia/Shanghai');
-$now = time(); 
+ 
 define('IN_GAME', TRUE);
 define('GAME_ROOT', substr(dirname(__FILE__), 0, 0));
 define('GAMENAME', 'bra');
+
 if(PHP_VERSION < '4.3.0') {
 	exit('PHP version must >= 4.3.0!');
 }
 require_once GAME_ROOT.'./include/global.func.php';
 require_once GAME_ROOT.'./config.inc.php';
 
+$now = time() + $moveut*3600 + $moveutmin*60;   
+
 extract(gkillquotes($_COOKIE));
 extract(gkillquotes($_POST));
-extract(gkillquotes($_GET));
+unset($_GET);
 
-if($attackevasive) {
-	include_once GAME_ROOT.'./include/security.inc.php';
-}
+//if($attackevasive) {
+//	include_once GAME_ROOT.'./include/security.inc.php';
+//}
 
-if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
-	ob_start('ob_gzhandler');
-} else {
-	$gzipcompress = 0;
-	ob_start();
+
+
+if($mode == 'quit') {
+
+	gsetcookie('user','');
+	gsetcookie('pass','');
+	header("Location: index.php");
+	exit();
+
 }
 
 require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
 $db = new dbstuff;
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
-unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 $db->select_db($dbname);
+unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 require_once GAME_ROOT.'./gamedata/system.php';
 require_once GAME_ROOT.'./gamedata/resources.php';
 require_once './gamedata/validlimit.php';
+//if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
+//	ob_start('ob_gzhandler');
+//} else {
+//	$gzipcompress = 0;
+//	ob_start();
+//}
 foreach($nmlimit as $value){
 	if(!empty($value) && strpos($username,$value)!==false){
 		gexit($_ERROR['banned_name'],__file__,__line__);

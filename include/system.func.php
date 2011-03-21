@@ -56,7 +56,7 @@ function rs_game($mode = 0) {
 		//echo " - 禁区初始化 - ";
 		global $arealist,$areanum,$weather,$hack,$areatime,$starttime,$startmin,$areaadd,$areahour;
 		list($sec,$min,$hour,$day,$month,$year,$wday,$yday,$isdst) = localtime($starttime);
-		$areatime = $starttime + $areahour*3600 - $min*60;
+		$areatime = (ceil(($starttime + $areahour*60)/600))*600;//$areahour已改为按分钟计算，ceil是为了让禁区分钟为10的倍数
 		$plsnum = sizeof($plsinfo);
 		$arealist = range(1,$plsnum-1);
 		shuffle($arealist);
@@ -64,7 +64,7 @@ function rs_game($mode = 0) {
 		$areanum = 0;
 		$weather = rand(0,9);
 		$hack = 0;
-		movehtm();
+		movehtm($areatime);
 	}
 	if ($mode & 4) {
 		//echo " - 角色数据库初始化 - ";
@@ -243,6 +243,9 @@ function rs_sttime() {
 		$starthour = $starthour> 0 ? $starthour : 1;
 		$nextmin = $min + $starthour;
 		$nexthour = $hour;
+		if($nextmin % 60 >= 40){//回避速1禁
+			$nextmin+=20;
+		}
 		if($nextmin % 60 == 0){
 			$nextmin +=1;
 		}
@@ -253,89 +256,6 @@ function rs_sttime() {
 	return;
 }
 
-//function addarea($areatime) {
-//	//echo " - 禁区增加 - ";
-//	//实际上GAMEOVER的判断是在common.inc.php里
-//	global $db,$tablepre,$now,$gamestate,$areaesc,$arealist,$areanum,$arealimit,$areatime,$areahour,$areaadd,$plsinfo,$weather,$hack,$validnum,$alivenum,$deathnum;
-//	
-//	if (($gamestate > 10)&&($now > $areatime)) {
-//		$plsnum = sizeof($plsinfo) - 1;
-//		if(($areanum >= $arealimit*$areaadd)&&($validnum<=0)) {//无人参加GAMEOVER不是因为这里，这里只是保险。
-//			gameover($areatime,'end4');
-//			return $areatime;
-//		} elseif(($areanum + $areaadd) >= $plsnum) {
-//			$areaaddlist = array_slice($arealist,$areanum+1);
-//			$areanum = $plsnum;
-//			$weather = rand(0,9);
-//			addnews($areatime,'addarea',$areaaddlist,$weather);
-//			$query = $db->query("SELECT * FROM {$tablepre}players WHERE type=0 AND hp>0");
-//			while($sub = $db->fetch_array($query)) {
-//				$pid = $sub['pid'];
-//				$hp = 0;
-//				$state = 11;
-//				$deathpls = $sub['pls'];
-//				$bid = 0;
-//				//$bid = $sub['pls'];
-//				$endtime = $areatime;
-//				$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', endtime='$endtime' WHERE pid=$pid");
-//				addnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
-//			}
-//			$db->free_result($query);
-//			$alivenum = 0;
-//			$dquery = $db->query("SELECT pid FROM {$tablepre}players WHERE hp<=0");
-//			$deathnum = $db->num_rows($dquery);
-//			$db->free_result($dquery);
-//			gameover($areatime,'end1');
-//			return $areatime;
-//		} else {
-//			$weather = rand(0,9);
-//			if($hack > 0){$hack--;}
-//			$areaaddlist = array_slice($arealist,$areanum+1,$areaadd);
-//			$areanum += $areaadd;
-//			movehtm();
-//			addnews($areatime,'addarea',$areaaddlist,$weather);
-//			$str_arealist = implode(',',array_slice($arealist,0,$areanum+1));
-//			$query = $db->query("SELECT * FROM {$tablepre}players WHERE pls IN ($str_arealist) AND hp>0");
-//			while($sub = $db->fetch_array($query)) {
-//				$pid = $sub['pid'];
-//				if(!$sub['type']) {
-//					if(($gamestate >= 40)||(!$areaesc&&($sub['tactic']!=4))) {
-//					$hp = 0;
-//					$state = 11;
-//					$deathpls = $sub['pls'];
-//					$bid = 0;
-//					//$bid = $sub['pls'];
-//					$endtime = $areatime;
-//					$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', endtime='$endtime' WHERE pid=$pid");
-//					addnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
-//					$deathnum++;
-//					} else {
-//					$pls = $arealist[rand($areanum+1,$plsnum)];
-//					$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid ");
-//					}
-//				} elseif($sub['pls'] != 0) {
-//					$pls = $arealist[rand($areanum+1,$plsnum)];
-//					$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid");
-//				}
-//			}
-//			$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);
-//			//$alivenum--;
-//			if(($alivenum == 1)&&($gamestate >= 30)) { 
-//				gameover($areatime);
-//				return $areatime;
-//			} elseif(($alivenum <= 0)&&($gamestate >= 30)) {
-//				gameover($areatime,'end1');
-//				return $areatime;
-//			} else {
-//				rs_game(16+32);
-//				$areatime += $areahour*3600;
-//				addarea($areatime);
-//			}
-//		}
-//	} else {
-//		return $areatime;
-//	}
-//}
 
 function add_once_area($atime) {
 	//实际上GAMEOVER的判断是在common.inc.php里
@@ -551,8 +471,8 @@ function gameover($time = 0, $mode = '', $winname = '') {
 	return;
 }
 
-function movehtm() {
-	global $plsinfo,$arealist,$areanum,$hack,$pls,$xyinfo,$areahour,$areaadd,$hour;
+function movehtm($atime = 0) {
+	global $plsinfo,$arealist,$areanum,$hack,$pls,$xyinfo,$areahour,$areaadd;
 
 	$movehtm = GAME_ROOT.TPLDIR.'/move.htm';
 	$movedata = '<option value="main">■ 移动 ■<br />';
@@ -563,33 +483,50 @@ function movehtm() {
 		}
 	} 
 	writeover($movehtm,$movedata);
-
+	
 	$areahtm = GAME_ROOT.TPLDIR.'/areainfo.htm';
 	$areadata = '<span class="evergreen"><b>现在的禁区是：</b></span>';
 	for($i=0;$i<=$areanum;$i++){
 		$areadata .= '&nbsp;'.$plsinfo[$arealist[$i]];
 	}
 	$areadata .= '<br><span class="evergreen"><b>下回的禁区是：</b></span>';
+	
+	if(!$atime){
+		global $areatime;
+		$atime = $areatime;
+	}
 	if($areanum < count($plsinfo)) {
-		$nexthour = $hour+$areahour;
+		$at= getdate($atime);
+		$nexthour = $at['hours'];$nextmin = $at['minutes'];
+		while($nextmin >= 60){
+			$nexthour +=1;$nextmin -= 60;
+		}
 		if($nexthour >= 24){$nexthour-=24;}
-		$areadata .= "<b>{$nexthour}时：</b> ";
+		$areadata .= "<b>{$nexthour}时{$nextmin}分：</b> ";
 		for($i=1;$i<=$areaadd;$i++) {
 			$areadata .= '&nbsp;'.$plsinfo[$arealist[$areanum+$i]].'&nbsp;';
 		}
 	}
 	if($areanum+$areaadd < count($plsinfo)) {
-		$nexthour2 = $hour+$areahour*2;
+		$at2= getdate($atime + $areahour*60);
+		$nexthour2 = $at2['hours'];$nextmin2 = $at2['minutes'];
+		while($nextmin2 >= 60){
+			$nexthour2 +=1;$nextmin2 -= 60;
+		}
 		if($nexthour2 >= 24){$nexthour2-=24;}
-		$areadata .= "<b>{$nexthour2}时：</b> ";
+		$areadata .= "；<b>{$nexthour2}时{$nextmin2}分：</b> ";
 		for($i=1;$i<=$areaadd;$i++) {
 			$areadata .= '&nbsp;'.$plsinfo[$arealist[$areanum+$areaadd+$i]].'&nbsp;';
 		}
 	}
 	if($areanum+$areaadd*2 < count($plsinfo)) {
-		$nexthour3 = $hour+$areahour*3;
+		$at3= getdate($atime + $areahour*120);
+		$nexthour3 = $at3['hours'];$nextmin3 = $at3['minutes'];
+		while($nextmin3 >= 60){
+			$nexthour3 +=1;$nextmin3 -= 60;
+		}
 		if($nexthour3 >= 24){$nexthour3-=24;}
-		$areadata .= "<b>{$nexthour3}时：</b> ";
+		$areadata .= "；<b>{$nexthour3}时{$nextmin3}分：</b> ";
 		for($i=1;$i<=$areaadd;$i++) {
 			$areadata .= '&nbsp;'.$plsinfo[$arealist[$areanum+$areaadd*2+$i]].'&nbsp;';
 		}
@@ -598,42 +535,42 @@ function movehtm() {
 	return;
 }
 
-function addnpc($type,$sub,$num=1,$time=0) {
-	global $now,$db,$tablepre,$log,$plsinfo,$typeinfo;
-	$time = $time == 0 ? $now : $time;
-	$plsnum = sizeof($plsinfo);
-	include_once config('addnpc',$gamecfg);
-	$npc=$npcinfo[$type];
-	if(!$npc){
-		//echo 'no npc.';
-		return;
-	} else {
-		$npc = array_merge($npc,$npc['sub'][$sub]);
-		for($i=0;$i< $num;$i++){
-			$npc['type'] = $type;
-			$npc['endtime'] = $time;
-			$npc['exp'] = round(($npc['lvl']*2+1)*$GLOBALS['baseexp']);
-			$npc['sNo'] = $i;
-			$npc['hp'] = $npc['mhp'];
-			$npc['sp'] = $npc['msp'];
-			$npc['state'] = 0;
-			$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
-			if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
-			if($npc['pls'] == 99){$npc['pls'] = rand(1,$plsnum-1);}
-			$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['death']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."')");
-//			$newsname=$typeinfo[$type].' '.$npc['name'];
-//			addnews($now, 'addnpc', $newsname);
-		}
-	}
-	if($num > $npc['num']){
-		$newsname=$typeinfo[$type];
-		naddnews($time, 'addnpcs', $newsname,$i);
-	}else{
-		$newsname=$typeinfo[$type].' '.$npc['name'];
-		naddnews($time, 'addnpc', $newsname);
-	}
-	return $i;
-}
+//function addnpc($type,$sub,$num=1,$time=0) {
+//	global $now,$db,$tablepre,$log,$plsinfo,$typeinfo;
+//	$time = $time == 0 ? $now : $time;
+//	$plsnum = sizeof($plsinfo);
+//	include_once config('addnpc',$gamecfg);
+//	$npc=$npcinfo[$type];
+//	if(!$npc){
+//		//echo 'no npc.';
+//		return;
+//	} else {
+//		$npc = array_merge($npc,$npc['sub'][$sub]);
+//		for($i=0;$i< $num;$i++){
+//			$npc['type'] = $type;
+//			$npc['endtime'] = $time;
+//			$npc['exp'] = round(($npc['lvl']*2+1)*$GLOBALS['baseexp']);
+//			$npc['sNo'] = $i;
+//			$npc['hp'] = $npc['mhp'];
+//			$npc['sp'] = $npc['msp'];
+//			$npc['state'] = 0;
+//			$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
+//			if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
+//			if($npc['pls'] == 99){$npc['pls'] = rand(1,$plsnum-1);}
+//			$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['death']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."')");
+////			$newsname=$typeinfo[$type].' '.$npc['name'];
+////			addnews($now, 'addnpc', $newsname);
+//		}
+//	}
+//	if($num > $npc['num']){
+//		$newsname=$typeinfo[$type];
+//		naddnews($time, 'addnpcs', $newsname,$i);
+//	}else{
+//		$newsname=$typeinfo[$type].' '.$npc['name'];
+//		naddnews($time, 'addnpc', $newsname);
+//	}
+//	return $i;
+//}
 
 
 ?>

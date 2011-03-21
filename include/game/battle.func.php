@@ -102,8 +102,11 @@ function findcorpse(&$w_pdata){
 		${$w_sk_value.'_words'} = '';
 		if(${$w_sk_value} && ! is_numeric(${$w_sk_value})){
 			
-			for ($i = 0; $i < strlen($w_sk_value); $i++) {
-				${$w_sk_value.'_words'} .= $itemspkinfo[substr(${$w_sk_value},$i,1)];
+			for ($i = 0; $i < strlen($w_sk_value)-1; $i++) {
+				$sub = substr(${$w_sk_value},$i,1);
+				if(!empty($sub)){
+					${$w_sk_value.'_words'} .= $itemspkinfo[$sub];
+				}
 			}
 			
 		}

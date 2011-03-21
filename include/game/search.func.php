@@ -138,7 +138,7 @@ function search(){
 	}
 	//if(strpos($inf, 'a') !== false){ $schsp += 5; }
 	//if(strpos($inf, 'i') !== false){ $schsp += 15; }
-	if($club == 10){
+	if($club == 6){
 		if($lvl>=20){
 			$schsp -= 14;
 		}else{
@@ -236,7 +236,7 @@ function discover($schmode = 0) {
 			elseif($pose==3){$real_trap_obbs+=3;}//攻击和探索姿势略容易踩陷阱
 			if($gamestate >= 40){$real_trap_obbs+=3;}//连斗以后略容易踩陷阱
 			if($pls == 0){$real_trap_obbs+=15;}//在后台非常容易踩陷阱
-			if($club == 10){$real_trap_obbs-=5;}//人肉搜索称号遭遇陷阱概率减少
+			if($club == 6){$real_trap_obbs-=5;}//人肉搜索称号遭遇陷阱概率减少
 			//echo "踩陷阱概率：{$real_trap_obbs}%";
 			if($trap_dice < $real_trap_obbs){//踩陷阱判断
 				$itemno = rand(0,$trpnum-1);

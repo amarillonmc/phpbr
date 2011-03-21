@@ -172,19 +172,23 @@ function adtsk(){
 }
 
 function chginf($infpos){
-	global $log,$mode,$inf,$inf_sp,$sp,$infinfo,$club;
-
+	global $log,$mode,$inf,$inf_sp,$inf_sp_2,$sp,$infinfo,$exdmginf,$club;
+	$normalinf = Array('h','b','a','f');
 	if(!$infpos){$mode = 'command';return;}
-	if($infpos == 'A'){
+	if($infpos == 'A'){  //包扎全身伤口
 		if($club == 16){
 			$spdown = 0;
-			foreach(Array('h','b','a','f') as $value){
+			foreach($normalinf as $value){
 				if(strpos($inf,$value)!== false){
 					$spdown += $inf_sp;
 				}
 			}
-			if($sp <= $spdown){
-				$log .= '体力不足，无法包扎伤口，先休息一下吧！';
+			if(!$spdown){
+				$log .= '你并没有受伤！';
+				$mode = 'command';
+				return;
+			}elseif($sp <= $spdown){
+				$log .= "包扎全部伤口需要{$spdown}点体力，先回复体力吧！";
 				$mode = 'command';
 				return;
 			}
@@ -193,7 +197,7 @@ function chginf($infpos){
 			$inf = str_replace('a','',$inf);
 			$inf = str_replace('f','',$inf);
 			$sp -= $spdown;
-			$log .= '全身伤口都治疗完毕了！';
+			$log .= "消耗<span class=\"yellow\">$spdown</span>点体力，全身伤口都包扎好了！";
 			$mode = 'command';
 			return;
 		}else{
@@ -201,18 +205,40 @@ function chginf($infpos){
 			$mode = 'command';
 			return;
 		}
-	}	elseif(strpos($inf,$infpos) !== false) {
+	}elseif(in_array($infpos,$normalinf) && strpos($inf,$infpos) !== false){	//普通伤口
 		if($sp <= $inf_sp) {
-			$log .= '体力不足，无法包扎伤口，先休息一下吧！';
+			$log .= "包扎伤口需要{$inf_sp}点体力，先回复体力吧！";
 			$mode = 'command';
 			return;
 		} else {
 			$inf = str_replace($infpos,'',$inf);
 			$sp -= $inf_sp;
-			$log .= $infinfo[$infpos].'<span class="red">部</span>的伤口已经包扎好了！';
+			$log .= "消耗<span class=\"yellow\">$inf_sp</span>点体力，{$infinfo[$infpos]}<span class=\"red\">部</span>的伤口已经包扎好了！";
 			$mode = 'command';
 			return;
 		}
+	}elseif(strpos($inf,$infpos) !== false){  //特殊状态
+		if($club == 16){
+			if($sp <= $inf_sp_2) {
+				$log .= "处理异常状态需要{$inf_sp_2}点体力，先回复体力吧！";
+				$mode = 'command';
+				return;
+			} else {
+				$inf = str_replace($infpos,'',$inf);
+				$sp -= $inf_sp_2;
+				$log .= "消耗<span class=\"yellow\">$inf_sp_2</span>点体力，{$exdmginf[$infpos]}状态已经完全治愈了！";
+				$mode = 'command';
+				return;
+			}
+		}else{
+			$log .= '你不懂得怎样治疗异常状态！';
+			$mode = 'command';
+			return;
+		}
+	}else{
+		$log .= '你不需要包扎这个伤口！';
+		$mode = 'command';
+		return;
 	}
 }
 
@@ -277,8 +303,11 @@ function shoplist($sn) {
 		}
 		$itemdata[$i]['itmsk_words'] = '';
 		if($itemlist['itmsk'] && ! is_numeric($itemlist['itmsk'])){
-			for ($j = 0; $j < strlen($itemlist['itmsk']); $j++) {
-				$itemdata[$i]['itmsk_words'] .= $itemspkinfo[substr($itemlist['itmsk'],$j,1)];
+			for ($j = 0; $j < strlen($itemlist['itmsk']-1); $j++) {
+				$sub = substr($itemlist['itmsk'],$j,1);
+				if(!empty($sub)){
+					$itemdata[$i]['itmsk_words'] .= $itemspkinfo[$sub];
+				}
 			}
 		}
 		//$itemdata[$i] = array('sid' => $sid, 'kind' => $kind,'num' => $num, 'price' => $price, 'area' => $area, 'item' => $item,'itmk_words' => $itmk_words,'itme' => $itme, 'itms' => $itms,'itmsk_words' => $itmsk_words);

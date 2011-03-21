@@ -6,6 +6,14 @@ require_once './include/common.inc.php';
 require_once GAME_ROOT.'./include/game.func.php';
 
 if(!$cuser||!$cpass) { gexit($_ERROR['no_login'],__file__,__line__); } 
+if($mode == 'quit') {
+
+	gsetcookie('user','');
+	gsetcookie('pass','');
+	header("Location: index.php");
+	exit();
+
+}
 $result = $db->query("SELECT * FROM {$tablepre}players WHERE name = '$cuser' AND type = 0");
 if(!$db->num_rows($result)) { header("Location: valid.php");exit(); }
 

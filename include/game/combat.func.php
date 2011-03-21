@@ -323,7 +323,11 @@ function attack($wep_kind = 'N', $active = 0) {
 	check_GCDF_wep ( '你', $hit_time [0], $wep, $wep_kind, $wepk, $wepe, $weps, $wepsk );
 	
 	addnoise ( $wep_kind, $wepsk, $now, $pls, $pid, $w_pid, $wep_kind );
-	$wep_skill ++;
+	if($club == 10){
+		$wep_skill +=2;
+	}else{
+		$wep_skill +=1;
+	}
 	return $damage;
 }
 
@@ -430,7 +434,11 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	
 	addnoise ( $w_wep_kind, $w_wepsk, $now, $pls, $w_pid, $pid, $w_wep_kind );
 	
-	$w_wep_skill ++;
+	if($w_club == 10){
+		$w_wep_skill +=2;
+	}else{
+		$w_wep_skill +=1;
+	}
 	
 	return $damage;
 }
@@ -737,14 +745,14 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 		foreach ( $ex_attack as $ex_dmg_sign ) {
 			if (strpos ( $ky, $ex_dmg_sign ) !== false) {
 				$dmgnm = $exdmgname [$ex_dmg_sign];
-				$dmginf = $exdmginf [$ex_dmg_sign];
 				$def = $ex_dmg_def [$ex_dmg_sign];
 				$bdmg = $ex_base_dmg [$ex_dmg_sign];
 				$mdmg = $ex_max_dmg [$ex_dmg_sign];
 				$wdmg = $ex_wep_dmg [$ex_dmg_sign];
 				$sdmg = $ex_skill_dmg [$ex_dmg_sign];
 				$fluc = $ex_dmg_fluc [$ex_dmg_sign];
-				if (!empty($ex_inf [$ex_dmg_sign])) {
+				if (in_array($ex_dmg_sign,array_keys($ex_inf))) {
+					$dmginf = $exdmginf [$ex_dmg_sign];
 					$ex_inf_sign = $ex_inf [$ex_dmg_sign];
 					$infr = $ex_inf_r [$ex_inf_sign];
 					$minfr = $ex_max_inf_r [$ex_inf_sign];

@@ -36,7 +36,7 @@ function teammake($tID,$tPass) {
 		
 	if($teamID) {
 		$log .= '你已经加入了队伍<span class="yellow">'.$teamID.'</span>，请先退出队伍。<br>';
-	} elseif($sp <= $teamsp) {
+	} elseif($sp <= $team_sp) {
 		$log .= '体力不足，不能创建队伍。至少需要<span class="yellow">'.$team_sp.'</span>点体力。<br>';
 	} else {
 		$result = $db->query("SELECT pid FROM {$tablepre}players WHERE teamID='$tID'");
@@ -45,6 +45,7 @@ function teammake($tID,$tPass) {
 		} else {
 			$teamID = $tID;
 			$teamPass = $tPass;
+			$sp -= $team_sp;
 			$log .= '你创建了队伍<span class="yellow">'.$teamID.'</span>。<br>';
 			naddnews($now,'teammake',$teamID,$name);
 			global $gamedata,$chatinfo;
@@ -58,7 +59,7 @@ function teammake($tID,$tPass) {
 }
 
 function teamjoin($tID,$tPass) {
-	global $log,$mode,$teamID,$teamPass,$db,$tablepre,$noitm,$sp,$team_sp,$now,$name,$teamlimit,$teamj_sp,$sp,$gamestate;
+	global $log,$mode,$teamID,$teamPass,$db,$tablepre,$noitm,$sp,$team_sp,$teamj_sp,$now,$name,$teamlimit,$gamestate;
 	if($gamestate >= 40) {
 		$log .= '连斗时不能加入队伍。<br>';
 		$mode = 'command';
@@ -100,6 +101,7 @@ function teamjoin($tID,$tPass) {
 			if($tPass == $password) {
 				$teamID = $tID;
 				$teamPass = $tPass;
+				$sp -= $teamj_sp;
 				$log .= '你加入了队伍<span class="yellow">'.$teamID.'</span>。<br>';
 				naddnews($now,'teamjoin',$teamID,$name);
 				global $gamedata,$chatinfo;

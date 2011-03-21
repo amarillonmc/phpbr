@@ -192,20 +192,20 @@ function makeclub() {
 	global $wp,$wk,$wg,$wc,$wd,$wf,$money,$mhp,$msp,$hp,$sp,$att,$def;
 	$wp = $wk = $wg = $wc = $wd = $wf = 0;
 	$dice = rand(0,105);
-	if($dice < 10)		{$club = 1;$wp = 25;}//殴25
-	elseif($dice < 20)	{$club = 2;$wk = 25;}//斩25
-	elseif($dice < 30)	{$club = 3;$wc = 25;}//投25
-	elseif($dice < 40)	{$club = 4;$wg = 25;}//射25
-	elseif($dice < 50)	{$club = 5;$wd = 25;}//爆25
-	elseif($dice < 55)	{$club = 6;}//移动消耗减
+	if($dice < 10)		{$club = 1;$wp = 30;}//殴25
+	elseif($dice < 20)	{$club = 2;$wk = 30;}//斩25
+	elseif($dice < 30)	{$club = 3;$wc = 30;}//投25
+	elseif($dice < 40)	{$club = 4;$wg = 30;}//射25
+	elseif($dice < 50)	{$club = 5;$wd = 20;}//爆25
+	elseif($dice < 55)	{$club = 6;}//移动、探索消耗减
 	elseif($dice < 60)	{$club = 7;}//P(HACK)=1
 	elseif($dice < 65)	{$club = 8;}//查毒可
-	elseif($dice < 75)	{$club = 9;$wf = 25;}//能使用必杀，灵25
-	elseif($dice < 80)	{$club = 10;}//探索减
+	elseif($dice < 75)	{$club = 9;$wf = 20;}//能使用必杀，灵25
+	elseif($dice < 80)	{$club = 10;}//攻击熟练+2
 	elseif($dice < 85)	{$club = 11;$money = 500;}//出击钱数500
-	elseif($dice < 90)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 10;}//全熟练10
-	elseif($dice < 95)	{$club = 13;$mhp = $mhp + 100;$hp = $mhp;}//生命上限提高100
-	elseif($dice < 100)	{$club = 14;$att = $att + 50;$def = $def + 50;}//攻防+50
+	elseif($dice < 90)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 50;}//全熟练50
+	elseif($dice < 95)	{$club = 13;$mhp = $mhp + 200;$hp = $mhp;}//生命上限提高200
+	elseif($dice < 100)	{$club = 14;$att = $att + 100;$def = $def + 100;}//攻防+100
 	elseif($dice <= 105) {$club = 16;}//回复量增加
 	else				{$club = makeclub();}
 	return $club;

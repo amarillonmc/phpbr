@@ -3,8 +3,8 @@
 define('CURSCRIPT', 'alive');
 
 require_once './include/common.inc.php';
-
-extract(gaddslashes($_GET));
+extract(gkillquotes($_POST));
+//extract(gaddslashes($_GET));
 if($alivemode == 'all') {
 	$query = $db->query("SELECT name,gd,sNo,icon,lvl,exp,killnum,teamID FROM {$tablepre}players WHERE type=0 AND hp>0 order by killnum desc, lvl desc");
 } else {

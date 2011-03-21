@@ -13,6 +13,7 @@ if($command == 'edit') {
 	$bbsurl = setconfig($_POST['bbsurl']);
 	$gameurl = setconfig($_POST['gameurl']);
 	$moveut = (int)$_POST['moveut'];
+	$moveutmin = (int)$_POST['moveutmin'];
 
 	$fp = fopen('./config.inc.php', 'r');
 	$configfile = fread($fp, filesize('./config.inc.php'));
@@ -22,6 +23,7 @@ if($command == 'edit') {
 	$configfile = preg_replace("/[$]bbsurl\s*\=\s*[\"'].*?[\"'];/is", "\$bbsurl = '$bbsurl';", $configfile);
 	$configfile = preg_replace("/[$]gameurl\s*\=\s*[\"'].*?[\"'];/is", "\$gameurl = '$gameurl';", $configfile);
 	$configfile = preg_replace("/[$]moveut\s*\=\s*-?[0-9]+;/is", "\$moveut = $moveut;", $configfile);
+	$configfile = preg_replace("/[$]moveutmin\s*\=\s*-?[0-9]+;/is", "\$moveutmin = $moveutmin;", $configfile);
 
 	$fp = fopen('./config.inc.php', 'w');
 	fwrite($fp, trim($configfile));
@@ -49,7 +51,7 @@ $nowyear += 1900;
 	</tr>
 	<tr style="color: #3A4273">
 	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut']?></td>
-	  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="30"></td>
+	  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="5">小时<input type="text" name="moveutmin" value="<?=$moveutmin?>" size="5">分钟</td>
 	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut_comment']?><br><?=$nowyear?><?=$lang['year']?><?=$nowmonth?><?=$lang['month']?><?=$nowday?><?=$lang['day']?><?=$nowhour?><?=$lang['hour']?><?=$nowmin?><?=$lang['min']?></td>
 	</tr>
 	<!--

@@ -1,11 +1,11 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); include template('header'); ?>
 <table border="0" align="center">
-<tr><td><font class="yellow"><B>官方网站</B></font></td><td>：</td><td><a href="<?=$homepage?>" class="clan" target="_blank"><?=$homepage?></a> MODDED By <u>冴月麟</u>　　</td></tr>
-<tr><td><font class="yellow"><B>当前时刻</B></font></td><td>：</td><td><font class="lime"><?=$month?>月 <?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></font></td></tr>
-<tr><td><font class="yellow"><B>站长留言</B></font></td><td>：</td><td><?=$adminmsg?></td></tr>
-<tr><td><font class="yellow"><B>游戏情报</B></font></td><td>：</td><td><span class="clit"><B>第 <?=$gamenum?> 回游戏  <?=$gstate[$gamestate]?></span><br></td></tr>
+<tr><td><span class="yellow">官方网站：</span></td><td><a href="<?=$homepage?>" class="evergreen" target="_blank"><?=$homepage?></a> MODDED By <u>冴月麟</u>　　</td></tr>
+<tr><td><span class="yellow">当前时刻：</span></td><td><span class="evergreen"><?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></span></td></tr>
+<tr><td><span class="yellow">站长留言：</span></td><td><span class="evergreen"><?=$adminmsg?></span></td></tr>
+<tr><td><span class="yellow">游戏情报：</span></td><td><span class="evergreen2">第 <?=$gamenum?> 回游戏 <?=$gstate[$gamestate]?></span></td></tr>
 </table>
-<div >
+<div>
 <? if($gamestate > 10 ) { ?>
 本局游戏已经进行  <span id="timing"></span><script type="text/javascript">updateTime(<?=$timing?>,1);</script><br> 
 <? if($hplayer) { ?>
@@ -42,10 +42,15 @@
 死亡总数：<span id="alivenum"><?=$deathnum?></span>
 <br />
 <? if($cuser) { ?>
+<br />欢迎你，<?=$cuser?>！
 <form method="post" name="togame" action="game.php">
 <input type="hidden" name="mode" value="main">
-欢迎你， <?=$cuser?> ！
 <input type="submit" name="enter" value="进入游戏">
+</form>
+
+<form method="post" name="quitgame" action="game.php">
+<input type="hidden" name="mode" value="quit">
+<input type="submit" name="quit" value="账号退出">
 </form>
 <? } else { ?>
 <form method="post" name="login" action="login.php">
@@ -55,5 +60,5 @@
 <input type="submit" name="enter" value="登录">
 </form>
 <? } ?>
-<span class="yellow" style="font-size:24px;">第一次玩的，请先看 <a href="help.php">游戏帮助</a> !!!</span><br>
+<span class="evergreen2">第一次玩的，请先看 <a href="help.php" class="clit">游戏帮助</a> !!!</span><br>
 <? include template('footer'); ?>

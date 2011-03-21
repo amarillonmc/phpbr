@@ -2,6 +2,9 @@
 
 <input type="hidden" name="mode" value="special">
 <input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" >返回</a><br><br>
+<!--{if $inf && $club == 16}-->
+<input type="radio" name="command" id="infA" value="infA"><a onclick=sl('infA'); href="javascript:void(0);" ><span class="red">全部包扎</span></a><br>
+<!--{/if}-->
 <!--{if strpos($inf,'b') !== false}-->
 <input type="radio" name="command" id="infb" value="infb"><a onclick=sl('infb'); href="javascript:void(0);" >$infinfo['b']<span class="red">部</span></a><br>
 <!--{/if}-->

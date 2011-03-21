@@ -3,7 +3,7 @@
 define('CURSCRIPT', 'chat');
 
 require_once './include/common.inc.php';
-require_once GAME_ROOT.'./include/JSON.php';
+//require_once GAME_ROOT.'./include/JSON.php';
 
 if(!$cuser || !defined('IN_GAME')) {
 	exit('Not in game.');
@@ -37,8 +37,9 @@ if(!$chatdata) {
 	$chatdata = getchat($lastcid,$team);
 }
 ob_clean();
-$json = new Services_JSON();
-$jgamedata = $json->encode($chatdata);
+//$json = new Services_JSON();
+//$jgamedata = $json->encode($chatdata);
+$jgamedata = compatible_json_encode($chatdata);
 echo $jgamedata;
 ob_end_flush();
 

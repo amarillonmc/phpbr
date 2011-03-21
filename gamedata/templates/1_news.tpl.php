@@ -3,12 +3,18 @@
 
 <div align="left">
 <div class="clearfix">
-<span style="float:left;" ><img border="0" src="img/n_1.gif" width="70" height="70"></span>
-<span>『大家都还活得很精神嘛！<br />以下是到现在为止的游戏状况。<br />今天也要好好干喔！』</span>
+<span style="float:left;" ><img border="0" src="img/question.gif"></span>
+<span><span class="evergreen">“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”</span></span>
 </div>
 <br>
-<? if($hack) { ?>
-<span class="yellow"><b>（禁区已解除）</b></span>
+<span class="evergreen">当前时间：<?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></span><br />
+<span class="evergreen">当前天气：<?=$wthinfo[$weather]?></span><br />
+<? if($gamestate==40) { ?>
+<span class="yellow">游戏已经进入连斗阶段！</span><br />
+<? } if($gamestate==50) { ?>
+<span class="red">游戏已经进入死斗模式！</span><br />
+<? } if($hack) { ?>
+<span class="evergreen">（禁区已解除）</span>
 <? } include template('areainfo'); ?>
 <br><br>
 <button onClick="showNews('last');return false;">显示最新的<?=$newslimit?>条消息</button>

@@ -1,164 +1,394 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
-<table border="1" width="550" height="320" cellspacing="0" cellpadding="0"  valign="middle">
-<tr><td width="70" colspan="1" class="b1"><b>lv. <?=$lvl?></b></td>
-<td colspan="3" class="b1"><b><?=$month?>月 <?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?> 
+<table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle">
+<tr><td>
+<table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle" background="img/profile.gif" style="background-position:bottom left;background-repeat:no-repeat;">
+<tr><td height="20" width="210" colspan="3" class="b1"><div class=nttx><?=$name?></div></td>
+<td width="100" colspan="1" class="b1"><div class=nttx><?=$sexinfo[$gd]?><?=$sNo?>号</div></td>
+<td width="95" colspan="2" class="b1"><div class=nttx>天气:<?=$wthinfo[$weather]?></div></td>
+<td width="215" colspan="1" class="b1"><div class=nttx><?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?>
 <? if($gamestate == 40 ) { ?>
-<font color="red">连斗</font>
+<span class="yellow">连斗</span>
+<? } if($gamestate == 50 ) { ?>
+<span class="red">死斗</span>
 <? } ?>
-</b></td>
-<td class="b1" width="47"><b>经验值</b></td>
-<td class="b3" width="78"><?=$exp?> / <?=$upexp?></td>
-<td class="b1" width="47"><b>天气</b></td>
-<td class="b3" width="79"><b><?=$wthinfo[$weather]?></b></td></tr>
-<tr><td rowspan="4" height="70" class="b3"><img src="img/<?=$iconImg?>" border="0" align="middle"></td>
-<td width="70" class="b2"><b>姓名</b></td>
-<td width="145" colspan="2" class="b3"><?=$name?></td>
-<td rowspan="4" height="70" class="b2"><b>状态</b></td>
-<td rowspan="4" colspan="4" class="b3" height="70"><img src="img/<?=$infimg?>.gif" align="top" border="0" align="middle"><embed src="img/<?=$hstate?>.swf" height=70 width=140></td></tr>
-<tr><td rowspan="1" class="b2"><b>学号</b></td>
-<td rowspan="1" colspan="2" class="b3"><?=$sexinfo[$gd]?> <?=$sNo?> 号 </td></tr>
-<tr><td class="b2"><b>队伍</b></td>
-<td colspan="2" class="b3">
+</div></td>
+</tr>
+<tr><td rowspan="4" colspan="2" width="150" height="80" class="b3"><div class=nttx><img src="img/<?=$iconImg?>" border="0" style="width:140;height:80" 
+<? if($hp==0) { ?>
+style="filter:Xray()"
+<? } ?>
+ /></div></td>
+<td width="60" class="b2"><div class=nttx>等级</div></td>
+<td width="100" class="b3"><div class=nttx>Lv. <?=$lvl?></div></td>
+<td width="45" class="b2"><div class=nttx>
+<? if($wp >= 25) { ?>
+殴熟
+<? } else { ?>
+<span class="grey">殴熟</span>
+<? } ?>
+</div></td>
+<td width="55" class="b3"><div class=nttx><?=$wp?></div></td>
+<td rowspan="8" width="215" height="160" class="b3">
+<div class=nttx>
+<table border="0" width=215px height=160px cellspacing="0" cellpadding="0">
+<tr height=160px>
+<td width=160px background="img/state1.gif" style="position:relative;background-repeat:no-repeat;background-position:right top;">
+<div style="border:0; margin:0; cellspacing:0; cellpadding:0; position:absolute;z-index:10;top:0;left:0;">
+<?=$infimg?>
+</div>
+<div style="border:0; margin:0; cellspacing:0; cellpadding:0; position:absolute;top:0px;left:105px;z-index:1;">
+<?=$newspimg?>
+</div>
+</td>
+<td width=55px background="img/state2.gif" style="position:relative;background-repeat:no-repeat;background-position:left top;">
+<div style="border:0; margin:0; cellspacing:0; cellpadding:0; position:absolute;top:0px;right:55px;z-index:1;">
+<?=$newhpimg?>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+<tr><td height="20" class="b2"><div class=nttx>经验值</div></td>
+<td class="b3"><div class=nttx><?=$exp?> / <?=$upexp?></div></td>
+<td class="b2"><div class=nttx>
+<? if($wk >= 25) { ?>
+斩熟
+<? } else { ?>
+<span class="grey">斩熟</span>
+<? } ?>
+</div></td>
+<td class="b3"><div class=nttx><?=$wk?></div></td>
+</tr>
+<tr><td height="20" class="b2"><div class=nttx>队伍</div></td>
+<td class="b3"><div class=nttx>
 <? if($teamID) { ?>
 <?=$teamID?>
 <? } else { ?>
-无
+ 无 
 <? } ?>
-</td></tr>
-<tr><td class="b2"><b>受伤部位</b></td>
-<td colspan="2" class="b3">
+</div></td>
+<td class="b2"><div class=nttx>
+<? if($wg >= 25) { ?>
+射熟
+<? } else { ?>
+<span class="grey">射熟</span>
+<? } ?>
+</div></td>
+<td class="b3"><div class=nttx><?=$wg?></div></td>
+</tr>
+<tr><td height="20" class="b2"><div class=nttx>内定称号</div></td>
+<td class="b3"><div class=nttx><?=$clubinfo[$club]?></div></td>
+<td class="b2"><div class=nttx>
+<? if($wc >= 25) { ?>
+投熟
+<? } else { ?>
+<span class="grey">投熟</span>
+<? } ?>
+</div></td>
+<td class="b3"><div class=nttx><?=$wc?></div></td>
+</tr>
+<tr><td height="20" width="60" class="b2"><div class=nttx>攻击力</div></td>
+<td width="80" class="b3"><div class=nttx><?=$att?> + <?=$wepe?></div></td>
+<td class="b2"><div class=nttx>金钱</div></td>
+<td class="b3"><div class=nttx><?=$money?> 元</div></td>
+<td class="b2"><div class=nttx>
+<? if($wd >= 25) { ?>
+爆熟
+<? } else { ?>
+<span class="grey">爆熟</span>
+<? } ?>
+</div></td>
+<td class="b3"><div class=nttx><?=$wd?></div></td>
+</tr>
+<tr><td height="20" class="b2"><div class=nttx>防御力</div></td>
+<td class="b3"><div class=nttx><?=$def?> + <?=$ardef?></div></td>
+<td class="b2"><div class=nttx>受伤部位</div></td>
+<td class="b3"><div class=nttx>
 <? if($infdata) { ?>
 <?=$infdata?>
 <? } else { ?>
 无
 <? } ?>
-</td></tr>
-<tr><td class="b2"><b>攻击力</b></td>
-<td class="b3"><?=$att?> + <?=$wepe?></td>
-<td class="b2" width="70"><b>体力</b></td>
-<td class="b3" width="74"><?=$sp?> / <?=$msp?></td>
-<td colspan="4" class="b3"><?=$spimg?></td></tr>
-<tr><td class="b2"><b>防御力</b></td>
-<td class="b3"><?=$def?> + <?=$ardef?></td>
-<td class="b2"><b>生命</b></td>
-<td class="b3"><?=$hp?> / <?=$mhp?></td>
-<td colspan="4" class="b3"><?=$hpimg?></td></tr>
-<tr><td class="b2"><b>基础姿态</b></td>
-<td class="b3"><?=$poseinfo[$pose]?></td>
-<td class="b2"><b>怒气</b></td>
-<td class="b3"><span class="yellow"><b><?=$rage?></b></span></td>
-<td class="b2"><b>熟练度</b></td>
-<td colspan="3" class="b3">殴:<?=$wp?> 斩:<?=$wk?> 射:<?=$wg?> 投:<?=$wc?> 爆:<?=$wd?> 灵:<?=$wf?> </td></tr>
-<tr><td class="b2"><b>应战策略</b></td>
-<td class="b3"><?=$tacinfo[$tactic]?></td>
-<td class="b2"><b>内定称号</b></td>
-<td class="b3"><?=$clubinfo[$club]?></td>
-<td class="b2"><b>击杀数</b></td>
-<td class="b3"><?=$killnum?></td>
-<td class="b2"><b>金钱</b></td>
-<td class="b3"><?=$money?> 元</td></tr>
-<tr><td class="b3" colspan="8" height="1" align="center">
-<table border="0" cellspacing="0" cellpadding="0" height="110" >
-<tr><td>
-<table border="1" cellspacing="0" cellpadding="0">
-  <tr><td class="b1" colspan="4" rowspan="8" >装备</td>
-  <td>
-  <tr><td class="b2">种</td><td class="b2">名</td><td class="b2">效</td><td class="b2">耐</td></tr>
-  <tr><td class="b3">【<?=$iteminfo[$wepk]?>
-<? if(strpos($wepsk,'S') !== false) { ?>
--消
+</div></td>
+<td class="b2"><div class=nttx>
+<? if($wf >= 25) { ?>
+灵熟
+<? } else { ?>
+<span class="grey">灵熟</span>
 <? } ?>
-】</td><td class="b3">
+</div></td>
+<td class="b3"><div class=nttx><?=$wf?></div></td>
+</tr>
+<tr><td height="20" class="b2"><div class=nttx>基础姿态</div></td>
+<td class="b3"><div class=nttx><?=$poseinfo[$pose]?></div></td>
+<td class="b2"><div class=nttx>体力</div></td>
+<td class="b3"><div class=nttx><span class="<?=$spcolor?>"><?=$sp?> / <?=$msp?></span></div></td>
+<td class="b2"><div class=nttx>怒气</div></td>
+<td class="b3"><div class=nttx>
+<? if($rage >= 30) { ?>
+<span class="yellow"><?=$rage?></span>
+<? } else { ?>
+<?=$rage?>
+<? } ?>
+</div></td>
+</tr>
+<tr><td height="20" class="b2"><div class=nttx>应战策略</div></td>
+<td class="b3"><div class=nttx><?=$tacinfo[$tactic]?></div></td>
+<td class="b2"><div class=nttx>生命</div></td>
+<td class="b3"><div class=nttx><span class="<?=$hpcolor?>"><?=$hp?> / <?=$mhp?></span></div></td>
+<td class="b2"><div class=nttx>击杀数</div></td>
+<td class="b3"><div class=nttx><?=$killnum?></div></td>
+</tr>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr><td height="10" class="b5"></td></tr>
+<tr><td>
+  		<TABLE border="0" cellSpacing=0 cellPadding=0 height=140 width=640 background="img/enp.gif" style="background-position:bottom left;background-repeat:no-repeat;">
+  			<tr>
+  				<td>
+  				<TABLE border="0" cellSpacing=0 cellPadding=0 height=100% width=100%>
+  				<TR>
+          			<TD class=b1 height="20" width="65"><div class=nttx>装备种类</div></TD>
+          			<TD class=b1><div class=nttx>名称</div></TD>
+          			<TD class=b1 width="65"><div class=nttx>属性</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>效</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>耐</div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx>
+<? if($wepk_words) { ?>
+<?=$wepk_words?>
+<? } else { ?>
+<?=$mltwk?>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($weps) { ?>
 <?=$wep?>
 <? } else { ?>
 <?=$nowep?>
 <? } ?>
-</td><td class="b3"><?=$wepe?></td><td class="b3"><?=$weps?></td></tr>
-  <tr><td class="b3">【防具(体)】</td><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$wepsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$wepe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$weps?></div></TD>
+          </tr>
+          <tr>
+          	          <TD class=b2 height="20"><div class=nttx>
+<? if($arbs) { ?>
+<?=$iteminfo['DB']?>
+<? } else { ?>
+<span class="grey"><?=$iteminfo['DB']?></span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($arbs) { ?>
 <?=$arb?>
 <? } else { ?>
 <?=$noarb?>
 <? } ?>
-</td><td class="b3"><?=$arbe?></td><td class="b3"><?=$arbs?></td></tr>
-  <tr><td class="b3">【防具(头)】</td><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$arbsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arbe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arbs?></div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx>
+<? if($arhs) { ?>
+<?=$iteminfo['DH']?>
+<? } else { ?>
+<span class="grey"><?=$iteminfo['DH']?></span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($arhs) { ?>
 <?=$arh?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$arhe?></td><td class="b3"><?=$arhs?></td></tr>
-  <tr><td class="b3">【防具(腕)】</td><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$arhsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arhe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arhs?></div></TD>
+          </tr>
+          <tr>
+          			  		<TD class=b2 height="20"><div class=nttx>
+<? if($aras) { ?>
+<?=$iteminfo['DA']?>
+<? } else { ?>
+<span class="grey"><?=$iteminfo['DA']?></span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($aras) { ?>
 <?=$ara?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$arae?></td><td class="b3"><?=$aras?></td></tr>
-  <tr><td class="b3">【防具(足)】</td><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$arask_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arae?></div></TD>
+                      <TD class=b3><div class=nttx><?=$aras?></div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx>
+<? if($arfs) { ?>
+<?=$iteminfo['DF']?>
+<? } else { ?>
+<span class="grey"><?=$iteminfo['DF']?></span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($arfs) { ?>
 <?=$arf?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$arfe?></td><td class="b3"><?=$arfs?></td></tr>
-  <tr><td class="b3">【饰品】</td><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$arfsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arfe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arfs?></div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx>
+<? if($arts) { ?>
+<?=$artk_words?>
+<? } else { ?>
+<span class="grey"><?=$iteminfo['A']?></span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($arts) { ?>
 <?=$art?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$arte?></td><td class="b3"><?=$arts?></td></tr>
-  </td></tr>
-</table>
-</td>
-<td width="20"></td>
-<td>
-<table border="1" cellspacing="0" cellpadding="0">
-  <tr><td class="b1" colspan="4" rowspan="7" >包裹<td></td>
-  <tr><td class="b2">名</td><td class="b2">效</td><td class="b2">耐</td><td class="b2">用途</td></tr>
-  <tr><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$artsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arte?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arts?></div></TD>
+          </tr>
+        </table>
+      </td>
+      <td>
+      	<TABLE border="0" cellSpacing=0 cellPadding=0 height=100% width=100%>
+      		<tr>
+         			<TD class=b1 height="20" width="65"><div class=nttx>道具用途</div></TD>
+         			<TD class=b1><div class=nttx>名称</div></TD>
+         			<TD class=b1 width="65"><div class=nttx>属性</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>效</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>耐</div></TD>
+          </TR>
+          		<tr>          			  
+                      <TD class=b2><div class=nttx>
+<? if($itmk1_words) { ?>
+<?=$itmk1_words?>
+<? } else { ?>
+<span class="grey">包裹1</span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($itms1) { ?>
 <?=$itm1?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$itme1?></td><td class="b3"><?=$itms1?></td><td class="b3"><font color="00ffff">【<?=$iteminfo[$itmk1]?>】</font></td></tr>
-  <tr><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk1_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme1?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms1?></div></TD>
+                      </tr>
+                <tr>
+                      <TD class=b2><div class=nttx>
+<? if($itmk2_words) { ?>
+<?=$itmk2_words?>
+<? } else { ?>
+<span class="grey">包裹2</span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($itms2) { ?>
 <?=$itm2?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$itme2?></td><td class="b3"><?=$itms2?></td><td class="b3"><font color="00ffff">【<?=$iteminfo[$itmk2]?>】</font></td></tr>
-  <tr><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk2_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme2?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms2?></div></TD>
+                      </tr>
+                <tr>          			  
+                      <TD class=b2><div class=nttx>
+<? if($itmk3_words) { ?>
+<?=$itmk3_words?>
+<? } else { ?>
+<span class="grey">包裹3</span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($itms3) { ?>
 <?=$itm3?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$itme3?></td><td class="b3"><?=$itms3?></td><td class="b3"><font color="00ffff">【<?=$iteminfo[$itmk3]?>】</font></td></tr>
-  <tr><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk3_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme3?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms3?></div></TD>
+                      </tr>
+                <tr>          	
+                      <TD class=b2><div class=nttx>
+<? if($itmk4_words) { ?>
+<?=$itmk4_words?>
+<? } else { ?>
+<span class="grey">包裹4</span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($itms4) { ?>
 <?=$itm4?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$itme4?></td><td class="b3"><?=$itms4?></td><td class="b3"><font color="00ffff">【<?=$iteminfo[$itmk4]?>】</font></td></tr>
-  <tr><td class="b3">
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk4_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme4?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms4?></div></TD>
+                      </tr>
+                <tr>          			  
+                      <TD class=b2><div class=nttx>
+<? if($itmk5_words) { ?>
+<?=$itmk5_words?>
+<? } else { ?>
+<span class="grey">包裹5</span>
+<? } ?>
+</div></TD>
+                      <TD class=b3><div class=nttx>
 <? if($itms5) { ?>
 <?=$itm5?>
 <? } else { ?>
-无
+<?=$noitm?>
 <? } ?>
-</td><td class="b3"><?=$itme5?></td><td class="b3"><?=$itms5?></td><td class="b3"><font color="00ffff">【<?=$iteminfo[$itmk5]?>】</font></td></tr>
-
-  </td></tr>
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
+</div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk5_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme5?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms5?></div></TD>
+                      </tr>
+               <tr>          			  
+                      <TD class=b2><div class=nttx>工事中</div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+               </tr>
+              </table>
+            </td></tr>
+  			
+  		</TABLE>
+</td></tr>
 </table>

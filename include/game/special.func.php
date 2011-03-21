@@ -85,12 +85,123 @@ function chgpassword($oldpswd,$newpswd,$newpswd2){
 	}
 }
 
+function adtsk(){
+	global $log,$mode,$club,$wep,$wepk,$wepe,$weps,$wepsk;
+	if($wepk == 'WN' || !$wepe || !$weps){
+		$log .= '<span class="red">你没有装备武器，无法改造！</span><br />';
+		$mode = 'command';
+		return;
+	}
+	if($club == 7){//电脑社，电气改造
+		$position = 0;
+		foreach(Array(1,2,3,4,5) as $imn){
+			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			if(strpos(${'itm'.$imn},'电池')!==false && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+				$position = $imn;
+				break;
+			}
+		}
+		if($position){
+			if(strpos($wepsk,'e')!==false){
+				$log .= '<span class="red">武器已经带有电击属性，不用改造！</span><br />';
+				$mode = 'command';
+				return;
+			}elseif(strlen($wepsk)>=5){
+				$log .= '<span class="red">武器属性数目达到上限，无法改造！</span><br />';
+				$mode = 'command';
+				return;
+			}
+			$wep = '电气'.$wep;
+			$wepsk .= 'e';
+			$log .= "<span class=\"yellow\">用电池改造了{$wep}，{$wep}增加了电击属性！</span><br />";
+			${'itms'.$position}-=1;
+			$itm = ${'itm'.$position};
+			if(${'itms'.$position} == 0){
+				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itme'.$position} =${'itms'.$position} =0;				
+			}
+			$mode = 'command';
+			return;
+		}else{
+			$log .= '<span class="red">你没有电池，无法改造武器！</span><br />';
+			$mode = 'command';
+			return;
+		}
+	}elseif($club == 8){//带毒改造
+		$position = 0;
+		foreach(Array(1,2,3,4,5) as $imn){
+			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			if(${'itm'.$imn} == '毒药' && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+				$position = $imn;
+				break;
+			}
+		}
+		if($position){
+			if(strpos($wepsk,'p')!==false){
+				$log .= '<span class="red">武器已经带毒，不用改造！</span><br />';
+				$mode = 'command';
+				return;
+			}elseif(strlen($wepsk)>=5){
+				$log .= '<span class="red">武器属性数目达到上限，无法改造！</span><br />';
+				$mode = 'command';
+				return;
+			}
+			$wep = '毒性'.$wep;
+			$wepsk .= 'p';
+			$log .= "<span class=\"yellow\">用毒药为{$wep}淬毒了，{$wep}增加了带毒属性！</span><br />";
+			${'itms'.$position}-=1;
+			$itm = ${'itm'.$position};
+			if(${'itms'.$position} == 0){
+				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itme'.$position} =${'itms'.$position} =0;				
+			}
+			$mode = 'command';
+			return;
+		}else{
+			$log .= '<span class="red">你没有毒药，无法给武器淬毒！</span><br />';
+			$mode = 'command';
+			return;
+		}
+	}else{
+		$log .= '<span class="red">你不懂得如何改造武器！</span><br />';
+		$mode = 'command';
+		return;
+	}
+}
 
 function chginf($infpos){
-	global $log,$mode,$inf,$inf_sp,$sp,$infinfo;
+	global $log,$mode,$inf,$inf_sp,$sp,$infinfo,$club;
 
 	if(!$infpos){$mode = 'command';return;}
-	if(strpos($inf,$infpos) !== false) {
+	if($infpos == 'A'){
+		if($club == 16){
+			$spdown = 0;
+			foreach(Array('h','b','a','f') as $value){
+				if(strpos($inf,$value)!== false){
+					$spdown += $inf_sp;
+				}
+			}
+			if($sp <= $spdown){
+				$log .= '体力不足，无法包扎伤口，先休息一下吧！';
+				$mode = 'command';
+				return;
+			}
+			$inf = str_replace('h','',$inf);
+			$inf = str_replace('b','',$inf);
+			$inf = str_replace('a','',$inf);
+			$inf = str_replace('f','',$inf);
+			$sp -= $spdown;
+			$log .= '全身伤口都治疗完毕了！';
+			$mode = 'command';
+			return;
+		}else{
+			$log .= '你不懂得怎样快速包扎伤口！';
+			$mode = 'command';
+			return;
+		}
+	}	elseif(strpos($inf,$infpos) !== false) {
 		if($sp <= $inf_sp) {
 			$log .= '体力不足，无法包扎伤口，先休息一下吧！';
 			$mode = 'command';
@@ -142,7 +253,7 @@ function chkpoison($itmn){
 }
 
 function shoplist($sn) {
-	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo;
+	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo,$club;
 	global $db,$tablepre;
 	$arean = floor($areanum / $areaadd); 
 	$result=$db->query("SELECT * FROM {$tablepre}shopitem WHERE kind = '$sn' AND area <= '$arean' AND num > '0' AND price > '0'");
@@ -152,7 +263,7 @@ function shoplist($sn) {
 		$itemdata[$i]['sid']=$itemlist['sid'];
 		$itemdata[$i]['kind']=$itemlist['kind'];
 		$itemdata[$i]['num']=$itemlist['num'];
-		$itemdata[$i]['price']=$itemlist['price'];
+		$itemdata[$i]['price']= $club == 11 ? round($itemlist['price']*0.75) : $itemlist['price'];
 		$itemdata[$i]['area']=$itemlist['area'];
 		$itemdata[$i]['item']=$itemlist['item'];
 		$itemdata[$i]['itme']=$itemlist['itme'];

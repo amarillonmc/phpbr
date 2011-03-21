@@ -13,9 +13,9 @@ $areaesc = 0;
 $isduel = 0;
 
 //本局游戏人数限制
-$validlimit = 150;
+$validlimit = 300;
 //连斗时的人数限制
-$combolimit = 15;
+$combolimit = 50;
 //连斗时的死亡人数限制
 $deathlimit = 233;
  
@@ -32,9 +32,9 @@ $moneylimit = 65500;
 
 // 恢复量的设定
 //体力恢复时间(秒):*秒1点恢复
-$sleep_time = 4;
+$sleep_time = 3;
 //生命恢复时间(秒):*秒1点恢复
-$heal_time = 8;
+$heal_time = 6;
 //包扎伤口需要的体力
 $inf_sp = 25;
 //创建队伍需要的体力

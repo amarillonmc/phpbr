@@ -14,8 +14,6 @@ CREATE TABLE bra_players (
   icon tinyint unsigned NOT NULL default '0',
   club tinyint unsigned NOT NULL default '0',
   endtime int(10) unsigned NOT NULL default '0',
-  cdstart int(10) unsigned NOT NULL default '0',
-  cdtime tinyint unsigned NOT NULL default '0',
   hp smallint unsigned NOT NULL default '0',
   mhp smallint unsigned NOT NULL default '0',
   sp smallint unsigned NOT NULL default '0',
@@ -105,6 +103,7 @@ CREATE TABLE bra_players (
   PRIMARY KEY  (pid),
   INDEX TYPE (type, sNo),
   INDEX NAME (name, type)
+	
 ) TYPE=MyISAM;
 
 

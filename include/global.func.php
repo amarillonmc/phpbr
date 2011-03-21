@@ -242,7 +242,6 @@ function logsave($pid,$time,$log = '',$type = 's'){
 	$ldata['type']=$type;
 	$ldata['time']=$time;
 	$ldata['log']=$log;
-	$ldata['isnew']=1;
 	//$db->query("INSERT INTO {$tablepre}log (toid,type,`time`,log) VALUES ('$pid','$type','$time','$log')");
 	$db->array_insert("{$tablepre}log", $ldata);
 	return;	
@@ -267,6 +266,8 @@ function save_gameinfo() {
 	}
 	return;
 }
+
+
 
 function save_combatinfo(){
 	global $hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
@@ -324,16 +325,16 @@ function compatible_json_encode($data){	//自动选择使用内置函数或者�
 	return $jdata;	
 }
 
-//function getmicrotime()
-//{
-//	list($usec, $sec) = explode(" ",microtime());
-//	return ((float)$usec + (float)$sec);
-//}
-//
-//function putmicrotime($t_s,$t_e,$file)
-//{
-//	$mtime = ($t_e - $t_s)*1000;
-//	writeover( $file.'.txt',"执行时间：$mtime 毫秒 \n",'ab');
-//}
+function getmicrotime()
+{
+	list($usec, $sec) = explode(" ",microtime());
+	return ((float)$usec + (float)$sec);
+}
+
+function putmicrotime($t_s,$t_e,$file)
+{
+	$mtime = ($t_e - $t_s)*1000;
+	writeover( $file.'.txt',"执行时间：$mtime 毫秒 \n",'ab');
+}
 
 ?>

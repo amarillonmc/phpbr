@@ -8,9 +8,9 @@
 <td>
 <table border="1" width="250" height="300" cellspacing="0" cellpadding="0" >
 <tr height="1">
-<td height="20" class="b1"><b><span class="yellow">系统状况</b></td>
+<td height="20" class="b1"><div class=nttx><span class="yellow">系统状况</div></td>
 </tr>
-<tr><td valign="top"class="b3" style="text-align: left">
+<tr><td valign="top"class="b3" style="text-align: left"><div class=nttx>
 第 <?=$gid?> 回生存游戏<br>
 参加人数： <?=$vnum?> 人<br>
 胜利方式： <?=$gwin[$wmode]?><br>
@@ -24,7 +24,7 @@
 <input type="submit" name="submit" value="返回">
 </form>
 
-</td>
+</div></td>
 </tr>
 </table>
 </td>

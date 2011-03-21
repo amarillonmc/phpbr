@@ -3,9 +3,9 @@
 
 <input type="hidden" name="mode" value="itemmain">
 <input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" >返回</a><br><br>
-<input type="radio" name="command" id="itemmix" value="itemmix"><a onclick=sl('itemmix'); href="javascript:void(0);">合成
+<input type="radio" name="command" id="itemmix" value="itemmix"><a onclick=sl('itemmix'); href="javascript:void(0);">合成</a>
 <br>
-<select name="mix1">
+<select name="mix1" onclick=sl('itemmix'); href="javascript:void(0);">
 <option value="0">■ 道具一 ■<br />
 <? if($itms1) { ?>
 <option value="1"><?=$itm1?>/<?=$itme1?>/<?=$itms1?><br />
@@ -21,7 +21,7 @@
 </select>
 <br>
 <br>
-<select name="mix2">
+<select name="mix2" onclick=sl('itemmix'); href="javascript:void(0);">
 <option value="0">■ 道具二 ■<br />
 <? if($itms1) { ?>
 <option value="1"><?=$itm1?>/<?=$itme1?>/<?=$itms1?><br />
@@ -37,7 +37,7 @@
 </select>
 <br>
 <br>
-<select name="mix3">
+<select name="mix3" onclick=sl('itemmix'); href="javascript:void(0);">
 <option value="0">■ 道具三 ■<br />
 <? if($itms1) { ?>
 <option value="1"><?=$itm1?>/<?=$itme1?>/<?=$itms1?><br />
@@ -51,4 +51,3 @@
 <option value="5"><?=$itm5?>/<?=$itme5?>/<?=$itms5?><br />
 <? } ?>
 </select>
-</a>

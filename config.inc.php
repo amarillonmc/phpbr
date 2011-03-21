@@ -6,13 +6,13 @@
 	$dbhost = 'localhost';			// database server
 						// 数据库服务器
 
-	$dbuser = 'pkno1';			// database username
+	$dbuser = 'root';			// database username
 						// 数据库用户名
 
-	$dbpw = 'zhou12345';			// database password
+	$dbpw = '';			// database password
 						// 数据库密码
 
-	$dbname = 'pkno1_sql';			// database name
+	$dbname = 'acbra20b';			// database name
 						// 数据库名
 
 	$dbreport = 1;				// send db error report? 1=yes
@@ -40,14 +40,17 @@
 	$pconnect = true;				// persistent database connection, 0=off, 1=on
 						// 数据库持久连接 false=关闭, true=打开
 
-	$gamefounder = 'Amarillo_NMC';			// super administrator's UID
+	$gamefounder = '某四面';			// super administrator's UID
 						// 游戏创始人 UID, 可以支持多个创始人，之间使用 “,” 分隔。
 						// 如果不设置游戏创始人，则管理员之间可以相互编辑，具体权力差别请见游戏使用文档
 
 	$postinterval = 1;   //用户提交命令的间隔时间，单位秒
 
-	$moveut = 7; //set the difference of server time and client time 
+	$moveut = 0; //set the difference of server time and client time 
 			//如果本地时间跟服务器时间有时差，在此处更改
+			
+	$moveutmin = 0; //set the difference of server time and client time, by minutes
+	//如果本地时间跟服务器时间有时差，在此处更改
 
 // [EN] !ATTENTION! Do NOT modify following after your board was settle down
 // [CH] 游戏投入使用后不能修改的变量
@@ -79,7 +82,7 @@
 	$bbsurl = '';    //the bbs url for the game plus
 									//安装游戏插件的论坛地址
 
-	$gameurl = 'http://wildmonbr.tk/bra2/';    // the url of game program files,for the full-window mode
+	$gameurl = '';    // the url of game program files,for the full-window mode
 									//游戏程序地址，用于全屏模式
 
 	$homepage = 'http://www.amarilloviridian.co.cc/';      // game homepage
@@ -88,7 +91,7 @@
 	$title = '生  存  游  戏';     //game title
 							//游戏标题 
 
-	$errorinfo = 1;				//是否开启错误信息提示，1为开启，0为关闭。开启会泄漏游戏安装路径
+	$errorinfo = 0;				//是否开启错误信息提示，1为开启，0为关闭。开启会泄漏游戏安装路径
 
 
 // ============================================================================

@@ -1,5 +1,9 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
-发现了物品 <span class="yellow"><?=$itm0?>  <span class="clan"> 【<?=$iteminfo[$itmk0]?>】</span> 效：<?=$itme0?> 耐：<?=$itms0?></span>。
+发现了物品 <span class="yellow"><?=$itm0?></span>，类型：<?=$itmk0_words?>
+<? if(($itmsk0) && !is_numeric($itmsk0)) { ?>
+，属性：<?=$itmsk0_words?>
+<? } ?>
+，效：<?=$itme0?>，耐：<?=$itms0?>。
 <br>
 你想如何处理？
 <br>

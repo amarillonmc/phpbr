@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?=$charset?>">
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv='expires' content='0'>
-<title> 常 磐 大 逃 杀 </title>
+<title> ACFUN 大 逃 杀 </title>
 <?=$extrahead?>
 <? if($allowcsscache) { ?>
 <link rel="stylesheet" type="text/css" id="css" href="gamedata/cache/style_<?=STYLEID?>.css">
@@ -19,8 +19,9 @@
 <script type="text/javascript" src="include/game.js"></script>
 <script type="text/javascript" src="include/json.js"></script>
 </head>
-<BODY  link="#ff0000" vlink="#ff0000" aLink="#ff0000" >
-<div class="title" >常 磐 大 逃 杀</div>
+<BODY>
+<div class="title" >ACFUN 大 逃 杀</div>
+
 <div class="headerlink" >
 <a href="index.php">>>首页</a>
 <a href="game.php">>>游戏</a>
@@ -30,8 +31,9 @@
 <a href="winner.php">>>历史优胜者</a>
 <a href="help.php">>>游戏帮助</a>
 <a href="admin.php">>>游戏管理</a>
-<a href="report.php">>>建议和举报</a>
+<a href="http://nmforce.net/forum.php?mod=forumdisplay&amp;fid=14" target="_blank">>>官方讨论区</a>
 <a href="<?=$homepage?>" target="_blank">>>官方网站</a>
+
 </div>
 <div>
 

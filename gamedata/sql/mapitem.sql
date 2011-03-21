@@ -11,8 +11,6 @@ CREATE TABLE bra_mapitem (
   itme smallint unsigned NOT NULL default '0',
   itms char(5) not null default '0',
   itmsk char(5) not null default '',
-  map tinyint unsigned NOT NULL default '0',
   
-  PRIMARY KEY  (iid),
-  INDEX MAP (map, itm)
+  PRIMARY KEY  (iid)
 ) TYPE=MyISAM;

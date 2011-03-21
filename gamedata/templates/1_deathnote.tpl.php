@@ -3,7 +3,7 @@
 <input type="hidden" name="item" value="<?=$item?>">
 
 请写下对方的名字(留空为不使用)<br><input size="15" type="text" name="dnname" maxlength="15"><br>
-请写下对方的死因(20字以内，不填为“心脏麻痹”)<br><input size="20" type="text" name="dndeath" maxlength="20"><br>
+请写下对方的死因(255字以内，不填为“心脏麻痹”)<br><input size="30" type="text" name="dndeath" maxlength="255"><br>
 请选择对方的相貌<br>
 <div id="dniconimg" class="iconimg" ><img src="img/m_0.gif" alt="0"></div>
 性别 : <input type="radio" name="dngender" onchange="dniconMover()" value="m" checked >男生<input type="radio" name="dngender" onchange="dniconMover()" value="f" >女生<br />

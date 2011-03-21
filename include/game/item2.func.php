@@ -148,11 +148,11 @@ function hack($itmn = 0) {
 	
 	$hack_dice2 = rand(0,99);
 
-	if($hack_dice2 < 5) {
+	if($hack_dice2 < 5 && $club != 7) {
 		$log .= '由于你的不当操作，禁区系统防火墙锁定了你的电脑并远程引爆了它。幸好你本人的位置并没有被发现。<br>';
 		$itm = $itmk = $itmsk = '';
 		$itme = $itms = 0;
-	} elseif($hack_dice2 < 8) {
+	} elseif($hack_dice2 < 8 && $club != 7) {
 			$log .= "<span class=\"evergreen\">“小心隔墙有耳哦。”</span>——林无月<br>";
 			include_once GAME_ROOT.'./include/state.func.php';
 			$log .= '你擅自入侵禁区控制系统，被控制系统远程消灭！<br>';

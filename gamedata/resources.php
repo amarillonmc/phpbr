@@ -299,6 +299,7 @@ $itemspkinfo = Array(
 	'W' => '隔音',
 	'w' => '音波',
 	'z' => '天然',
+	'Z' => '菁英',
 	);
 $shops = Array(0,14,27);
 $hospitals = Array(11,19);

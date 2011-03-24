@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(0);
+error_reporting(E_ERROR);
 set_magic_quotes_runtime(0);
 
 define('IN_GAME', TRUE);
@@ -13,40 +13,42 @@ if(PHP_VERSION < '4.3.0') {
 require_once GAME_ROOT.'./include/global.func.php';
 require_once GAME_ROOT.'./config.inc.php';
 
-$now = time() + $moveut*3600;   
+$now = time() + $moveut*3600 + $moveutmin*60;   
 list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$now));
 
 $magic_quotes_gpc = get_magic_quotes_gpc();
 extract(gkillquotes($_COOKIE));
 extract(gkillquotes($_POST));
+unset($_GET);
 if(!$magic_quotes_gpc) {
 	$_FILES = gaddslashes($_FILES);
 }
 
 
-if($attackevasive) {
-	include_once GAME_ROOT.'./include/security.inc.php';
-}
+//if($attackevasive) {
+//	include_once GAME_ROOT.'./include/security.inc.php';
+//}
 
-if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
+require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
+$db = new dbstuff;
+$db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
+$db->select_db($dbname);
+unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
+
+require_once GAME_ROOT.'./gamedata/system.php';
+require_once GAME_ROOT.'./gamedata/resources.php';
+require_once config('gamecfg',$gamecfg);
+include_once GAME_ROOT.'./gamedata/gameinfo.php';
+include_once GAME_ROOT.'./gamedata/combatinfo.php';
+
+if($gzipcompress && CURSCRIPT != 'wap') {
 	ob_start('ob_gzhandler');
 } else {
 	$gzipcompress = 0;
 	ob_start();
 }
 
-require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
-$db = new dbstuff;
-$db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
-unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
-$db->select_db($dbname);
-
-require_once GAME_ROOT.'./gamedata/system.php';
-require_once GAME_ROOT.'./gamedata/resources.php';
-include_once GAME_ROOT.'./gamedata/gameinfo.php';
-require_once config('gamecfg',$gamecfg);
-
-//$gamestate×´Ì¬£º0-ÉÏ¾ÖÓÎÏ·½áÊø£»10-ĞÂÓÎÏ·×¼±¸½×¶Î£»20-ÓÎÏ·¿ª·Å¼¤»î£»30-ÓÎÏ·Í£Ö¹¼¤»î£»40-ÓÎÏ·Á¬¶·£»50-ÓÎÏ·ËÀ¶·¡£
+//$gamestateçŠ¶æ€ï¼š0-ä¸Šå±€æ¸¸æˆç»“æŸï¼›10-æ–°æ¸¸æˆå‡†å¤‡é˜¶æ®µï¼›20-æ¸¸æˆå¼€æ”¾æ¿€æ´»ï¼›30-æ¸¸æˆåœæ­¢æ¿€æ´»ï¼›40-æ¸¸æˆè¿æ–—ï¼›50-æ¸¸æˆæ­»æ–—ã€‚
 
 if(!$gamestate) { 
 	if(($starttime)&&($now > $starttime - $startmin*60)) {
@@ -55,7 +57,7 @@ if(!$gamestate) {
 		$hdamage = 0;
 		$hplayer = '';
 		$noisemode = '';
-		save_gameinfo();
+		//save_gameinfo();
 		include_once GAME_ROOT.'./include/system.func.php';
 		rs_game(1+2+4+8+16+32);
 		save_gameinfo();
@@ -75,15 +77,14 @@ if($gamestate == 10) {
 //	addarea($areatime);
 //	save_gameinfo();
 //}
-
-$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
-list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
+//$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
+//list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
 
 if (($gamestate > 10)&&($now > $areatime)) {
 	include_once GAME_ROOT.'./include/system.func.php';
 	while($now>$areatime){
 		$o_areatime = $areatime;
-		$areatime += $areahour*3600;
+		$areatime += $areahour*60;
 		save_gameinfo();
 		add_once_area($o_areatime);
 		save_gameinfo();
@@ -107,7 +108,6 @@ if((($gamestate == 30)&&($alivenum <= $combolimit))||($deathlimit&&($gamestate <
 	$gamestate = 40;
 	save_gameinfo();
 	$db->query("UPDATE {$tablepre}players SET teamID='',teamPass='' WHERE type=0 ");
-	//addnews($now,'combo');
 	naddnews($now,'combo');
 	
 }
@@ -122,11 +122,4 @@ if($gamestate == 40 || $gamestate == 50) {
 $cuser = & ${$tablepre.'user'};
 $cpass = & ${$tablepre.'pass'};
 
-if($mode == 'quit') {
-
-	gsetcookie('user','');
-	gsetcookie('pass','');
-	header("Location: index.php");exit();
-
-}
 ?>

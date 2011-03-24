@@ -808,7 +808,22 @@ $npcinfo = array
 			'itmk1' => 'Z',
 			'itme1' => 1,
 			'itms1' => 1,
-			)
+			),
+			
+			2 => array
+			(
+			'name' => 'Exocet',
+			'icon' => 93,
+			'wep' => '『微型火箭加速噴射單輪車』',
+			'wepk' => 'WP',
+			'wepe' => 88,
+			'weps' => 888,
+			'wepsk' => 'cdz',
+			'itm1' => '打倒10体思念之证',
+			'itmk1' => 'Z',
+			'itme1' => 1,
+			'itms1' => 1,
+			),
 		),
 	),
 );

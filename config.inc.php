@@ -6,13 +6,13 @@
 	$dbhost = 'localhost';			// database server
 						// 数据库服务器
 
-	$dbuser = 'acdts';			// database username
+	$dbuser = 'YOURUSERNAME';			// database username
 						// 数据库用户名
 
-	$dbpw = 'yylrmz123';			// database password
+	$dbpw = 'YOURPASSWORD';			// database password
 						// 数据库密码
 
-	$dbname = 'acdts';			// database name
+	$dbname = 'YOURDBNAME';			// database name
 						// 数据库名
 
 	$dbreport = 1;				// send db error report? 1=yes

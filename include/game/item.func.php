@@ -343,7 +343,7 @@ function itemuse($itmn) {
 		//$mapfile = GAME_ROOT . "./gamedata/mapitem/{$pls}mapitem.php";
 		//$itemdata = "$itm,TO,$itme,1,$pid,\n";
 		//writeover ( $mapfile, $itemdata, 'ab' );
-		$db->query("INSERT INTO {$tablepre}{$pls}mapitem (itm, itmk, itme, itms, itmsk) VALUES ('$itm', 'TO', '$itme', '1', '$pid')");
+		$db->query("INSERT INTO {$tablepre}mapitem (itm, itmk, itme, itms, itmsk, pls) VALUES ('$itm', 'TO', '$itme', '1', '$pid', '$pls')");
 		$log .= "设置了陷阱<span class=\"red\">$itm</span>。<br>小心，自己也很难发现。<br>";
 		//echo $exp;
 		if($club == 5){$exp += 2;$wd+=2;}
@@ -870,7 +870,9 @@ function itemuse($itmn) {
 			global $arb, $arbk, $arbe, $arbs, $arbsk, $noarb;
 			if (($arb == $noarb) || ! $arb) {
 				$log .= '你没有装备防具，不能使用针线包。<br>';
-			} else {
+			} elseif(strpos($arbsk,'Z')!==false){
+				$log .= '<span class="yellow">该防具太单薄以至于不能使用针线包。</span><br>你感到一阵蛋疼菊紧，你的蛋疼度增加了<span class="yellow">233</span>点。<br>';
+			}else {
 				$arbe += (rand ( 0, 2 ) + $itme);
 				$log .= "用<span class=\"yellow\">$itm</span>给防具打了补丁，<span class=\"yellow\">$arb</span>的防御力变成了<span class=\"yellow\">$arbe</span>。<br>";
 				$itms --;
@@ -1005,7 +1007,7 @@ function itemuse($itmn) {
 			$deathdice = rand ( 0, 8192 );
 			if ($deathdice > 8190) {
 				$log .= '你突然感觉到一种不可思议的力量贯通全身！<br>';
-				$wp = $wk = $wg = $wc = $wd = $wf=1500;
+				$wp = $wk = $wg = $wc = $wd = $wf=300;
 				$club = 15;
 				naddnews ( $now, 'suisidefail', $name );
 				$itm = $itmk = $itmsk = '';

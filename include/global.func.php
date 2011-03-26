@@ -271,6 +271,11 @@ function save_gameinfo() {
 
 function save_combatinfo(){
 	global $hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
+	if(!$hdamage){$hdamage = 0;}
+	if(!$noisetime){$noisetime = 0;}
+	if(!$noisepls){$noisepls = 0;}
+	if(!$noiseid){$noiseid = 0;}
+	if(!$noiseid2){$noiseid2 = 0;}
 	$combatinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$hdamage = {$hdamage};\n\$hplayer = '{$hplayer}';\n\$noisetime = {$noisetime};\n\$noisepls = {$noisepls};\n\$noiseid = {$noiseid};\n\$noiseid2 = {$noiseid2};\n\$noisemode = '{$noisemode}';\n\n?>";
 	//$combatinfo = "{$hdamage},{$hplayer},{$noisetime},{$noisepls},{$noiseid},{$noiseid2},{$noisemode},\n";
 	$dir = GAME_ROOT.'./gamedata/';
@@ -326,16 +331,16 @@ function compatible_json_encode($data){	//自动选择使用内置函数或者�
 	return $jdata;	
 }
 
-//function getmicrotime()
-//{
-//	list($usec, $sec) = explode(" ",microtime());
-//	return ((float)$usec + (float)$sec);
-//}
-//
-//function putmicrotime($t_s,$t_e,$file)
-//{
-//	$mtime = ($t_e - $t_s)*1000;
-//	writeover( $file.'.txt',"执行时间：$mtime 毫秒 \n",'ab');
-//}
+function getmicrotime()
+{
+	list($usec, $sec) = explode(" ",microtime());
+	return ((float)$usec + (float)$sec);
+}
+
+function putmicrotime($t_s,$t_e,$file,$info)
+{
+	$mtime = ($t_e - $t_s)*1000;
+	writeover( $file.'.txt',"$info ；执行时间：$mtime 毫秒 \n",'ab');
+}
 
 ?>

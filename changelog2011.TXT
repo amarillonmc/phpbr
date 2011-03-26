@@ -1,3 +1,7 @@
+2011/3/22
+把gzip压缩功能启动了；（system.php; common.inc.php; login.php）
+首页现在可以根据游戏开始模式正确地显示禁区间隔时间了；（index.htm）
+
 2011/3/21
 修改了管理后台关于开局模式的提示；（admin.lang.php）
 现在如果rs_game失败即游戏无法重置时不会使游戏进入准备阶段（common.inc.php）

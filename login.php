@@ -37,17 +37,20 @@ if($mode == 'quit') {
 require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
 $db = new dbstuff;
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
-$db->select_db($dbname);
+//$db->select_db($dbname);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 require_once GAME_ROOT.'./gamedata/system.php';
 require_once GAME_ROOT.'./gamedata/resources.php';
 require_once './gamedata/validlimit.php';
+
+ob_start();
 //if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
 //	ob_start('ob_gzhandler');
 //} else {
 //	$gzipcompress = 0;
 //	ob_start();
 //}
+
 foreach($nmlimit as $value){
 	if(!empty($value) && strpos($username,$value)!==false){
 		gexit($_ERROR['banned_name'],__file__,__line__);

@@ -32,7 +32,7 @@ if(!$magic_quotes_gpc) {
 require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
 $db = new dbstuff;
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
-$db->select_db($dbname);
+//$db->select_db($dbname);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 
 require_once GAME_ROOT.'./gamedata/system.php';
@@ -41,12 +41,13 @@ require_once config('gamecfg',$gamecfg);
 include_once GAME_ROOT.'./gamedata/gameinfo.php';
 include_once GAME_ROOT.'./gamedata/combatinfo.php';
 
-if($gzipcompress && CURSCRIPT != 'wap') {
-	ob_start('ob_gzhandler');
-} else {
-	$gzipcompress = 0;
-	ob_start();
-}
+ob_start();
+//if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
+//	ob_start('ob_gzhandler');
+//} else {
+//	$gzipcompress = 0;
+//	ob_start();
+//}
 
 //$gamestate状态：0-上局游戏结束；10-新游戏准备阶段；20-游戏开放激活；30-游戏停止激活；40-游戏连斗；50-游戏死斗。
 

@@ -40,8 +40,8 @@ $chatrefresh = 15000;
 //游戏进行中是否显示聊天。0为不显示，数字为显示条数
 $chatinnews = 50;
 
-//开启gz压缩功能？0为不开启，1为开启
-//$gzipcompress=1;
+//开启gzip压缩功能？0为不开启，1为开启
+//$gzipcompress=0;
 //开启NPC台词功能？0为不开启，1为开启
 $npcchaton = 1;
 //有台词的NPC

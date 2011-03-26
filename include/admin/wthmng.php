@@ -7,7 +7,7 @@ if($mygroup < 3){
 }
 global $wth,$now;
 
-if($chg == 1){
+if($chg == 1 && $wth){
 	echo '当前天气修改为：'.$wthinfo[$wth];
 	$weather = $wth;
 	save_gameinfo();

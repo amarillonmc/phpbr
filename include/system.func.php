@@ -6,7 +6,7 @@ if(!defined('IN_GAME')) {
 
 function rs_game($mode = 0) {
 	global $db,$tablepre,$gamecfg,$now,$gamestate,$plsinfo,$typeinfo,$areanum,$areaadd;
-
+	$stime=getmicrotime();
 	$dir = GAME_ROOT.'./gamedata/';
 	$sqldir = GAME_ROOT.'./gamedata/sql/';
 	if ($mode & 1) {
@@ -23,11 +23,13 @@ function rs_game($mode = 0) {
 		runquery($sql);
 		//清空地图道具
 		$sql = file_get_contents("{$sqldir}mapitem.sql");
-		$plsnum = sizeof($plsinfo);
-		for ($p=0;$p < $plsnum;$p++){
-			$rqry = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre.$p, $sql));
-			runquery($rqry);
-		}
+		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
+		runquery($sql);
+//		$plsnum = sizeof($plsinfo);
+//		for ($p=0;$p < $plsnum;$p++){
+//			$rqry = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre.$p, $sql));
+//			runquery($rqry);
+//		}
 		//清空游戏进行状况
 		if($fp = fopen("{$dir}newsinfo.php", 'wb')) {
 			global $checkstr;
@@ -125,6 +127,7 @@ function rs_game($mode = 0) {
 		//echo " - 地图道具初始化 - ";
 		//感谢 Martin1994 提供地图道具数据库化的源代码
 		$plsnum = sizeof($plsinfo);
+		$qrycmd = '';
 //		if($gamestate == 0){
 //			global $checkstr;
 //			dir_clear("{$dir}mapitem/");
@@ -145,10 +148,11 @@ function rs_game($mode = 0) {
 				for($j = $inum; $j>0; $j--) {
 					if($imap == 99) {
 						$rmap = rand(1,$plsnum-1);
-						$qrycmd[$rmap] .= "('$iname', '$ikind','$ieff','$ista','$iskind'),";
+						$qrycmd .= "('$iname', '$ikind','$ieff','$ista','$iskind','$rmap'),";
+						//$qrycmd[$rmap] .= "('$iname', '$ikind','$ieff','$ista','$iskind'),";
 						//$db->query("INSERT INTO {$tablepre}{$rmap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ('$iname', '$ikind','$ieff','$ista','$iskind')");
 					}else{
-						$qrycmd[$imap] .= "('$iname', '$ikind','$ieff','$ista','$iskind'),";
+						$qrycmd .= "('$iname', '$ikind','$ieff','$ista','$iskind','$imap'),";
 						//$db->query("INSERT INTO {$tablepre}{$imap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ('$iname', '$ikind','$ieff','$ista','$iskind')");
 					}
 					
@@ -161,12 +165,16 @@ function rs_game($mode = 0) {
 				}
 			}
 		}
-		for($imap = 0;$imap<$plsnum;$imap++){
-			if(!empty($qrycmd[$imap])){
-				$qrycmd[$imap] = "INSERT INTO {$tablepre}{$imap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ".substr($qrycmd[$imap], 0, -1);
-				$db->query($qrycmd[$imap]);
-			}	
+		if(!empty($qrycmd)){
+			$qrycmd = "INSERT INTO {$tablepre}mapitem (itm,itmk,itme,itms,itmsk,pls) VALUES ".substr($qrycmd, 0, -1);
+			$db->query($qrycmd);
 		}
+//		for($imap = 0;$imap<$plsnum;$imap++){
+//			if(!empty($qrycmd[$imap])){
+//				$qrycmd[$imap] = "INSERT INTO {$tablepre}{$imap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ".substr($qrycmd[$imap], 0, -1);
+//				$db->query($qrycmd[$imap]);
+//			}	
+//		}
 //		if($ifqry != $qrycmd){//判定是否有数据写入
 //			$qrycmd = substr($qrycmd, 0, -1);//去除尾部多余的逗号
 //			$db->query($qrycmd);
@@ -178,6 +186,7 @@ function rs_game($mode = 0) {
 		
 		unset($itemlist);unset($qrycmd);
 		//unset($mapitem);
+		
 	}
 	if ($mode & 32) {
 		//echo " - 商店初始化 - ";
@@ -219,6 +228,9 @@ function rs_game($mode = 0) {
 //			writeover($sfile,$sdata,'ab');
 //		}
 	}
+	$etime=getmicrotime();
+	global $gamenum;
+	putmicrotime($stime,$etime,'loadtime.txt','第'.$gamenum.'局游戏');
 }
 
 function rs_sttime() {
@@ -243,9 +255,9 @@ function rs_sttime() {
 		$starthour = $starthour> 0 ? $starthour : 1;
 		$nextmin = $min + $starthour;
 		$nexthour = $hour;
-		if($nextmin % 60 >= 40){//回避速1禁
-			$nextmin+=20;
-		}
+//		if($nextmin % 60 >= 40){//回避速1禁
+//			$nextmin+=20;
+//		}
 		if($nextmin % 60 == 0){
 			$nextmin +=1;
 		}
@@ -427,15 +439,15 @@ function gameover($time = 0, $mode = '', $winname = '') {
 	if($db->num_rows($result)&&($gamenum <= $db->result($result, 0))) {
 		$gamenum = $db->result($result, 0) + 1;
 	}
-	if($winmode == 4){
+	if($winmode == 4){//无人参加
 		$getime = $time;
 		$db->query("INSERT INTO {$tablepre}winners (gid,wmode,vnum,getime) VALUES ('$gamenum','$winmode','$validnum','$getime')");
-	}	elseif(($winmode == 0)||($winmode == 1)){
+	}	elseif(($winmode == 0)||($winmode == 1)||($winmode == 6)){//程序故障、全部死亡、GM中止
 		$gstime = $starttime;
 		$getime = $time;
 		$gtime = $time - $starttime;
 		$db->query("INSERT INTO {$tablepre}winners (gid,wmode,vnum,gtime,gstime,getime,hdmg,hdp) VALUES ('$gamenum','$winmode','$validnum','$gtime','$gstime','$getime','$hdamage','$hplayer')");
-	} else {
+	} else {//最后幸存、锁定解除、核爆全灭
 		$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$winner' AND type=0");
 		$pdata = $db->fetch_array($result);
 		$result2 = $db->query("SELECT motto FROM {$tablepre}users WHERE username='$winner'");

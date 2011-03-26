@@ -228,7 +228,9 @@ function discover($schmode = 0) {
 	}
 	$trap_dice=rand(0,99);//随机数，开始判断是否踩陷阱
 	if($trap_dice < $trap_max_obbs){ //踩陷阱概率最大值
-		$trapresult = $db->query("SELECT * FROM {$tablepre}{$pls}mapitem WHERE itmk = 'TO'");
+		
+		$trapresult = $db->query("SELECT * FROM {$tablepre}mapitem WHERE itmk = 'TO' AND pls = '$pls'");
+
 		$trpnum = $db->num_rows($trapresult);
 		if($trpnum){//看地图上有没有陷阱
 			$real_trap_obbs = $trap_min_obbs + $trpnum/4;
@@ -249,7 +251,7 @@ function discover($schmode = 0) {
 				$itms0=$mi['itms'];
 				$itmsk0=$mi['itmsk'];
 				$iid=$mi['iid'];
-				$db->query("DELETE FROM {$tablepre}{$pls}mapitem WHERE iid='$iid'");
+				$db->query("DELETE FROM {$tablepre}mapitem WHERE iid='$iid'");
 				if($itms0){
 					include_once GAME_ROOT.'./include/game/itemmain.func.php';
 					itemfind();
@@ -372,7 +374,7 @@ function discover($schmode = 0) {
 			//$itemnum = sizeof($mapitem) - 1;
 //			$result = $db->query("SELECT * FROM {$tablepre}mapitem WHERE map='$pls'");
 //			$itemnum = $db->num_rows($result);
-			$result = $db->query("SELECT * FROM {$tablepre}{$pls}mapitem WHERE itmk != 'TO'");
+			$result = $db->query("SELECT * FROM {$tablepre}mapitem WHERE itmk != 'TO' AND pls = '$pls'");
 			$itemnum = $db->num_rows($result);
 			if($itemnum <= 0){
 				$log .= '<span class="yellow">周围找不到任何物品。</span><br>';
@@ -389,7 +391,7 @@ function discover($schmode = 0) {
 			$itms0=$mi['itms'];
 			$itmsk0=$mi['itmsk'];
 			$iid=$mi['iid'];
-			$db->query("DELETE FROM {$tablepre}{$pls}mapitem WHERE iid='$iid'");
+			$db->query("DELETE FROM {$tablepre}mapitem WHERE iid='$iid'");
 			//list($itm0,$itmk0,$itme0,$itms0,$itmsk0) = explode(',', $mapitem[$itemno]);
 			//array_splice($mapitem,$itemno,1);
 			//writeover($mapfile,implode('', $mapitem),'wb');

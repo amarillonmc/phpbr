@@ -187,7 +187,7 @@ function itemdrop($item) {
 //	$mapfile = GAME_ROOT."./gamedata/mapitem/{$pls}mapitem.php";
 //	$itemdata = "$itm,$itmk,$itme,$itms,$itmsk,\n";
 //	writeover($mapfile,$itemdata,'ab');
-	$db->query("INSERT INTO {$tablepre}{$pls}mapitem (itm, itmk, itme, itms, itmsk) VALUES ('$itm', '$itmk', '$itme', '$itms', '$itmsk')");
+	$db->query("INSERT INTO {$tablepre}mapitem (itm, itmk, itme, itms, itmsk ,pls) VALUES ('$itm', '$itmk', '$itme', '$itms', '$itmsk', '$pls')");
 	$log .= "你丢弃了<span class=\"red\">$itm</span>。<br>";
 	$mode = 'command';
 	if($item == 'wep'){

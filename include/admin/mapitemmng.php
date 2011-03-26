@@ -5,12 +5,35 @@ if(!defined('IN_ADMIN')) {
 if($mygroup < 9){
 	exit($_ERROR['no_power']);
 }
-
-global $db,$tablepre;
-for($i=0;$i<30;$i++){
-	$result = $db->query("SELECT iid FROM {$tablepre}{$i}mapitem ORDER BY iid DESC LIMIT 1");
-	$num=$db->fetch_array($result);
-	echo $num['iid'].'<br>';
+require_once GAME_ROOT.'./include/system.func.php';
+$sqldir = GAME_ROOT.'./gamedata/sql/';
+foreach(Array('log','chat','mapitem','newsinfo') as $v){
+	
+	$d = file_get_contents("{$sqldir}{$v}.sql");
+	
+	
+	$a = getmicrotime();
+	if($v=='mapitem'){
+		for($i=0;$i<30;$i++){
+			$d2 = str_replace("\r", "\n", str_replace(' bra_', ' test_'.$i, $d));
+			runquery($d2);
+		}
+	}else{
+		$d = str_replace("\r", "\n", str_replace(' bra_', ' test_', $d));
+		runquery($d);
+	}
+	
+	$b = getmicrotime();
+	$time = ($b-$a)*1000 ;
+	echo "{$v}.sql 执行时间：$time 毫秒 <br>";
 }
 
-?>
+
+
+
+
+
+//var_dump($db->query("DROP TABLE test_log"));
+
+
+?> 

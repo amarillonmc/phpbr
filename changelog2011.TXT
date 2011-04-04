@@ -1,6 +1,29 @@
+2011/4/3
+根据陷阱机制，将陷阱和道具分成两张表，加快了游戏速度（maptrap.sql; system.func.php; search.func.php; item.func.php）
+增加冷却时间机制，现在移动、探索和使用物品会有冷却时间了；（pstate.sql;command.php; game.php;game.js; admin.lang.php; systemmng.php; system.php）
+增加必中陷阱；（itemmain.func; item.func.php; itemmix_1.php）
+
+2011/3/28
+在不影响逻辑的前提下，将游戏主要程序中的require_once和include_once替换成require/include；（common.inc.php; admin.php; alive.php; chat.php; command.php; end.php; game.php; help.php; index.php; login.php; map.php; news.php; valid.php; winner.php）
+修正了game.js显示游戏资料的残留文字错误；（game.js; common.inc.php;）
+修改了header里的extrahead；（header.htm）
+
+2011/3/26
+修改了数据库操作语句；（common.inc.php; login.php）
+为游戏准备阶段加了标记；（common.inc.php; system.func.php）
+把地图道具修改成一张总表；（system.func.php; item.func.php; search.func.php; itemmain.func.php; mapitem.sql）
+为管理后台添加了修改gameinfo.php的功能；添加了紧急中止游戏的功能（gameinfomng.php; gamemng.php; system.func.php; news.func.php; end.htm）
+修改了footer.htm；（footer.htm）
+
+修改了连斗以后取消队伍的机制，现在连斗以后其实队伍依然存在，只是无法生效；（search.func.php; battle.func.php; profile.htm; common.inc.php;team.func.php;alive.htm）
+把各sql文件的type改为engine，同时将chat表的引擎改为HEAP；（chat.sql; log.sql; mapitem.sql; newsinfo.sql; player.sql; shopitem.sql）
+修改了安装程序以及登陆、注册过程中的部分信息显示；（install.php; login.php; valid.php; resources.php）
+
 2011/3/22
 把gzip压缩功能启动了；（system.php; common.inc.php; login.php）
 首页现在可以根据游戏开始模式正确地显示禁区间隔时间了；（index.htm）
+删除了回避速一禁的功能；（system.func.php）
+修改了combatinfo会写入错误的数值的BUG；（global.func.php）
 
 2011/3/21
 修改了管理后台关于开局模式的提示；（admin.lang.php）
@@ -35,8 +58,6 @@
 提高了冥土追魂的补给加成，再次减少了音速和搜索的体力消耗，增加了肌肉兄贵的生命成长率；删去了根性兄贵称号；（item.func.php; search.func.php; help.htm）
 现在所有称号升级时都能增加体力上限了；（state.func.php; ）
 增加了斩系武器艾丽的镰刀等，增加了殴系武器东方电气笛等，为容嬷嬷的针等武器加了属性，修改了灵魂结晶的耐久，修改了投系伤害系数，修改了部分合成道具，修改了中级NPC掉落殴斩武器的数值；增加了小黄的超级球系列（mapitem.php;mixitem.php; combatcfg.php; npc_1.php）
-
-
 
 2011/3/13
 增加了冥土追魂称号、修改了黑衣、锡安、根性的称号能力；增加了改造武器的功能；（valid.php; itemmain.func.php; search.func.php; item.func.php;item2.func.php; resources.php; special.func.php; sp_inf.htm; help.htm;command.htm;command.php;）
@@ -283,3 +304,24 @@ NPC略有调整，将代码聚合体的装备改为全系防御，降低了思�
 去除了一些没用的商品，加入防御属性的饰品；（文件：shopitem_1.php）
 NPC四面增加掉落射系终极武器，同时武器强化；NPC残留的思念武器极度强化，数值下调；（文件：npc_1.php）
 游戏界面字体修改；（文件：style_1.css; help.htm）
+
+2011/1/9
+修改了各系伤害加成、属性、还有斩系损坏率
+略修改了地图道具
+燃气罐回归
+
+2011/1/5
+安雅奖赏增加一些提示
+现在雷达可以自动适应地区的增减了
+彻底修正了扒尸BUG和送东西BUG
+修正了移动的同时死亡的情况下，聊天记录里地点信息不正确的问题
+
+2011/1/2
+
+取消了爆系合成物品的熟练加成，添加了爆系设置陷阱的熟练和经验加成，添加了电脑社合成移动PC和广域生命探测器的效果加成。
+殴系空手加成改为熟练度的1/3。
+帮助相应修改
+修正了整理包裹时如果选择同一道具则道具消失的问题；修正了整理包裹时如果道具耐久无限则出现诡异情况的问题；修正了设置陷阱时升级的问题
+略改动消息用词
+提高商店中灵系武器材料的价格
+增加了4个新地点：现在一共有30个地点了。

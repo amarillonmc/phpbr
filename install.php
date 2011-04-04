@@ -846,7 +846,7 @@ if(!$action) {
               <tr>
                 <td bgcolor="#E3E3EA" align="center"><?=$lang['env_php']?></td>
                 <td bgcolor="#EEEEF6" align="center">4.3.0+</td>
-                <td bgcolor="#E3E3EA" align="center">4.3.0+</td>
+                <td bgcolor="#E3E3EA" align="center">5.2.0+</td>
                 <td bgcolor="#EEEEF6" align="center"><?=$curr_php_version?></td>
               </tr>
               <tr>
@@ -964,7 +964,7 @@ if(!$action) {
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['startmode']?></td>
-                <td bgcolor="#EEEEF6" width="30%"><input type="radio" name="startmode" value="1" checked><?=$lang['startmode_1']?><input type="radio" name="startmode" value="2"><?=$lang['startmode_2']?><input type="radio" name="startmode" value="0"><?=$lang['startmode_0']?></td>
+                <td bgcolor="#EEEEF6" width="30%"><input type="radio" name="startmode" value="1" checked><?=$lang['startmode_1']?><input type="radio" name="startmode" value="2"><?=$lang['startmode_2']?><input type="radio" name="startmode" value="3"><?=$lang['startmode_3']?><input type="radio" name="startmode" value="0"><?=$lang['startmode_0']?></td>
 				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['startmode_comment']?></td>
               </tr>
               <tr>
@@ -1173,7 +1173,7 @@ touch(GAME_ROOT.$lockfile);
           <td align="center">
             <font color="#FF0000"><b><?=$lang['install_succeed']?></font><br>
             <?=$lang['username']?></b> <?=$username?><br><br>
-            <a href="<?=$bbsurl?>" target="_blank"><?=$lang['goto_bbs']?></a>
+            <a href="<?=$gameurl?>" target="_blank"><?=$lang['goto_game']?></a>
           </td>
         </tr>
 <?

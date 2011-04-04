@@ -84,6 +84,6 @@ $mixinfo = array
 	array('stuff' => array('时符『Private Square』','幻之刃','永恒飞刃'),'result' => array('『收缩的世界』','WF',120,'∞','ir'),),
 	array('stuff' => array('幻符【杀人玩偶】','★时停怀表★','永恒飞刃'),'result' => array('幻葬『夜雾幻影杀人鬼』','WC',180,'∞','ir'),),
 	array('stuff' => array('幽鬼剑『妖童饿鬼之断食』','☆楼观剑☆','☆白楼剑☆'),'result' => array('空观剑『六根清净斩』','WF',360,'∞','r'),),
-	array('stuff' => array('★荆棘式电子地雷★','增幅设备'),'result' => array('★一发逆转神话★','TN',9999,1,),),
+	array('stuff' => array('★荆棘式电子地雷★','★阔剑地雷★','★全图不唯一的野生巨大香蕉★'),'result' => array('★一发逆转神话★','TNc',9999,1,),),
 	);
 ?>

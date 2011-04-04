@@ -2,7 +2,7 @@
 
 define('CURSCRIPT', 'index');
 
-require_once './include/common.inc.php';
+require './include/common.inc.php';
 
 $timing = 0;
 if($gamestate > 10) {

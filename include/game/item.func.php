@@ -340,10 +340,11 @@ function itemuse($itmn) {
 	
 	} elseif (strpos ( $itmk, 'T' ) === 0) {
 		global $pls, $exp, $upexp, $wd, $club,$lvl,$db,$tablepre;
+		$trapk = str_replace('TN','TO',$itmk);
 		//$mapfile = GAME_ROOT . "./gamedata/mapitem/{$pls}mapitem.php";
 		//$itemdata = "$itm,TO,$itme,1,$pid,\n";
 		//writeover ( $mapfile, $itemdata, 'ab' );
-		$db->query("INSERT INTO {$tablepre}mapitem (itm, itmk, itme, itms, itmsk, pls) VALUES ('$itm', 'TO', '$itme', '1', '$pid', '$pls')");
+		$db->query("INSERT INTO {$tablepre}maptrap (itm, itmk, itme, itms, itmsk, pls) VALUES ('$itm', '$trapk', '$itme', '1', '$pid', '$pls')");
 		$log .= "设置了陷阱<span class=\"red\">$itm</span>。<br>小心，自己也很难发现。<br>";
 		//echo $exp;
 		if($club == 5){$exp += 2;$wd+=2;}

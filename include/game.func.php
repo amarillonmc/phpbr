@@ -27,9 +27,26 @@ function init_playerdata(){
 		$arb = $noarb;$arbk = 'DB'; $arbsk = '';
 		$arbe = 0; $arbs = $nosta;
 	}
-
-
 }
+
+//function get_sk_words($sk_list){
+//	global $itemspkinfo,$nospk;
+//	$sk_words_list = Array();
+//	foreach($sk_list as $sk_key => $sk_value){
+//		if(${$sk_value} && is_numeric(${$sk_value}) === false){
+//			$sk_words_list[$sk_key.'_words'] = '';
+//			for ($i = 0; $i < strlen($sk_value)-1; $i++) {
+//				$sub = substr(${$sk_value},$i,1);
+//				if(!empty($sub)){
+//					$sk_words_list[$sk_key.'_words'] .= $itemspkinfo[$sub];
+//				}				
+//			}
+//		} else {
+//			$sk_words_list[$sk_key.'_words'] =$nospk;
+//		}
+//	}
+//	return $sk_words_list;
+//}
 
 function init_profile(){
 	global $inf,$infinfo,$hp,$mhp,$sp,$msp,$infdata,$infimg,$hpcolor,$spcolor,$newhpimg,$newspimg,$ardef,$arbe,$arhe,$arae,$arfe;
@@ -37,21 +54,8 @@ function init_profile(){
 	global $itemspkinfo,$wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk,$itmsk0,$itmsk1,$itmsk2,$itmsk3,$itmsk4,$itmsk5;
 	global $nospk,$wepsk_words,$arbsk_words,$arhsk_words,$arask_words,$arfsk_words,$artsk_words,$itmsk0_words,$itmsk1_words,$itmsk2_words,$itmsk3_words,$itmsk4_words,$itmsk5_words;
 	global $wepk_words,$arbk_words,$arhk_words,$arak_words,$arfk_words,$artk_words,$itmk0_words,$itmk1_words,$itmk2_words,$itmk3_words,$itmk4_words,$itmk5_words;
-	foreach (Array('wepsk','arbsk','arhsk','arask','arfsk','artsk','itmsk0','itmsk1','itmsk2','itmsk3','itmsk4','itmsk5') as $sk_value) {
-		if(${$sk_value} && is_numeric(${$sk_value}) === false){
-			${$sk_value.'_words'} = '';
-			for ($i = 0; $i < strlen($sk_value)-1; $i++) {
-				$sub = substr(${$sk_value},$i,1);
-				if(!empty($sub)){
-					${$sk_value.'_words'} .= $itemspkinfo[$sub];
-				}				
-			}
-			
-		} else {
-			${$sk_value.'_words'} =$nospk;
-		}
-	}
-	
+
+		
 	foreach (Array('wepk','arbk','arhk','arak','arfk','artk','itmk0','itmk1','itmk2','itmk3','itmk4','itmk5') as $k_value) {
 		if(${$k_value}){
 			${$k_value.'_words'} = '';
@@ -67,6 +71,21 @@ function init_profile(){
 			${$k_value.'_words'} = '';
 		}
 		
+	}
+	
+	foreach (Array('wepsk','arbsk','arhsk','arask','arfsk','artsk','itmsk0','itmsk1','itmsk2','itmsk3','itmsk4','itmsk5') as $sk_value) {
+		if(${$sk_value} && is_numeric(${$sk_value}) === false){
+			${$sk_value.'_words'} = '';
+			for ($i = 0; $i < strlen($sk_value)-1; $i++) {
+				$sub = substr(${$sk_value},$i,1);
+				if(!empty($sub)){
+					${$sk_value.'_words'} .= $itemspkinfo[$sub];
+				}				
+			}
+			
+		} else {
+			${$sk_value.'_words'} =$nospk;
+		}
 	}
 
 	$ardef = $arbe + $arhe + $arae + $arfe;
@@ -260,6 +279,39 @@ function init_battle($ismeet = 0){
 	return;
 }
 
+function get_pstate($pid){//玩家状态储存在内存表里，读取之前先判断是否存在
+	global $db,$tablepre,$now;
+	$result=$db->query("SELECT * FROM {$tablepre}pstate WHERE pid = '$pid'");
+	if($db->num_rows($result)){
+		$psdata = $db->fetch_array($result);
+	}else{
+		$psdata = false;
+	}
+	return $psdata;
+}
+
+function set_pstate($psdata){//玩家状态储存在内存表里，若存在则更新记录，否则创建记录
+	global $db,$tablepre;
+	$pid = $psdata['pid'];
+	$result=$db->query("SELECT * FROM {$tablepre}pstate WHERE pid = '$pid'");
+	if($db->num_rows($result)){
+		return $db->array_update("{$tablepre}pstate",$psdata," pid = '$pid'");
+	}else{
+		return $db->array_insert("{$tablepre}pstate",$psdata);
+	}
+}
+
+function get_remaincdtime($pid){
+	$psdata = get_pstate($pid);
+	if($psdata){
+		$cdover = $psdata['cdsec']*1000 + $psdata['cdmsec'] + $psdata['cdtime'];
+		$nowmtime = floor(getmicrotime()*1000);
+		$rmtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
+		return floor($rmtime);
+	}else{
+		return 0;
+	}	
+}
 
 function w_save($id){
 	global $db,$tablepre,$w_name,$w_pass,$w_type,$w_endtime,$w_gd,$w_sNo,$w_icon,$w_club,$w_hp,$w_mhp,$w_sp,$w_msp,$w_att,$w_def,$w_pls,$w_lvl,$w_exp,$w_money,$w_bid,$w_inf,$w_rage,$w_pose,$w_tactic,$w_killnum,$w_state,$w_wp,$w_wk,$w_wg,$w_wc,$w_wd,$w_wf,$w_teamID,$w_teamPass,$w_wep,$w_wepk,$w_wepe,$w_weps,$w_arb,$w_arbk,$w_arbe,$w_arbs,$w_arh,$w_arhk,$w_arhe,$w_arhs,$w_ara,$w_arak,$w_arae,$w_aras,$w_arf,$w_arfk,$w_arfe,$w_arfs,$w_art,$w_artk,$w_arte,$w_arts,$w_itm0,$w_itmk0,$w_itme0,$w_itms0,$w_itm1,$w_itmk1,$w_itme1,$w_itms1,$w_itm2,$w_itmk2,$w_itme2,$w_itms2,$w_itm3,$w_itmk3,$w_itme3,$w_itms3,$w_itm4,$w_itmk4,$w_itme4,$w_itms4,$w_itm5,$w_itmk5,$w_itme5,$w_itms5,$w_wepsk,$w_arbsk,$w_arhsk,$w_arask,$w_arfsk,$w_artsk,$w_itmsk0,$w_itmsk1,$w_itmsk2,$w_itmsk3,$w_itmsk4,$w_itmsk5;

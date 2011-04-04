@@ -114,6 +114,7 @@ $lang = array
 	'install_process' => '您的服务器可以安装和使用 生存游戏BRA, 请进入下一步安装.',
 	'install_succeed' => '恭喜您，生存游戏BRA 安装成功！',
 	'goto_bbs' => '点击这里返回论坛，增加游戏插件',
+	'goto_game' => '点击这里进入游戏首页',
 
 
 	'choice_or_new_db' => '请选择已存在的数据库或者新建一个数据库存放游戏数据',
@@ -139,7 +140,8 @@ $lang = array
 
 	'startmode_0' => '手动设定:',
 	'startmode_1' => '每日定时:',
-	'startmode_2' => '连续进行:',
+	'startmode_2' => '整点开始:',
+	'startmode_3' => '间隔开始:',
 	'starttime_0' => '设定时间:',
 	'starttime_1' => '立即开始:',
 	'year' => '年',

@@ -15,7 +15,7 @@ CREATE TABLE bra_newsinfo (
  `e` varchar(255) NOT NULL default '',
 
   PRIMARY KEY  (nid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 

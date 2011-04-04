@@ -42,7 +42,7 @@ function findenemy(&$w_pdata) {
 }
 
 function findteam(&$w_pdata){
-	global $log,$mode,$main,$cmd,$battle_title,$bid;
+	global $log,$mode,$main,$cmd,$battle_title,$bid,$gamestate;
 	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
 	if($w_pdata['pid'] !== $bid){
@@ -50,7 +50,12 @@ function findteam(&$w_pdata){
 		$mode = 'command';
 		return;
 	}
-	
+	if($gamestate>=40){
+		$log .= '<span class="yellow">连斗阶段所有队伍取消！</span><br>';
+		$bid = 0;
+		$mode = 'command';
+		return;
+	}
 	$battle_title = '发现队友';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);
@@ -80,7 +85,6 @@ function findcorpse(&$w_pdata){
 		$mode = 'command';
 		return;
 	}
-	
 	$battle_title = '发现尸体';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);
@@ -119,9 +123,15 @@ function findcorpse(&$w_pdata){
 
 
 function senditem(){
-	global $tablepre,$log,$mode,$main,$command,$cmd,$battle_title,$pls,$plsinfo,$message,$db,$now,$name,$w_log,$bid,$teamID;
+	global $db,$tablepre,$log,$mode,$main,$command,$cmd,$battle_title,$pls,$plsinfo,$message,$now,$name,$w_log,$bid,$teamID,$gamestate;
 	if($bid==0){
 		$log .= '<span class="yellow">你没有遇到队友，或已经离开现场！</span><br>';
+		$bid = 0;
+		$mode = 'command';
+		return;
+	}
+	if($gamestate>=40){
+		$log .= '<span class="yellow">连斗阶段无法赠送物品！</span><br>';
 		$bid = 0;
 		$mode = 'command';
 		return;

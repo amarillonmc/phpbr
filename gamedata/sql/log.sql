@@ -12,7 +12,7 @@ CREATE TABLE bra_log (
  `log` text NOT NULL default '',
 
   PRIMARY KEY  (lid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 

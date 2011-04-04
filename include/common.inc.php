@@ -10,8 +10,8 @@ define('GAMENAME', 'bra');
 if(PHP_VERSION < '4.3.0') {
 	exit('PHP version must >= 4.3.0!');
 }
-require_once GAME_ROOT.'./include/global.func.php';
-require_once GAME_ROOT.'./config.inc.php';
+require GAME_ROOT.'./include/global.func.php';
+require GAME_ROOT.'./config.inc.php';
 
 $now = time() + $moveut*3600 + $moveutmin*60;   
 list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$now));
@@ -29,17 +29,17 @@ if(!$magic_quotes_gpc) {
 //	include_once GAME_ROOT.'./include/security.inc.php';
 //}
 
-require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
+require GAME_ROOT.'./include/db_'.$database.'.class.php';
 $db = new dbstuff;
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 //$db->select_db($dbname);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 
-require_once GAME_ROOT.'./gamedata/system.php';
-require_once GAME_ROOT.'./gamedata/resources.php';
-require_once config('gamecfg',$gamecfg);
-include_once GAME_ROOT.'./gamedata/gameinfo.php';
-include_once GAME_ROOT.'./gamedata/combatinfo.php';
+require GAME_ROOT.'./gamedata/system.php';
+require GAME_ROOT.'./gamedata/resources.php';
+require config('gamecfg',$gamecfg);
+include GAME_ROOT.'./gamedata/gameinfo.php';
+include GAME_ROOT.'./gamedata/combatinfo.php';
 
 ob_start();
 //if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
@@ -108,7 +108,7 @@ if($gamestate == 20) {
 if((($gamestate == 30)&&($alivenum <= $combolimit))||($deathlimit&&($gamestate < 40)&&($gamestate >= 20)&&($deathnum >= $deathlimit))) {
 	$gamestate = 40;
 	save_gameinfo();
-	$db->query("UPDATE {$tablepre}players SET teamID='',teamPass='' WHERE type=0 ");
+	//$db->query("UPDATE {$tablepre}players SET teamID='',teamPass='' WHERE type=0 ");
 	naddnews($now,'combo');
 	
 }

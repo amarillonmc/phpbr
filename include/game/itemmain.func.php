@@ -4,96 +4,101 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
+function trap(){
+	global $log,$cmd,$mode,$iteminfo,$itm0,$itmk0,$itme0,$itms0,$itmsk0;
+	global $name,$now,$hp,$db,$tablepre,$bid,$lvl,$pid,$type,$tactic,$club;
+	global $wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk;
+	
+	$playerflag = $itmsk0 ? true : false;
+	$selflag = $itmsk0 == $pid ? true : false;
+	$dice=rand(0,99);
+	$escrate = $club == 5 ? 25 + $lvl/3 : 8 + $lvl/3;
+	$escrate = $club == 6 ? $escrate + 15 : $escrate;
+	$escrate = $tactic == 4 ? $escrate + 20 : $escrate;
+	$escrate = $selflag ? $escrate + 50 : $escrate; //自己设置的陷阱容易躲避
+	//echo '回避率：'.$escrate.'%';
+	$def_key = $wepsk.$arbsk.$arhsk.$arask.$arfsk.$artsk;
+	
+	if(strpos($def_key,'M') !== false){
+		$minedetect = true;
+		if($club == 7){//电脑社使用探雷器效率增加
+			$escrate += 45;
+		}else{
+			$escrate += 35;
+		}
+	}
+	$escrate = $escrate >= 90 ? 90 : $escrate;//最大回避率
+	$escrate = $itmk0 == 'TOc' ? 1 : $escrate;//必中陷阱
+	//$log .= "回避率: $escrate<br>";
+	if($playerflag && !$selflag){
+		$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
+		$wdata = $db->fetch_array($result);
+		$trname = $wdata['name'];$trtype = $wdata['type'];$trperfix = '<span class="yellow">'.$trname.'</span>设置的';
+	}elseif($selflag){
+		$trname = $name;$trtype = $pid;$trperfix = '你自己设置的';
+	}else{
+		$trname = $trtype = $trperfix = '';
+	}
+		
+	if($dice >= $escrate){
+		$bid = $itmsk0;
+		$damage = round(rand(0,$itme0/2)+($itme0/2));
+		$hp -= $damage;
+		
+		if($playerflag){naddnews($now,'trap',$name,$trname,$itm0);}
+		$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
+
+		if($hp <= 0) {
+			include_once GAME_ROOT.'./include/state.func.php';
+			$killmsg = death('trap',$trname,$trtype,$itm0);
+			$log .= "你被{$trperfix}陷阱杀死了！";
+			if($killmsg && !$selflag){
+				$log .= "<span class=\"yellow\">{$trname}对你说：“{$killmsg}”</span><br>";
+			}				
+		}
+		$itm0 = $itmk0 = $itmsk0 = '';
+		$itme0 = $itms0 = 0;
+		return;
+	} else {
+		if($playerflag){
+			naddnews($now,'trapmiss',$name,$trname,$itm0);
+		}
+		$dice = rand(0,99);
+		$fdrate = $club == 5 ? 40 + $lvl/3 : 5 + $lvl/3;
+		$fdrate = $selflag ? $fdrate + 50 : $fdrate;
+		if($dice < $fdrate){
+			if($minedetect){
+				$log .= "在探雷装备的辅助下，你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>并且拆除了它。陷阱看上去还可以重复使用。<br>";
+			}else{
+				$log .= "你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>，不过你并没有触发它。陷阱看上去还可以重复使用。<br>";
+			}				
+			$itmsk0 = '';$itmk0 = str_replace('TO','TN',$itmk0);
+			$mode = 'itemfind';
+			return;
+		}else{
+			if($minedetect){
+				$log .= "在探雷装备的辅助下，你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>并且拆除了它。不过陷阱好像被你搞坏了。<br>";
+			}else{
+				$log .= "你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>，不过你成功地回避了陷阱。<br>";
+			}		
+			
+			$itm0 = $itmk0 = $itmsk0 = '';
+			$itme0 = $itms0 = 0;
+			$mode = 'command';
+			return;
+		}
+	}
+}
 
 function itemfind() {
-	global $mode,$log,$cmd,$iteminfo,$itm0,$itmk0,$itme0,$itms0,$itmsk0;
-	
+	global $mode,$log,$itm0,$itmk0,$itms0;
 	if(!$itm0||!$itmk0||!$itms0){
 		$log .= '获取物品信息错误！';
 		$mode = 'command';
 		return;
 	}
-	if($itmk0 == 'TO') {
-		global $name,$now,$hp,$db,$tablepre,$bid,$lvl,$pid,$type,$tactic,$club;
-		global $wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk;
-		$playerflag = $itmsk0 ? true : false;
-		$selflag = $itmsk0 == $pid ? true : false;
-		$dice=rand(0,99);
-		$escrate = $club == 5 ? 25 + $lvl/3 : 8 + $lvl/3;
-		$escrate = $club == 6 ? $escrate + 15 : $escrate;
-		$escrate = $tactic == 4 ? $escrate + 20 : $escrate;
-		$escrate = $selflag ? $escrate + 50 : $escrate; //自己设置的陷阱容易躲避
-		//echo '回避率：'.$escrate.'%';
-		$def_key = $wepsk.$arbsk.$arhsk.$arask.$arfsk.$artsk;
-		
-		if(strpos($def_key,'M') !== false){
-			$minedetect = true;
-			if($club == 7){//电脑社使用探雷器效率增加
-				$escrate += 45;
-			}else{
-				$escrate += 35;
-			}
-		}
-		$escrate = $escrate >= 90 ? 90 : $escrate;
-		//$log .= "回避率 $escrate<br>";
-		if($playerflag && !$selflag){
-			$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$itmsk0'");
-			$wdata = $db->fetch_array($result);
-			$trname = $wdata['name'];$trtype = $wdata['type'];$trperfix = '<span class="yellow">'.$trname.'</span>设置的';
-		}elseif($selflag){
-			$trname = $name;$trtype = $pid;$trperfix = '你自己设置的';
-		}else{
-			$trname = $trtype = $trperfix = '';
-		}
-			
-		if($dice >= $escrate){
-			$bid = $itmsk0;
-			$damage = round(rand(0,$itme0/2)+($itme0/2));
-			$hp -= $damage;
-			
-			if($playerflag){naddnews($now,'trap',$name,$trname,$itm0);}
-			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
-
-			if($hp <= 0) {
-				include_once GAME_ROOT.'./include/state.func.php';
-				$killmsg = death('trap',$trname,$trtype,$itm0);
-				$log .= "你被{$trperfix}陷阱杀死了！";
-				if($killmsg && !$selflag){
-					$log .= "<span class=\"yellow\">{$trname}对你说：“{$killmsg}”</span><br>";
-				}				
-			}
-			$itm0 = $itmk0 = $itmsk0 = '';
-			$itme0 = $itms0 = 0;
-			return;
-		} else {
-			if($playerflag){
-				naddnews($now,'trapmiss',$name,$trname,$itm0);
-			}
-			$dice = rand(0,99);
-			$fdrate = $club == 5 ? 40 + $lvl/3 : 5 + $lvl/3;
-			$fdrate = $selflag ? $fdrate + 50 : $fdrate;
-			if($dice < $fdrate){
-				if($minedetect){
-					$log .= "在探雷装备的辅助下，你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>并且拆除了它。陷阱看上去还可以重复使用。<br>";
-				}else{
-					$log .= "你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>，不过你并没有触发它。陷阱看上去还可以重复使用。<br>";
-				}				
-				$itmsk0 = '';$itmk0 = 'TN';
-				$mode = 'itemfind';
-				return;
-			}else{
-				if($minedetect){
-					$log .= "在探雷装备的辅助下，你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>并且拆除了它。不过陷阱好像被你搞坏了。<br>";
-				}else{
-					$log .= "你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>，不过你成功地回避了陷阱。<br>";
-				}		
-				
-				$itm0 = $itmk0 = $itmsk0 = '';
-				$itme0 = $itms0 = 0;
-				$mode = 'command';
-				return;
-			}
-		}
+	if(strpos($itmk0,'TO')===0) {
+		trap();
 	}else{
 		$mode = 'itemfind';
 		return;

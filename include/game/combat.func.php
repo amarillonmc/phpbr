@@ -240,6 +240,7 @@ function attack($wep_kind = 'N', $active = 0) {
 	global $w_hp, $w_rage, $w_lvl, $w_pid, $w_gd, $w_name, $w_inf, $w_def;
 	global $w_wepsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_artk;
 	
+	$is_wpg = false;
 	if ((strpos ( $wepk, 'G' ) == 1) && ($weps == $nosta)) {
 		if (($wep_kind == 'G') || ($wep_kind == 'P')) {
 			$wep_kind = 'P';
@@ -250,6 +251,7 @@ function attack($wep_kind = 'N', $active = 0) {
 		}
 	} elseif ($wep_kind == 'N') {
 		$watt =  round (${$skillinfo [$wep_kind]}*2/3);
+		
 	} else {
 		$watt = $wepe * 2;
 	}
@@ -342,7 +344,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	global $w_type, $w_sNo, $w_killnum;
 	
 	$w_wep_temp = $w_wep;
-	
+	$is_wpg = false;
 	if ((strpos ( $w_wepk, 'G' ) == 1) && ($w_wep_kind == 'P')) {
 		$watt = round ( $w_wepe / 5 );
 		$is_wpg = true;
@@ -609,15 +611,7 @@ function getatkkey($w, $ah, $ab, $aa, $af, $at, $atkind, $is_wpg) {
 			$atkcdt .= '_'.$value;
 		}
 	}
-	/*if (strpos ( $w, 'p' ) !== false && ! $is_wpg) {
-		$atkcdt .= '_p';
-	}
-	if (strpos ( $w, 'u' ) !== false && ! $is_wpg) {
-		$atkcdt .= '_u';
-	}
-	if (strpos ( $w, 'i' ) !== false && ! $is_wpg) {
-		$atkcdt .= '_i';
-	}*/
+
 	return $atkcdt;
 }
 

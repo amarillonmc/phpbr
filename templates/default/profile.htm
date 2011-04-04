@@ -39,7 +39,7 @@
 		<td class="b3"><div class=nttx>$wk</div></td>
 		</tr>
 	<tr><td height="20" class="b2"><div class=nttx>{lang team}</div></td>
-		<td class="b3"><div class=nttx><!--{if $teamID}-->$teamID<!--{else}--> 无 <!--{/if}--></div></td>
+		<td class="b3"><div class=nttx><!--{if $teamID && $gamestate < 40 }-->$teamID<!--{else}--> 无 <!--{/if}--></div></td>
 		<td class="b2"><div class=nttx><!--{if $wg >= 25}-->{lang wg}{lang skill}<!--{else}--><span class="grey">{lang wg}{lang skill}</span><!--{/if}--></div></td>
 		<td class="b3"><div class=nttx>$wg</div></td>
 		</tr>

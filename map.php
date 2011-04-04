@@ -2,7 +2,7 @@
 
 define('CURSCRIPT', 'map');
 
-require_once './include/common.inc.php';
+require './include/common.inc.php';
 
 $mapvcoordinate = Array('A','B','C','D','E','F','G','H','I','J');
 

@@ -6,7 +6,7 @@ if(!defined('IN_GAME')) {
 
 function rs_game($mode = 0) {
 	global $db,$tablepre,$gamecfg,$now,$gamestate,$plsinfo,$typeinfo,$areanum,$areaadd;
-	$stime=getmicrotime();
+//	$stime=getmicrotime();
 	$dir = GAME_ROOT.'./gamedata/';
 	$sqldir = GAME_ROOT.'./gamedata/sql/';
 	if ($mode & 1) {
@@ -15,6 +15,10 @@ function rs_game($mode = 0) {
 		//dir_clear("{$dir}log/");
 		
 		$sql = file_get_contents("{$sqldir}log.sql");
+		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
+		runquery($sql);
+		//清空玩家临时状态
+		$sql = file_get_contents("{$sqldir}pstate.sql");
 		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
 		runquery($sql);
 		//清空聊天信息
@@ -30,6 +34,11 @@ function rs_game($mode = 0) {
 //			$rqry = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre.$p, $sql));
 //			runquery($rqry);
 //		}
+		//清空地图陷阱
+		$sql = file_get_contents("{$sqldir}maptrap.sql");
+		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
+		runquery($sql);
+		
 		//清空游戏进行状况
 		if($fp = fopen("{$dir}newsinfo.php", 'wb')) {
 			global $checkstr;
@@ -124,10 +133,10 @@ function rs_game($mode = 0) {
 		}
 	}
 	if ($mode & 16) {
-		//echo " - 地图道具初始化 - ";
+		//echo " - 地图道具/陷阱初始化 - ";
 		//感谢 Martin1994 提供地图道具数据库化的源代码
 		$plsnum = sizeof($plsinfo);
-		$qrycmd = '';
+		$iqry = $tqry = '';
 //		if($gamestate == 0){
 //			global $checkstr;
 //			dir_clear("{$dir}mapitem/");
@@ -141,18 +150,26 @@ function rs_game($mode = 0) {
 		$in = sizeof($itemlist);
 		$an = $areanum ? ceil($areanum/$areaadd) : 0;
 		//$mapitem = array();
-		//$ifqry = $qrycmd = 'INSERT INTO '.$tablepre.'mapitem (itm,itmk,itme,itms,itmsk,map) VALUES ';
+		//$ifqry = $iqry = 'INSERT INTO '.$tablepre.'mapitem (itm,itmk,itme,itms,itmsk,map) VALUES ';
 		for($i = 1; $i < $in; $i++) {
 			list($iarea,$imap,$inum,$iname,$ikind,$ieff,$ista,$iskind) = explode(',',$itemlist[$i]);
 			if(($iarea == $an)||($iarea == 99)) {
 				for($j = $inum; $j>0; $j--) {
 					if($imap == 99) {
 						$rmap = rand(1,$plsnum-1);
-						$qrycmd .= "('$iname', '$ikind','$ieff','$ista','$iskind','$rmap'),";
-						//$qrycmd[$rmap] .= "('$iname', '$ikind','$ieff','$ista','$iskind'),";
+						if($ikind == 'TO'){
+							$tqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$rmap'),";
+						}else{
+							$iqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$rmap'),";
+						}
+						//$iqry[$rmap] .= "('$iname', '$ikind','$ieff','$ista','$iskind'),";
 						//$db->query("INSERT INTO {$tablepre}{$rmap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ('$iname', '$ikind','$ieff','$ista','$iskind')");
 					}else{
-						$qrycmd .= "('$iname', '$ikind','$ieff','$ista','$iskind','$imap'),";
+						if($ikind == 'TO'){
+							$tqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$imap'),";
+						}else{
+							$iqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$imap'),";
+						}
 						//$db->query("INSERT INTO {$tablepre}{$imap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ('$iname', '$ikind','$ieff','$ista','$iskind')");
 					}
 					
@@ -165,26 +182,30 @@ function rs_game($mode = 0) {
 				}
 			}
 		}
-		if(!empty($qrycmd)){
-			$qrycmd = "INSERT INTO {$tablepre}mapitem (itm,itmk,itme,itms,itmsk,pls) VALUES ".substr($qrycmd, 0, -1);
-			$db->query($qrycmd);
+		if(!empty($iqry)){
+			$iqry = "INSERT INTO {$tablepre}mapitem (itm,itmk,itme,itms,itmsk,pls) VALUES ".substr($iqry, 0, -1);
+			$db->query($iqry);
+		}
+		if(!empty($tqry)){
+			$tqry = "INSERT INTO {$tablepre}maptrap (itm,itmk,itme,itms,itmsk,pls) VALUES ".substr($tqry, 0, -1);
+			$db->query($tqry);
 		}
 //		for($imap = 0;$imap<$plsnum;$imap++){
-//			if(!empty($qrycmd[$imap])){
-//				$qrycmd[$imap] = "INSERT INTO {$tablepre}{$imap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ".substr($qrycmd[$imap], 0, -1);
-//				$db->query($qrycmd[$imap]);
+//			if(!empty($iqry[$imap])){
+//				$iqry[$imap] = "INSERT INTO {$tablepre}{$imap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ".substr($iqry[$imap], 0, -1);
+//				$db->query($iqry[$imap]);
 //			}	
 //		}
-//		if($ifqry != $qrycmd){//判定是否有数据写入
-//			$qrycmd = substr($qrycmd, 0, -1);//去除尾部多余的逗号
-//			$db->query($qrycmd);
+//		if($ifqry != $iqry){//判定是否有数据写入
+//			$iqry = substr($iqry, 0, -1);//去除尾部多余的逗号
+//			$db->query($iqry);
 //		}
 //		foreach($mapitem as $map => $itemdata) {
 //			$mapfile = GAME_ROOT."./gamedata/mapitem/{$map}mapitem.php";
 //			writeover($mapfile,$itemdata,'ab');
 //		}
 		
-		unset($itemlist);unset($qrycmd);
+		unset($itemlist);unset($iqry);
 		//unset($mapitem);
 		
 	}
@@ -228,9 +249,9 @@ function rs_game($mode = 0) {
 //			writeover($sfile,$sdata,'ab');
 //		}
 	}
-	$etime=getmicrotime();
-	global $gamenum;
-	putmicrotime($stime,$etime,'loadtime.txt','第'.$gamenum.'局游戏');
+//	$etime=getmicrotime();
+//	global $gamenum;
+//	putmicrotime($stime,$etime,'loadtime.txt',"第 $gamenum 局游戏；mode = $mode");
 }
 
 function rs_sttime() {
@@ -404,50 +425,51 @@ function duel($time = 0,$keyitm = ''){
 	}
 	
 }
-
+//------游戏结束------
+//模式：0保留：程序故障；1：全部死亡；2：最后幸存；3：禁区解除；4：无人参加；5：核爆全灭；6：GM中止
 function gameover($time = 0, $mode = '', $winname = '') {
 	global $gamestate,$winmode,$alivenum,$winner,$now,$gamenum,$db,$tablepre,$gamenum,$starttime,$validnum,$hdamage,$hplayer;
 	if($gamestate < 10){return;}
-	if((!$mode)||(($mode==2)&&(!$winname))) {
-		if($validnum <= 0) {
+	if((!$mode)||(($mode==2)&&(!$winname))) {//在没提供游戏结束模式的情况下，自行判断模式
+		if($validnum <= 0) {//无激活者情况下，全部死亡
 			$alivenum = 0;
 			$winmode = 4;
 			$winner = '';
 			
-		} else {
+		} else {//判断谁是最后幸存者
 			$result = $db->query("SELECT * FROM {$tablepre}players WHERE hp>0 AND type=0");
 			$alivenum = $db->num_rows($result);
-			if(!$alivenum) { 
+			if(!$alivenum) {//全部死亡
 				$winmode = 1;
 				$winner = '';
-			} elseif($alivenum == 1) {
+			} elseif($alivenum == 1) {//最后幸存
 				$winmode = 2;
 				$wdata = $db->fetch_array($result);
 				$winner = $wdata['name'];
 				$db->query("UPDATE {$tablepre}players SET state='5' where pid='{$wdata['pid']}'");
-			} else {
+			} else {//不满足游戏结束条件，返回
 				save_gameinfo();
 				return;
 			}
 		}
-	} else {
+	} else {//提供了游戏结束模式的情况下
 		$winmode = substr($mode,3,1);
 		$winner = $winname;
 	}
 	$time = $time ? $time : $now;
-	$result = $db->query("SELECT gid FROM {$tablepre}winners ORDER BY gid DESC LIMIT 1");
+	$result = $db->query("SELECT gid FROM {$tablepre}winners ORDER BY gid DESC LIMIT 1");//判断当前游戏局数是否正确，以优胜列表为准
 	if($db->num_rows($result)&&($gamenum <= $db->result($result, 0))) {
 		$gamenum = $db->result($result, 0) + 1;
 	}
-	if($winmode == 4){//无人参加
+	if($winmode == 4){//无人参加；不需要记录任何资料
 		$getime = $time;
 		$db->query("INSERT INTO {$tablepre}winners (gid,wmode,vnum,getime) VALUES ('$gamenum','$winmode','$validnum','$getime')");
-	}	elseif(($winmode == 0)||($winmode == 1)||($winmode == 6)){//程序故障、全部死亡、GM中止
+	}	elseif(($winmode == 0)||($winmode == 1)||($winmode == 6)){//程序故障、全部死亡、GM中止，不需要记录优胜者资料
 		$gstime = $starttime;
 		$getime = $time;
 		$gtime = $time - $starttime;
 		$db->query("INSERT INTO {$tablepre}winners (gid,wmode,vnum,gtime,gstime,getime,hdmg,hdp) VALUES ('$gamenum','$winmode','$validnum','$gtime','$gstime','$getime','$hdamage','$hplayer')");
-	} else {//最后幸存、锁定解除、核爆全灭
+	} else {//最后幸存、锁定解除、核爆全灭，需要记录优胜者资料
 		$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$winner' AND type=0");
 		$pdata = $db->fetch_array($result);
 		$result2 = $db->query("SELECT motto FROM {$tablepre}users WHERE username='$winner'");
@@ -465,7 +487,7 @@ function gameover($time = 0, $mode = '', $winname = '') {
 		$pdata['hdp'] = $hplayer;
 		$db->query("INSERT INTO {$tablepre}winners (gid,name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,motto,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('".$gamenum."','".$pdata['name']."','".$pdata['pass']."','".$pdata['type']."','".$pdata['endtime']."','".$pdata['gd']."','".$pdata['sNo']."','".$pdata['icon']."','".$pdata['club']."','".$pdata['hp']."','".$pdata['mhp']."','".$pdata['sp']."','".$pdata['msp']."','".$pdata['att']."','".$pdata['def']."','".$pdata['pls']."','".$pdata['lvl']."','".$pdata['exp']."','".$pdata['money']."','".$pdata['bid']."','".$pdata['inf']."','".$pdata['rage']."','".$pdata['pose']."','".$pdata['tactic']."','".$pdata['killnum']."','".$pdata['death']."','".$pdata['wp']."','".$pdata['wk']."','".$pdata['wg']."','".$pdata['wc']."','".$pdata['wd']."','".$pdata['wf']."','".$pdata['teamID']."','".$pdata['teamPass']."','".$pdata['wep']."','".$pdata['wepk']."','".$pdata['wepe']."','".$pdata['weps']."','".$pdata['arb']."','".$pdata['arbk']."','".$pdata['arbe']."','".$pdata['arbs']."','".$pdata['arh']."','".$pdata['arhk']."','".$pdata['arhe']."','".$pdata['arhs']."','".$pdata['ara']."','".$pdata['arak']."','".$pdata['arae']."','".$pdata['aras']."','".$pdata['arf']."','".$pdata['arfk']."','".$pdata['arfe']."','".$pdata['arfs']."','".$pdata['art']."','".$pdata['artk']."','".$pdata['arte']."','".$pdata['arts']."','".$pdata['itm0']."','".$pdata['itmk0']."','".$pdata['itme0']."','".$pdata['itms0']."','".$pdata['itm1']."','".$pdata['itmk1']."','".$pdata['itme1']."','".$pdata['itms1']."','".$pdata['itm2']."','".$pdata['itmk2']."','".$pdata['itme2']."','".$pdata['itms2']."','".$pdata['itm3']."','".$pdata['itmk3']."','".$pdata['itme3']."','".$pdata['itms3']."','".$pdata['itm4']."','".$pdata['itmk4']."','".$pdata['itme4']."','".$pdata['itms4']."','".$pdata['itm5']."','".$pdata['itmk5']."','".$pdata['itme5']."','".$pdata['itms5']."','".$pdata['motto']."','".$pdata['wmode']."','".$pdata['vnum']."','".$pdata['gtime']."','".$pdata['gstime']."','".$pdata['getime']."','".$pdata['hdmg']."','".$pdata['hdp']."','".$pdata['hkill']."','".$pdata['hkp']."','".$pdata['wepsk']."','".$pdata['arbsk']."','".$pdata['arhsk']."','".$pdata['arask']."','".$pdata['arfsk']."','".$pdata['artsk']."','".$pdata['itmsk0']."','".$pdata['itmsk1']."','".$pdata['itmsk2']."','".$pdata['itmsk3']."','".$pdata['itmsk4']."','".$pdata['itmsk5']."')");
 	}
-	rs_sttime();
+	rs_sttime();//重置游戏开始时间和当前游戏状态
 	$gamestate = 0;
 	save_gameinfo();
 	//echo '**游戏结束**';

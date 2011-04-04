@@ -118,9 +118,9 @@ function teamjoin($tID,$tPass) {
 }
 
 function teamquit() {
-	global $log,$mode,$teamID,$teamPass,$now,$name;
+	global $log,$mode,$teamID,$teamPass,$now,$name,$gamestate;
 
-	if($teamID){
+	if($teamID && $gamestate<40){
 		$log .= '你退出了队伍<span class="yellow">'.$teamID.'</span>。<br>';
 		naddnews($now,'teamquit',$teamID,$name);
 		$teamID =$teamPass = '';

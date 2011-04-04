@@ -10,6 +10,43 @@
 <BODY>
 <div align="left">
 <div class="subtitle" >更新履历</div><br>
+
+<span class="yellow">2011/4/4</span>
+<br>
+<table><tr><td class="b2"><div class="nttx">内容</div></td><td class="b2"><div class="nttx">涉及文件</div></td></tr>
+<tr>
+	<td class="b5">
+		根据陷阱机制，将陷阱和道具分成两张表，加快了游戏速度；
+	</td>
+	<td class="b5">
+		maptrap.sql; system.func.php; search.func.php; item.func.php; admin.lang.php; systemmng.php; system.php
+	</td>
+</tr>
+<tr>
+	<td class="b5">
+		增加冷却时间机制，现在移动、探索和使用物品会有冷却时间了；
+	</td>
+	<td class="b5">
+		pstate.sql;command.php; game.php;game.js
+	</td>
+</tr>
+<tr>
+	<td class="b5">
+		增加必中陷阱；
+	</td>
+	<td class="b5">
+		itemmain.func; item.func.php; itemmix_1.php
+	</td>
+</tr>
+</table><br><br>
+
+<span class="yellow">2011/3/28</span>
+<br><table><tr><td class="b2"><div class="nttx">内容</div></td><td class="b2"><div class="nttx">涉及文件</div></td></tr>
+<tr><td class="b5">在不影响逻辑的前提下，将游戏主要程序中的require_once和include_once替换成require/include；</td><td class="b5">common.inc.php; admin.php; alive.php; chat.php; command.php; end.php; game.php; help.php; index.php; login.php; map.php; news.php; valid.php; winner.php</td></tr>
+<tr><td class="b5">修正了game.js显示游戏资料的残留文字错误；</td><td class="b5">game.js; common.inc.php;</td></tr>
+<tr><td class="b5">修改了header里的extrahead；</td><td class="b5">header.htm</td></tr>
+</table><br><br>
+
 <span class="yellow">2011/3/26</span>
 <br><table><tr><td class="b2"><div class="nttx">内容</div></td><td class="b2"><div class="nttx">涉及文件</div></td></tr>
 <tr><td class="b5">修改了数据库操作语句；</td><td class="b5">common.inc.php; login.php</td></tr>
@@ -17,6 +54,9 @@
 <tr><td class="b5">把地图道具修改成一张总表；</td><td class="b5">system.func.php; item.func.php; search.func.php; itemmain.func.php; mapitem.sql</td></tr>
 <tr><td class="b5">为管理后台添加了修改gameinfo.php的功能；添加了紧急中止游戏的功能</td><td class="b5">gameinfomng.php; gamemng.php; system.func.php; news.func.php; end.htm</td></tr>
 <tr><td class="b5">修改了footer.htm；</td><td class="b5">footer.htm</td></tr>
+<tr><td class="b5">修改了连斗以后取消队伍的机制，现在连斗以后其实队伍依然存在，只是无法生效；</td><td class="b5">search.func.php; battle.func.php; profile.htm; common.inc.php;team.func.php;alive.htm</td></tr>
+<tr><td class="b5">把各sql文件的type改为engine，同时将chat表的引擎改为HEAP；</td><td class="b5">chat.sql; log.sql; mapitem.sql; newsinfo.sql; player.sql; shopitem.sql</td></tr>
+<tr><td class="b5">修改了安装程序以及登陆、注册过程中的部分信息显示；</td><td class="b5">install.php; login.php; valid.php; resources.php</td></tr>
 </table><br><br>
 
 <span class="yellow">2011/3/22</span>

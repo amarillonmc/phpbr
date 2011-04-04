@@ -10,8 +10,8 @@ define('GAMENAME', 'bra');
 if(PHP_VERSION < '4.3.0') {
 	exit('PHP version must >= 4.3.0!');
 }
-require_once GAME_ROOT.'./include/global.func.php';
-require_once GAME_ROOT.'./config.inc.php';
+require GAME_ROOT.'./include/global.func.php';
+require GAME_ROOT.'./config.inc.php';
 
 $now = time() + $moveut*3600 + $moveutmin*60;   
 
@@ -34,14 +34,14 @@ if($mode == 'quit') {
 
 }
 
-require_once GAME_ROOT.'./include/db_'.$database.'.class.php';
+require GAME_ROOT.'./include/db_'.$database.'.class.php';
 $db = new dbstuff;
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 //$db->select_db($dbname);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
-require_once GAME_ROOT.'./gamedata/system.php';
-require_once GAME_ROOT.'./gamedata/resources.php';
-require_once './gamedata/validlimit.php';
+require GAME_ROOT.'./gamedata/system.php';
+require GAME_ROOT.'./gamedata/resources.php';
+require './gamedata/validlimit.php';
 
 ob_start();
 //if($gzipcompress && function_exists('ob_gzhandler') && CURSCRIPT != 'wap') {
@@ -63,7 +63,7 @@ if(!$username||!$password) {
 } elseif(mb_strlen($username,'utf-8')>15) {
 	gexit($_ERROR['long_name'],__file__,__line__);
 } else{
-	include_once GAME_ROOT.'./gamedata/system.php';
+	//include_once GAME_ROOT.'./gamedata/system.php';
 
 	if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
 		$onlineip = getenv('HTTP_CLIENT_IP');
@@ -103,7 +103,7 @@ if(!$username||!$password) {
 		if($userdata['groupid'] <= 0){
 			gexit($_ERROR['user_ban'],__file__,__line__);
 		} elseif($userdata['password'] != $password) {
-			gexit($_ERROR['login_check'],__file__,__line__);
+			gexit($_ERROR['wrong_pw'],__file__,__line__);
 		}
 	}
 	gsetcookie('user',$username);

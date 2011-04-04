@@ -229,7 +229,7 @@ function discover($schmode = 0) {
 	$trap_dice=rand(0,99);//随机数，开始判断是否踩陷阱
 	if($trap_dice < $trap_max_obbs){ //踩陷阱概率最大值
 		
-		$trapresult = $db->query("SELECT * FROM {$tablepre}mapitem WHERE itmk = 'TO' AND pls = '$pls'");
+		$trapresult = $db->query("SELECT * FROM {$tablepre}maptrap WHERE pls = '$pls'");
 
 		$trpnum = $db->num_rows($trapresult);
 		if($trpnum){//看地图上有没有陷阱
@@ -250,8 +250,8 @@ function discover($schmode = 0) {
 				$itme0=$mi['itme'];
 				$itms0=$mi['itms'];
 				$itmsk0=$mi['itmsk'];
-				$iid=$mi['iid'];
-				$db->query("DELETE FROM {$tablepre}mapitem WHERE iid='$iid'");
+				$tid=$mi['tid'];
+				$db->query("DELETE FROM {$tablepre}maptrap WHERE tid='$tid'");
 				if($itms0){
 					include_once GAME_ROOT.'./include/game/itemmain.func.php';
 					itemfind();
@@ -317,7 +317,7 @@ function discover($schmode = 0) {
 					$hide_r = get_hide_r($weather,$pls,$edata['pose'],$edata['tactic'],$edata['club'],$edata['inf']);
 					$enemy_dice = rand(0,99);
 					if($enemy_dice < ($find_obbs - $hide_r)) {
-						if($teamID&&(!$fog)&&($teamID == $edata['teamID'])){
+						if($teamID&&(!$fog)&&($gamestate<40)&&($teamID == $edata['teamID'])){
 							$bid = $edata['pid'];
 							include_once GAME_ROOT.'./include/game/battle.func.php';
 							findteam($edata);
@@ -374,7 +374,7 @@ function discover($schmode = 0) {
 			//$itemnum = sizeof($mapitem) - 1;
 //			$result = $db->query("SELECT * FROM {$tablepre}mapitem WHERE map='$pls'");
 //			$itemnum = $db->num_rows($result);
-			$result = $db->query("SELECT * FROM {$tablepre}mapitem WHERE itmk != 'TO' AND pls = '$pls'");
+			$result = $db->query("SELECT * FROM {$tablepre}mapitem WHERE pls = '$pls'");
 			$itemnum = $db->num_rows($result);
 			if($itemnum <= 0){
 				$log .= '<span class="yellow">周围找不到任何物品。</span><br>';

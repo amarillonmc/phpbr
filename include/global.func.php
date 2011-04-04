@@ -331,16 +331,15 @@ function compatible_json_encode($data){	//自动选择使用内置函数或者�
 	return $jdata;	
 }
 
-function getmicrotime()
-{
+function getmicrotime(){
 	list($usec, $sec) = explode(" ",microtime());
 	return ((float)$usec + (float)$sec);
 }
 
-function putmicrotime($t_s,$t_e,$file,$info)
-{
-	$mtime = ($t_e - $t_s)*1000;
-	writeover( $file.'.txt',"$info ；执行时间：$mtime 毫秒 \n",'ab');
-}
+//function putmicrotime($t_s,$t_e,$file,$info)
+//{
+//	$mtime = ($t_e - $t_s)*1000;
+//	writeover( $file.'.txt',"$info ；执行时间：$mtime 毫秒 \n",'ab');
+//}
 
 ?>

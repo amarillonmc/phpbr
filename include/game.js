@@ -16,8 +16,27 @@ function updateTime(timing,mode)
 		setTimeout("updateTime(t,tm)",1000);
 	}
 	else{
-		window.location.href = 'index.php';
+		window.location.reload(); 
 	}
+}
+
+
+function demiSecTimer(){
+	if($('timer') && ms>=itv)	{
+		ms -= itv;
+		var sec = Math.floor(ms/1000);
+		var dsec = Math.floor((ms%1000)/100);
+		$('timer').innerHTML = sec + '.' + dsec;
+	}	else {
+		clearInterval(timerid);
+		delete timerid;
+	}
+}
+
+function demiSecTimerStarter(msec){
+	itv = 100;//by millisecend
+	ms = msec;
+	timerid = setInterval("demiSecTimer()",itv);
 }
 
 //icon select
@@ -51,7 +70,6 @@ function postCommand(){
 	oXmlHttp.send(sBody);
 }
 
-
 function showGamedata(sGamedata){
 	gamedata = sGamedata.parseJSON();
 	if(gamedata['url']) {
@@ -59,16 +77,50 @@ function showGamedata(sGamedata){
 	} else if(!gamedata['main']) {
 		window.location.href = 'index.php';
 	}
-	if(gamedata['team']) {
-		$('team').value = gamedata['team'];
-		gamedata['team'] = '';
-	}
-
+	//timer = 0;
 	for(var id in gamedata) {
-		if((id == 'toJSONString')||(!gamedata[id])) {continue;}
-		$(id).innerHTML = gamedata[id];
+		if(id == 'toJSONString' || id == 'timer') {
+			continue;
+		} else if(gamedata[id]){
+			if(id == 'team'){
+				$('team').value = gamedata['team'];
+			}else{
+				$(id).innerHTML = gamedata[id];
+			}
+		} else{
+			$(id).innerHTML = '';
+		}
+		
+	}
+	if(gamedata['timer'] && typeof(timerid)=='undefined'){
+		demiSecTimerStarter(gamedata['timer']);
 	}
 }
+
+//function showGamedata(sGamedata){
+//	gamedata = sGamedata.parseJSON();
+//	if(gamedata['url']) {
+//		window.location.href = gamedata['url'];
+//	} else if(!gamedata['main']) {
+//		window.location.href = 'index.php';
+//	}
+//
+//	for(var id in gamedata) {
+//		if(id == 'toJSONString') {
+//			continue;
+//		} else if(gamedata[id]){
+//			if(id == 'team'){
+//				$('team').value = gamedata['team'];
+//				gamedata['team'] = '';
+//			}else{
+//				$(id).innerHTML = gamedata[id];
+//			}			
+//		} else{
+//			$(id).innerHTML = '';
+//		}
+//		
+//	}
+//}
 
 function showNotice(sNotice) {
 	$('notice').innerText = sNotice;
@@ -107,9 +159,12 @@ function showNewsdata(newsdata) {
 		$('newsinfo').innerHTML = news;
 	}
 }
+
 function showAlive(mode){
 	window.location.href = 'alive.php?alivemode=' + mode;
 }
+
+
 
 var refchat = null;
 
@@ -133,16 +188,7 @@ function chat(mode,reftime) {
 	rtime = reftime;
 	refchat = setTimeout("chat('ref',rtime)",rtime);
 }
-/*
-function showChatdata(jsonchat) {
-	chatdata = jsonchat.parseJSON();
-	if(chatdata['msg']) {
-		$('lastcid').value=chatdata['lastcid'];
-		newchat = String(chatdata['msg']).replace(/<br>,/,'<br>');
-		$('chatlist').innerHTML = newchat + $('chatlist').innerHTML;
-	}
-}
-*/
+
 
 function showChatdata(jsonchat) {
 	chatdata = jsonchat.parseJSON();
@@ -156,3 +202,23 @@ function showChatdata(jsonchat) {
 		$('chatlist').innerHTML = newchat + $('chatlist').innerHTML;
 	}			
 }
+
+function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
+	var sourceObj = typeof oSourceObj == "string" ? document.getElementById(oSourceObj) : oSourceObj;
+	var targetObj = typeof oTargetObj == "string" ? document.getElementById(oTargetObj) : oTargetObj;
+	var openTip = oOpenTip || "";
+	var shutTip = oShutTip || "";
+	if(targetObj.style.display!="none"){
+	   if(shutAble) return;
+	   targetObj.style.display="none";
+	   if(openTip  &&  shutTip){
+	    sourceObj.innerHTML = shutTip; 
+	   }
+	} else {
+	   targetObj.style.display="block";
+	   if(openTip  &&  shutTip){
+	    sourceObj.innerHTML = openTip; 
+	   }
+	}
+}
+

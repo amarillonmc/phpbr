@@ -2,7 +2,7 @@
 
 define('CURSCRIPT', 'help');
 
-require_once './include/common.inc.php';
+require './include/common.inc.php';
 
 $extrahead = <<<EOT
 <STYLE type=text/css>
@@ -43,7 +43,7 @@ DIV.FAQ DD {
 EOT;
 
 
-include_once template('help');
+include template('help');
 
 
 

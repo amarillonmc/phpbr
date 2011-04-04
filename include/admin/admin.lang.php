@@ -149,7 +149,15 @@ $lang = array
 	'chatrefresh_comment' => '聊天信息的刷新速度，单位 毫秒。',
 	'chatinnews' => '游戏外聊天显示:',
 	'chatinnews_comment' => '进行状况中是否显示聊天。0为不显示，数字为显示条数。',
-
+	'antiAFKertime' => '反挂机间隔时间:',
+	'antiAFKertime_comment' => '手动清除长时间不动的玩家的最小时间间隔，单位分钟。',
+	'corpseprotect' => '尸体保护时间:',
+	'corpseprotect_comment' => '决定角色死亡后经过多久才能被他人遇到或者被凸眼鱼影响，单位秒。',
+	'coldtimeon' => '冷却时间启动:',
+	'coldtimeon_comment' => '决定是否启动冷却时间，防止利用脚本快速提交。0为不启动，1为启动。',
+	'showcoldtimer' => '冷却时间倒计时:',
+	'showcoldtimer_comment' => '决定是否显示冷却时间的倒计时。0为不显示，1为显示。',
+	
 	'areahour' => '禁区间隔时间:',
 	'areahour_comment' => '单位：分钟',
 	'areaadd' => '禁区增加数:',

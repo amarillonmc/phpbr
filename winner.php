@@ -2,7 +2,7 @@
 
 define('CURSCRIPT', 'winner');
 
-require_once './include/common.inc.php';
+require './include/common.inc.php';
 if($command == 'info') {
 	$result = $db->query("SELECT * FROM {$tablepre}winners WHERE gid='$gnum' LIMIT 1");
 	$pdata = $db->fetch_array($result);
@@ -10,11 +10,11 @@ if($command == 'info') {
 	$pdata['gsdate'] = date("m/d/Y H:i:s",$pdata['gstime']);
 	$pdata['gedate'] = date("m/d/Y H:i:s",$pdata['getime']);
 	extract($pdata);
-	include_once GAME_ROOT.'./include/game.func.php';
+	include GAME_ROOT.'./include/game.func.php';
 	init_playerdata();
 	init_profile();
 } elseif($command == 'news') {
-	include_once  GAME_ROOT.'./include/news.func.php';
+	include  GAME_ROOT.'./include/news.func.php';
 	$hnewsfile = GAME_ROOT."./gamedata/bak/{$gnum}_newsinfo.php";
 	if(file_exists($hnewsfile)){
 		$hnewsinfo = readover($hnewsfile);
@@ -39,6 +39,6 @@ if($command == 'info') {
 	}
 }
 
-include_once template('winner');
+include template('winner');
 
 ?>

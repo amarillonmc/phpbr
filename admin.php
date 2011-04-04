@@ -2,10 +2,10 @@
 
 define('CURSCRIPT', 'admin');
 
-require_once './include/common.inc.php';
+require './include/common.inc.php';
 define('IN_ADMIN', TRUE);
-require_once GAME_ROOT.'./gamedata/admincfg.php';
-require_once GAME_ROOT.'./include/admin/admin.lang.php';
+require GAME_ROOT.'./gamedata/admincfg.php';
+require GAME_ROOT.'./include/admin/admin.lang.php';
 
 if(!$cuser||!$cpass) { gexit($_ERROR['no_login'],__file__,__line__); }
 $result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$cuser'");
@@ -16,7 +16,7 @@ elseif(($udata['groupid'] <= 1)&&($cuser!==$gamefounder)) { gexit($_ERROR['no_ad
 
 if($cuser===$gamefounder){$mygroup=10;}
 else{$mygroup = $udata['groupid'];}
-include_once template('header');
+include template('header');
 echo '<br>';
 if($mode == 'admin') {
 	include_once GAME_ROOT."./include/admin/{$command}.php";
@@ -40,7 +40,7 @@ if($mode == 'admin') {
 </form>
 EOT;
 }
-include_once template('footer');
+include template('footer');
 
 function adminlog($op,$an1='',$an2='',$an3=''){
 	global $now,$cuser;

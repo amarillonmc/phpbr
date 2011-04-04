@@ -20,17 +20,7 @@ if($mode == 'enter') {
 		if($db->num_rows($result) >= $iplimit) { gexit($_ERROR['ip_limit'],__file__,__line__); }
 	}
 	
-//	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
-//		if(strpos($motto,$value)!==false){
-//			$motto = str_replace ( $value, '', $motto );
-//		}
-//		if(strpos($lastword,$value)!==false){
-//			$lastword = str_replace ( $value, '', $lastword );
-//		}
-//		if(strpos($killmsg,$value)!==false){
-//			$killmsg = str_replace ( $value, '', $killmsg );
-//		}
-//	}
+
 
 	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon', motto='$motto', killmsg='$killmsg', lastword='$lastword' WHERE username='".$udata['username']."'" );
 	if($validnum >= $validlimit) {
@@ -141,13 +131,32 @@ if($mode == 'enter') {
 		$itm[3] = '超光速快子雷达'; $itmk[3] = 'R'; $itme[3] = 25; $itms[3] = 1;$itmsk[3] = 2;
 		$itm[4] = '凸眼鱼'; $itmk[4] = 'Y'; $itme[4] = 1; $itms[4] = 30;$itmsk[4] = '';
 		$itm[5] = '游戏解除钥匙'; $itmk[5] = 'Y'; $itme[5] = 1; $itms[5] = 1;
-		$wep = '电磁量子加速器';$wepk = 'WG';$wepe = 4321;$weps = 987;$wepsk = 'redo';
+		$wep = '电磁量子加速器';$wepk = 'WG';$wepe = 432;$weps = 987;$wepsk = 'redo';
 		$arb = '能量装甲';$arbk = 'DB'; $arbe = 1600; $arbs = 150; $arbsk = 'A';
 		$arh = '机动头盔';$arhk = 'DH'; $arhe = 1200; $arhs = 150; $arhsk = 'UI';
 		$ara = '腕力增幅器';$arak = 'DA'; $arae = 1200; $aras = 150; $arask = 'c';
 		$arf = '金属战靴';$arfk = 'DF'; $arfe = 1200; $arfs = 150; $arfsk = 'qE';
 		$art = '真理四面体';$artk = 'A'; $arte = 4; $arts = 1; $artsk = 'H';
 		$wp=$wk=$wg=$wc=$wd=$wf=900;
+	}	elseif ($name == '初音ミク' ) {
+		$randg = rand(57,573);
+		$randu = rand(1,3);
+		if ($randu == 1) {
+			$wep = '杏仁豆腐做成的『Falchion Rider』';$wepk = 'WG';$wepe = $randg;$weps = $randg;$wepsk = 'Zrd';
+			$arb = '杏仁豆腐做成的『Poini的天使队制服』';$arbk = 'DB'; $arbe = $randg; $arbs = $randg; $arbsk = 'ZP';
+			$arh = '杏仁豆腐做成的『Poini的缎带』';$arhk = 'DH'; $arhe = $randg; $arhs = $randg; $arhsk = 'ZC';
+			$ara = '杏仁豆腐做成的『Falchion Rider控制器』';$arak = 'DA'; $arae = $randg; $aras = $randg; $arask = 'ZD';
+			$arf = '杏仁豆腐做成的『Poini的靴子』';$arfk = 'DF'; $arfe = $randg; $arfs = $randg; $arfsk = 'ZK';
+		}elseif ($randu == 2) {
+			$wep = '『Falchion Rider』';$wepk = 'WG';$wepe = 573;$weps = 573;$wepsk = 'Zrd';
+			$arb = '『Poini的天使队制服』';$arbk = 'DB'; $arbe = 573; $arbs = 573; $arbsk = 'ZP';
+			$arh = '『Poini的缎带』';$arhk = 'DH'; $arhe = 573; $arhs = 573; $arhsk = 'ZC';
+			$ara = '『Falchion Rider控制器』';$arak = 'DA'; $arae = 573; $aras = 573; $arask = 'ZD';
+			$arf = '『Poini的靴子』';$arfk = 'DF'; $arfe = 573; $arfs = 573; $arfsk = 'ZK';
+		}
+			$art = '变身腕轮-紫';$artk = 'A'; $arte = 573; $arts = 573; $artsk = 'ZcH';
+	}elseif($name == '霜火协奏曲') {
+		$art = '击败思念的纹章';$artk = 'A'; $arte = 1; $arts = 1; $artsk = 'zZ';
 	}
 	
 	$state = 0;

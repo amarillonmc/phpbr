@@ -104,7 +104,7 @@ CREATE TABLE bra_players (
   INDEX TYPE (type, sNo),
   INDEX NAME (name, type)
 	
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 

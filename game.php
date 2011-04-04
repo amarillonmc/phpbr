@@ -2,8 +2,8 @@
 
 define('CURSCRIPT', 'game');
 
-require_once './include/common.inc.php';
-require_once GAME_ROOT.'./include/game.func.php';
+require './include/common.inc.php';
+require GAME_ROOT.'./include/game.func.php';
 
 if(!$cuser||!$cpass) { gexit($_ERROR['no_login'],__file__,__line__); } 
 if($mode == 'quit') {
@@ -41,6 +41,8 @@ init_playerdata();
 init_profile();
 
 $log = '';
+
+//显示枪声信息
 if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
 	if(($now-$noisetime) < 60) {
 		$noisesec = $now - $noisetime;
@@ -51,16 +53,7 @@ if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$
 	}
 }
 
-//if(file_exists(GAME_ROOT."./gamedata/log/$pid.log")){
-//	$log2 = readover(GAME_ROOT."./gamedata/log/$pid.log");
-//	if($log2 != '\n');{
-//		$log .= $log2;
-//		writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
-//	}
-//} else {
-//	writeover(GAME_ROOT."./gamedata/log/$pid.log", "\n", 'wb');
-//}
-
+//读取玩家互动信息
 $result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
 
 while($logtemp = $db->fetch_array($result)){
@@ -70,6 +63,9 @@ $db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
 
 $chatdata = getchat(0,$teamID);
 
+//判断冷却时间是否过去
+if($coldtimeon){$rmcdtime = get_remaincdtime($pid);}
+if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<script type=\"text/javascript\">demiSecTimerStarter($rmcdtime);</script><br>";}
 include template('game');
 
 ?>

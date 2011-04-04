@@ -5,7 +5,7 @@
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv='expires' content='0'>
 <title> {lang title} </title>
-$extrahead
+<!--{if isset($extrahead)}-->$extrahead<!--{/if}-->
 
 <!--{if $allowcsscache}--><link rel="stylesheet" type="text/css" id="css" href="gamedata/cache/style_{STYLEID}.css"><!--{else}--><style type="text/css" id="css">{template css}</style><!--{/if}-->
 </style>

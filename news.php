@@ -2,10 +2,10 @@
 
 define('CURSCRIPT', 'news');
 
-require_once './include/common.inc.php';
+require './include/common.inc.php';
 //$t_s=getmicrotime();
 //require_once GAME_ROOT.'./include/JSON.php';
-require_once  GAME_ROOT.'./include/news.func.php';
+require  GAME_ROOT.'./include/news.func.php';
 
 
 $newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
@@ -19,7 +19,7 @@ if(filemtime($newsfile) > filemtime($lnewshtm)) {
 
 if($newsmode == 'last') {
 	
-	include_once template('lastnews');
+	include template('lastnews');
 	$newsdata = ob_get_contents();
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
@@ -33,7 +33,7 @@ if($newsmode == 'last') {
 		$newsinfo = nparse_news(0,65535);
 		writeover($newshtm,$newsinfo);
 	}
-	include_once template('newsinfo');
+	include template('newsinfo');
 	$newsdata = ob_get_contents();
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
@@ -51,7 +51,7 @@ if($newsmode == 'last') {
 	echo $jgamedata;
 	ob_end_flush();
 } else {
-	include_once template('news');
+	include template('news');
 }
 //$t_e=getmicrotime();
 //putmicrotime($t_s,$t_e,'news_time');

@@ -79,12 +79,14 @@ init_playerdata();
 //}
 
 //判断冷却时间是否过去
-if($coldtimeon){$rmcdtime = get_remaincdtime($pid);}
-//if($){
-	//拒绝接受指令
-//	$log .= '<span class="yellow">冷却时间尚未过去！</span><br><span id="demisec">20</span><script type="text/javascript">updateDemiSec(20);</script>';
-//}else{
-if($rmcdtime > 0 && (strpos($command,'search')===0 || strpos($command,'itm')===0)){
+if($coldtimeon){
+	$cdover = $cdsec*1000 + $cdmsec + $cdtime;
+	$nowmtime = floor(getmicrotime()*1000);
+	$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
+}
+
+
+if($coldtimeon && $rmcdtime > 0 && (strpos($command,'move')===0 || strpos($command,'search')===0 || strpos($command,'itm')===0)){
 	$log .= '<span class="yellow">冷却时间尚未结束！</span><br>';
 	$mode = 'command';
 }else{
@@ -238,16 +240,20 @@ if($rmcdtime > 0 && (strpos($command,'search')===0 || strpos($command,'itm')===0
 		$cdsec = floor($nowmtime/1000);
 		$cdmsec = $nowmtime % 1000;
 		$cdtime = $cmdcdtime;
-		$psdata = Array('pid' => $pid, 'cdsec' => $cdsec, 'cdmsec' => $cdmsec, 'cdtime' => $cdtime, 'cmd' => $mode);
-		set_pstate($psdata);
+		//$psdata = Array('pid' => $pid, 'cdsec' => $cdsec, 'cdmsec' => $cdmsec, 'cdtime' => $cdtime, 'cmd' => $mode);
+		//set_pstate($psdata);
 		$rmcdtime = $cmdcdtime;
 	}
 }
 
 //显示指令执行结果
 $gamedata['notice'] = ob_get_contents();
-if($coldtimeon && $showcoldtimer && $rmcdtime){$gamedata['timer'] = $rmcdtime;}
-if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<br>";}
+if($coldtimeon && $showcoldtimer && $rmcdtime){
+	$gamedata['timer'] = $rmcdtime;
+}
+if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){
+	$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<br>";
+}
 
 init_profile();
 
@@ -268,7 +274,7 @@ if($hp <= 0) {
 	$gamedata['cmd'] .= '<br><br><input type="button" id="submit" onClick="postCommand();return false;" value="提交">';
 }
 
-$db->query("UPDATE {$tablepre}players SET endtime='$now',hp='$hp',mhp='$mhp',sp='$sp',msp='$msp',att='$att',def='$def',pls='$pls',lvl='$lvl',exp='$exp',money='$money',bid='$bid',inf='$inf',rage='$rage',pose='$pose',tactic='$tactic',state='$state',killnum='$killnum',wp='$wp',wk='$wk',wg='$wg',wc='$wc',wd='$wd',wf='$wf',teamID='$teamID',teamPass='$teamPass',wep='$wep',wepk='$wepk',wepe='$wepe',weps='$weps',wepsk='$wepsk',arb='$arb',arbk='$arbk',arbe='$arbe',arbs='$arbs',arbsk='$arbsk',arh='$arh',arhk='$arhk',arhe='$arhe',arhs='$arhs',arhsk='$arhsk',ara='$ara',arak='$arak',arae='$arae',aras='$aras',arask='$arask',arf='$arf',arfk='$arfk',arfe='$arfe',arfs='$arfs',arfsk='$arfsk',art='$art',artk='$artk',arte='$arte',arts='$arts',artsk='$artsk',itm0='$itm0',itmk0='$itmk0',itme0='$itme0',itms0='$itms0',itmsk0='$itmsk0',itm1='$itm1',itmk1='$itmk1',itme1='$itme1',itms1='$itms1',itmsk1='$itmsk1',itm2='$itm2',itmk2='$itmk2',itme2='$itme2',itms2='$itms2',itmsk2='$itmsk2',itm3='$itm3',itmk3='$itmk3',itme3='$itme3',itms3='$itms3',itmsk3='$itmsk3',itm4='$itm4',itmk4='$itmk4',itme4='$itme4',itms4='$itms4',itmsk4='$itmsk4',itm5='$itm5',itmk5='$itmk5',itme5='$itme5',itms5='$itms5',itmsk5='$itmsk5' where pid='$pid'");
+$db->query("UPDATE {$tablepre}players SET endtime='$now',cdsec='$cdsec',cdmsec='$cdmsec',cdtime='$cdtime',hp='$hp',mhp='$mhp',sp='$sp',msp='$msp',att='$att',def='$def',pls='$pls',lvl='$lvl',exp='$exp',money='$money',bid='$bid',inf='$inf',rage='$rage',pose='$pose',tactic='$tactic',state='$state',killnum='$killnum',wp='$wp',wk='$wk',wg='$wg',wc='$wc',wd='$wd',wf='$wf',teamID='$teamID',teamPass='$teamPass',wep='$wep',wepk='$wepk',wepe='$wepe',weps='$weps',wepsk='$wepsk',arb='$arb',arbk='$arbk',arbe='$arbe',arbs='$arbs',arbsk='$arbsk',arh='$arh',arhk='$arhk',arhe='$arhe',arhs='$arhs',arhsk='$arhsk',ara='$ara',arak='$arak',arae='$arae',aras='$aras',arask='$arask',arf='$arf',arfk='$arfk',arfe='$arfe',arfs='$arfs',arfsk='$arfsk',art='$art',artk='$artk',arte='$arte',arts='$arts',artsk='$artsk',itm0='$itm0',itmk0='$itmk0',itme0='$itme0',itms0='$itms0',itmsk0='$itmsk0',itm1='$itm1',itmk1='$itmk1',itme1='$itme1',itms1='$itms1',itmsk1='$itmsk1',itm2='$itm2',itmk2='$itmk2',itme2='$itme2',itms2='$itms2',itmsk2='$itmsk2',itm3='$itm3',itmk3='$itmk3',itme3='$itme3',itms3='$itms3',itmsk3='$itmsk3',itm4='$itm4',itmk4='$itmk4',itme4='$itme4',itms4='$itms4',itmsk4='$itmsk4',itm5='$itm5',itmk5='$itmk5',itme5='$itme5',itms5='$itms5',itmsk5='$itmsk5' where pid='$pid'");
 
 
 

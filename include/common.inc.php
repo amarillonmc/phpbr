@@ -17,12 +17,11 @@ $now = time() + $moveut*3600 + $moveutmin*60;
 list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$now));
 
 $magic_quotes_gpc = get_magic_quotes_gpc();
-extract(gkillquotes($_COOKIE));
-extract(gkillquotes($_POST));
+extract(gstrfilter($_COOKIE), EXTR_SKIP);
+extract(gstrfilter($_POST), EXTR_SKIP);
 unset($_GET);
-if(!$magic_quotes_gpc) {
-	$_FILES = gaddslashes($_FILES);
-}
+$_FILES = gstrfilter($_FILES);
+
 
 
 //if($attackevasive) {

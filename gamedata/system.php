@@ -9,15 +9,11 @@ $isLogin = 1;
 //是否缓存css文件。0=不缓存，1=缓存
 $allowcsscache = 1;
 //站长留言
-$adminmsg = 'AC大逃杀<br>
-感谢ACG_Xilin提供服务器空间<br>
-讨论群：101336468
-<h3><font color="yellow">v2.96更新完成，第600局试验</font></h3><a target="_blank" href="http://qun.qq.com/#jointhegroup/gid/101336468"><img border="0" src="http://cgi.qun.qq.com/gscgi/s1/gp.do?gid=101336468" alt="点击这里加入此群" title="点击这里加入此群"></a><br>
-<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://service.t.sina.com.cn/widget/WeiboShow.php?width=0&height=550&fansRow=1&ptype=0&speed=0&skin=10&isTitle=0&noborder=1&isWeibo=1&isFans=1&uid=1583697851&verifier=d5e5b6db"></iframe>';
+$adminmsg = '';
 //游戏开始方式 0=后台手动开始，1=每天固定时间开始，2=上局结束后，间隔固定小时后的整点开始，3=上局结束后，间隔固定分钟开始
-$startmode = 3;
+$startmode = 0;
 //游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔小时，>0，如果$startmode = 3，表示间隔分钟，>0
-$starthour = 5;
+$starthour = 0;
 //游戏开始的分钟数，范围1~59
 $startmin = 3;
 //游戏所用配置文件
@@ -31,7 +27,7 @@ $iconlimit = 20;
 //游戏进行状况显示条数
 $newslimit = 50;
 //生存者显示条数
-$alivelimit = 50;
+$alivelimit = 30;
 //历史优胜者显示条数
 $winlimit = 50;
 //枪声间隔时间(秒)

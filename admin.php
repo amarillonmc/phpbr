@@ -34,7 +34,7 @@ if($mode == 'admin') {
 <input type="radio" name="command" id="gamemng" value="gamemng"><a onclick=sl('gamemng'); href="javascript:void(0);" >当前游戏管理</a><br>
 <input type="radio" name="command" id="gmlist" value="gmlist"><a onclick=sl('gmlist'); href="javascript:void(0);" >GM管理</a><br>
 <input type="radio" name="command" id="urlist" value="urlist"><a onclick=sl('urlist'); href="javascript:void(0);" >用户管理</a><br>
-<input type="radio" name="command" id="validlimitmng" value="validlimitmng"><a onclick=sl('validlimitmng'); href="javascript:void(0);" >注册限制</a><br>
+<input type="radio" name="command" id="banlistmng" value="banlistmng"><a onclick=sl('banlistmng'); href="javascript:void(0);" >屏蔽列表管理</a><br>
 <!--<input type="radio" name="command" id="checklog" value="checklog"><a onclick=sl('checklog'); href="javascript:void(0);" >查看操作纪录</a><br>-->
 <input type="submit" name="submit" value="提交">
 </form>

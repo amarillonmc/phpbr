@@ -4,38 +4,54 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
-function gaddslashes($string, $force = 0) {//充其量是给数组加反斜杠的函数
-	if(!$GLOBALS['magic_quotes_gpc'] || $force) {
-		if(is_array($string)) {
-			foreach($string as $key => $val) {
-				$string[$key] = gaddslashes($val, $force);
-			}
-		} else {
-			$string = addslashes($string);
-			$string = htmlspecialchars($string,ENT_NOQUOTES);
-		}
-	}
-	return $string;
-}
+//function gaddslashes($string, $force = 0) {//充其量是给数组加反斜杠的函数
+//	if(!$GLOBALS['magic_quotes_gpc'] || $force) {
+//		if(is_array($string)) {
+//			foreach($string as $key => $val) {
+//				$string[$key] = gaddslashes($val, $force);
+//			}
+//		} else {
+//			$string = addslashes($string);
+//			$string = htmlspecialchars($string,ENT_NOQUOTES);
+//		}
+//	}
+//	return $string;
+//}
 
-function gkillquotes($string) {
-	if(is_array($string)) {
-		foreach($string as $key => $val) {
-			$string[$key] = gkillquotes($val);
-		}
-	} else {
-		if(!$GLOBALS['magic_quotes_gpc']) {
-			foreach(Array('\'','"','&','#','<','>','\\',';',',') as $value){
-				$string = str_replace($value,'',$string);
-			}
+//function gkillquotes($string) {
+//	if(is_array($string)) {
+//		foreach($string as $key => $val) {
+//			$string[$key] = gkillquotes($val);
+//		}
+//	} else {
+//		if(!$GLOBALS['magic_quotes_gpc']) {
+//			foreach(Array('\'','"','&','#','<','>','\\',';',',') as $value){
+//				$string = str_replace($value,'',$string);
+//			}
+//
+//		}else{
+//			foreach(Array('\\\'','\\"','&','#','<','>','\\\\',';',',') as $value){
+//				$string = str_replace($value,'',$string);
+//			}
+//		}
+//	}
+//	return $string;
+//}
 
-		}else{
-			foreach(Array('\\\'','\\"','&','#','<','>','\\\\',';',',') as $value){
-				$string = str_replace($value,'',$string);
-			}
+function gstrfilter($str) {
+	if(is_array($str)) {
+		foreach($str as $key => $val) {
+			$str[$key] = gstrfilter($val);
 		}
+	} else {		
+		if($GLOBALS['magic_quotes_gpc']) {
+			$str = stripslashes($str);
+		}
+		$str = str_replace("'","",$str);//屏蔽单引号'
+		$str = str_replace("\\","",$str);//屏蔽反斜杠/
+		$str = htmlspecialchars($str,ENT_COMPAT);//转义html特殊字符，即"<>&
 	}
-	return $string;
+	return $str;
 }
 
 function language($file, $templateid = 0, $tpldir = '') {
@@ -336,10 +352,10 @@ function getmicrotime(){
 	return ((float)$usec + (float)$sec);
 }
 
-//function putmicrotime($t_s,$t_e,$file,$info)
-//{
-//	$mtime = ($t_e - $t_s)*1000;
-//	writeover( $file.'.txt',"$info ；执行时间：$mtime 毫秒 \n",'ab');
-//}
+function putmicrotime($t_s,$t_e,$file,$info)
+{
+	$mtime = ($t_e - $t_s)*1000;
+	writeover( $file.'.txt',"$info ；执行时间：$mtime 毫秒 \n",'ab');
+}
 
 ?>

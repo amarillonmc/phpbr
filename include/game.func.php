@@ -279,27 +279,27 @@ function init_battle($ismeet = 0){
 	return;
 }
 
-function get_pstate($pid){//玩家状态储存在内存表里，读取之前先判断是否存在
-	global $db,$tablepre,$now;
-	$result=$db->query("SELECT * FROM {$tablepre}pstate WHERE pid = '$pid'");
-	if($db->num_rows($result)){
-		$psdata = $db->fetch_array($result);
-	}else{
-		$psdata = false;
-	}
-	return $psdata;
-}
+//function get_pstate($pid){//玩家状态储存在内存表里，读取之前先判断是否存在
+//	global $db,$tablepre,$now;
+//	$result=$db->query("SELECT * FROM {$tablepre}pstate WHERE pid = '$pid'");
+//	if($db->num_rows($result)){
+//		$psdata = $db->fetch_array($result);
+//	}else{
+//		$psdata = false;
+//	}
+//	return $psdata;
+//}
 
-function set_pstate($psdata){//玩家状态储存在内存表里，若存在则更新记录，否则创建记录
-	global $db,$tablepre;
-	$pid = $psdata['pid'];
-	$result=$db->query("SELECT * FROM {$tablepre}pstate WHERE pid = '$pid'");
-	if($db->num_rows($result)){
-		return $db->array_update("{$tablepre}pstate",$psdata," pid = '$pid'");
-	}else{
-		return $db->array_insert("{$tablepre}pstate",$psdata);
-	}
-}
+//function set_pstate($psdata){//玩家状态储存在内存表里，若存在则更新记录，否则创建记录
+//	global $db,$tablepre;
+//	$pid = $psdata['pid'];
+//	$result=$db->query("SELECT * FROM {$tablepre}pstate WHERE pid = '$pid'");
+//	if($db->num_rows($result)){
+//		return $db->array_update("{$tablepre}pstate",$psdata," pid = '$pid'");
+//	}else{
+//		return $db->array_insert("{$tablepre}pstate",$psdata);
+//	}
+//}
 
 function get_remaincdtime($pid){
 	$psdata = get_pstate($pid);

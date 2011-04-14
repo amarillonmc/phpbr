@@ -1,7 +1,25 @@
+2011/4/13
+现在IP限制由原本的只计算同IP生存人数改为计算同IP进入游戏的人数了，同时禁止了带Unicode控制字符的用户名的注册和登录（valid.php; user.func.php）
+
+2011/4/10
+紧急修复了$_POST以及$_COOKIE的变量能覆盖config.inc.php的漏洞（common.inc.php）
+紧急修复了$onlineip能进行注入的漏洞（user.func.php; register.php; login.php）
+
+2011/4/5
+删除了pstate表，把冷却时间跟player表做到一起了；（game.func.php; system.func.php; player.sql; game.php; command.php）
+将用户注册方式从自动注册改为手动注册，也即增加了用户注册页面（templates.lang.php; register.htm; register.php; userbasicdata.htm; useradvdata.htm; resources.htm; login.php; game.js）
+修改了幸存者显示方式，现在显示幸存者列表不用刷新整个页面了；（alive.php; alive.htm; alivelist.htm; game.js;news.htm）
+修改了字符过滤函数；（common.inc.php; alive.php; global.func.php; user.func.php）
+
+2011/4/4
+修改了登陆逻辑；（login.php; user.func.php; resources.php）
+修改了屏蔽列表逻辑，现在屏蔽列表将使用正则表达式；（banlist.php; banlistmng.php; admin.php;login.php）
+
 2011/4/3
 根据陷阱机制，将陷阱和道具分成两张表，加快了游戏速度（maptrap.sql; system.func.php; search.func.php; item.func.php）
 增加冷却时间机制，现在移动、探索和使用物品会有冷却时间了；（pstate.sql;command.php; game.php;game.js; admin.lang.php; systemmng.php; system.php）
 增加必中陷阱；（itemmain.func; item.func.php; itemmix_1.php）
+
 
 2011/3/28
 在不影响逻辑的前提下，将游戏主要程序中的require_once和include_once替换成require/include；（common.inc.php; admin.php; alive.php; chat.php; command.php; end.php; game.php; help.php; index.php; login.php; map.php; news.php; valid.php; winner.php）

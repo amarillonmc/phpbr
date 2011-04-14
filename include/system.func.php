@@ -18,9 +18,9 @@ function rs_game($mode = 0) {
 		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
 		runquery($sql);
 		//清空玩家临时状态
-		$sql = file_get_contents("{$sqldir}pstate.sql");
-		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
-		runquery($sql);
+//		$sql = file_get_contents("{$sqldir}pstate.sql");
+//		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));
+//		runquery($sql);
 		//清空聊天信息
 		$sql = file_get_contents("{$sqldir}chat.sql");
 		$sql = str_replace("\r", "\n", str_replace(' bra_', ' '.$tablepre, $sql));

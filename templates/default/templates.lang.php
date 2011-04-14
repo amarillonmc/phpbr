@@ -3,18 +3,22 @@
 $language = array
 	(
 	'title' => 'ACFUN 大 逃 杀',
+	
 	'index' => '首页',
 	'fullwin' => '全屏模式',
 	'backindex' => '返回首页',
-	'game' => '游戏',
-	'map' => '地图',
+	
+	'register' => '账号注册',
+	'game' => '进入游戏',
+	'map' => '战场地图',
 	'news' => '进行状况',
-	'alive' => '当前幸存者',
-	'winner' => '历史优胜者',
+	'alive' => '当前幸存',
+	'winner' => '历史优胜',
 	'help' => '游戏帮助',
 	'homepage' => '官方网站',
 	'admin' => '游戏管理',
 	'report' => '官方讨论区',
+	
 	'now' => '当前时刻',
 	'gameinfo' => '游戏情报',
 	'adminmsg' => '站长留言',
@@ -27,6 +31,16 @@ $language = array
 	'back' => '返回',
 	'submit' => '提交',
 	'reset' => '重设',
+	
+	'basicdata' => '账户基本资料',
+	'advanceddata' => '账户个性化资料',
+	'opass' => '原密码',
+	'npass' => '新密码',
+	'rnpass' => '重复新密码',
+	'editpass' => '修改密码点此（未完成）',
+	'username_comment' => '最长15个英文字符或者汉字，不能出现半角符号',
+	'password_comment' => '最长24个字符',
+	
 	'valid' => '入场手续',
 	'validover' => '入场表格填写完成',
 	'enternotice' => '进入会场',
@@ -35,6 +49,7 @@ $language = array
 	'enter' => '进入游戏',
 	'quit' => '账号退出',
 	'errormsg' => '出现错误',
+	
 	'name' => '姓名',
 	'gender' => '性别',
 	'icon' => '头像',
@@ -76,7 +91,7 @@ $language = array
 	'wd' => '爆',
 	'wf' => '灵',
 	'newsnotice' => '<span class="evergreen">“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”</span>',
-	'useitem' => '使用',
+	'useitem' => '>>使用',
 	'end' => '游戏结束！',
 	'send' => '发送',
 	'refresh' => '刷新',

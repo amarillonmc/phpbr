@@ -64,7 +64,11 @@ $db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
 $chatdata = getchat(0,$teamID);
 
 //判断冷却时间是否过去
-if($coldtimeon){$rmcdtime = get_remaincdtime($pid);}
+if($coldtimeon){
+	$cdover = $cdsec*1000 + $cdmsec + $cdtime;
+	$nowmtime = floor(getmicrotime()*1000);
+	$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
+}
 if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<script type=\"text/javascript\">demiSecTimerStarter($rmcdtime);</script><br>";}
 include template('game');
 

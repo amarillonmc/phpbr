@@ -8,7 +8,7 @@ if($mygroup < 6){
 $dir = GAME_ROOT.'./gamedata/';
 
 if($write){
-	write_valid_limit($dir,$postnmlmt,$postiplmt);
+	write_list($dir,$postnmlmt,$postiplmt);
 	echo '新的屏蔽列表已经写入。<br>';
 }
 
@@ -24,20 +24,20 @@ include_once $dir.'banlist.php';
 //	}
 //}
 
-function write_valid_limit($dir,$nmlmtstr,$iplmtstr){
-	foreach(Array('nm','ip') as $ar_nm){
-		${$ar_nm.'lmtarray'} = explode('|',${$ar_nm.'lmtstr'});
-		${$ar_nm.'lmtlist0'} = ${$ar_nm.'lmtlist'} = '';
-		foreach(${$ar_nm.'lmtarray'} as $value){
-			${$ar_nm.'lmtlist'} .= "'$value',";
-		}
-		if(${$ar_nm.'lmtlist0'} != ${$ar_nm.'lmtlist'}){
-			${$ar_nm.'lmtlist'} = 'Array('.substr(${$ar_nm.'lmtlist'},0,-1).')';
-		}else{
-			${$ar_nm.'lmtlist'} = 'Array()';
-		}
-	}
-	$vldata = "<?php\n\n\$nmlimit = {$nmlmtlist};\n\$iplimit = {$iplmtlist};\n\n?>";
+function write_list($dir,$nmlmtstr,$iplmtstr){
+//	foreach(Array('nm','ip') as $ar_nm){
+//		${$ar_nm.'lmtarray'} = explode('|',${$ar_nm.'lmtstr'});
+//		${$ar_nm.'lmtlist0'} = ${$ar_nm.'lmtlist'} = '';
+//		foreach(${$ar_nm.'lmtarray'} as $value){
+//			${$ar_nm.'lmtlist'} .= "'$value',";
+//		}
+//		if(${$ar_nm.'lmtlist0'} != ${$ar_nm.'lmtlist'}){
+//			${$ar_nm.'lmtlist'} = 'Array('.substr(${$ar_nm.'lmtlist'},0,-1).')';
+//		}else{
+//			${$ar_nm.'lmtlist'} = 'Array()';
+//		}
+//	}
+	$vldata = "<?php\n\n\$nmlimit = '$nmlmtstr';\n\$iplimit = '$iplmtstr';\n\n?>";
 	if($fp = fopen("{$dir}banlist.php", 'w')) {
 		if(flock($fp,LOCK_EX)) {
 			fwrite($fp, $vldata);
@@ -55,9 +55,9 @@ echo <<<EOT
 <input type="hidden" name="mode" value="banlistmng">
 <input type="hidden" name="command" value="banlistmng">
 <input type="hidden" name="write" value="1">
-<div>输入要屏蔽的用户名和IP段，用|隔开。</div>
-<div>用户名屏蔽：<br><textarea name="postnmlmt" style="width:450;height:150">$nmlist</textarea></div><br>
-<div>IP段屏蔽：<br><textarea name="postiplmt" style="width:450;height:150">$iplist</textarea></div>
+<div>输入要屏蔽的用户名和IP段的正则表达式。修改之前请弄明白你正在做什么。</div>
+<div>用户名屏蔽：<br><textarea name="postnmlmt" style="width:450;height:150">$nmlimit</textarea></div><br>
+<div>IP段屏蔽：<br><textarea name="postiplmt" style="width:450;height:150">$iplimit</textarea></div>
 <input type="submit" value="提交">
 </form>
 EOT;

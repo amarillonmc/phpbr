@@ -5,7 +5,7 @@ define('CURSCRIPT', 'news');
 require './include/common.inc.php';
 //$t_s=getmicrotime();
 //require_once GAME_ROOT.'./include/JSON.php';
-require  GAME_ROOT.'./include/news.func.php';
+require_once  GAME_ROOT.'./include/news.func.php';
 
 
 $newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
@@ -18,17 +18,13 @@ if(filemtime($newsfile) > filemtime($lnewshtm)) {
 }
 
 if($newsmode == 'last') {
-	
 	include template('lastnews');
 	$newsdata = ob_get_contents();
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
-//	$json = new Services_JSON();
-//	$jgamedata = $json->encode($newsdata);
 	echo $jgamedata;
 	ob_end_flush();
 } elseif($newsmode == 'all') {
-	
 	if(filemtime($newsfile) > filemtime($newshtm)) {
 		$newsinfo = nparse_news(0,65535);
 		writeover($newshtm,$newsinfo);
@@ -37,17 +33,13 @@ if($newsmode == 'last') {
 	$newsdata = ob_get_contents();
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
-	//$json = new Services_JSON();
-	//$jgamedata = $json->encode($newsdata);
 	echo $jgamedata;
 	ob_end_flush();	
 
 } elseif($newsmode == 'chat') {
-	$newsdata = getchat(0,'',$chatinnews);
+	$newsdata = getchat(0,'',-1,$chatinnews);
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
-//	$json = new Services_JSON();
-//	$jgamedata = $json->encode($newsdata);
 	echo $jgamedata;
 	ob_end_flush();
 } else {

@@ -40,21 +40,21 @@ function demiSecTimerStarter(msec){
 }
 
 //icon select
-function iconMover(){
-	gd = document.valid.gender[0].checked ? 'm' : 'f';
-	inum = document.valid.icon.selectedIndex;
-	$('iconImg').innerHTML = '<img src="img/' + gd + '_' + inum + '.gif" alt="' + inum + '">';
-}
+//function iconMover(){
+//	gd = document.valid.gender[0].checked ? 'm' : 'f';
+//	inum = document.valid.icon.selectedIndex;
+//	$('iconImg').innerHTML = '<img src="img/' + gd + '_' + inum + '.gif" alt="' + inum + '">';
+//}
 function userIconMover(){
 	ugd = $('male').checked ? 'm' : 'f';
 	uinum = $('icon').selectedIndex;
 	$('userIconImg').innerHTML = '<img src="img/' + ugd + '_' + uinum + '.gif" alt="' + uinum + '">';
 }
-function dniconMover(){
-	dngd = document.cmd.dngender[0].checked ? 'm' : 'f';
-	dninum =document.cmd.dnicon.selectedIndex;
-	$('dniconImg').innerHTML = '<img src="img/' + dngd + '_' + dninum + '.gif" alt="' + dninum + '">';
-}
+//function dniconMover(){
+//	dngd = document.cmd.dngender[0].checked ? 'm' : 'f';
+//	dninum =document.cmd.dnicon.selectedIndex;
+//	$('dniconImg').innerHTML = '<img src="img/' + dngd + '_' + dninum + '.gif" alt="' + dninum + '">';
+//}
 
 function showNotice(sNotice) {
 	$('notice').innerText = sNotice;
@@ -64,8 +64,51 @@ function sl(id) {
 	$(id).checked = true;
 }
 
+function postCmd(cmdName,formName,sendto){
+	$(cmdName).disabled = true;
+	var oXmlHttp = zXmlHttp.createRequest();
+	var sBody = getRequestBody(document.forms[formName]);
+	oXmlHttp.open("post", sendto, true);
+	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	oXmlHttp.onreadystatechange = function () {
+		if (oXmlHttp.readyState == 4) {
+			if (oXmlHttp.status == 200) {
+				showData(oXmlHttp.responseText);
+				$(cmdName).disabled = false;
+			} else {
+				showNotice(oXmlHttp.statusText);
+			}
+		}
+	};
+	oXmlHttp.send(sBody);
+}
+
+function showData(sdata){
+	shwData = sdata.parseJSON();
+	if(shwData['url']) {
+		window.location.href = shwData['url'];
+	}else{
+		sDv = shwData['value'];
+		for(var id in sDv){
+			if($(id)!=null){
+				$(id).value = sDv[id];
+			}
+		}
+		sDi = shwData['innerHTML'];
+		for(var id in sDi){
+			if($(id)!=null){
+				if(sDi['id'] !== ''){
+					$(id).innerHTML = sDi[id];
+				}else{
+					$(id).innerHTML = '';
+				}
+			}
+		}
+	}
+}
+
 function postCommand(){
-	$('submit').disabled = true;
+
 	var oXmlHttp = zXmlHttp.createRequest();
 	var sBody = getRequestBody(document.forms['cmd']);
 	oXmlHttp.open("post", "command.php", true);
@@ -74,7 +117,7 @@ function postCommand(){
 		if (oXmlHttp.readyState == 4) {
 			if (oXmlHttp.status == 200) {
 				showGamedata(oXmlHttp.responseText);
-				$('submit').disabled = false;
+				
 			} else {
 				showNotice(oXmlHttp.statusText);
 			}
@@ -92,19 +135,21 @@ function showGamedata(sGamedata){
 	}
 	//timer = 0;
 	for(var id in gamedata) {
+		
 		if(id == 'toJSONString' || id == 'timer') {
 			continue;
-		} else if(gamedata[id]){
-			if(id == 'team'){
-				$('team').value = gamedata['team'];
-			}else{
+		} else if($(id)!=null){
+			if(id == 'cteam' || id == 'cpls'){
+				$(id).value = gamedata[id];
+			} else if(gamedata[id]!==''){
 				$(id).innerHTML = gamedata[id];
+			} else{
+				$(id).innerHTML = '';
 			}
-		} else{
-			$(id).innerHTML = '';
-		}
+		}		
 		
 	}
+	//if($('move')){alert($('move').innerHTML);}
 	if(gamedata['timer'] && typeof(timerid)=='undefined'){
 		demiSecTimerStarter(gamedata['timer']);
 	}
@@ -144,6 +189,42 @@ function showRegdata(sRegdata){
 	}
 }
 
+function postUserCommand(){
+	$('post').disabled = true;
+	$('reset').disabled = true;
+	var oXmlHttp = zXmlHttp.createRequest();
+	var sBody = getRequestBody(document.forms['userdata']);
+	oXmlHttp.open("post", "user.php", true);
+	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	oXmlHttp.onreadystatechange = function () {
+		if (oXmlHttp.readyState == 4) {
+			if (oXmlHttp.status == 200) {
+				$('post').disabled = false;
+				$('reset').disabled = false;
+				showUserdata(oXmlHttp.responseText);
+			} else {
+				showNotice(oXmlHttp.statusText);
+			}
+		}
+	};
+	oXmlHttp.send(sBody);
+}
+
+function showUserdata(sUserdata){
+	userdata = sUserdata.parseJSON();
+	for(var id in userdata) {
+		if(id == 'toJSONString') {
+			continue;
+		} else if(userdata[id]){
+			$(id).innerHTML = userdata[id];
+		} else{
+			$(id).innerHTML = '';
+		}		
+	}
+	$('opass').value = $('npass').value = $('rnpass').value = '';
+}
+
+
 function showNews(n){
 	var oXmlHttp = zXmlHttp.createRequest();
 
@@ -167,7 +248,7 @@ function showNewsdata(newsdata) {
 		newchat = '';
 		for(var nid in news['msg']) {
 			if(nid == 'toJSONString') {continue;}
-			newchat += news['msg'][nid];
+			newchat = news['msg'][nid] + newchat;
 		}
 		$('newsinfo').innerHTML = newchat;
 	} else {
@@ -225,13 +306,14 @@ function chat(mode,reftime) {
 function showChatdata(jsonchat) {
 	chatdata = jsonchat.parseJSON();
 	if(chatdata['msg']) {
-		$('lastcid').value=chatdata['lastcid'];
-		newchat = '';
+		$('lastcid').value = chatdata['lastcid'];
+		var newchat = '';
+//		newchat = chatdata['msg'].join("");
 		for(var cid in chatdata['msg']) {
 			if(cid == 'toJSONString') {continue;}
-			newchat += chatdata['msg'][cid];
+			newchat = chatdata['msg'][cid] + newchat;
 		}
-		$('chatlist').innerHTML = newchat + $('chatlist').innerHTML;
+		$('chatlist').innerHTML = newchat;
 	}			
 }
 
@@ -252,5 +334,22 @@ function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
 	    sourceObj.innerHTML = openTip; 
 	   }
 	}
+}
+
+function imageAutoSizer(iid, wlmt, hlmt) {
+	var iw = $(iid).width;
+	var ih = $(iid).height;
+	if(iw>wlmt){
+		var sc = wlmt/iw;
+		iw *= sc;
+		ih *= sc;
+	}
+	if(ih>hlmt){
+		var sc = hlmt/ih;
+		iw *= sc;
+		ih *= sc;
+	}
+	$(iid).width = iw;
+	$(iid).height = ih;
 }
 

@@ -51,6 +51,23 @@ function adminlog($op,$an1='',$an2='',$an3=''){
 	}
 	return;
 }
+
+function setadminlog($op,$an1='',$an2='',$an3=''){
+	global $now,$cuser;
+	if(!$op){
+		return;
+	}
+	return "$now,$cuser,$op,$an1,$an2,$an3,\n";
+}
+
+function putadminlog($al){
+	$alfile = GAME_ROOT.'./gamedata/adminlog.php';
+	if($al){
+		writeover($alfile,$al,'ab+');
+	}
+	return;
+}
+
 function getstart($start = 0,$mode = ''){
 	global $showlimit;
 	if($mode == 'up') {

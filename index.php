@@ -3,6 +3,7 @@
 define('CURSCRIPT', 'index');
 
 require './include/common.inc.php';
+require './gamedata/adminmsg.php';
 
 $timing = 0;
 if($gamestate > 10) {

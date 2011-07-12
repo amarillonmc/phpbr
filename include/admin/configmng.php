@@ -9,28 +9,49 @@ if($mygroup < 7){
 
 if($command == 'edit') {
 
-	$authkey = setconfig($_POST['authkey']);
-	$bbsurl = setconfig($_POST['bbsurl']);
-	$gameurl = setconfig($_POST['gameurl']);
-	$moveut = (int)$_POST['moveut'];
-	$moveutmin = (int)$_POST['moveutmin'];
+	$ednum = 0;
+	$edfmt = Array('authkey'=>'','bbsurl'=>'','gameurl'=>'','moveut'=>'int','moveutmin'=>'int');
+	$edlist = Array();
+	foreach($edfmt as $key => $val){
+		if(isset($_POST[$key])){
+			${'o_'.$key} = ${$key};
+			if($val == 'int'){
+				${$key} = intval($_POST[$key]);
+			}else{
+				${$key} = $_POST[$key];
+			}
+			if(${$key} != ${'o_'.$key}){
+				$ednum ++;
+				if(${$key}===''){
+					echo "$lang[$key] 已清空<br>";
+				}else{
+					echo "$lang[$key] 修改为 ${$key} <br>";
+				}
+				$edlist[$key] = ${$key};
+			}
+		}
+	}
+	
+	echo "提交的修改请求数量： $ednum <br>";
+	
+	if($ednum){
+		$adminlog = '';
+		$configfile = file_get_contents('./config.inc.php');
+		foreach($edlist as $key => $val){
+			if($edfmt[$key] == 'int'){
+				$configfile = preg_replace("/[$]{$key}\s*\=\s*-?[0-9]+;/is", "\${$key} = ${$key};", $configfile);
+			}else{
+				$configfile = preg_replace("/[$]{$key}\s*\=\s*[\"'].*?[\"'];/is", "\${$key} = '${$key}';", $configfile);
+			}
+			
+			$adminlog .= setadminlog('configmng',$key,$val);
+		}
+		file_put_contents('./config.inc.php',$configfile);
+		putadminlog($adminlog);
+		//adminlog('configmng');
+		echo '系统参数已修改';
+	}
 
-	$fp = fopen('./config.inc.php', 'r');
-	$configfile = fread($fp, filesize('./config.inc.php'));
-	fclose($fp);
-
-	$configfile = preg_replace("/[$]authkey\s*\=\s*[\"'].*?[\"'];/is", "\$authkey = '$authkey';", $configfile);
-	$configfile = preg_replace("/[$]bbsurl\s*\=\s*[\"'].*?[\"'];/is", "\$bbsurl = '$bbsurl';", $configfile);
-	$configfile = preg_replace("/[$]gameurl\s*\=\s*[\"'].*?[\"'];/is", "\$gameurl = '$gameurl';", $configfile);
-	$configfile = preg_replace("/[$]moveut\s*\=\s*-?[0-9]+;/is", "\$moveut = $moveut;", $configfile);
-	$configfile = preg_replace("/[$]moveutmin\s*\=\s*-?[0-9]+;/is", "\$moveutmin = $moveutmin;", $configfile);
-
-	$fp = fopen('./config.inc.php', 'w');
-	fwrite($fp, trim($configfile));
-	fclose($fp);
-
-	adminlog('configmng');
-	echo '系统参数修改完毕。';
 }
 $sysnow = time();
 list($nowsec,$nowmin,$nowhour,$nowday,$nowmonth,$nowyear,$nowwday,$nowyday,$nowisdst) = localtime($sysnow);
@@ -51,7 +72,7 @@ $nowyear += 1900;
 	</tr>
 	<tr style="color: #3A4273">
 	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut']?></td>
-	  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="5">小时<input type="text" name="moveutmin" value="<?=$moveutmin?>" size="5">分钟</td>
+	  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="5"><?=$lang['moveuthours']?><input type="text" name="moveutmin" value="<?=$moveutmin?>" size="5"><?=$lang['moveutmins']?></td>
 	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut_comment']?><br><?=$nowyear?><?=$lang['year']?><?=$nowmonth?><?=$lang['month']?><?=$nowday?><?=$lang['day']?><?=$nowhour?><?=$lang['hour']?><?=$nowmin?><?=$lang['min']?></td>
 	</tr>
 	<!--

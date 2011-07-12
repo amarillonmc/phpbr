@@ -12,13 +12,57 @@ input {cursor: crosshair;}
 .subtitle {font-family: "微软雅黑"; margin: 6px;color: #98fb98; width: 100%;font-size: 24px;font-weight:400;}
 .headerlink{}
 .small {font-size: 9pt}
+
+.td1 {
+	background-color:rgba(17,17,17,0.6);
+	TEXT-ALIGN: center;
+	border: #fff 1px solid;
+	font:bold 14px "微软雅黑" serif;
+}
+
+.td2 {
+	background-color:rgba(17,17,17,0.6);
+	TEXT-ALIGN: center;
+	border: #fff 1px solid;
+	font:bold 14px "微软雅黑" serif;
+}
+	
+.td1 div {
+	position:relative;
+}
+
+.td2 div {
+	position:relative;
+}
+
+.td2 .itmbtn {
+	height:20px;
+	TEXT-ALIGN: left;
+	margin:2px 5px 2px 5px;
+	border: #fff 1px solid;
+}
+
+.td2 .itmbtn:hover {
+	background-color:rgba(30,70,30,0.6);
+}
+
+.td2 .cmdbtn {
+	height:20px;
+	margin:2px 5px 2px 5px;
+	border: #fff 1px solid;
+}
+
+.td2 .cmdbtn:hover {
+	background-color:rgba(30,30,60,0.6);
+}
+
 .b1 {background-color:rgba(93,246,199,0.6); *BACKGROUND: rgb(93,246,199); *filter:alpha(opacity=60); BORDER: #000 0px none; TEXT-ALIGN: center; COLOR: #fff; border-right: #111 5px solid; border-bottom: #111 5px solid;font:bold 10pt "微软雅黑" serif;}
 .b2 {background-color:rgba(84,135,134,0.8); *BACKGROUND: rgb(84,135,134); *filter:alpha(opacity=80); BORDER: #000 0px none; TEXT-ALIGN: center; COLOR: #fff; border-right: #111 5px solid;font:10pt "微软雅黑" serif;}
 .b3 {background-color:rgba(17,17,17,0.5); *BACKGROUND:#111; *filter:alpha(opacity=50); BORDER: #000 0px none; color: #fff; text-align: center; border-right: #111 5px solid;font:10pt "微软雅黑" serif;}
 .b4 {BORDER: #000 0px none; color: #fff; text-align: center;font: 10pt "微软雅黑" serif;}
 .b5 {BORDER: #000 0px none; color: #fff; text-align: center; border-right: #111 5px solid;font: 10pt "微软雅黑" serif;}
 .map {background-color:rgba(17,17,17,0.5); *BACKGROUND:#111; *filter:alpha(opacity=50);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
-.map2 {BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
+.map2 {background-color:rgba(17,17,17,0.3); *BACKGROUND:#111; *filter:alpha(opacity=30);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
 .maptdred {background-color:rgba(255,0,0,0.25); *BACKGROUND:#f00; *filter:alpha(opacity=25);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
 .maptdyellow {background-color:rgba(255,255,0,0.25); *BACKGROUND:#ff0; *filter:alpha(opacity=25);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
 .maptdlime {background-color:rgba(0,255,0,0.2); *BACKGROUND:#0f0; *filter:alpha(opacity=20);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
@@ -27,19 +71,21 @@ input {cursor: crosshair;}
 .mapspanyellow{color:#ff0;position:relative;font-size: 9pt;line-height:16px}
 .admin td {BORDER: #000 3px transparent; TEXT-ALIGN: center; BACKGROUND: RGB(64,172,140); COLOR: #fff; border-right: #111 5px solid;font: 10pt "微软雅黑" serif;}
 
-
 .clit {color: #feea23; font:18pt "微软雅黑" serif; }
 .yellow{color:#ffff00; font: bold 10pt "微软雅黑" serif;line-height:16px}
 .clan{color: #00ffff;font: bold 10pt "微软雅黑" serif;line-height:16px}
+.aqua{color: #00ffff;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .blue{color: #0000ff;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .red{color: #ff0000;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .green{color: #008000;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .lime{color: #00ff00;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .purple{color: #9900cc;font: bold 10pt "微软雅黑" serif;line-height:16px}
+.black{color: #000000;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .evergreen{color:#98fb98;font: bold 10pt "微软雅黑" serif;line-height:16px}
 .evergreen2{color:#98fb98;font:18pt "微软雅黑" serif;}
 .dmg {color:#ff0000;font: bold 10pt "微软雅黑" serif;}
 .grey{color:#999; font: bold 10pt "微软雅黑" serif;line-height:16px}
+.linen{color:rgb(200,192,184); font: bold 10pt "微软雅黑" serif;line-height:16px}
 
 
 #main {

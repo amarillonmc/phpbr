@@ -6,7 +6,7 @@ if($mygroup < 4){
 	exit($_ERROR['no_power']);
 }
 require_once GAME_ROOT.'./include/system.func.php';
-if($kill == 1){
+if(isset($timelimit)){
 	kill_all_AFKer($timelimit);
 }
 
@@ -23,7 +23,7 @@ function kill_all_AFKer($timelimit=30){
 	$timelimit *= 60;
 	
 	$deadline=$now-$timelimit;
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE type=0 AND endtime < '$deadline' AND hp>'0' AND state<'10'");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE type=0 AND lastcmd < '$deadline' AND hp>'0' AND state<'10'");
 	while($al = $db->fetch_array($result)) {
 		$afkerlist[$al['pid']]=Array('name' => $al['name'] ,'pls' => $al['pls']);
 	}
@@ -51,7 +51,6 @@ echo <<<EOT
 <form method="post" name="antiAFKmng" onsubmit="admin.php">
 <input type="hidden" name="mode" value="gamemng">
 <input type="hidden" name="command" value="antiAFKmng">
-<input type="hidden" name="kill" value="1">
 杀死<input type="text" name="timelimit" value="$antiAFKertime" size="4" maxlength="4">分钟内没有行动的玩家。<br>
 <input type="submit" value="挂机党都去死吧！"><br>
 </form>

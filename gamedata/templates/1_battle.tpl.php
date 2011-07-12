@@ -34,7 +34,7 @@ style="filter:Xray()"
 <td class="b2"><div class=nttx>武器种类</div></td>
 <td class="b3"><div class=nttx>
 <? if($w_wepk != '') { ?>
-<?=$iteminfo[$w_wepk]?>
+<?=$w_wepk_words?>
 <? } else { ?>
 ？？？
 <? } ?>
@@ -79,54 +79,42 @@ style="filter:Xray()"
 <tr><td>
 <table border="0" width=640px cellspacing="0" cellpadding="0" valign="middle">
 <tr>
-<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/<?=$iconImg?>" height=80px border="0" align="middle" 
-<? if($hp==0) { ?>
+<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/<?=$pdata['display']['iconImg']?>" height=80px border="0" align="middle" 
+<? if($pdata['hp']==0) { ?>
 style="filter:Xray()"
 <? } ?>
  /></td>
-<td class="b1" colspan=2 width=190px height=20px><div class=nttx><?=$typeinfo[$type]?>(<?=$sexinfo[$gd]?><?=$sNo?>号)</div></td>
+<td class="b1" colspan=2 width=190px height=20px><div class=nttx><?=$pdata['display']['gamehonourinfo']?>(<?=$sexinfo[$pdata['gd']]?><?=$pdata['sNo']?>号)</div></td>
 
-<td class="b1" colspan=2 width=150px><div class=nttx><?=$name?></div></td>
+<td class="b1" colspan=2 width=150px><div class=nttx><?=$pdata['name']?></div></td>
 
-<td class="b1" colspan=2 width=140px><div class=nttx>Lv. <?=$lvl?></div></td>
+<td class="b1" colspan=2 width=140px><div class=nttx>Lv. <?=$pdata['lvl']?></div></td>
 
 
 </tr>
 <tr>
 <td class="b2" width=65px height=20px><div class=nttx>生命</div></td>
-<td class="b3" width=120px><div class=nttx><span class="<?=$hpcolor?>"><?=$hp?> / <?=$mhp?></span></div></td>
+<td class="b3" width=120px><div class=nttx><span class="<?=$hpcolor?>"><?=$pdata['hp']?> / <?=$pdata['mhp']?></span></div></td>
 <td class="b2" width=65px><div class=nttx>体力</div></td>
-<td class="b3" width=80px><div class=nttx><?=$sp?> / <?=$msp?></div></td>
+<td class="b3" width=80px><div class=nttx><?=$pdata['sp']?> / <?=$pdata['msp']?></div></td>
 <td class="b2" width=65px><div class=nttx>怒气</div></td>
-<td class="b3" width=70px><div class=nttx>
-<? if($rage >=30) { ?>
-<span class="yellow"><?=$rage?></span>
-<? } else { ?>
-<?=$rage?>
-<? } ?>
-</div></td>
+<td class="b3" width=70px><div class=nttx><span class="yellow"><?=$pdata['rage']?></span></div></td>
 </tr>
 <tr>
 <td class="b2" height=20px><div class=nttx>武器</div></td>
-<td class="b3"><div class=nttx><?=$wep?></div></td>
+<td class="b3"><div class=nttx><?=$pdata['wep']?></div></td>
 <td class="b2"><div class=nttx>武器种类</div></td>
-<td class="b3"><div class=nttx><?=$iteminfo[$wepk]?></div></td>
+<td class="b3"><div class=nttx><?=$pdata['display']['wepk_words']?></div></td>
 <td class="b2"><div class=nttx>武器攻击</div></td>
-<td class="b3"><div class=nttx><?=$wepe?></div></td>
+<td class="b3"><div class=nttx><?=$pdata['wepe']?></div></td>
 </tr>
 <tr>
 <td class="b2" height=20px><div class=nttx>受伤部位</div></td>
-<td class="b3"><div class=nttx>
-<? if($infdata) { ?>
-<?=$infdata?>
-<? } else { ?>
-无
-<? } ?>
-</div></td>
+<td class="b3"><div class=nttx><?=$pdata['display']['infwords']?></div></td>
 <td class="b2"><div class=nttx>基础姿态</div></td>
-<td class="b3"><div class=nttx><?=$poseinfo[$pose]?></div></td>
+<td class="b3"><div class=nttx><?=$poseinfo[$pdata['pose']]?></div></td>
 <td class="b2"><div class=nttx>应战策略</div></td>
-<td class="b3"><div class=nttx><?=$tacinfo[$tactic]?></div></td>
+<td class="b3"><div class=nttx><?=$tacinfo[$pdata['tactic']]?></div></td>
 
 </tr>
 </table>

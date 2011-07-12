@@ -25,7 +25,7 @@
 <? } ?>
 </div>
 
-禁区间隔时间： <?=$areahour?> 小时 ， <?=$arealimit?> 禁后停止激活<br>
+禁区间隔时间： <?=$areahour?> 分钟 ， <?=$arealimit?> 禁后停止激活<br>
 每次增加禁区： <?=$areaadd?> 个 ， 当前禁区数： <?=$areanum?><br>
 自动逃避禁区功能：
 <? if($areaesc && $gamestate < 40) { ?>

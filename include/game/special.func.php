@@ -4,89 +4,33 @@
 if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
-
-function getword(){
-	global $db,$tablepre,$name,$motto,$lastword,$killmsg;
+function learn_tech($ltech){
+	global $log,$mode,$pdata,$techniqueinfo;
+	$technique = &$pdata['technique']; $techlevel = &$pdata['techlevel'];
 	
-	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
-	$userinfo = $db->fetch_array($result);
-	$motto = $userinfo['motto'];
-	$lastword = $userinfo['lastword'];
-	$killmsg = $userinfo['killmsg'];
-	
-}
-
-function chgword($nmotto,$nlastword,$nkillmsg) {
-	global $db,$tablepre,$name,$log;
-	
-	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
-	$userinfo = $db->fetch_array($result);
-
-//	foreach ( Array('<','>',';',',','\\\'','\\"') as $value ) {
-//		if(strpos($nmotto,$value)!==false){
-//			$nmotto = str_replace ( $value, '', $nmotto );
-//		}
-//		if(strpos($nlastword,$value)!==false){
-//			$nlastword = str_replace ( $value, '', $nlastword );
-//		}
-//		if(strpos($nkillmsg,$value)!==false){
-//			$nkillmsg = str_replace ( $value, '', $nkillmsg );
-//		}
-//	}
-
-	
-	if($nmotto != $userinfo['motto']) {
-		$log .= $nmotto == '' ? '口头禅已清空。' : '口头禅变更为<span class="yellow">'.$nmotto.'</span>。<br>';
+	$newtechlist = get_new_tech($pdata);
+	if(!in_array($ltech,$newtechlist)){
+		$log .= '<span class="red">指令错误，你不能学习此技能！</span><br />';
+		$mode = 'command';
+		return;
 	}
-	if($nlastword != $userinfo['lastword']) {
-		$log .= $nlastword == '' ? '遗言已清空。' : '遗言变更为<span class="yellow">'.$nlastword.'</span>。<br>';
-	}
-	if($nkillmsg != $userinfo['killmsg']) {
-		$log .= $nkillmsg == '' ? '杀人留言已清空。' : '杀人留言变更为<span class="yellow">'.$nkillmsg.'</span>。<br>';
-	}
-
-	$db->query("UPDATE {$tablepre}users SET motto='$nmotto', lastword='$nlastword', killmsg='$nkillmsg' WHERE username='$name'");
-	
+	$technique .= $ltech;
+	$tech = Array_merge($techniqueinfo['active']['combat'], $techniqueinfo['active']['map'], $techniqueinfo['passive']['combat'], $techniqueinfo['passive']['map']);
+	$techlevel = $tech[$ltech]['lvl'];
+	$log .= '<span class="yellow">已学会'.$tech[$ltech]['name'].'技能！</span><br />';
 	$mode = 'command';
 	return;
 }
 
-function chgpassword($oldpswd,$newpswd,$newpswd2){
-	global $db,$tablepre,$name,$log;
-	
-	if (!$oldpswd || !$newpswd || !$newpswd2){
-		$log .= '放弃了修改密码。<br />';
-		$mode = 'command';
-		return;
-	} elseif ($newpswd !== $newpswd2) {
-		$log .= '<span class="red">两次输入的新密码不一致。</span><br />';
-		$mode = 'command';
-		return;
-	}
-	
-	$oldpswd = md5($oldpswd);$newpswd = md5($newpswd);
-	
-	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$name'");
-	$userinfo = $db->fetch_array($result);
-	
-	if($oldpswd == $userinfo['password']){
-		$db->query("UPDATE {$tablepre}users SET `password` ='$newpswd' WHERE username='$name'");
-		$log .= '<span class="yellow">密码已修改！</span><br />';
-		
-		//include_once GAME_ROOT.'./include/global.func.php';
-		
-		gsetcookie('pass',$newpswd);
-		$mode = 'command';
-		return;
-	}else{
-		$log .= '<span class="red">原密码输入错误！</span><br />';
-		$mode = 'command';
-		return;
-	}
-}
-
 function adtsk(){
-	global $log,$mode,$club,$wep,$wepk,$wepe,$weps,$wepsk;
+	global $log,$mode,$pdata;
+	$club = $pdata['club'];
+	$wep = & $pdata['wep'];
+	$wepk = & $pdata['wepk'];
+	$wepe = & $pdata['wepe'];
+	$weps = & $pdata['weps'];
+	$wepsk = & $pdata['wepsk'];
+	$wepnp = & $pdata['wepnp'];
 	if($wepk == 'WN' || !$wepe || !$weps){
 		$log .= '<span class="red">你没有装备武器，无法改造！</span><br />';
 		$mode = 'command';
@@ -94,9 +38,9 @@ function adtsk(){
 	}
 	if($club == 7){//电脑社，电气改造
 		$position = 0;
-		foreach(Array(1,2,3,4,5) as $imn){
-			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
-			if(strpos(${'itm'.$imn},'电池')!==false && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+		foreach(Array(1,2,3,4,5,6) as $imn){
+			//global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			if(strpos($pdata['itm'.$imn],'电池')!==false && $pdata['itmk'.$imn] == 'Y' && $pdata['itme'.$imn] > 0 ){
 				$position = $imn;
 				break;
 			}
@@ -112,14 +56,14 @@ function adtsk(){
 				return;
 			}
 			$wep = '电气'.$wep;
-			$wepsk .= 'e';
+			$wepsk .= 'Ae';
 			$log .= "<span class=\"yellow\">用电池改造了{$wep}，{$wep}增加了电击属性！</span><br />";
-			${'itms'.$position}-=1;
-			$itm = ${'itm'.$position};
-			if(${'itms'.$position} == 0){
+			$pdata['itms'.$position]-=1;
+			$itm = $pdata['itm'.$position];
+			if($pdata['itms'.$position] <= 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
-				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
-				${'itme'.$position} =${'itms'.$position} =0;				
+				$pdata['itm'.$position] = $pdata['itmk'.$position] = $pdata['itmsk'.$position] = '';
+				$pdata['itme'.$position] = $pdata['itms'.$position] = $pdata['itmnp'.$position] = 0;				
 			}
 			$mode = 'command';
 			return;
@@ -130,9 +74,9 @@ function adtsk(){
 		}
 	}elseif($club == 8){//带毒改造
 		$position = 0;
-		foreach(Array(1,2,3,4,5) as $imn){
-			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
-			if(${'itm'.$imn} == '毒药' && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+		foreach(Array(1,2,3,4,5,6) as $imn){
+			//global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			if($pdata['itm'.$imn] == '毒药' && $pdata['itmk'.$imn] == 'Y' && $pdata['itme'.$imn] > 0 ){
 				$position = $imn;
 				break;
 			}
@@ -142,20 +86,20 @@ function adtsk(){
 				$log .= '<span class="red">武器已经带毒，不用改造！</span><br />';
 				$mode = 'command';
 				return;
-			}elseif(strlen($wepsk)>=5){
+			}elseif(strlen($wepsk)>=15){
 				$log .= '<span class="red">武器属性数目达到上限，无法改造！</span><br />';
 				$mode = 'command';
 				return;
 			}
 			$wep = '毒性'.$wep;
-			$wepsk .= 'p';
+			$wepsk .= 'Ap';
 			$log .= "<span class=\"yellow\">用毒药为{$wep}淬毒了，{$wep}增加了带毒属性！</span><br />";
-			${'itms'.$position}-=1;
-			$itm = ${'itm'.$position};
-			if(${'itms'.$position} == 0){
+			$pdata['itms'.$position]-=1;
+			$itm = $pdata['itm'.$position];
+			if($pdata['itms'.$position] == 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
-				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
-				${'itme'.$position} =${'itms'.$position} =0;				
+				$pdata['itm'.$position] = $pdata['itmk'.$position] = $pdata['itmsk'.$position] = '';
+				$pdata['itme'.$position] =$pdata['itms'.$position] = $pdata['itmnp'.$position] = 0;				
 			}
 			$mode = 'command';
 			return;
@@ -172,7 +116,9 @@ function adtsk(){
 }
 
 function chginf($infpos){
-	global $log,$mode,$inf,$inf_sp,$inf_sp_2,$sp,$infinfo,$exdmginf,$club;
+	global $pdata,$log,$mode,$inf_sp,$inf_sp_2,$infdata;
+	$club = $pdata['club'];
+	$inf = & $pdata['inf']; $sp = & $pdata['sp'];
 	$normalinf = Array('h','b','a','f');
 	if(!$infpos){$mode = 'command';return;}
 	if($infpos == 'A'){  //包扎全身伤口
@@ -213,7 +159,7 @@ function chginf($infpos){
 		} else {
 			$inf = str_replace($infpos,'',$inf);
 			$sp -= $inf_sp;
-			$log .= "消耗<span class=\"yellow\">$inf_sp</span>点体力，{$infinfo[$infpos]}<span class=\"red\">部</span>的伤口已经包扎好了！";
+			$log .= "消耗<span class=\"yellow\">$inf_sp</span>点体力，{$infdata[$infpos]['short']}部的伤口已经包扎好了！";
 			$mode = 'command';
 			return;
 		}
@@ -226,7 +172,7 @@ function chginf($infpos){
 			} else {
 				$inf = str_replace($infpos,'',$inf);
 				$sp -= $inf_sp_2;
-				$log .= "消耗<span class=\"yellow\">$inf_sp_2</span>点体力，{$exdmginf[$infpos]}状态已经完全治愈了！";
+				$log .= "消耗<span class=\"yellow\">$inf_sp_2</span>点体力，{$infdata[$infpos]['name']}状态已经完全治愈了！";
 				$mode = 'command';
 				return;
 			}
@@ -295,125 +241,28 @@ function shoplist($sn) {
 		$itemdata[$i]['itme']=$itemlist['itme'];
 		$itemdata[$i]['itms']=$itemlist['itms'];
 		//list($sid,$kind,$num,$price,$area,$item,$itmk,$itme,$itms,$itmsk)=explode(',',$itemlist);
-		foreach($iteminfo as $info_key => $info_value){
-			if(strpos($itemlist['itmk'],$info_key)===0){
-				$itemdata[$i]['itmk_words'] = $info_value;
-				break;
-			}
-		}
-		$itemdata[$i]['itmsk_words'] = '';
-		if($itemlist['itmsk'] && ! is_numeric($itemlist['itmsk'])){
-			for ($j = 0; $j < strlen($itemlist['itmsk']-1); $j++) {
-				$sub = substr($itemlist['itmsk'],$j,1);
-				if(!empty($sub)){
-					$itemdata[$i]['itmsk_words'] .= $itemspkinfo[$sub];
-				}
-			}
-		}
-		//$itemdata[$i] = array('sid' => $sid, 'kind' => $kind,'num' => $num, 'price' => $price, 'area' => $area, 'item' => $item,'itmk_words' => $itmk_words,'itme' => $itme, 'itms' => $itms,'itmsk_words' => $itmsk_words);
+		$itemdata[$i]['itmk_words'] = get_itmkwords($itemlist['itmk']);
+		$itemdata[$i]['itmsk_words'] = get_itmskwords($itemlist['itmk'],$itemlist['itmsk']);
+//		foreach($iteminfo as $info_key => $info_value){
+//			if(strpos($itemlist['itmk'],$info_key)===0){
+//				$itemdata[$i]['itmk_words'] = $info_value;
+//				break;
+//			}
+//		}
+//		$itemdata[$i]['itmsk_words'] = '';
+//		if($itemlist['itmsk']){
+//			for ($j = 0; $j < strlen($itemlist['itmsk']); $j++) {
+//				$sub = substr($itemlist['itmsk'],$j,1);
+//				if(!empty($sub)){
+//					$itemdata[$i]['itmsk_words'] .= $itemspkinfo[$sub];
+//				}
+//			}
+//		}
 	}
 	
 	$mode = 'shop';
 
 	return;
-	//$file = GAME_ROOT."./gamedata/shopitem/{$sn}shopitem.php";
-	//$itemlist = openfile($file);
-	//$in = count($itemlist);
-//	for($i=1;$i<$in;$i++){
-//		list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$itemlist[$i]);
-//		if(($num<=0)||($price<=0)){
-//			$itemdata[$i] = '';
-//		} elseif (strpos($ikind,'_') !== false) {
-//			list($ik,$it) = explode('_',$ikind);
-//			if($areanum < $it*$areaadd) {
-//				$itemdata[$i] = '';
-//			} else {
-//				foreach($iteminfo as $info_key => $info_value){
-//					if(strpos($ik,$info_key)===0){
-//						$ikind_words = $info_value;
-//						break;
-//					}
-//				}
-//				$isk_words = '';
-//				if($isk && ! is_numeric($isk)){
-//					for ($j = 0; $j < strlen($isk); $j++) {
-//						$isk_words .= $itemspkinfo[substr($isk,$j,1)];
-//					}
-//				}
-//				$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
-//			}
-//		} else {
-//			foreach($iteminfo as $info_key => $info_value){
-//				if(strpos($ikind,$info_key)===0){
-//					$ikind_words = $info_value;
-//					break;
-//				}
-//				
-//			}
-//			$isk_words = '';
-//			if($isk && ! is_numeric($isk)){
-//				for ($j = 0; $j < strlen($isk); $j++) {
-//					$isk_words .= $itemspkinfo[substr($isk,$j,1)];
-//				}
-//			}
-//			$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
-//		}
-//	}
-//	$mode = 'shop';
-//
-//	return;
-
 }
-
-//function shoplist($sn) {
-//	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo;
-//	$file = GAME_ROOT."./gamedata/shopitem/{$sn}shopitem.php";
-//	$itemlist = openfile($file);
-//	$in = count($itemlist);
-//	for($i=1;$i<$in;$i++){
-//		list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$itemlist[$i]);
-//		if(($num<=0)||($price<=0)){
-//			$itemdata[$i] = '';
-//		} elseif (strpos($ikind,'_') !== false) {
-//			list($ik,$it) = explode('_',$ikind);
-//			if($areanum < $it*$areaadd) {
-//				$itemdata[$i] = '';
-//			} else {
-//				foreach($iteminfo as $info_key => $info_value){
-//					if(strpos($ik,$info_key)===0){
-//						$ikind_words = $info_value;
-//						break;
-//					}
-//				}
-//				$isk_words = '';
-//				if($isk && ! is_numeric($isk)){
-//					for ($j = 0; $j < strlen($isk); $j++) {
-//						$isk_words .= $itemspkinfo[substr($isk,$j,1)];
-//					}
-//				}
-//				$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
-//			}
-//		} else {
-//			foreach($iteminfo as $info_key => $info_value){
-//				if(strpos($ikind,$info_key)===0){
-//					$ikind_words = $info_value;
-//					break;
-//				}
-//				
-//			}
-//			$isk_words = '';
-//			if($isk && ! is_numeric($isk)){
-//				for ($j = 0; $j < strlen($isk); $j++) {
-//					$isk_words .= $itemspkinfo[substr($isk,$j,1)];
-//				}
-//			}
-//			$itemdata[$i] = array($i,$num,$price,$iname,$ikind_words,$ieff,$ista,$isk_words);
-//		}
-//	}
-//	$mode = 'shop';
-//
-//	return;
-//
-//}
 
 ?>

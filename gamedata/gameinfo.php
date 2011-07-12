@@ -1,17 +1,21 @@
 <?php
 
-$gamenum = 407;
-$gamestate = 40;
-$starttime = 1300633500;
-$winmode = 2;
-$winner = '据我所知这个世界上不可能有人会';
-$arealist = array(0,6,12,26,11,18,19,20,2,13,16,9,8,15,3,24,4,7,23,21,25,17,5,27,10,22,28,14,29,1);
-$areanum = 10;
-$areatime = 1300644000;
-$weather = 2;
-$hack = 1;
-$validnum = 103;
-$alivenum = 2;
-$deathnum = 356;
+if(!defined('IN_GAME')){exit('Access Denied');}
+
+$gamenum = 2;
+$gamestate = 20;
+$starttime = 1310226660;
+$winmode = 3;
+$winner = 'admin';
+$arealist = array(0,27,13,5,4,7,12,22,11,15,23,3,17,26,8,29,18,9,1,24,28,19,14,25,21,20,2,10,16,6);
+$areanum = 0;
+$areatime = 1310227800;
+$weather = 7;
+$hack = 0;
+$validnum = 1;
+$alivenum = 1;
+$deathnum = 0;
+$bossdeath = 0;
+$arealock = 1;
 
 ?>

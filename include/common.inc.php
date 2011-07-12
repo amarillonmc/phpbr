@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_ERROR);
+error_reporting(E_ALL);
 set_magic_quotes_runtime(0);
 
 define('IN_GAME', TRUE);
@@ -11,18 +11,17 @@ if(PHP_VERSION < '4.3.0') {
 	exit('PHP version must >= 4.3.0!');
 }
 require GAME_ROOT.'./include/global.func.php';
-require GAME_ROOT.'./config.inc.php';
+$magic_quotes_gpc = get_magic_quotes_gpc();
+$_COOKIE = gstrfilter($_COOKIE);
+$_POST = gstrfilter($_POST);
+$_FILES = gstrfilter($_FILES);
+extract($_COOKIE);
+extract($_POST);
+unset($_GET);
 
+require GAME_ROOT.'./config.inc.php';
 $now = time() + $moveut*3600 + $moveutmin*60;   
 list($sec,$min,$hour,$day,$month,$year,$wday) = explode(',',date("s,i,H,j,n,Y,w",$now));
-
-$magic_quotes_gpc = get_magic_quotes_gpc();
-extract(gstrfilter($_COOKIE), EXTR_SKIP);
-extract(gstrfilter($_POST), EXTR_SKIP);
-unset($_GET);
-$_FILES = gstrfilter($_FILES);
-
-
 
 //if($attackevasive) {
 //	include_once GAME_ROOT.'./include/security.inc.php';
@@ -35,7 +34,7 @@ $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 
 require GAME_ROOT.'./gamedata/system.php';
-require GAME_ROOT.'./gamedata/resources.php';
+require config('resources',$gamecfg);
 require config('gamecfg',$gamecfg);
 include GAME_ROOT.'./gamedata/gameinfo.php';
 include GAME_ROOT.'./gamedata/combatinfo.php';
@@ -57,17 +56,21 @@ if(!$gamestate) {
 		$hdamage = 0;
 		$hplayer = '';
 		$noisemode = '';
+		$bossdeath = 0;
+		$arealock = 1;
 		//save_gameinfo();
 		include_once GAME_ROOT.'./include/system.func.php';
 		rs_game(1+2+4+8+16+32);
 		save_gameinfo();
+		naddnews($now,'gameready',$gamenum);
 	}
 }
 if($gamestate == 10) {
 	if($now >= $starttime) {
 		$gamestate = 20;
 		save_gameinfo();
-		//addnews($starttime,'newgame',$gamenum);
+		$msg = "游戏开始！";
+		systemchat($msg,$starttime);
 		naddnews($starttime,'newgame',$gamenum);
 		
 	}
@@ -84,7 +87,8 @@ if (($gamestate > 10)&&($now > $areatime)) {
 	include_once GAME_ROOT.'./include/system.func.php';
 	while($now>$areatime){
 		$o_areatime = $areatime;
-		$areatime += $areahour*60;
+		$areatime = $areatime - $areatime % 60 + $areahour * 60;
+		//$areatime += $areahour*60;
 		save_gameinfo();
 		add_once_area($o_areatime);
 		save_gameinfo();
@@ -92,24 +96,27 @@ if (($gamestate > 10)&&($now > $areatime)) {
 	//addarea($areatime);
 }
 
-
-
 if($gamestate == 20) {
 	$arealimit = $arealimit > 0 ? $arealimit : 1; 
 	if(($validnum <= 0)&&($areanum >= $arealimit*$areaadd)) {
-		gameover($areatime-3599,'end4');
+		gameover($areatime-3599,4);
 	} elseif(($areanum >= $arealimit*$areaadd) || ($validnum >= $validlimit)) {
 		$gamestate = 30;
 		save_gameinfo();
 	}
 }
 
+if($gamestate >= 20) {
+	get_mapweapon();
+}
+
 if((($gamestate == 30)&&($alivenum <= $combolimit))||($deathlimit&&($gamestate < 40)&&($gamestate >= 20)&&($deathnum >= $deathlimit))) {
 	$gamestate = 40;
 	save_gameinfo();
+	$msg = "游戏进入连斗！";
+	systemchat($msg);
 	//$db->query("UPDATE {$tablepre}players SET teamID='',teamPass='' WHERE type=0 ");
 	naddnews($now,'combo');
-	
 }
 
 if($gamestate == 40 || $gamestate == 50) {
@@ -119,7 +126,11 @@ if($gamestate == 40 || $gamestate == 50) {
 	}
 }
 
+
+
 $cuser = & ${$tablepre.'user'};
 $cpass = & ${$tablepre.'pass'};
+$ctrl = & ${$tablepre.'ctrl'};
+$promap = & ${$tablepre.'promap'};
 
 ?>

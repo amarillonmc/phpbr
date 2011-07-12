@@ -1,5 +1,4 @@
-<span>{lang basicdata}</span>
-<table>
+<table align="center">
 	<!--{if $ustate == 'register'}-->
 		<tr>
 			<td>{lang username}</td>
@@ -8,12 +7,12 @@
 		</tr>
 		<tr>
 			<td>{lang npass}</td>
-			<td><input type="password" name="npass" size="24" maxlength="24" value=""></td>
+			<td><input type="password" id="npass" name="npass" size="24" maxlength="24" value=""></td>
 			<td>{lang password_comment}</td>
 		</tr>
 		<tr>
 			<td>{lang rnpass}</td>
-			<td><input type="password" name="rnpass" size="24" maxlength="24" value=""></td>
+			<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
 			<td>{lang password_comment}</td>
 		</tr>
 	<!--{elseif $ustate == 'edit'}-->
@@ -24,17 +23,17 @@
 		</tr>
 		<tr>
 			<td>{lang opass}</td>
-			<td><input type="password" name="opass" size="24" maxlength="24" value=""></td>
+			<td><input type="password" id="opass" name="opass" size="24" maxlength="24" value=""></td>
 			<td> </td>
 		</tr>
 		<tr>
 			<td>{lang npass}</td>
-			<td><input type="password" name="npass" size="24" maxlength="24" value=""></td>
+			<td><input type="password" id="npass" name="npass" size="24" maxlength="24" value=""></td>
 			<td>{lang password_comment}</td>
 		</tr>
 		<tr>
 			<td>{lang rnpass}</td>
-			<td><input type="password" name="rnpass" size="24" maxlength="24" value=""></td>
+			<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
 			<td>{lang password_comment}</td>
 		</tr>
 	<!--{else}-->
@@ -45,7 +44,7 @@
 		</tr>
 		<tr>
 			<td>{lang password}</td>
-			<td>{lang editpass}</td>
+			<td>{lang cannotedit}</td>
 			<td> </td>
 		</tr>
 	<!--{/if}-->

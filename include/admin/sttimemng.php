@@ -20,13 +20,17 @@ if($subcmd=='edit' && !$gamestate){
 
 if($gamestate) {
 	echo '本局游戏尚未结束，不能设置时间。<br>';
+	list($stsec,$stmin,$sthour,$stday,$stmonth,$styear,$stwday,$styday,$stisdst) = localtime($starttime);
+	$stmonth++;
+	$styear += 1900;
 } elseif($starttime) {
 	list($stsec,$stmin,$sthour,$stday,$stmonth,$styear,$stwday,$styday,$stisdst) = localtime($starttime);
 	$stmonth++;
 	$styear += 1900;
 } else {
-	list($stsec,$stmin,$sthour,$stday,$stmonth,$styear,$stwday,$styday,$stisdst) = localtime($now+3600);
-	$stmin = $startmin;
+	list($stsec,$stmin,$sthour,$stday,$stmonth,$styear,$stwday,$styday,$stisdst) = localtime($now+60);
+	//$stmin = $startmin;
+	$stsec = 0;
 	$stmonth++;
 	$styear += 1900;
 }

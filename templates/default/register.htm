@@ -2,20 +2,17 @@
 <div class="subtitle" align="center">{lang register}</div>
 
 <p align="center">
-	<span id="notice"></span>
+	<span id="notice"></span><br />
 	<span id="info" class="yellow"></span>
 </p>
 
 <form method="post" id="reg" name="reg">
 	<input type="hidden" name="cmd" value="post_register">
-	<div id="userbasicdata">
-		{template userbasicdata}
-	</div>
-	<br />
-	<div id="useradvdata">
-		{template useradvdata}
-	</div>
-	<br />
+	<span class ="yellow">{lang basicdata}</span>
+	{template userbasicdata}<br />
+	<span class ="yellow">{lang advanceddata}</span>
+	{template usergdicon}<br />
+	{template userwords}<br />
 	<div id="postreg">
 		<input type="button" id="post" onClick="postRegCommand();return false;" value="{lang submit}">
 		<input type="reset" id="reset" name="reset" value="{lang reset}">

@@ -55,6 +55,32 @@ class dbstuff {
 		$this->querynum ++;
 		return $query;
 	}
+	
+	function queries ($queries) {
+	  foreach (preg_split ("/[;]+/", trim($queries)) as $query_split) {
+	  	$query = '';
+	  	foreach (preg_split ("/[\n]+/", trim($query_split)) as $query_row){
+	  		if (!empty($query_row) && substr($query_row,0,2) != '--' && substr($query_row,0,1) != '#') {
+	  			$query .= $query_row;
+				}
+	  	}
+	  	if(substr($query, 0, 12) == 'CREATE TABLE') {
+				$this->query($this->create_table($query));
+			} elseif (!empty($query)) {
+				$this->query($query);
+			}
+	  }
+	  return;
+	}
+	
+	function create_table($sql) {
+		global $dbcharset;
+		$type = strtoupper(preg_replace("/^\s*CREATE TABLE\s+.+\s+\(.+?\).*(ENGINE|TYPE)\s*=\s*([a-z]+?).*$/isU", "\\2", $sql));
+		$type = in_array($type, array('MYISAM', 'HEAP')) ? $type : 'MYISAM';
+		return preg_replace("/^\s*(CREATE TABLE\s+.+\s+\(.+?\)).*$/isU", "\\1", $sql).
+			(mysql_get_server_info() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=$dbcharset" : " TYPE=$type");
+	}
+	
 //	SELECT语句变化比较多，就不设置方法了
 
 //	function select($dbname, $where = '', $fields = '*', $limit = '') {
@@ -96,7 +122,36 @@ class dbstuff {
 		$this->query ($query);
 		return $query;
 	}
-
+	
+	function multi_update($dbname, $data, $confield, $where, $singleqry = ''){
+		$fields = Array();
+		foreach($data as $rval){
+			${$confield} = $rval[$confield];
+			foreach($rval as $fkey => $fval){
+				if($fkey != $confield){
+					if(isset(${$fkey.'qry'})){
+						${$fkey.'qry'} .= "WHEN '${$confield}' THEN '$fval' ";
+					}else{
+						$fields[] = $fkey;
+						${$fkey.'qry'} = "(CASE $confield WHEN '${$confield}' THEN '$fval' ";
+					}
+				}				
+			}
+		}
+		$query = '';
+		foreach($fields as $val){
+			if(!empty(${$val.'qry'})){
+				${$val.'qry'} .= "END) ";
+				$query .= "$val = ${$val.'qry'},";
+			}
+		}
+		if(!empty($query)){
+			if($singleqry){$singleqry = ','.$singleqry;}
+			$query = "UPDATE {$dbname} SET ".substr($query,0,-1)."$singleqry WHERE $where";
+			$this->query ($query);
+		}
+		return $query;
+	}
 	
 /*	function select_fetch_array($dbname, $fields = '*', $where = '', $limit = '') { //返回二维数组
 		$query = "SELECT {$fields} FROM {$dbname} ";

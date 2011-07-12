@@ -1,0 +1,888 @@
+<?php
+
+if(!defined('IN_GAME')) {
+	exit('Access Denied');
+}
+
+function get_wephittimes($wepk,$wep_kind = 'N'){
+	$atime = substr($wepk,3,1);
+	if($wep_kind == 'g'){
+		return 1;
+	}
+	if(!is_numeric($atime)){
+		if($atime == 'A' || $atime == 'a'){$atime = 10;}
+		elseif($atime == 'b'){$atime = 11;}
+		elseif($atime == 'c'){$atime = 12;}
+		elseif($atime == 'd'){$atime = 13;}
+		elseif($atime == 'e'){$atime = 14;}
+		elseif($atime == 'f'){$atime = 15;}
+		elseif($atime == 'B'){$atime = 20;}
+		elseif($atime == 'C'){$atime = 30;}
+		elseif($atime == 'D'){$atime = 40;}
+		elseif($atime == 'E'){$atime = 50;}
+		else{$atime = 1;}
+	}elseif(!$atime){
+		$atime = 1;
+	}
+	return $atime;
+}
+
+function get_cassette($wepk){
+	if(strpos($wepk,'WG')===0){
+		$cst = substr($wepk,4,1);
+		if(!$cst){
+			if(strpos($wepk,'WGP')===0){
+				$cst = 0;
+			}else{
+				$cst = 6;
+			}			
+		}
+		elseif(!is_numeric($cst)){
+			if($cst == 'A'){$cst = 10;}
+			elseif($cst == 'a'){$cst = 15;}
+			elseif($cst == 'B'){$cst = 20;}
+			elseif($cst == 'C'){$cst = 30;}
+			elseif($cst == 'D'){$cst = 40;}
+			elseif($cst == 'E'){$cst = 50;}
+			else{$cst = 6;}
+		}
+		return $cst;
+	}else{
+		return 0;
+	}
+}
+function get_itmkwords($itmk){
+	global $iteminfo,$noitmk;
+	$ikwords = $noitmk;
+	foreach($iteminfo as $ikey => $ival){
+		if(strpos($itmk,$ikey)===0){
+			$ikwords = $ival;
+			break;
+		}
+	}
+	return $ikwords;
+}
+
+function get_itmskwords($itmk,$itmsk,$profile=0){
+	global $itemspecialinfo,$nospk;
+	$itemskinfo = array_merge($itemspecialinfo['att'],$itemspecialinfo['def'],$itemspecialinfo['map']);
+	$isklist = Array();
+	for ($i = 0; $i < strlen($itmsk); $i+=2) {
+		$sub = substr($itmsk,$i,2);
+		if(!empty($sub)){
+			$isklist[] = $itemskinfo[$sub];
+//			if(!$iskwords){
+//				$iskwords = $itemskinfo[$sub];
+//			}elseif($profile){
+//				$iskwords .= '<br>'.$itemskinfo[$sub];
+//			}else{
+//				$iskwords .= '+'.$itemskinfo[$sub];
+//			}
+		}
+	}
+	if(strpos($itmk,'WG')===0){
+		$cst = get_cassette($itmk);
+		if($cst > 0){
+			$cstwords = '弹夹'.$cst.'发';
+			array_unshift($isklist,$cstwords);
+		}
+		
+//		if(!$iskwords){
+//			$isklist[] = '弹夹：'.$wepat;
+//		}elseif($profile){
+//			$iskwords = $wepat.'回攻击'.'<br>'.$iskwords;
+//		}else{
+//			$iskwords = $wepat.'回攻击'.'+'.$iskwords;
+//		}		
+		
+	}
+	$wepat = get_wephittimes($itmk);
+	if($wepat>1){
+		$atwords = $wepat.'回攻击';
+//		if(!$iskwords){
+//			$iskwords = $wepat.'回攻击';
+//		}elseif($profile){
+//			$iskwords = $wepat.'回攻击'.'<br>'.$iskwords;
+//		}else{
+//			$iskwords = $wepat.'回攻击'.'+'.$iskwords;
+//		}		
+		array_unshift($isklist,$atwords);
+	}
+	
+	$iskwords = '';
+	foreach($isklist as $val){
+		if(!$iskwords){
+			$iskwords = $val;
+		}elseif($profile){
+			$iskwords .= '<br>'.$val;
+		}else{
+			$iskwords .= '+'.$val;
+		}		
+	}
+	if(!$iskwords){$iskwords = $nospk;}
+	return $iskwords;
+}
+
+
+function init_itemwords($data,$prf = ''){
+	//global $iteminfo,$itemspkinfo,$nospk;
+	$rdata = Array();
+	foreach (Array('wep','arb','arh','ara','arf','art') as $val) {
+		$rdata[$prf.$val.'k_words'] = get_itmkwords($data[$val.'k']);
+		if($prf){
+			$rdata[$prf.$val.'sk_words'] = get_itmskwords($data[$val.'k'],$data[$val.'sk']);
+		} else {
+			$rdata[$prf.$val.'sk_words'] = get_itmskwords($data[$val.'k'],$data[$val.'sk'],1);
+		}
+	}
+	for($i = 0;$i<=6;$i++){
+		$rdata[$prf.'itmk'.$i.'_words'] = get_itmkwords($data['itmk'.$i]);
+		if($prf || $i == 0){
+			$rdata[$prf.'itmsk'.$i.'_words'] = get_itmskwords($data['itmk'.$i],$data['itmsk'.$i]);
+		} else {
+			$rdata[$prf.'itmsk'.$i.'_words'] = get_itmskwords($data['itmk'.$i],$data['itmsk'.$i],1);
+		}
+	}
+	foreach($rdata as $key => $val){
+		$GLOBALS[$key] = $val;
+	}	
+	return $rdata;
+}
+
+function player_property($data,$mode = 'map') {
+	global $itemspecialinfo,$ex_dmg_def,$wep_def;
+	if(!in_array($mode, array_keys($itemspecialinfo))){
+		return;
+	}
+	$prop = Array();
+	$propkeys = array_keys($itemspecialinfo[$mode]);
+	foreach(Array('wep','arb','arh','ara','arf','art') as $val){
+		$eqpsk = $data[$val.'sk'];
+		for ($i = 0; $i < strlen($eqpsk); $i+=2) {
+			$sub = substr($eqpsk,$i,2);
+			if(!empty($sub) && in_array($sub,$propkeys)){
+				if($sub == 'DA'){
+					$proplist = $wep_def;
+				}elseif($sub == 'Da'){
+					$proplist = $ex_dmg_def;
+				}else{
+					$proplist = Array($sub);
+				}
+				//
+				foreach($proplist as $lval){
+					if(isset($prop[$lval])){
+						$prop[$lval][] = $val;
+					}else{
+						$prop[$lval] = Array($val);
+					}
+				}
+			}
+		}
+	}
+	return $prop;
+}
+
+function reset_wep(&$wep,&$wepk,&$wepe,&$weps,&$wepsk,&$wepnp){
+	global $nowep,$nosta;
+	$wep = $nowep;
+	$wepk = 'WN';
+	$wepsk = '';
+	$wepe = $wepnp = 0;
+	$weps = $nosta; 
+	return;
+}
+
+function init_playerdata($pdata){
+	global $baseexp,$weather,$fog,$upexp,$iconImg,$ardef,$wthdata;
+	extract($pdata);
+	$upexp = round(($lvl*$baseexp)+(($lvl+1)*$baseexp));
+	$iconImg = $type ? 'n_'.$icon.'.gif' : $gd.'_'.$icon.'.gif';
+	$ardef = $arbe + $arhe + $arae + $arfe;
+	if($wthdata[$weather]['kind'] == 'FOG') {
+		$fog = true;
+	}
+	
+	if(!$weps) {
+		global $nowep,$nosta;
+		$wep = $nowep;$wepk = 'WN';$wepsk = '';
+		$wepe = 0; $weps = $nosta;
+	}
+	if(!$arbs) {
+		global $noarb,$nosta;
+		$arb = $noarb;$arbk = 'DB'; $arbsk = '';
+		$arbe = 0; $arbs = $nosta;
+	}
+}
+
+function init_profile($pdata){
+	global $wordsdata,$infinfo,$infdata,$infimg,$hpcolor,$spcolor,$newhpimg,$newspimg,$iteminfo,$itemspkinfo;
+	//global $wepsk_words,$arbsk_words,$arhsk_words,$arask_words,$arfsk_words,$artsk_words,$itmsk0_words,$itmsk1_words,$itmsk2_words,$itmsk3_words,$itmsk4_words,$itmsk5_words,$itmsk6_words;
+	//global $wepk_words,$arbk_words,$arhk_words,$arak_words,$arfk_words,$artk_words,$itmk0_words,$itmk1_words,$itmk2_words,$itmk3_words,$itmk4_words,$itmk5_words,$itmk6_words;
+	//global $placex,$placey;
+	extract($pdata);
+//	$placex = floor($pls/100); 
+//	if($placex<10 && $placex > 0){$placex='0'.$placex;}
+//	elseif($placex==0){$placex='00';}
+//	$placey = $pls%100;
+//	if($placey<10 && $placey > 0){$placey='0'.$placey;}
+//	elseif($placey==0){$placey='00';}
+	
+//	foreach (Array('wepk','arbk','arhk','arak','arfk','artk','itmk0','itmk1','itmk2','itmk3','itmk4','itmk5','itmk6') as $k_value) {
+//		if(${$k_value}){
+//			${$k_value.'_words'} = '';
+//			
+//			foreach($iteminfo as $info_key => $info_value){
+//				if(strpos(${$k_value},$info_key)===0){
+//					${$k_value.'_words'} = $info_value;
+//					break;
+//				}
+//				
+//			}
+//		} else {
+//			${$k_value.'_words'} = '';
+//		}
+//		
+//	}
+//	
+//	foreach (Array('wepsk','arbsk','arhsk','arask','arfsk','artsk','itmsk0','itmsk1','itmsk2','itmsk3','itmsk4','itmsk5','itmsk6') as $sk_value) {
+//		if(${$sk_value}){
+//			${$sk_value.'_words'} = '';
+//			for ($i = 0; $i < strlen($sk_value); $i++) {
+//				$sub = substr(${$sk_value},$i,1);
+//				if(!empty($sub)){
+//					${$sk_value.'_words'} .= $itemspkinfo[$sub];
+//				}				
+//			}
+//			
+//		} else {
+//			${$sk_value.'_words'} =$nospk;
+//		}
+//	}
+
+	$infdata = '';
+	
+	if(strpos($inf,'h') !== false || strpos($inf,'b') !== false ||strpos($inf,'a') !== false ||strpos($inf,'f') !== false){
+		//$infdata = '<span class="red b">';
+		$infimg .= '<img src="img/injured.gif" style="position:absolute;top:0;left:10;width:84;height:20">';
+		if(strpos($inf,'h') !== false){
+			$infdata .= $infinfo['h'];
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:0;left:121;width:37;height:37">';
+		}
+		if(strpos($inf,'a') !== false){
+			$infdata .= $infinfo['a'];
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:17;left:102;width:37;height:37">';
+		}
+		if(strpos($inf,'b') !== false){
+			$infdata .= $infinfo['b'];
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:43;left:121;width:37;height:37">';
+		}
+		if(strpos($inf,'f') !== false){
+			$infdata .= $infinfo['f'];
+			$infimg .= '<img src="img/hurt.gif" style="position:absolute;top:111;left:121;width:37;height:37">';
+		}
+	} else {
+		$infimg .= '<img src="img/injured2.gif" style="position:absolute;top:0;left:10;width:84;height:20">';
+	}
+	//$infdata .= '</span>';
+	if(strpos($inf,'p') !== false) {
+		$infdata .= $infinfo['p'];
+		//$infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+		$infimg .= '<img src="img/p.gif" style="position:absolute;top:20;left:4;width:98;height:20">';
+	} else {
+		$infimg .= '<img src="img/p2.gif" style="position:absolute;top:20;left:4;width:98;height:20">';
+	}
+	if(strpos($inf,'u') !== false) {
+		$infdata .= $infinfo['u'];
+		//$infdata .= "<span class=\"red b\">{$infinfo['u']}</span>";
+		$infimg .= '<img src="img/u.gif" style="position:absolute;top:40;left:11;width:81;height:20">';
+	} else {
+		$infimg .= '<img src="img/u2.gif" style="position:absolute;top:40;left:11;width:81;height:20">';
+	}
+	if(strpos($inf,'i') !== false) {
+		$infdata .= $infinfo['i'];
+		//$infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
+		$infimg .= '<img src="img/i.gif" style="position:absolute;top:60;left:13;width:77;height:20">';
+	} else {
+		$infimg .= '<img src="img/i2.gif" style="position:absolute;top:60;left:13;width:77;height:20">';
+	}
+	if(strpos($inf,'e') !== false) {
+		$infdata .= $infinfo['e'];
+		//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
+		$infimg .= '<img src="img/e.gif" style="position:absolute;top:80;left:2;width:101;height:20">';
+	} else {
+		$infimg .= '<img src="img/e2.gif" style="position:absolute;top:80;left:2;width:101;height:20">';
+	}
+	if(strpos($inf,'w') !== false) {
+		$infdata .= $infinfo['w'];
+		//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
+		$infimg .= '<img src="img/w.gif" style="position:absolute;top:100;left:3;width:100;height:20">';
+	} else {
+		$infimg .= '<img src="img/w2.gif" style="position:absolute;top:100;left:3;width:100;height:20">';
+	}
+	if(strpos($inf,'L') !== false) {
+		$infdata .= $infinfo['L'];
+		//$infdata .= "<span class=\"yellow b\">{$infinfo['e']}</span>";
+		//$infimg .= '<img src="img/w.gif" style="position:absolute;top:100;left:3;width:100;height:20">';
+	} else {
+		//$infimg .= '<img src="img/w2.gif" style="position:absolute;top:100;left:3;width:100;height:20">';
+	}
+
+
+	$hpcolor = 'clan';
+	if($hp <= 0 ){
+		$infimg .= '<img src="img/dead.gif" style="position:absolute;top:120;left:6;width:94;height:40">';
+		$hpcolor = 'red';
+	} elseif($hp <= $mhp*0.2){
+		$infimg .= '<img src="img/danger.gif" style="position:absolute;top:120;left:5;width:95;height:37">';
+		$hpcolor = 'red';
+	} elseif($hp <= $mhp*0.5){
+		$infimg .= '<img src="img/caution.gif" style="position:absolute;top:120;left:5;width:95;height:36">';
+		$hpcolor = 'yellow';
+	} elseif($inf == ''){
+		$infimg .= '<img src="img/fine.gif" style="position:absolute;top:120;left:12;width:81;height:38">';
+	}
+	
+	if($sp <= $msp*0.2){
+		$spcolor = 'grey';
+	} elseif($sp <= $msp*0.5){
+		$spcolor = 'yellow';
+	} else {
+		$spcolor = 'clan';
+	}
+	
+	$newhppre = 5+floor(151*(1-$hp/$mhp));
+	$newhpimg = '<img src="img/red2.gif" style="position:absolute; clip:rect('.$newhppre.'px,55px,160px,0px);">';
+	$newsppre = 5+floor(151*(1-$sp/$msp));
+	$newspimg = '<img src="img/yellow2.gif" style="position:absolute; clip:rect('.$newsppre.'px,55px,160px,0px);">';
+
+	return;
+}
+
+function init_battle($edata,$ismeet = 0){
+	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_lvl,$w_rage,$w_hp,$w_sp,$w_mhp,$w_msp,$w_wep,$w_wepk,$w_wepe,$w_sNoinfo,$w_iconImg,$w_hpstate,$w_spstate,$w_ragestate,$w_wepestate,$w_isdead,$hpinfo,$spinfo,$rageinfo,$wepeinfo,$fog,$typeinfo,$sexinfo,$infinfo,$w_exp,$w_upexp,$baseexp,$w_pose,$w_tactic,$w_inf,$w_infdata;
+	extract($edata,EXTR_PREFIX_ALL,'w');
+	
+	$w_upexp = round(($w_lvl*2+1)*$baseexp);
+	
+
+	
+	if($w_hp <= 0) {
+		$w_hpstate = "<span class=\"red\">$hpinfo[3]</span>";
+		$w_spstate = "<span class=\"red\">$spinfo[3]</span>";
+		$w_ragestate = "<span class=\"red\">$rageinfo[3]</span>";
+		$w_isdead = true;
+	} else{
+		if($w_hp < $w_mhp*0.2) {
+		$w_hpstate = "<span class=\"red\">$hpinfo[2]</span>";
+		} elseif($w_hp < $w_mhp*0.5) {
+		$w_hpstate = "<span class=\"yellow\">$hpinfo[1]</span>";
+		} else {
+		$w_hpstate = "<span class=\"clan\">$hpinfo[0]</span>";
+		}
+		if($w_sp < $w_msp*0.2) {
+		$w_spstate = "$spinfo[2]";
+		} elseif($w_sp < $w_msp*0.5) {
+		$w_spstate = "$spinfo[1]";
+		} else {
+		$w_spstate = "$spinfo[0]";
+		}
+		if($w_rage >= 100) {
+		$w_ragestate = "<span class=\"red\">$rageinfo[2]</span>";
+		} elseif($w_rage >= 30) {
+		$w_ragestate = "<span class=\"yellow\">$rageinfo[1]</span>";
+		} else {
+		$w_ragestate = "$rageinfo[0]";
+		}
+	}
+	
+	if($w_wepe >= 400) {
+		$w_wepestate = "$wepeinfo[3]";
+	} elseif($w_wepe >= 200) {
+		$w_wepestate = "$wepeinfo[2]";
+	} elseif($w_wepe >= 60) {
+		$w_wepestate = "$wepeinfo[1]";
+	} else {
+		$w_wepestate = "$wepeinfo[0]";
+	}
+	
+	if(!$fog||$ismeet) {
+		$w_sNoinfo = "$typeinfo[$w_type]({$sexinfo[$w_gd]}{$w_sNo}号)";
+	  $w_i = $w_type > 0 && $w_type != 91 ? 'n' : $w_gd;
+		$w_iconImg = $w_i.'_'.$w_icon.'.gif';
+		if($w_inf) {
+			$w_infdata = '';
+			foreach ($infinfo as $inf_ky => $inf_nm) {
+				if(strpos($w_inf,$inf_ky) !== false) {
+					$w_infdata .= $inf_nm;
+				}
+			}
+			//$w_infdata = '<span class="red b">';
+			/*if(strpos($w_inf,'h') !== false){
+				$w_infdata .= $infinfo['h'];
+			}
+			if(strpos($w_inf,'a') !== false){
+				$w_infdata .= $infinfo['a'];
+			}
+			if(strpos($w_inf,'b') !== false){
+				$w_infdata .= $infinfo['b'];
+			}
+			if(strpos($w_inf,'f') !== false){
+				$w_infdata .= $infinfo['f'];
+			}*/
+			//$infdata .= '</span>';
+			/*if(strpos($w_inf,'p') !== false) {
+				$w_infdata .= "<span class=\"purple b\">{$infinfo['p']}</span>";
+			}
+			if(strpos($w_inf,'u') !== false) {
+				$w_infdata .= "<span class=\"yellow b\">{$infinfo['u']}</span>";
+			}
+			if(strpos($w_inf,'i') !== false) {
+				$w_infdata .= "<span class=\"clan b\">{$infinfo['i']}</span>";
+			}*/
+		} else {
+			$w_infdata = '';
+		}
+	} else {
+		$w_sNoinfo = '？？？';
+		$w_iconImg = 'question.gif';
+		$w_name = '？？？';
+		$w_wep = '？？？';
+		$w_infdata = '？？？';
+		$w_pose = -1;
+		$w_tactic = -1;
+		$w_lvl = '？';
+		$w_hpstate = '？？？';
+		$w_spstate = '？？？';
+		$w_ragestate = '？？？';
+		$w_wepestate = '？？？';
+		$w_wepk = '';
+	}
+	return;
+}
+
+function init_moveto($pls){
+	global $mapdata;
+	$nmap = get_neighbor_map($pls);
+	if(empty($nmap)){
+		$moveto = '<option value="main">■ 无法移动 ■<br />';
+	}else{
+		$moveto = '<option value="main">■ 移动 ■<br />';
+		foreach($nmap as $map => $movesp){
+			if($map == $pls){
+				$moveto .= "<option value=\"$map\">现在位置<br />";
+			}else{
+				$moveto .= "<option value=\"$map\">".$mapdata[$map]['name']."($movesp)<br />";
+			}
+			
+		}
+	}
+	$moveto = "<select name=\"moveto\" onclick=sl('move'); href=\"javascript:void(0);\">{$moveto}</select>";
+	return $moveto;
+}
+
+function player_save($data) {
+	global $db,$tablepre;
+	$pid = $data['pid'];
+	unset($data['pid']);
+	unset($data['name']);
+	unset($data['sNo']);
+	unset($data['type']);//防止影响索引
+	$db->array_update("{$tablepre}players",$data,"pid='$pid'");
+	return;
+}
+
+function set_noise($type, $pls, $pid1, $pid2 = 0, $time = 0) {
+	global $now,$db,$tablepre;
+	if(!$type){return;}
+	if(!$time){$time = $now;}
+	$db->query("INSERT INTO {$tablepre}noise (type,time,pls,pid1,pid2) VALUES ('$type','$time','$pls','$pid1','$pid2')");
+	return;
+}
+
+
+function auto_chat(&$data,$mode) {
+	global $npcchaton;
+	$type = $data['type'];
+	$name = $data['name'];
+	$hp = $data['hp'];
+	$mhp = $data['mhp'];
+	$chatwords = '';
+	if(!$type){//玩家
+		global $db,$tablepre;
+		if($mode == 'critical'){
+			$result = $db->query("SELECT criticalmsg FROM {$tablepre}users WHERE username = '$name'");
+			$criticalmsg = $db->result($result,0);
+			if(!empty($criticalmsg)){
+				$chatwords .= '<span class = "yellow">“'.$criticalmsg.'”</span><br />';
+			}			
+		} elseif($mode == 'death'){
+			$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$name'");
+			$lastword = $db->result($result,0);
+			if(!empty($lastword)){
+				$chatwords .= '<span class = "yellow">“'.$lastword.'”</span><br />';
+			}
+		} elseif($mode == 'kill'){
+			$result = $db->query("SELECT killmsg FROM {$tablepre}users WHERE username = '$name'");
+			$killmsg = $db->result($result,0);
+			if(!empty($killmsg)){
+				$chatwords .= '<span class = "yellow">“'.$killmsg.'”</span><br />';
+			}
+		}
+	} elseif($npcchaton) {//NPC
+		global $npcchat;
+		$meet = & $data['state'];//记录NPC是否初见的开关
+		if(isset($npcchat[$type][$name])){
+			if($mode == 'attack' || $mode == 'defend'){
+				if($meet == 1) {
+					$mode = 'meet';
+					$meet = 0;
+				} elseif ($hp > $mhp / 2){
+					$dice = rand ( 1, 2 );
+					$mode .= 'fine' . $dice;
+				} else {
+					$dice = rand ( 1, 2 );
+					$mode .= 'hurt' . $dice;
+				}
+			}
+			$chatwords .= $npcchat[$type][$name][$mode];
+			if($mode !== 'critical'){
+				$chatwords = "“{$chatwords}”";
+			}
+			if(isset($npcchat[$type][$name]['color'])){
+				$chatcolor = $npcchat[$type][$name]['color'];
+				$chatwords = "<span class = \"{$chatcolor}\">{$chatwords}</span><br />";
+			}else{
+				$chatwords = '<span class = "yellow">'.$chatwords.'</span><br />';
+			}
+		} elseif($mode == 'death'){
+			global $lwinfo;
+			$chatwords .= '<span class = "yellow">“'.$lwinfo[$type].'”</span><br />';
+		} elseif($mode == 'kill') {
+			global $killmsginfo;
+			$chatwords .= '<span class = "yellow">“'.$killmsginfo[$type].'”</span><br />';
+		}
+		
+	}
+	return $chatwords;
+}
+
+function auto_bind(&$data){
+	global $npcbind;
+	$dice = rand(0,99);
+	if($dice < $npcbind){
+		$inf = & $data['inf'];
+		$inf = str_replace('h','',$inf);
+		$inf = str_replace('b','',$inf);
+		$inf = str_replace('a','',$inf);
+		$inf = str_replace('f','',$inf);
+		//echo $data['name'].'自动包扎了伤口';
+	}
+	player_save($data);
+	return;
+}
+//discription of state:  0 alive, 1 sp ref, 2 hp ref, 3 both ref, 10-97 death, 98-99 distroyed
+function set_death(&$ddata,$death,$annex = '',$kdata = ''){//死亡处理以及复活判断
+	global $now, $db, $tablepre, $alivenum, $deathnum,$bossdeath,$killmsginfo, $typeinfo,$lwinfo,$npcchat,$killmsginfo;
+	$dname = $ddata['name'];
+	$dstate = & $ddata['state'];
+	$dtype = $ddata['type'];
+	$dbid = $ddata['bid'];
+	$dhp = & $ddata['hp'];
+	$dpls = $ddata['pls'];
+	if (! $death) {
+		return;
+	}
+	
+	$dhp = 0;
+	if ($death == 'N') {
+		$dstate = 20;
+	} elseif ($death == 'P') {
+		$dstate = 21;
+	} elseif ($death == 'K') {
+		$dstate = 22;
+	} elseif ($death == 'G') {
+		$dstate = 23;
+	} elseif ($death == 'C') {
+		$dstate = 24;
+	} elseif ($death == 'D') {
+		$dstate = 25;
+	} elseif ($death == 'F') {
+		$dstate = 29;
+	} elseif ($death == 'dn') {
+		$dstate = 28;
+	} elseif ($death == 'poison') {
+		$dstate = 26;
+	} elseif ($death == 'trap') {
+		$dstate = 27;
+	} elseif ($death == 'event') {
+		$dstate = 13;
+	} elseif ($death == 'hack') {
+		$dstate = 14;
+	} elseif ($death == 'pmove') {
+		$dstate = 12;
+	} elseif ($death == 'hsmove') {
+		$dstate = 17;
+	} elseif ($death == 'umove') {
+		$dstate = 18;
+	} elseif ($death == 'Lmove') {
+		$dstate = 19;
+	} elseif ($death == 'button') {
+		$dstate = 30;
+	} elseif ($death == 'suiside') {
+		$dstate = 31;
+	} elseif ($death == 'gradius') {
+		$dstate = 33;
+	} else {
+		$dstate = 10;
+	}
+	
+	$lwname = $typeinfo [$dtype] . ' ' . $dname;
+	if (! $dtype) {
+		$result = $db->query ( "SELECT lastword FROM {$tablepre}users WHERE username = '$dname'" );
+		$lastword = $db->result ( $result, 0 );
+	} else {
+		if(isset($npcchat[$dtype][$dname])){
+			$lastword = $npcchat[$dtype][$dname]['death'];
+		}else{
+			$lastword = $lwinfo [$dtype];
+		}
+	}
+	if(!empty($kdata)){
+		$kname = $kdata['name'];
+		$ktype = $kdata['type'];
+//		if($ktype==0 && $kname){
+//			$result = $db->query ( "SELECT killmsg FROM {$tablepre}users WHERE username = '$kname'" );
+//			$killmsg = $db->result ( $result, 0 );
+//		}else{
+//			$killmsg = $killmsginfo [$ktype];
+//		}
+	}else{
+		$kname = '';
+		$killmsg = '';
+	}
+	
+	$db->query ( "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$dpls','$lastword')" );
+	naddnews ( $now, 'death' . $dstate, $dname, $dtype, $kname, $annex, $lastword );
+	
+	if(set_revive($ddata,$death)){
+		return false;
+	}
+	if(!$dtype){
+		$alivenum --;
+	}elseif($dtype == 1){
+		$bossdeath = 1;
+	}
+	
+	$deathnum ++;
+	save_gameinfo ();
+	return true;	
+}
+
+function set_revive(&$data,$death){
+	global $nosta,$now,$log,$pdata;
+	$def_key = player_property($data,'def');
+	if($death != 'dn' && isset($def_key['rv'])){
+		
+		$active = $data['pid'] == $pdata['pid'] ? 1 : 0;
+		$rvpos = $def_key['rv'][0];
+		$rv = & $data[$rvpos];$rve = & $data[$rvpos.'e'];$rvs = & $data[$rvpos.'s'];$rvk = & $data[$rvpos.'k'];$rvsk = & $data[$rvpos.'sk'];$rvnp = & $data[$rvpos.'np'];
+		if(rand(0,99)<=30){
+			$data['hp'] = $data['mhp'];
+			$data['sp'] = $data['msp'];
+			$data['inf'] = '';
+			$data['bid'] = 0;
+			if($active){$log .= "<span class = \"red\">你死了，不过……</span><br>在<span class=\"yellow\">$rv</span>的作用下，<span class=\"yellow\">你满血满状态复活了！</span><br>";}
+			else{$log .= "<span class = \"red\">{$data['name']}死了，不过……</span><br>在<span class=\"yellow\">$rv</span>的作用下，<span class=\"yellow\">{$data['name']}满血满状态复活了！</span><br>";}
+			naddnews ( $now, 'revive', $data['name'], $rv );
+			if($rvs != $nosta){
+				$rvs -= 1;
+				if($rvs <= 0){
+					if($active){$log .= "你的<span class=\"yellow\">$rv</span>耗尽了力量，损坏了！<br>";}
+					else{$log .= "{$data['name']}的<span class=\"yellow\">$rv</span>耗尽了力量，损坏了！<br>";}
+					$rv = $rvk = $rvsk = '';
+					$rve = $rvs = $rvnp = 0;				
+				}
+			}		
+			return true;
+		}else{
+			if($active){$log .= "你的<span class=\"yellow\">$rv</span>没能发挥作用！<br>";}
+			else{$log .= "{$data['name']}的<span class=\"yellow\">$rv</span>没能发挥作用！<br>";}
+		}		
+	}
+	return false;
+}
+
+function set_lvlup(&$data,$isplayer = 0){
+	global $baseexp;
+	$lvl = & $data['lvl'];
+	$exp = $data['exp'];
+	$club = $data['club'];
+	$hp = & $data['hp']; $mhp = & $data['mhp'];
+	$sp = & $data['sp']; $msp = & $data['msp'];
+	$up_exp_temp = round ( (2 * $lvl + 1) * $baseexp );
+	
+	if ($exp >= $up_exp_temp && $lvl < 255) {
+		$sklanginfo = Array ('wp' => '殴熟', 'wk' => '斩熟', 'wg' => '射熟', 'wc' => '投熟', 'wd' => '爆熟', 'wf' => '灵熟', 'all' => '全系熟练度' );
+		$sknlist = Array (1 => 'wp', 2 => 'wk', 3 => 'wc', 4 => 'wg', 5 => 'wd', 9 => 'wf', 12 => 'all' );
+		if(isset($sknlist [$club])){
+			$skname = $sknlist[$club];
+		}else{
+			$skname = '';
+		}
+		
+		$lvup = 1 + floor ( ($exp - $up_exp_temp) / $baseexp / 2 );
+		$lvup = $lvup > 255 - $lvl ? 255 - $lvl : $lvup;
+		$lvuphp = $lvupatt = $lvupdef = $lvupskill = $lvupsp = $lvupspref = 0;
+		
+		for($i = 0; $i < $lvup; $i += 1) {
+			if ($club == 13) {
+				$lvuphp += rand ( 14, 18 );
+			} else {
+				$lvuphp += rand ( 8, 10 );
+			}
+			$lvupsp += rand( 4,6);
+			if ($club == 14) {
+				$lvupatt += rand ( 7, 12 );
+				$lvupdef += rand ( 9, 15 );
+			} else {
+				$lvupatt += rand ( 2, 4 );
+				$lvupdef += rand ( 3, 5 );
+			}
+			
+			if ($skname == 'all') {
+				$lvupskill += rand ( 2, 4 );
+			} elseif ($skname == 'wd' || $skname == 'wf') {
+				$lvupskill += rand ( 3, 5 );
+			}elseif($skname){
+				$lvupskill += rand ( 4, 6 );
+			}
+			$lvupspref += round($msp * 0.1);		
+		}
+		
+		$lvl += $lvup;
+		$up_exp_temp = round ( (2 * $lvl + 1) * $baseexp );
+		if ($lvl >= 255) {
+			$lvl = 255;
+			$exp = $up_exp_temp;
+		}
+		$hp += $lvuphp; $mhp += $lvuphp;
+		$sp += $lvupsp; $msp += $lvupsp;
+		$data['att'] += $lvupatt;
+		$data['def'] += $lvupdef;
+		if ($skname == 'all') {
+			$data['wp'] += $lvupskill;
+			$data['wk'] += $lvupskill;
+			$data['wg'] += $lvupskill;
+			$data['wc'] += $lvupskill;
+			$data['wd'] += $lvupskill;
+			$data['wf'] += $lvupskill;
+		} elseif ($skname) {
+			$data[$skname] += $lvupskill;
+		}
+		
+		if ($sp+$lvupspref >= $msp) {
+			$lvupspref =  $msp - $sp;
+			
+		}
+		$sp += $lvupspref;
+		if ($skname) {
+			$sklog = "，{$sklanginfo[$skname]}+{$lvupskill}";
+		}else{
+			$sklog = '';
+		}
+		if ($isplayer) {
+			global $log,$upexp;
+			$upexp = $up_exp_temp;
+			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}！</span><br>";
+		} elseif (! $data['type']) {
+			global $now,$w_upexp;
+			$w_upexp = $up_exp_temp;
+			$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}！</span><br>";
+			logsave ( $data['pid'], $now, $w_log,'s');
+		}
+		
+		
+	} elseif ($lvl >= 255) {
+		$lvl = 255;
+		$exp = $up_exp_temp;
+	}
+	return;
+}
+
+function set_rest($command,&$data,$active = 0){
+	global $now, $sleep_time, $heal_time, $restinfo;
+	if($active){global $mode,$cmd;}
+	if($data['state']!=1 && $data['state']!=2 && $data['state']!=3){
+		if($active){$mode = 'command';}
+		return;
+	}
+	$state = & $data['state']; $lastcmd = & $data['lastcmd']; $lasteff = & $data['lasteff'];
+	$hp = & $data['hp'];$sp = & $data['sp'];
+	$mhp = $data['mhp'];$msp = $data['msp'];
+	$pose = $data['pose'];$inf = $data['inf'];$club = $data['club'];
+	$resttime1 = $now - $lastcmd;
+	$resttime2 = $now - $lasteff;
+	$resttime = $resttime1 > $resttime2 ? $resttime2 : $resttime1;
+	$lastcmd = $now;
+	$oldsp = $sp;$oldhp = $hp;
+	$upsp = $uphp = 0;
+	if($state == 1 || $state == 3){
+		$upsp = round ( $msp * $resttime / $sleep_time / 100 );
+		if ($pose == 5) {
+			$upsp *= 2;
+		}
+		if (strpos ( $inf, 'b' ) !== false) {
+			$upsp = round ( $upsp / 2 );
+		}
+		if ($club ==16){
+			$upsp *= 2;
+		}
+		$sp += $upsp;
+		if ($sp >= $msp) {
+			$sp = $msp;
+		}
+		$upsp = $sp - $oldsp;
+	}
+	if($state == 2 || $state == 3){
+		$uphp = round ( $mhp * $resttime / $heal_time / 100 );
+		if ($pose == 5) {
+			$uphp *= 2;
+		}
+		if (strpos ( $inf, 'b' ) !== false) {
+			$uphp = round ( $uphp / 2 );
+		}
+		if ($club ==16){
+			$uphp *= 2;
+		}
+		$hp += $uphp;
+		if ($hp >= $mhp) {
+			$hp = $mhp;
+		}
+		$uphp = $hp - $oldhp;
+	}
+	
+	if($active){
+		if($state == 1){
+			$restlog = "你的体力恢复了<span class=\"yellow\">$upsp</span>点。<br>";
+		}elseif($state == 2){
+			$restlog = "你的生命恢复了<span class=\"yellow\">$uphp</span>点。<br>";
+		}elseif($state == 3){
+			$restlog = "你的体力恢复了<span class=\"yellow\">$upsp</span>点，生命恢复了<span class=\"yellow\">$uphp</span>点。<br>";
+		}else{
+			$restlog = '不明错误！<br>';
+		}
+		if ($command=='rest') {
+			$cmd = '你正在' . $restinfo [$state] . '。<br><input type="hidden" name="mode" value="rest"><br><input type="radio" name="command" id="rest" value="rest" checked><a onclick=sl("rest"); href="javascript:void(0);" >' . $restinfo [$state] . '</a><br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >返回</a>';
+		} else {
+			$state = 0;
+			$lastcmd = $now;
+			$mode = 'command';
+		}
+	}elseif($state == 2||$state == 3){
+		$restlog = "的生命恢复了<span class=\"yellow\">$uphp</span>点。<br>";
+		$w_lasteff = $now;
+	}
+	return $restlog;
+}
+
+?>

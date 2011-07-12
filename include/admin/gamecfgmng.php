@@ -6,48 +6,75 @@ if($mygroup < 7){
 	exit($_ERROR['no_power']);
 }
 
-
 if($command == 'edit') {
-	$areahour = (int)$_POST['areahour'];
-	$areaadd = (int)$_POST['areaadd'];
-	$arealimit = (int)$_POST['arealimit'];
-	$areaesc = (int)$_POST['areaesc'];
-	$validlimit = (int)$_POST['validlimit'];
-	$combolimit = (int)$_POST['combolimit'];
-	$deathlimit = (int)$_POST['deathlimit'];
-	$splimit = (int)$_POST['splimit'];
-	$hplimit = (int)$_POST['hplimit'];
-	$sleep_time = (int)$_POST['sleep_time'];
-	$heal_time = (int)$_POST['heal_time'];
-	$teamlimit = (int)$_POST['teamlimit'];
+	$ednum = 0;
+	$edfmt = Array(
+		'areahour'=>'int',
+		'areaadd'=>'int',
+		'arealimit'=>'int',
+		'areaesc'=>'int',
+		'validlimit'=>'int',
+		'combolimit'=>'int',
+		'deathlimit'=>'int',
+		'splimit'=>'int',
+		'hplimit'=>'int',
+		'sleep_time'=>'int',
+		'heal_time'=>'int',
+		'teamlimit'=>'int',
+		'antiAFKertime'=>'int',
+		'corpseprotect'=>'int',
+		'coldtimeon'=>'int',
+		'showcoldtimer'=>'int',
+		'npcchaton'=>'int'
+	);
+	$edlist = Array();
+	foreach($edfmt as $key => $val){
+		if(isset($_POST[$key])){
+			${'o_'.$key} = ${$key};
+			if($val == 'int'){
+				${$key} = intval($_POST[$key]);
+			}else{
+				${$key} = $_POST[$key];
+			}
+			if(${$key} != ${'o_'.$key}){
+				$ednum ++;
+				if(${$key}===''){
+					echo "$lang[$key] 已清空<br>";
+				}else{
+					echo "$lang[$key] 修改为 ${$key} <br>";
+				}
+				$edlist[$key] = ${$key};
+			}
+		}
+	}
+	
+	echo "提交的修改请求数量： $ednum <br>";
+	
+	if($ednum){
+		$adminlog = '';
+		$gamecfg_file = config('gamecfg',$gamecfg);
+		$systemfile = file_get_contents($gamecfg_file);
+		foreach($edlist as $key => $val){
+			if($edfmt[$key] == 'int'){
+				$systemfile = preg_replace("/[$]{$key}\s*\=\s*-?[0-9]+;/is", "\${$key} = ${$key};", $systemfile);
+			}else{
+				$systemfile = preg_replace("/[$]{$key}\s*\=\s*[\"'].*?[\"'];/is", "\${$key} = '${$key}';", $systemfile);
+			}
+			
+			$adminlog .= setadminlog('gamecfgmng',$key,$val,$gamecfg);
+		}
+		file_put_contents($gamecfg_file,$systemfile);
+		putadminlog($adminlog);
+		echo '游戏参数已修改';
+	}
 
-	$gamecfg_file = config('gamecfg',$gamecfg);
-	$fp = fopen($gamecfg_file, 'r');
-	$systemfile = fread($fp, filesize($gamecfg_file));
-	fclose($fp);
-
-
-	$systemfile = preg_replace("/[$]areahour\s*\=\s*[0-9]+;/is", "\$areahour = $areahour;", $systemfile);
-	$systemfile = preg_replace("/[$]areaadd\s*\=\s*[0-9]+;/is", "\$areaadd = $areaadd;", $systemfile);
-	$systemfile = preg_replace("/[$]arealimit\s*\=\s*[0-9]+;/is", "\$arealimit = $arealimit;", $systemfile);
-	$systemfile = preg_replace("/[$]areaesc\s*\=\s*[0-9]+;/is", "\$areaesc = $areaesc;", $systemfile);
-	$systemfile = preg_replace("/[$]validlimit\s*\=\s*[0-9]+;/is", "\$validlimit = $validlimit;", $systemfile);
-	$systemfile = preg_replace("/[$]combolimit\s*\=\s*[0-9]+;/is", "\$combolimit = $combolimit;", $systemfile);
-	$systemfile = preg_replace("/[$]deathlimit\s*\=\s*[0-9]+;/is", "\$deathlimit = $deathlimit;", $systemfile);
-	$systemfile = preg_replace("/[$]splimit\s*\=\s*[0-9]+;/is", "\$splimit = $splimit;", $systemfile);
-	$systemfile = preg_replace("/[$]hplimit\s*\=\s*[0-9]+;/is", "\$hplimit = $hplimit;", $systemfile);
-	$systemfile = preg_replace("/[$]sleep_time\s*\=\s*[0-9]+;/is", "\$sleep_time = $sleep_time;", $systemfile);
-	$systemfile = preg_replace("/[$]heal_time\s*\=\s*[0-9]+;/is", "\$heal_time = $heal_time;", $systemfile);
-	$systemfile = preg_replace("/[$]teamlimit\s*\=\s*[0-9]+;/is", "\$teamlimit = $teamlimit;", $systemfile);
-
-
-	$fp = fopen($gamecfg_file, 'w');
-	fwrite($fp, trim($systemfile));
-	fclose($fp);
-
-	adminlog('gamecfgmng',$gamecfg);
-	echo '游戏数据修改完毕。';
-
+}
+foreach(Array('areaesc','coldtimeon','showcoldtimer','npcchaton') as $val){
+	if(${$val}){
+		${$val.'_input'} = "<input type=\"radio\" name=\"$val\" value=\"1\" checked>".$lang['on']."&nbsp;&nbsp;&nbsp;<input type=\"radio\" name=\"$val\" value=\"0\">".$lang['off'];
+	}else{
+		${$val.'_input'} = "<input type=\"radio\" name=\"$val\" value=\"1\">".$lang['on']."&nbsp;&nbsp;&nbsp;<input type=\"radio\" name=\"$val\" value=\"0\" checked>".$lang['off'];
+	}
 }
 
 ?>
@@ -77,7 +104,7 @@ if($command == 'edit') {
 	</tr>
 	<tr style="color: #3A4273">
 		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['areaesc']?></td>
-		<td bgcolor="#EEEEF6" width="30%"><input type="text" name="areaesc" value="<?=$areaesc?>" size="30"></td>
+		<td bgcolor="#EEEEF6" width="30%"><?=$areaesc_input?></td>
 		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['areaesc_comment']?></td>
 	</tr>
 	<tr style="color: #3A4273">
@@ -119,6 +146,31 @@ if($command == 'edit') {
 		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['teamlimit']?></td>
 		<td bgcolor="#EEEEF6" width="30%"><input type="text" name="teamlimit" value="<?=$teamlimit?>" size="30"></td>
 		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['teamlimit_comment']?></td>
+	</tr>
+	<tr style="color: #3A4273">
+		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['antiAFKertime']?></td>
+		<td bgcolor="#EEEEF6" width="30%"><input type="text" name="antiAFKertime" value="<?=$antiAFKertime?>" size="30"></td>
+		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['antiAFKertime_comment']?></td>
+	</tr>
+	<tr style="color: #3A4273">
+		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['corpseprotect']?></td>
+		<td bgcolor="#EEEEF6" width="30%"><input type="text" name="corpseprotect" value="<?=$corpseprotect?>" size="30"></td>
+		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['corpseprotect_comment']?></td>
+	</tr>
+	<tr style="color: #3A4273">
+		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['coldtimeon']?></td>
+		<td bgcolor="#EEEEF6" width="30%"><?=$coldtimeon_input?></td>
+		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['coldtimeon_comment']?></td>
+	</tr>
+	<tr style="color: #3A4273">
+		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['showcoldtimer']?></td>
+		<td bgcolor="#EEEEF6" width="30%"><?=$showcoldtimer_input?></td>
+		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['showcoldtimer_comment']?></td>
+	</tr>
+	<tr style="color: #3A4273">
+		<td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['npcchaton']?></td>
+		<td bgcolor="#EEEEF6" width="30%"><?=$npcchaton_input?></td>
+		<td bgcolor="#E3E3EA">&nbsp;<?=$lang['npcchaton_comment']?></td>
 	</tr>
 </table>
 <input type="button" value="修改" onclick="javascript:document.gamecfgmng.command.value='edit';document.gamecfgmng.submit();">

@@ -5,7 +5,7 @@ if(!defined('IN_GAME')) {
 }
 
 function trap(){
-	global $pdata,$now,$db,$tablepre,$log,$cmd,$mode,$iteminfo,$ex_attack,$ex_trap_inf_r,$ex_dmg_def,$infdata;
+	global $pdata,$now,$db,$tablepre,$log,$cmd,$mode,$iteminfo,$ex_attack,$ex_trap_inf_r,$ex_dmg_def,$infdata,$inf_cannot_cmd;
 	
 	$pid = $pdata['pid'];
 	$name = $pdata['name'];
@@ -61,7 +61,6 @@ function trap(){
 	}else{
 		$trname = $trtype = $trprefix = '';
 	}
-		
 	if($dice >= $escrate){
 		if($playerflag){naddnews($now,'trap',$name,$trname,$itm0);}
 		$log .= "糟糕，你触发了{$trprefix}陷阱<span class=\"yellow\">$itm0</span>！<br>";
@@ -94,9 +93,12 @@ function trap(){
 					}else{
 						$trexlog .= $infdata[$trspk]['dmgnm'].'对你造成了额外的伤害！';
 						$dice = rand(0,99);
-						if($dice <= $ex_trap_inf_r[$trspk] && strpos($inf,$trspk)===false){
+						if($dice < $ex_trap_inf_r[$trspk] && strpos($inf,$trspk)===false){
 							$trexlog .= "，并导致你{$infdata[$trspk]['infnm']}了";
 							$inf .= $trspk;
+							if(in_array($trspk,array_keys($inf_cannot_cmd))){
+								$pdata[$inf_cannot_cmd[$trspk]['field']] = $now;
+							}
 							naddnews($now,'trapinf',$name,$trname,$itm0,$trspk);
 						}
 						$trexlog .= '！<br>';
@@ -373,33 +375,31 @@ function itemadd(){
 		return;
 	}
 	for($i = 1;$i <= 6;$i++){
-		${'itm'.$i} = & $pdata['itm'.$i];
-		${'itmk'.$i} = & $pdata['itmk'.$i];
-		${'itme'.$i} = & $pdata['itme'.$i];
-		${'itms'.$i} = & $pdata['itms'.$i];
-		${'itmsk'.$i} = & $pdata['itmsk'.$i];
-		${'itmnp'.$i} = & $pdata['itmnp'.$i];
-		if(!${'itms'.$i}){
+		$itmi = & $pdata['itm'.$i];
+		$itmki = & $pdata['itmk'.$i];
+		$itmei = & $pdata['itme'.$i];
+		$itmsi = & $pdata['itms'.$i];
+		$itmski = & $pdata['itmsk'.$i];
+		$itmnpi = & $pdata['itmnp'.$i];
+		if(!$itmsi){
 			$log .= "将<span class=\"yellow\">$itm0</span>放入包裹。<br>";
-			${'itm'.$i} = $itm0;
-			${'itmk'.$i} = $itmk0;
-			${'itme'.$i} = $itme0;
-			${'itms'.$i} = $itms0;
-			${'itmsk'.$i} = $itmsk0;
-			${'itmnp'.$i} = $itmnp0;
+			$itmi = $itm0;
+			$itmki = $itmk0;
+			$itmei = $itme0;
+			$itmsi = $itms0;
+			$itmski = $itmsk0;
+			$itmnpi = $itmnp0;
 			$itm0 = $itmk0 = $itmsk0 = '';
 			$itme0 = $itms0 = $itmnp0 = 0;
 			$mode = 'command';
 			return;
 		}
 	}
-	$log .= '你的包裹已经满了。想要丢掉哪个物品？<br>';
-	
-	$cmd .= '<input type="hidden" name="mode" value="itemmain"><br><input type="radio" name="command" id="dropitm0" value="dropitm0" checked><a onclick=sl("dropitm0"); href="javascript:void(0);" >'."$itm0/$itme0/$itms0".'</a><br><br>';
-
-	for($i = 1;$i <= 6;$i++){
-		$cmd .= '<input type="radio" name="command" id="swapitm'.$i.'" value="swapitm'.$i.'"><a onclick=sl("swapitm'.$i.'"); href="javascript:void(0);" >'."${'itm'.$i}/${'itme'.$i}/${'itms'.$i}".'</a><br>';
-	}
+	$mval = 'itemmain';$cval = 'swap';$dlist = Array('itm0','itm1','itm2','itm3','itm4','itm5','itm6');$inotice = '你的包裹已经满了。想要丢掉哪个物品？';
+	ob_start();
+	include template('itemmenu');
+	$cmd = ob_get_contents();
+	ob_end_clean();
 	return;
 }
 
@@ -586,7 +586,7 @@ function itemreduce($item){ //只限合成使用！！
 
 
 function itembuy($item,$shop,$bnum=1) {
-	global $db,$tablepre,$log,$pdata,$now,$areanum,$areaadd;
+	global $db,$tablepre,$mode,$log,$pdata,$now,$areanum,$areaadd;
 	$name = $pdata['name'];$money = & $pdata['money'];$pls = $pdata['pls'];$club= $pdata['club'];
 	$itm0 = & $pdata['itm0'];
 	$itmk0 = & $pdata['itmk0'];
@@ -599,27 +599,34 @@ function itembuy($item,$shop,$bnum=1) {
 	$price = $club == 11 ? round($iteminfo['price']*0.75) : $iteminfo['price'];
 	if(!$iteminfo) {
 		$log .= '要购买的道具不存在！<br>';
+		$mode = 'command';
 		return;
 	}
 
 	$bnum = (int)$bnum;
 	if($iteminfo['num'] <= 0) {
 		$log .= '此物品已经售空！<br>';
+		$mode = 'command';
 		return;
 	} elseif($bnum<=0) {
 		$log .= '购买数量必须为大于0的整数。<br>';
+		$mode = 'command';
 		return;
 	} elseif($bnum>$iteminfo['num']) {
 		$log .= '购买数量必须小于存货数量。<br>';
+		$mode = 'command';
 		return;
 	} elseif($money < $price*$bnum) {
 		$log .= '你的钱不够，不能购买此物品！<br>';
+		$mode = 'command';
 		return;
 	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$iteminfo['itmk'])&&$bnum>1) {
 		$log .= '此物品一次只能购买一个。<br>';
+		$mode = 'command';
 		return;
 	}elseif($iteminfo['area']> $areanum/$areaadd){
 		$log .= '此物品尚未开放出售！<br>';
+		$mode = 'command';
 		return;
 	}
 	$inum = $iteminfo['num']-$bnum;
@@ -635,7 +642,7 @@ function itembuy($item,$shop,$bnum=1) {
 	$itmsk0 = $iteminfo['itmsk'];
 	$itmnp0 = $iteminfo['itmnp'];
 
-	itemget();	
+	itemget();
 	return;
 }
 

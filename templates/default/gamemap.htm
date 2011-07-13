@@ -1,11 +1,9 @@
-<TABLE border="1" cellspacing="0" cellpadding="0" align=center background="map/neomap.jpg" style="position:relative;background-repeat:no-repeat;background-position:right bottom;">
-	<tr align="center">
-		<td width="48" height="48" align="middle" id="26"
+<TABLE border="1" cellspacing="0" cellpadding="0" align=center background="map/map.jpg" style="position:relative;background-repeat:no-repeat;background-position:right bottom;"><tr align="center"><td width="38" height="38" align="middle" id="26"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 26}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(26,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='26';postCommand(); title="{$nmap[26]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='26';postCommand();"<!--{/if}--> title="{$nmap[26]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -16,16 +14,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>剑刃墓场</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="17"
+				<!--{/if}-->>剑刃墓场</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="17"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 17}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(17,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='17';postCommand(); title="{$nmap[17]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='17';postCommand();"<!--{/if}--> title="{$nmap[17]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -36,13 +30,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>学院都市</span></td>
-		<td width="48" height="48" align="middle" id="1"
+				<!--{/if}-->>学院都市</span></td><td width="38" height="38" align="middle" id="1"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 1}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(1,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='1';postCommand(); title="{$nmap[1]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='1';postCommand();"<!--{/if}--> title="{$nmap[1]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -53,14 +46,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>端点</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="23"
+				<!--{/if}-->>端点</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="23"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 23}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(23,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='23';postCommand(); title="{$nmap[23]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='23';postCommand();"<!--{/if}--> title="{$nmap[23]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -71,31 +62,25 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>幻想世界</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<!--{if $arealock}-->
-			<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
+				<!--{/if}-->>幻想世界</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><!--{if $arealock}-->
+			<td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td>
 		<!--{else}-->
-			<td width="48" height="48" align="middle" id="30"
+			<td width="38" height="38" align="middle" id="30"
 				<!--{if CURSCRIPT == 'game'}-->
 					<!--{if $pdata['pls'] == 30}-->
-						class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+						class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 					<!--{elseif in_array(30,array_keys($nmap))}-->
-						class="maptdlime" onclick=$('command').value='move';$('moveto').value='30';postCommand(); title="{$nmap[30]}"
+						class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='30';postCommand();"<!--{/if}--> title="{$nmap[30]}"
 					<!--{else}-->
 						class="map2"
 					<!--{/if}-->
 				<!--{else}-->class="map2"<!--{/if}-->><span class="mapspanlime">冬木市</span></td>
-		<!--{/if}-->
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="0"
+		<!--{/if}--></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="0"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 0}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(0,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='0';postCommand(); title="{$nmap[0]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='0';postCommand();"<!--{/if}--> title="{$nmap[0]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -106,16 +91,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>无月之影</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="3"
+				<!--{/if}-->>无月之影</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="3"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 3}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(3,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='3';postCommand(); title="{$nmap[3]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='3';postCommand();"<!--{/if}--> title="{$nmap[3]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -126,27 +107,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>雪之镇</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="24"
+				<!--{/if}-->>雪之镇</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="24"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 24}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(24,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='24';postCommand(); title="{$nmap[24]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='24';postCommand();"<!--{/if}--> title="{$nmap[24]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -157,17 +123,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>永恒的世界</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="25"
+				<!--{/if}-->>永恒的世界</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="25"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 25}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(25,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='25';postCommand(); title="{$nmap[25]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='25';postCommand();"<!--{/if}--> title="{$nmap[25]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -178,13 +139,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>妖精驿站</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="19"<!--{if CURSCRIPT == 'game'}-->
+				<!--{/if}-->>妖精驿站</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="19"
+			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 19}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(19,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='19';postCommand(); title="{$nmap[19]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='19';postCommand();"<!--{/if}--> title="{$nmap[19]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -195,14 +155,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>精灵中心</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="5"
+				<!--{/if}-->>精灵中心</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="5"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 5}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(5,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='5';postCommand(); title="{$nmap[5]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='5';postCommand();"<!--{/if}--> title="{$nmap[5]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -213,14 +171,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>指挥中心</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="11"
+				<!--{/if}-->>指挥中心</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="11"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 11}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(11,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='11';postCommand(); title="{$nmap[11]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='11';postCommand();"<!--{/if}--> title="{$nmap[11]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -231,17 +187,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>对天使用作战本部</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" align="middle" id="28"
+				<!--{/if}-->>对天使用作战本部</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr><tr align="center"><td width="38" height="38" align="middle" id="28"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 28}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(28,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='28';postCommand(); title="{$nmap[28]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='28';postCommand();"<!--{/if}--> title="{$nmap[28]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -252,21 +203,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>FARGO前基地</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="8"
+				<!--{/if}-->>FARGO前基地</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="8"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 8}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(8,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='8';postCommand(); title="{$nmap[8]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='8';postCommand();"<!--{/if}--> title="{$nmap[8]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -277,17 +219,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>白穗神社</span></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="7"
+				<!--{/if}-->>白穗神社</span></td></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="7"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 7}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(7,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='7';postCommand(); title="{$nmap[7]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='7';postCommand();"<!--{/if}--> title="{$nmap[7]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -298,14 +235,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>清水池</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="29"
+				<!--{/if}-->>清水池</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="29"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 29}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(29,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='29';postCommand(); title="{$nmap[29]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='29';postCommand();"<!--{/if}--> title="{$nmap[29]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -316,14 +251,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>风祭森林</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="21"
+				<!--{/if}-->>风祭森林</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="21"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 21}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(21,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='21';postCommand(); title="{$nmap[21]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='21';postCommand();"<!--{/if}--> title="{$nmap[21]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -334,13 +267,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>圣Gradius学园</span></td>
-		<td width="48" height="48" align="middle" id="27"
+				<!--{/if}-->>圣Gradius学园</span></td><td width="38" height="38" align="middle" id="27"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 27}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(27,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='27';postCommand(); title="{$nmap[27]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='27';postCommand();"<!--{/if}--> title="{$nmap[27]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -351,13 +283,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>花菱商厦</span></td>
-		<td width="48" height="48" align="middle" id="12"
+				<!--{/if}-->>花菱商厦</span></td><td width="38" height="38" align="middle" id="12"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 12}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(12,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='12';postCommand(); title="{$nmap[12]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='12';postCommand();"<!--{/if}--> title="{$nmap[12]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -368,13 +299,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>夏之镇</span></td>
-		<td width="48" height="48" align="middle" id="4"
+				<!--{/if}-->>夏之镇</span></td><td width="38" height="38" align="middle" id="4"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 4}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(4,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='4';postCommand(); title="{$nmap[4]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='4';postCommand();"<!--{/if}--> title="{$nmap[4]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -385,15 +315,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>索拉利斯</span></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" align="middle" id="15"
+				<!--{/if}-->>索拉利斯</span></td></tr><tr align="center"><td width="38" height="38" align="middle" id="15"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 15}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(15,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='15';postCommand(); title="{$nmap[15]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='15';postCommand();"<!--{/if}--> title="{$nmap[15]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -404,15 +331,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>守矢神社</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="18"
+				<!--{/if}-->>守矢神社</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="18"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 18}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(18,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='18';postCommand(); title="{$nmap[18]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='18';postCommand();"<!--{/if}--> title="{$nmap[18]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -423,23 +347,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>秋之镇</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="2"
+				<!--{/if}-->>秋之镇</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="2"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 2}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(2,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='2';postCommand(); title="{$nmap[2]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='2';postCommand();"<!--{/if}--> title="{$nmap[2]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -450,13 +363,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>RF高校</span></td>
-		<td width="48" height="48" align="middle" id="13"
+				<!--{/if}-->>RF高校</span></td><td width="38" height="38" align="middle" id="13"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 13}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(13,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='13';postCommand(); title="{$nmap[13]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='13';postCommand();"<!--{/if}--> title="{$nmap[13]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -467,14 +379,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>三体星</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="6"
+				<!--{/if}-->>三体星</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="6"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 6}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(6,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='6';postCommand(); title="{$nmap[6]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='6';postCommand();"<!--{/if}--> title="{$nmap[6]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -485,14 +395,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>梦幻馆</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="14"
+				<!--{/if}-->>梦幻馆</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="14"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 14}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(14,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='14';postCommand(); title="{$nmap[14]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='14';postCommand();"<!--{/if}--> title="{$nmap[14]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -503,24 +411,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>光坂高校</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="10"
+				<!--{/if}-->>光坂高校</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="10"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 10}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(10,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='10';postCommand(); title="{$nmap[10]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='10';postCommand();"<!--{/if}--> title="{$nmap[10]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -531,18 +427,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>麦斯克林</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-	<tr align="center">
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="16"
+				<!--{/if}-->>麦斯克林</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr><tr align="center"><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="16"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 16}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(16,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='16';postCommand(); title="{$nmap[16]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='16';postCommand();"<!--{/if}--> title="{$nmap[16]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -553,14 +443,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>常磐森林</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="9"
+				<!--{/if}-->>常磐森林</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="9"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 9}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(9,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='9';postCommand(); title="{$nmap[9]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='9';postCommand();"<!--{/if}--> title="{$nmap[9]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -571,14 +459,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>墓地</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" align="middle" id="22"
+				<!--{/if}-->>墓地</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" align="middle" id="22"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 22}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(22,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='22';postCommand(); title="{$nmap[22]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='22';postCommand();"<!--{/if}--> title="{$nmap[22]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -589,13 +475,12 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>初始之树</span></td>
-		<td width="48" height="48" align="middle" id="20"
+				<!--{/if}-->>初始之树</span></td><td width="38" height="38" align="middle" id="20"
 			<!--{if CURSCRIPT == 'game'}-->
 				<!--{if $pdata['pls'] == 20}-->
-					class="maptdyellow" onclick=$('command').value='search';postCommand(); title="{lang search}"
+					class="maptdyellow" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='search';postCommand();"<!--{/if}--> title="{lang search}"
 				<!--{elseif in_array(20,array_keys($nmap))}-->
-					class="maptdlime" onclick=$('command').value='move';$('moveto').value='20';postCommand(); title="{$nmap[20]}"
+					class="maptdlime" <!--{if $mode == 'command' && $pdata['hp']>0}-->onclick="$('command').value='move';$('subcmd').name='moveto',$('subcmd').value='20';postCommand();"<!--{/if}--> title="{$nmap[20]}"
 				<!--{else}-->
 					class="map2"
 				<!--{/if}-->
@@ -606,9 +491,4 @@
 					class="mapspanred"
 				<!--{else}-->
 					class="mapspanyellow"
-				<!--{/if}-->>春之镇</span></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-		<td width="48" height="48" class="map2" align=middle><IMG src="map/blank.gif" width="48" height="48" border=0></td>
-	</tr>
-</table>
+				<!--{/if}-->>春之镇</span></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td><td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td></tr></table>

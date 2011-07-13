@@ -623,12 +623,11 @@ function itemuse($itmn) {
 			}
 		} elseif ($itm == '毒药') {
 			global $cmd;
-			$cmd = '<input type="hidden" name="mode" value="item"><input type="hidden" name="usemode" value="poison"><input type="hidden" name="itmp" value="' . $itmn . '">你想对什么下毒？<br><input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
-			for($i = 1; $i <= 6; $i ++) {
-				if ((strpos ( $pdata['itmk' . $i], 'H' ) === 0) || (strpos ( $pdata['itmk' . $i], 'P' ) === 0)) {
-					$cmd .= '<input type="radio" name="command" id="itm' . $i . '" value="itm' . $i . '"><a onclick=sl("itm' . $i . '"); href="javascript:void(0);" >' . $pdata['itm' . $i] . '/' . $pdata['itme' . $i] .'/'. $pdata['itms' . $i]. '</a><br>';
-				}
-			}
+			$mval = 'item';
+			ob_start();
+			include template('sp_poison');
+			$cmd = ob_get_contents();
+			ob_end_clean();
 			return;
 		} elseif (strpos ( $itm, '磨刀石' ) !== false) {
 			$wep = & $pdata['wep'];
@@ -667,7 +666,7 @@ function itemuse($itmn) {
 			$weps = & $pdata['weps'];
 			$wepsk = & $pdata['wepsk'];
 			$wepnp = & $pdata['wepnp'];
-			if (( strpos ( $wep, '棍棒' ) !== false) && ($wepk == 'WP')) {
+			if ( strpos ( $wep, '棍棒' ) !== false && strpos ( $wepk, 'WP' ) === 0) {
 				$dice = rand ( 0, 100 );
 				if ($dice >= 10) {
 					$wepe += $itme;
@@ -832,7 +831,7 @@ function itemuse($itmn) {
 			global $arealock;
 			$arealock = 0;
 			save_gameinfo();
-			$log .= "<span class=\"yellow\">你使用了{$itm}。</span><br><span class=\"evergreen\">“你还真用心呢，那么也许我应该送你一个礼物？”</span><br><span class=\"evergreen\">“所有的NPC都离开战场了。好好享受接下来的杀戮吧，祝你好运。”</span>——林无月<br>";
+			$log .= "<span class=\"yellow\">你使用了{$itm}。</span><br><span class=\"evergreen\">“你还真用心呢，那么也许我应该送你一个礼物？”</span><br>——林无月<br>";
 			$log .= "<span class=\"yellow\">地图上出现了新的地点！</span><br>";
 			$itm = $itmk = $itmsk = '';
 			$itme = $itms = $itmnp = 0;

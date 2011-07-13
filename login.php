@@ -8,7 +8,6 @@ if($mode == 'quit') {
 	gsetcookie('user','');
 	gsetcookie('pass','');
 	gsetcookie('ctrl','');
-	gsetcookie('promap','');
 	header("Location: index.php");
 	exit();
 
@@ -54,7 +53,6 @@ $db->query("UPDATE {$tablepre}users SET ip='$onlineip' WHERE username = '$userna
 gsetcookie('user',$username);
 gsetcookie('pass',$password);
 gsetcookie('ctrl','pl');
-gsetcookie('promap','pro');
 
 Header("Location: index.php");
 exit();

@@ -4,8 +4,8 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 function get_itmkwords($itmk){
-	global $iteminfo,$noitmk;
-	$ikwords = $noitmk;
+	global $iteminfo;
+	$ikwords = '';
 	foreach($iteminfo as $ikey => $ival){
 		if(strpos($itmk,$ikey)===0){
 			$ikwords = $ival;
@@ -13,6 +13,55 @@ function get_itmkwords($itmk){
 		}
 	}
 	return $ikwords;
+}
+
+function get_itmewords($itmk,$itme){
+	if(strpos($itmk,'W')===0){
+		return "攻 <span class=\"val\">$itme</span>";
+	}elseif(strpos($itmk,'D')===0){
+		return "防 <span class=\"val\">$itme</span>";
+	}else{
+		return "效 <span class=\"val\">$itme</span>";
+	}
+}
+
+function get_itmswords($itmk,$itms){
+	global $nosta;
+	if(strpos($itmk,'WG')===0){
+		$cst = get_cassette($itmk);
+		if($itms == $nosta){
+			$show = 0;
+		}else{
+			$show = $itms;
+		}
+		return "弹 <span id=\"bullet\" class=\"val\">$show</span>/$cst";
+	}elseif(strpos($itmk,'WP')===0 || strpos($itmk,'WK')===0){
+		if($itms == $nosta){
+			return "<span class=\"val\">耗攻</span>";
+		}else{
+			return "耐 <span class=\"val\">$itms</span>";
+		}
+	}elseif(strpos($itmk,'WC')===0 || strpos($itmk,'WD')===0 || strpos($itmk,'WF')===0){
+		if($itms == $nosta){
+			return "<span class=\"val\">无限</span>";
+		}else{
+			return "数 <span class=\"val\">$itms</span>";
+		}
+	}elseif(strpos($itmk,'D')===0 || strpos($itmk,'A')===0){
+		if($itms == $nosta){
+			return "<span class=\"val\">无限</span>";
+		}else{
+			return "耐 <span class=\"val\">$itms</span>";
+		}
+	}elseif(strpos($itmk,'WN')===0){
+		return "<span class=\"val\">无限</span>";
+	}else{
+		if($itms == $nosta){
+			return "<span class=\"val\">无限</span>";
+		}else{
+			return "数 <span class=\"val\">$itms</span>";
+		}
+	}
 }
 
 function get_itmskwords($itmk,$itmsk,$profile=0){
@@ -25,19 +74,20 @@ function get_itmskwords($itmk,$itmsk,$profile=0){
 			$isklist[] = $itemskinfo[$sub];
 		}
 	}
-	if(strpos($itmk,'WG')===0){
-		$cst = get_cassette($itmk);
-		if($cst > 0){
-			$cstwords = '弹夹'.$cst.'发';
-			array_unshift($isklist,$cstwords);
-		}
-	}
+//	if(strpos($itmk,'WG')===0){
+//		$cst = get_cassette($itmk);
+//		if($cst > 0){
+//			$cstwords = '弹夹'.$cst.'发';
+//			array_unshift($isklist,$cstwords);
+//		}
+//	}
 	$wepat = get_wephittimes($itmk);
 	if($wepat>1){
 		$atwords = $wepat.'回攻击';	
 		array_unshift($isklist,$atwords);
 	}
 	$iskwords = '';
+	$i = 0;
 	foreach($isklist as $val){
 		if(!$iskwords){
 			$iskwords = $val;
@@ -45,7 +95,8 @@ function get_itmskwords($itmk,$itmsk,$profile=0){
 			$iskwords .= '<br>'.$val;
 		}else{
 			$iskwords .= '+'.$val;
-		}		
+		}
+		$i ++;
 	}
 	if(!$iskwords){$iskwords = $nospk;}
 	return $iskwords;
@@ -56,6 +107,8 @@ function init_itemwords(&$data,$prf = ''){
 	$rdata = Array();
 	foreach (Array('wep','arb','arh','ara','arf','art') as $val) {
 		$rdata[$prf.$val.'k_words'] = get_itmkwords($data[$val.'k']);
+		$rdata[$prf.$val.'e_words'] = get_itmewords($data[$val.'k'],$data[$val.'e']);
+		$rdata[$prf.$val.'s_words'] = get_itmswords($data[$val.'k'],$data[$val.'s']);
 		if($prf){
 			$rdata[$prf.$val.'sk_words'] = get_itmskwords($data[$val.'k'],$data[$val.'sk']);
 		} else {
@@ -64,6 +117,8 @@ function init_itemwords(&$data,$prf = ''){
 	}
 	for($i = 0;$i<=6;$i++){
 		$rdata[$prf.'itmk'.$i.'_words'] = get_itmkwords($data['itmk'.$i]);
+		$rdata[$prf.'itme'.$i.'_words'] = get_itmewords($data['itmk'.$i],$data['itme'.$i]);
+		$rdata[$prf.'itms'.$i.'_words'] = get_itmswords($data['itmk'.$i],$data['itms'.$i]);
 		if($prf || $i == 0){
 			$rdata[$prf.'itmsk'.$i.'_words'] = get_itmskwords($data['itmk'.$i],$data['itmsk'.$i]);
 		} else {
@@ -71,7 +126,7 @@ function init_itemwords(&$data,$prf = ''){
 		}
 	}
 	foreach($rdata as $key => $val){
-		$data['display'][$key] = $GLOBALS[$key] = $val;//回头删掉这个
+		$data['display'][$key] = $val;
 	}	
 	return $rdata;
 }
@@ -132,7 +187,7 @@ function init_displaydata(&$data){
 	return;
 }
 
-function init_profile($pdata){
+function init_profile(&$pdata){
 	global $wordsdata,$infinfo,$infdata,$idata,$infimg,$hpcolor,$spcolor,$newhpimg,$newspimg,$iteminfo,$itemspkinfo;
 	extract($pdata);
 	$idata = '';
@@ -199,7 +254,7 @@ function init_profile($pdata){
 	if(strpos($inf,'S') !== false) {
 		$idata .= $infdata['S']['short'];
 	}
-	$hpcolor = 'clan';
+	$hpcolor = 'aqua';
 	if($hp <= 0 ){
 		$infimg .= '<img src="img/dead.gif" style="position:absolute;top:120;left:6;width:94;height:40">';
 		$hpcolor = 'red';
@@ -218,93 +273,114 @@ function init_profile($pdata){
 	} elseif($sp <= $msp*0.5){
 		$spcolor = 'yellow';
 	} else {
-		$spcolor = 'clan';
+		$spcolor = 'aqua';
 	}
 	
-	$newhppre = 5+floor(151*(1-$hp/$mhp));
-	$newhpimg = '<img src="img/red2.gif" style="position:absolute; clip:rect('.$newhppre.'px,55px,160px,0px);">';
-	$newsppre = 5+floor(151*(1-$sp/$msp));
-	$newspimg = '<img src="img/yellow2.gif" style="position:absolute; clip:rect('.$newsppre.'px,55px,160px,0px);">';
+	if($hp<=0 || $mhp<=0){
+		$pdata['display']['hpimgwidth'] = 0;
+	}elseif($hp >= $mhp){
+		$pdata['display']['hpimgwidth'] = 100;
+	}else{
+		$pdata['display']['hpimgwidth'] = floor(100*($hp/$mhp));
+	}
+	if($sp<=0 || $msp<=0){
+		$pdata['display']['spimgwidth'] = 0;
+	}elseif($sp >= $msp){
+		$pdata['display']['spimgwidth'] = 100;
+	}else{
+		$pdata['display']['spimgwidth'] = floor(100*($sp/$msp));
+	}
 
 	return;
 }
 
-function init_battle($edata,$ismeet = 0){
-	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_lvl,$w_rage,$w_hp,$w_sp,$w_mhp,$w_msp,$w_wep,$w_wepk,$w_wepe,$w_sNoinfo,$w_iconImg,$w_hpstate,$w_spstate,$w_ragestate,$w_wepestate,$w_isdead,$hpinfo,$spinfo,$rageinfo,$wepeinfo,$fog,$typeinfo,$sexinfo,$infdata,$w_exp,$w_upexp,$baseexp,$w_pose,$w_tactic,$w_inf,$w_infdata,$honourinfo;
-	extract($edata,EXTR_PREFIX_ALL,'w');
+function init_battle(&$edata,$ismeet = 0){
+	//global $edata['type'],$w_name,$w_gd,$w_sNo,$w_icon,$w_lvl,$w_rage,$edata['hp'],$edata['sp'],$edata['mhp'],$edata['msp'],$edata['wep'],$edata['wep']k,$edata['wepe'],$w_sNoinfo,$w_iconImg,$w_hpstate,$w_spstate,$w_ragestate,$w_wepestate,$w_isdead,
+	global $hpinfo,$spinfo,$rageinfo,$wepeinfo,$fog,$typeinfo,$sexinfo,$infdata,$baseexp,$honourinfo,$poseinfo,$tacinfo;
+	//,$w_exp,$w_upexp,$baseexp,$w_pose,$w_tactic,$w_inf,$w_infdata,$honourinfo;
+	//extract($edata,EXTR_PREFIX_ALL,'w');
+	$edata['display'] = Array();
+	$disp = & $edata['display'];
+	$disp['hpstate'] = $disp['spstate'] = $disp['ragestate'] = $disp['wepestate'] = $disp['gamehonourinfo'] = '';
+	$w_hpstate = & $disp['hpstate'];
+	$w_spstate = & $disp['spstate'];
+	$w_ragestate = & $disp['ragestate'];
+	$w_wepestate = & $disp['wepestate'];
+	//$w_upexp = round(($w_lvl*2+1)*$baseexp);
 	
-	$w_upexp = round(($w_lvl*2+1)*$baseexp);
 	
 	
-	
-	if($w_hp <= 0) {
+	if($edata['hp'] <= 0) {
 		$w_hpstate = "<span class=\"red\">$hpinfo[3]</span>";
 		$w_spstate = "<span class=\"red\">$spinfo[3]</span>";
 		$w_ragestate = "<span class=\"red\">$rageinfo[3]</span>";
-		$w_isdead = true;
 	} else{
-		if($w_hp < $w_mhp*0.2) {
+		if($edata['hp'] < $edata['mhp']*0.2) {
 		$w_hpstate = "<span class=\"red\">$hpinfo[2]</span>";
-		} elseif($w_hp < $w_mhp*0.5) {
+		} elseif($edata['hp'] < $edata['mhp']*0.5) {
 		$w_hpstate = "<span class=\"yellow\">$hpinfo[1]</span>";
 		} else {
 		$w_hpstate = "<span class=\"clan\">$hpinfo[0]</span>";
 		}
-		if($w_sp < $w_msp*0.2) {
+		if($edata['sp'] < $edata['msp']*0.2) {
 		$w_spstate = "$spinfo[2]";
-		} elseif($w_sp < $w_msp*0.5) {
+		} elseif($edata['sp'] < $edata['msp']*0.5) {
 		$w_spstate = "$spinfo[1]";
 		} else {
 		$w_spstate = "$spinfo[0]";
 		}
-		if($w_rage >= 100) {
+		if($edata['rage'] >= 100) {
 		$w_ragestate = "<span class=\"red\">$rageinfo[2]</span>";
-		} elseif($w_rage >= 30) {
+		} elseif($edata['rage'] >= 30) {
 		$w_ragestate = "<span class=\"yellow\">$rageinfo[1]</span>";
 		} else {
 		$w_ragestate = "$rageinfo[0]";
 		}
 	}
 	
-	if($w_wepe >= 400) {
+	if($edata['wepe'] >= 400) {
 		$w_wepestate = "$wepeinfo[3]";
-	} elseif($w_wepe >= 200) {
+	} elseif($edata['wepe'] >= 200) {
 		$w_wepestate = "$wepeinfo[2]";
-	} elseif($w_wepe >= 60) {
+	} elseif($edata['wepe'] >= 60) {
 		$w_wepestate = "$wepeinfo[1]";
 	} else {
 		$w_wepestate = "$wepeinfo[0]";
 	}
 	
 	if(!$fog||$ismeet) {
-		$w_gamehonourinfo = $w_gamehonour ? $honourinfo[$w_gamehonour]['name'] : $typeinfo[$w_type];
-		$w_sNoinfo = $w_type == 0 ? "$w_gamehonourinfo({$sexinfo[$w_gd]}{$w_sNo}号)" : "$w_gamehonourinfo({$sexinfo[$w_gd]})";
-	  $w_i = $w_type > 0 && $w_type != 91 ? 'n' : $w_gd;
-		$w_iconImg = $w_i.'_'.$w_icon.'.gif';
-		if($w_inf) {
-			$w_infdata = '';
+		$disp['name'] = $edata['name'];$disp['wep'] = $edata['wep'];
+		$disp['pose'] = $poseinfo[$edata['pose']];$disp['tactic'] = $tacinfo[$edata['tactic']];
+		$disp['lvl'] = $edata['lvl'];$disp['wepk'] = get_itmkwords($edata['wepk']);
+		$disp['gamehonourinfo'] = $edata['gamehonour'] ? $honourinfo[$edata['gamehonour']]['name'] : $typeinfo[$edata['type']];
+		$disp['sNoinfo'] = $edata['type'] == 0 ? $sexinfo[$edata['gd']].$edata['sNo'].'号' : $sexinfo[$edata['gd']];
+	  //$w_i = $edata['type'] > 0 && $edata['type'] != 91 ? 'n' : $edata['gd'];
+		$disp['iconImg'] = $edata['type'] > 0 && $edata['type'] != 91 ? 'n_'.$edata['icon'].'.gif' : $edata['gd'].'_'.$edata['icon'].'.gif';
+		if($edata['inf']) {
+			$disp['infdata'] = '';
 			foreach ($infdata as $inf_ky => $inf_val) {
-				if(strpos($w_inf,$inf_ky) !== false) {
-					$w_infdata .= $inf_val['short'];
+				if(strpos($edata['inf'],$inf_ky) !== false) {
+					$disp['infdata'] .= $inf_val['short'];
 				}
 			}
 		} else {
-			$w_infdata = '';
+			$disp['infdata'] = '无';
 		}
 	} else {
-		$w_sNoinfo = '？？？';
-		$w_iconImg = 'question.gif';
-		$w_name = '？？？';
-		$w_wep = '？？？';
-		$w_infdata = '？？？';
-		$w_pose = -1;
-		$w_tactic = -1;
-		$w_lvl = '？';
+		$disp['sNoinfo'] = '？？？';
+		$disp['iconImg'] = 'question.gif';
+		$disp['name'] = '？？？';
+		$disp['gamehonourinfo'] = '？？？';
+		$disp['wep'] = '？？？';
+		$disp['infdata'] = '？？？';
+		$disp['pose'] = '？？？';
+		$disp['tactic'] = '？？？';
+		$disp['lvl'] = '？';
 		$w_hpstate = '？？？';
 		$w_spstate = '？？？';
 		$w_ragestate = '？？？';
 		$w_wepestate = '？？？';
-		$w_wepk = '';
+		$disp['wepk'] = '？？？';
 	}
 	return;
 }

@@ -8,7 +8,7 @@ function name_check($username){
 	global $nmlimit,$gamecfg;
 	if(!isset($username) || strlen($username)===0){	return 'name_not_set';} 
 	elseif(mb_strlen($username,'utf-8')>15) { return 'name_too_long'; } 
-	elseif(preg_match('/[,|<|>|&|_|;|#|"|\s|\p{C}]+/u',$username)) { return 'name_invalid'; }
+	elseif(preg_match('/[,|<|>|&|;|#|"|\s|\p{C}]+/u',$username)) { return 'name_invalid'; }
 	elseif(preg_match($nmlimit,$username)) { return 'name_banned'; }
 	include_once config('npc',$gamecfg);
 	foreach ($npcinfo as $val){

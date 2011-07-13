@@ -41,13 +41,13 @@ function poison($itmn = 0) {
 		
 	$itmnp = $pid;
 	if($art == '妖精的羽翼') {
-		$log .= "使用了 <span class=\"red\">$poison</span> ，<span class=\"yellow\">${'itm'.$itmn}</span> 被净化了！<br>";
+		$log .= "使用了<span class=\"red\">$poison</span>，<span class=\"yellow\">$itm</span>被净化了！<br>";
 	}	else {
-		$log .= "使用了 <span class=\"red\">$poison</span> ，<span class=\"yellow\">${'itm'.$itmn}</span> 被下毒了！<br>";
+		$log .= "使用了<span class=\"red\">$poison</span>，<span class=\"yellow\">$itm</span>被下毒了！<br>";
 	}
 	$poisons--;
 	if($poisons <= 0){
-		$log .= "<span class=\"red\">$poison</span> 用光了。<br>";
+		$log .= "<span class=\"red\">$poison</span>用光了。<br>";
 		$poison = $poisonk = '';$poisone = $poisons =$poisonnp= 0;
 	}
 
@@ -57,14 +57,30 @@ function poison($itmn = 0) {
 }
 
 function wthchange($itm,$level){
-	global $now,$log,$weather, $wthinfo, $pdata;
+	global $now,$log,$weather, $wthdata, $pdata;
 	$name = $pdata['name'];
-	if($level==99){$weather = rand ( 0, 13 );}//随机全天气
-	elseif($level==98){$weather = rand ( 9, 13 );}//随机恶劣天气
-	elseif($level==97){$weather = rand ( 0, 8 );}//随机一般天气
-	elseif($level==96){$weather = rand ( 7, 8 );}//随机起雾天气
+	if($level==99){//随机全天气
+		do{
+			$weather = rand ( 0, 99 );
+		}while(!isset($wthdata[$weather]));
+	}
+	elseif($level==98){//随机恶劣天气
+		do{
+			$weather = rand ( 20, 99 );
+		}while(!isset($wthdata[$weather]));
+	}
+	elseif($level==97){//随机一般天气
+		do{
+			$weather = rand ( 0, 19 );
+		}while(!isset($wthdata[$weather]));
+	}
+	elseif($level==96){//随机起雾天气
+		do{
+			$weather = rand ( 0, 99 );
+		}while(!isset($wthdata[$weather]) || $wthdata[$weather]['kind'] != 'FOG');
+	}
 	elseif(!empty($level) && is_numeric($level)){
-		if($level >=0 && $level < count($wthinfo)){
+		if($level >=0 && isset($wthdata[$level])){
 			$weather = $level;
 		}else{$weather = 0;}
 	}
@@ -72,7 +88,7 @@ function wthchange($itm,$level){
 	include_once GAME_ROOT . './include/system.func.php';
 	save_gameinfo ();
 	naddnews ( $now, 'wthchange', $name, $weather, $itm );
-	$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br />";
+	$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red b\">{$wthdata[$weather]['name']}</span>！<br />";
 }
 
 //function elec(&$itm,&$itmk,&$itme,&$itms,&$itmsk) {
@@ -221,8 +237,7 @@ function hack($itmn = 0,$hcmd = 'back') {
 
 
 function radar($m = 0){
-	global $pdata,$mode,$log,$cmd,$main,$db,$tablepre,$gamecfg,$mapdata,$arealist,$areanum,$hack,$gamestate,$typeinfo;
-	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen;
+	global $pdata,$mode,$log,$cmd,$main,$db,$tablepre,$mapdata,$arealist,$areanum,$hack,$gamestate,$typeinfo;//$gamecfg,
 	$pls = $pdata['pls'];
 	//include config('npc',$gamecfg);
 	
@@ -230,100 +245,37 @@ function radar($m = 0){
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
-	$npctplist = Array(3,4,11,12,13);
-	$tdheight = 20;
-	$screenheight = count($mapdata)*$tdheight;
+	$tplist = Array(0,3,4,11,12,13);
 	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0 AND state < 98");
 	while($cd = $db->fetch_array($result)) {
 		$chdata[] = $cd;
 	}
 	$radar = Array();
 	for($i=0;$i<count($mapdata);$i++){
-			for($j=0;$j<=13;$j++){
-			$radar[$i][$j] = 0;
-		}
+		foreach($tplist as $val){
+			$radar[$i][$val] = '-';
+		}		
 	}
 	foreach ($chdata as $data){
-		$radar[$data['pls']][$data['type']]+=1;
-	}
-	$radarscreen = '<table height='.$screenheight.'px width=640px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
-	$radarscreen .= "<tr>
-		<td class=b2 height={$tdheight}px width=120px><div class=nttx></div></td>
-		<td class=b2><div class=nttx>{$typeinfo[0]}</div></td>";
-	foreach ($npctplist as $value){
-		$radarscreen .= "<td class=b2><div class=nttx>{$typeinfo[$value]}</div></td>";
-	}
-	$radarscreen .= '</tr>';
-	for($i=0;$i<count($mapdata);$i++) {
-		$radarscreen .= "<tr><td class=b2 height={$tdheight}px><div class=nttx>{$mapdata[$i]['name']}</div></td>";
-		if((array_search($i,$arealist) > $areanum) || $hack) {
-			if($i==$pls) {
-				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				//$num0 = $db->num_rows($result);
-				$num0 = $radar[$i][0];
-				foreach ($npctplist as $j){
-					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
-					//${'num'.$j} = $db->num_rows($result);
-					${'num'.$j} = $gamestate == 50 ? 0 : $radar[$i][$j];
-				}
-				if($num0){
-					$pnum[$i] ="<span class=\"yellow b\">$num0</span>";
-				} else {
-					$pnum[$i] ='<span class="yellow b">-</span>';
-				}
-				foreach ($npctplist as $j){
-					//${'npc'.$j.'num'}[$i] = "<span class=\"yellow b\">${'num'.$j}</span>";
-					if(${'num'.$j}){
-					${'npc'.$j.'num'}[$i] ="<span class=\"yellow b\">${'num'.$j}</span>";
-					} else {
-					${'npc'.$j.'num'}[$i] ='<span class="yellow b">-</span>';
-					}
-				}
-			} elseif($m == 2) {
-				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				//$num0 = $db->num_rows($result);
-				$num0 = $radar[$i][0];
-				foreach ($npctplist as $j){
-					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
-					//${'num'.$j} = $db->num_rows($result);
-					${'num'.$j} =  $gamestate == 50 ? 0 : $radar[$i][$j];
-				}
-				if($num0){
-					$pnum[$i] =$num0;
-				} else {
-					$pnum[$i] ='-';
-				}
-				//$pnum[$i] ="$num0";
-				foreach ($npctplist as $j){
-					//${'npc'.$j.'num'}[$i] = "${'num'.$j}";;
-					if(${'num'.$j}){
-					${'npc'.$j.'num'}[$i] =${'num'.$j};
-					} else {
-					${'npc'.$j.'num'}[$i] ='-';
-					}
-				}
-			} else {
-				$pnum[$i] = '？';
-				foreach ($npctplist as $j){
-					${'npc'.$j.'num'}[$i] = '？';
-				}
-			}
-		} else {
-			$pnum[$i] = '<span class="red b">×</span>';
-			foreach ($npctplist as $j){
-				${'npc'.$j.'num'}[$i] = '<span class="red b">×</span>';
+		if(in_array($data['type'],$tplist)){
+			if($radar[$data['pls']][$data['type']]=='-'){
+				$radar[$data['pls']][$data['type']] = 1;
+			}else{
+				$radar[$data['pls']][$data['type']]+=1;
 			}
 		}
-		$radarscreen .= "<td class=b3><div class=nttx>{$pnum[$i]}</div></td>";
-		foreach ($npctplist as $j){
-			$radarscreen .= "<td class=b3><div class=nttx>{${'npc'.$j.'num'}[$i]}</div></td>";
-		}	
-		$radarscreen .= '</tr>';
 	}
-	$radarscreen .= '</tbody></table>';
-	$log .= '白色数字：该区域内的人数<br><span class="yellow b">黄色数字</span>：自己所在区域的人数<br><span class="red b">×</span>：禁区<br><br>';
-	$cmd = '<input type="hidden" name="mode" value="command"><input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
-	$main = 'radar';
+	$level = $m;
+	$log .= '白色数字：该区域内的人数<br><span class="yellow">黄色数字</span>：自己所在区域的人数<br><span class="red">禁</span>：禁区无法显示人数';
+	ob_start();
+	include template('radar');
+	$main = ob_get_contents();
+	ob_end_clean();
+	ob_start();
+	include template('ok');
+	$cmd = ob_get_contents();
+	ob_end_clean();
+	$mode = 'command';
 	return;
 }
 

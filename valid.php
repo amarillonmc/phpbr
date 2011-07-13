@@ -27,7 +27,7 @@ if($mode == 'enter') {
 	if($validnum >= $validlimit) {
 		gexit($_ERROR['player_limit'],__file__, __line__);
 	}
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name = '$cuser'");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name = '$cuser' AND type = 0");
 	if($db->num_rows($result)) {
 		gexit($_ERROR['player_exist'], __file__, __line__);
 	}

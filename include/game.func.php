@@ -88,12 +88,9 @@ function player_property($data,$mode = 'map') {
 }
 
 function reset_wep(&$wep,&$wepk,&$wepe,&$weps,&$wepsk,&$wepnp){
-	global $nowep,$nosta;
-	$wep = $nowep;
-	$wepk = 'WN';
-	$wepsk = '';
-	$wepe = $wepnp = 0;
-	$weps = $nosta; 
+	global $nosta;
+	$wep = $wepk = $wepsk = '';
+	$wepe = $weps = $wepnp = 0;
 	return;
 }
 
@@ -126,25 +123,25 @@ function init_playerdata($pdata){
 	return;
 }
 
-function init_moveto($pls){
-	global $mapdata;
-	$nmap = get_neighbor_map($pls);
-	if(empty($nmap)){
-		$moveto = '<option value="main">■ 无法移动 ■<br />';
-	}else{
-		$moveto = '<option value="main">■ 移动 ■<br />';
-		foreach($nmap as $map => $movesp){
-			if($map == $pls){
-				$moveto .= "<option value=\"$map\">现在位置<br />";
-			}else{
-				$moveto .= "<option value=\"$map\">".$mapdata[$map]['name']."($movesp)<br />";
-			}
-			
-		}
-	}
-	$moveto = "<select name=\"moveto\" onclick=sl('move'); href=\"javascript:void(0);\">{$moveto}</select>";
-	return $moveto;
-}
+//function init_moveto($pls){
+//	global $mapdata;
+//	$nmap = get_neighbor_map($pls);
+//	if(empty($nmap)){
+//		$moveto = '<option value="main">■ 无法移动 ■<br />';
+//	}else{
+//		$moveto = '<option value="main">■ 移动 ■<br />';
+//		foreach($nmap as $map => $movesp){
+//			if($map == $pls){
+//				$moveto .= "<option value=\"$map\">现在位置<br />";
+//			}else{
+//				$moveto .= "<option value=\"$map\">".$mapdata[$map]['name']."($movesp)<br />";
+//			}
+//			
+//		}
+//	}
+//	$moveto = "<select name=\"moveto\" onclick=sl('move'); href=\"javascript:void(0);\">{$moveto}</select>";
+//	return $moveto;
+//}
 
 function set_noise($type, $pls, $pid1, $pid2 = 0, $time = 0) {
 	global $now,$db,$tablepre;
@@ -499,17 +496,17 @@ function set_death(&$ddata,$death,$annex = '',$kdata = ''){//死亡处理以及�
 
 function set_ingame_honour(&$data,$ih){
 	global $honourinfo,$log,$now;
-	$data['ghonour'] .= $ih;
+	$data['gainhonour'] .= $ih;
 	
 	$honour = Array();
-	for($i = 0; $i < strlen($data['ghonour']); $i+=2){
-		$hstr = substr($data['ghonour'],$i,2);
+	for($i = 0; $i < strlen($data['gainhonour']); $i+=2){
+		$hstr = substr($data['gainhonour'],$i,2);
 		
 		if(in_array($hstr,array_keys($honourinfo)) && !in_array($hstr,$honour)){
 			$honour[] = $hstr;
 		}
 	}
-	$data['ghonour'] = implode('',$honour);
+	$data['gainhonour'] = implode('',$honour);
 	
 	$log .= '你获得了称号：<span class="yellow">'.$honourinfo[$ih]['name'].'</span><br>';
 	naddnews($now, 'honour', $data['name'], $honourinfo[$ih]['name']);
@@ -716,7 +713,7 @@ function set_rest($command,&$data,$active = 0,$forced = 0){
 		}
 		if(!$forced){
 			if ($command=='rest') {
-				$cmd = '你正在' . $restinfo [$state] . '。<br><input type="hidden" name="mode" value="rest"><br><input type="radio" name="command" id="rest" value="rest" checked><a onclick=sl("rest"); href="javascript:void(0);" >' . $restinfo [$state] . '</a><br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >返回</a>';
+				$mode = 'rest';
 			} elseif($command=='back') {
 				$state = 0;
 				$mode = 'command';

@@ -10,7 +10,7 @@ if($mygroup < 7){
 if($command == 'edit') {
 
 	$ednum = 0;
-	$edfmt = Array('authkey'=>'','bbsurl'=>'','gameurl'=>'','moveut'=>'int','moveutmin'=>'int');
+	$edfmt = Array('authkey'=>'','bbsurl'=>'','gameurl'=>'','moveut'=>'int','moveutmin'=>'int','allowreg'=>'int');
 	$edlist = Array();
 	foreach($edfmt as $key => $val){
 		if(isset($_POST[$key])){
@@ -92,6 +92,11 @@ $nowyear += 1900;
 	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['gameurl']?></td>
 	  <td bgcolor="#EEEEF6" align="center"><input type="text" name="gameurl" value="<?=$gameurl?>" size="30"></td>
 	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['gameurl_comment']?></td>
+	</tr>
+	<tr  style="color: #3A4273">
+	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['allowreg']?></td>
+	  <td bgcolor="#EEEEF6" align="center"><input type="text" name="allowreg" value="<?=$allowreg?>" size="30"></td>
+	  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['allowreg_comment']?></td>
 	</tr>
 </table>
 <input type="button" value="修改" onclick="javascript:document.configmng.command.value='edit';document.configmng.submit();">

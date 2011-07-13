@@ -1,10 +1,16 @@
 body {text-align: center; background-position: 50% 50%; background-image: url("../../img/STAR.gif"); background-attachment: fixed; background-repeat: no-repeat; font: 12px Tahoma, Verdana;cursor: crosshair; margin: 0; background-color: #111; color:#ddd;}
 a {font: bold 10pt "微软雅黑" serif;text-decoration: none;color: #ddd; cursor: crosshair;line-height:16px}
 a:hover {color: #98fb98;text-decoration:underline}
-table {align:center;border: 0px;}
-tr {font-size: 10pt; margin: 0px;}
-td {font-size: 10pt; margin: 0px;}
-th {font-size: 10pt; margin: 0px;}
+table {
+	align:center;
+	border:0px;
+	padding:0px;
+	cellspacing:0;cellpadding:0;
+	font:bold 12px "微软雅黑" serif;
+}
+tr {margin: 0px;padding:0px;}
+td {margin: 0px;padding:0px;}
+th {margin: 0px;padding:0px;}
 p {line-height:16px;}
 li {font: bold 10pt "微软雅黑" serif;line-height:16px}
 input {cursor: crosshair;}
@@ -13,18 +19,25 @@ input {cursor: crosshair;}
 .headerlink{}
 .small {font-size: 9pt}
 
+.battletitle{
+	color:#98fb98;
+	font-size:20px;
+	width:22px;
+	word-break:break-all
+}
+
 .td1 {
 	background-color:rgba(17,17,17,0.6);
 	TEXT-ALIGN: center;
-	border: #fff 1px solid;
-	font:bold 14px "微软雅黑" serif;
+	border: #fff 0px solid;
+	border-width: 1px 0px 1px 0px;
 }
 
 .td2 {
 	background-color:rgba(17,17,17,0.6);
 	TEXT-ALIGN: center;
-	border: #fff 1px solid;
-	font:bold 14px "微软雅黑" serif;
+	border: #fff 0px solid;
+	border-width: 0px 0px 1px 0px;
 }
 	
 .td1 div {
@@ -36,24 +49,29 @@ input {cursor: crosshair;}
 }
 
 .td2 .itmbtn {
-	height:20px;
-	TEXT-ALIGN: left;
-	margin:2px 5px 2px 5px;
+	TEXT-ALIGN: center;
+	margin:2px 8px 2px 8px;
 	border: #fff 1px solid;
 }
 
 .td2 .itmbtn:hover {
 	background-color:rgba(30,70,30,0.6);
+	color:#3f9;
 }
 
 .td2 .cmdbtn {
 	height:20px;
-	margin:2px 5px 2px 5px;
+	margin:2px 8px 2px 8px;
 	border: #fff 1px solid;
 }
 
 .td2 .cmdbtn:hover {
 	background-color:rgba(30,30,60,0.6);
+	color:#3af;
+}
+
+.val {
+	font:bold 13px "微软雅黑" serif;
 }
 
 .b1 {background-color:rgba(93,246,199,0.6); *BACKGROUND: rgb(93,246,199); *filter:alpha(opacity=60); BORDER: #000 0px none; TEXT-ALIGN: center; COLOR: #fff; border-right: #111 5px solid; border-bottom: #111 5px solid;font:bold 10pt "微软雅黑" serif;}
@@ -66,9 +84,9 @@ input {cursor: crosshair;}
 .maptdred {background-color:rgba(255,0,0,0.25); *BACKGROUND:#f00; *filter:alpha(opacity=25);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
 .maptdyellow {background-color:rgba(255,255,0,0.25); *BACKGROUND:#ff0; *filter:alpha(opacity=25);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
 .maptdlime {background-color:rgba(0,255,0,0.2); *BACKGROUND:#0f0; *filter:alpha(opacity=20);BORDER: #111 1px solid;text-align: center;font: bold 10pt "微软雅黑" serif;}
-.mapspanred{color:#f00;position:relative;font-size: 9pt;line-height:16px}
-.mapspanlime{color:#0f0;position:relative;font-size: 9pt;line-height:16px}
-.mapspanyellow{color:#ff0;position:relative;font-size: 9pt;line-height:16px}
+.mapspanred{color:#f00;position:relative;font-size: 12px;line-height:12px;word-break:break-all;}
+.mapspanlime{color:#0f0;position:relative;font-size: 12px;line-height:12px;word-break:break-all;}
+.mapspanyellow{color:#ff0;position:relative;font-size: 12px;line-height:12px;word-break:break-all;}
 .admin td {BORDER: #000 3px transparent; TEXT-ALIGN: center; BACKGROUND: RGB(64,172,140); COLOR: #fff; border-right: #111 5px solid;font: 10pt "微软雅黑" serif;}
 
 .clit {color: #feea23; font:18pt "微软雅黑" serif; }
@@ -87,7 +105,17 @@ input {cursor: crosshair;}
 .grey{color:#999; font: bold 10pt "微软雅黑" serif;line-height:16px}
 .linen{color:rgb(200,192,184); font: bold 10pt "微软雅黑" serif;line-height:16px}
 
-
+#hpbar{
+	margin:2px;
+	border: #fff 1px solid;
+}
+#spbar{
+	margin:2px;
+	border: #fff 1px solid;
+}
+.nameline{
+	font: bold 20px "微软雅黑" serif;line-height:20px
+}
 #main {
 white-space:nowrap;
 vertical-align:middle;
@@ -95,28 +123,7 @@ vertical-align:middle;
 .battle td{
 text-align: center;
 }
-#chatlist{
-MARGIN: 0px;
-height:140px;
-width:635px;
-word-break:break-all;
-overflow:auto;
-position:relative;
-}
-#sendchat{
-MARGIN: 0px;
-padding:0px;
-border:0px; 
-height:35px;
-width:635px;
-}
-#chatmsg{
-width:450px;
-border-right: #ddc 2px solid;
-border-top: #666 2px solid;
-border-left: #666 2px solid;
-border-bottom: #ddc 2px solid;
-}
+
 .nttx{
 	position:relative;line-height:16px
 }

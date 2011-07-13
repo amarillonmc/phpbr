@@ -15,7 +15,6 @@ $magic_quotes_gpc = get_magic_quotes_gpc();
 $_COOKIE = gstrfilter($_COOKIE);
 $_POST = gstrfilter($_POST);
 $_FILES = gstrfilter($_FILES);
-extract($_COOKIE);
 extract($_POST);
 unset($_GET);
 
@@ -126,11 +125,8 @@ if($gamestate == 40 || $gamestate == 50) {
 	}
 }
 
-
-
-$cuser = & ${$tablepre.'user'};
-$cpass = & ${$tablepre.'pass'};
-$ctrl = & ${$tablepre.'ctrl'};
-$promap = & ${$tablepre.'promap'};
+$cuser = & $_COOKIE[$tablepre.'user'];
+$cpass = & $_COOKIE[$tablepre.'pass'];
+$ctrl = & $_COOKIE[$tablepre.'ctrl'];
 
 ?>

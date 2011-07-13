@@ -1,22 +1,24 @@
-想检查什么？<br>
-
-<input type="hidden" name="mode" value="special">
-<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" >返回</a><br><br>
-<!--{if $pdata['itms1'] && ((strpos($pdata['itmk1'],'P') === 0) || (strpos($pdata['itmk1'],'H') === 0))}-->
-<input type="radio" name="command" id="chkp1" value="chkp1"><a onclick=sl('chkp1'); href="javascript:void(0);" >$pdata['itm1'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms2'] && ((strpos($pdata['itmk2'],'P') === 0) || (strpos($pdata['itmk2'],'H') === 0))}-->
-<input type="radio" name="command" id="chkp2" value="chkp2"><a onclick=sl('chkp2'); href="javascript:void(0);" >$pdata['itm2'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms3'] && ((strpos($pdata['itmk3'],'P') === 0) || (strpos($pdata['itmk3'],'H') === 0))}-->
-<input type="radio" name="command" id="chkp3" value="chkp3"><a onclick=sl('chkp3'); href="javascript:void(0);" >$pdata['itm3'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms4'] && ((strpos($pdata['itmk4'],'P') === 0) || (strpos($pdata['itmk4'],'H') === 0))}-->
-<input type="radio" name="command" id="chkp4" value="chkp4"><a onclick=sl('chkp4'); href="javascript:void(0);" >$pdata['itm4'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms5'] && ((strpos($pdata['itmk5'],'P') === 0) || (strpos($pdata['itmk5'],'H') === 0))}-->
-<input type="radio" name="command" id="chkp5" value="chkp5"><a onclick=sl('chkp5'); href="javascript:void(0);" >$pdata['itm5'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms6'] && ((strpos($pdata['itmk6'],'P') === 0) || (strpos($pdata['itmk6'],'H') === 0))}-->
-<input type="radio" name="command" id="chkp6" value="chkp6"><a onclick=sl('chkp6'); href="javascript:void(0);" >$pdata['itm6'] </a><br>
-<!--{/if}-->
+<input type="hidden" id="mode" name="mode" value="$mval">
+<input type="hidden" id="command" name="command" value="">
+<!--{if $mval == 'item'}--><input type="hidden" name="usemode" value="poison"><input type="hidden" name="itmp" value="$itmn"><!--{/if}-->
+<table style="width:500px">
+	<tr>
+		<td class="td1" style="height:20px">
+			<div>
+				<!--{if $mval == 'special'}-->想检查哪个补给品？<!--{elseif $mval == 'item'}-->想给哪个补给品下毒？<!--{/if}-->
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2">
+			<div>
+				<div class="itmbtn" onclick="$('mode').value='command';$('command').value='back';postCommand();" >{lang back}</div>
+				<!--{loop array(1,2,3,4,5,6) $i}-->
+					<!--{if $pdata['itms'.$i] && ((strpos($pdata['itmk'.$i],'P') === 0) || (strpos($pdata['itmk'.$i],'H') === 0))}-->
+						<div class="itmbtn" <!--{if $mval == 'special'}-->onclick="$('command').value='chkp$i';postCommand();"<!--{elseif $mval == 'item'}-->onclick="$('command').value='itm$i';postCommand();"<!--{/if}--> >$pdata['itm'.$i]</div>
+					<!--{/if}-->
+				<!--{/loop}-->
+			</div>
+		</td>
+	</tr>
+</table>

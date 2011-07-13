@@ -1,0 +1,61 @@
+<table style="width:500px;">
+	<tr>
+		<td class="td1" style="width:150px;height:20px;text-align:left">
+			<div>
+				<span class="red">游戏状态：</span><span id="gst">$gst</span>
+			</div>
+		</td>
+		<td class="td1" rowspan="4" style="width:350px;text-align:left;vertical-align:top">
+			<div id="noise">
+				$noise
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" style="height:20px;text-align:left">
+			<div>
+				<span class="red">剩余玩家：</span><span id="anum">$alivenum</span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" style="height:20px;text-align:left">
+			<div>
+				{lang pls} <span class="yellow" id="pls">$mapdata[$pdata['pls']]['name']</span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" style="height:20px;text-align:left">
+			<div>
+				{lang weather} <span class="yellow" id="weather">{$wthdata[$weather]['name']}</span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" colspan="2">
+			<table style="width:500px;height:300px;table-layout:fixed">
+				<tr>
+					<td id="log" style="width:500px;vertical-align:top">
+						$log
+					</td>
+				</tr>
+				<tr>
+					<td style="width:500px;vertical-align:bottom">
+						<form method="post" id="cmd" name="cmd" style="margin: 0px">
+							$cmd
+						</form>
+					</td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div id="chat" style="width:500px;height:200px">
+				{template chat}
+			</div>
+		</td>
+	</tr>
+</table> 

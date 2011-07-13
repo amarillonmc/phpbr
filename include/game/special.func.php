@@ -189,25 +189,25 @@ function chginf($infpos){
 }
 
 function chkpoison($itmn){
-	global $log,$mode,$club;
-	if($club != 8){
+	global $pdata,$log,$mode;
+	if($pdata['club'] != 8){
 		$log .= '你不会查毒。';
 		$mode = 'command';
 		return;
 	}
 
-	if ( $itmn < 1 || $itmn > 5 ) {
+	if ( $itmn < 1 || $itmn > 6 ) {
 		$log .= '此道具不存在，请重新选择。';
 		$mode = 'command';
 		return;
 	}
 
-	global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
-	$itm = & ${'itm'.$itmn};
-	$itmk = & ${'itmk'.$itmn};
-	$itme = & ${'itme'.$itmn};
-	$itms = & ${'itms'.$itmn};
-	$itmsk = & ${'itmsk'.$itmn};
+	//global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
+	$itm = & $pdata['itm'.$itmn];
+	$itmk = & $pdata['itmk'.$itmn];
+	$itme = & $pdata['itme'.$itmn];
+	$itms = & $pdata['itms'.$itmn];
+	$itmsk = & $pdata['itmsk'.$itmn];
 
 	if(!$itms) {
 		$log .= '此道具不存在，请重新选择。<br>';
@@ -225,8 +225,8 @@ function chkpoison($itmn){
 }
 
 function shoplist($sn) {
-	global $gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo,$club;
-	global $db,$tablepre;
+	global $db,$tablepre,$gamecfg,$mode,$itemdata,$areanum,$areaadd,$iteminfo,$itemspkinfo,$pdata;
+
 	$arean = floor($areanum / $areaadd); 
 	$result=$db->query("SELECT * FROM {$tablepre}shopitem WHERE kind = '$sn' AND area <= '$arean' AND num > '0' AND price > '0'");
 	$shopnum = $db->num_rows($result);
@@ -235,7 +235,7 @@ function shoplist($sn) {
 		$itemdata[$i]['sid']=$itemlist['sid'];
 		$itemdata[$i]['kind']=$itemlist['kind'];
 		$itemdata[$i]['num']=$itemlist['num'];
-		$itemdata[$i]['price']= $club == 11 ? round($itemlist['price']*0.75) : $itemlist['price'];
+		$itemdata[$i]['price']= $pdata['club'] == 11 ? round($itemlist['price']*0.75) : $itemlist['price'];
 		$itemdata[$i]['area']=$itemlist['area'];
 		$itemdata[$i]['item']=$itemlist['item'];
 		$itemdata[$i]['itme']=$itemlist['itme'];
@@ -243,21 +243,6 @@ function shoplist($sn) {
 		//list($sid,$kind,$num,$price,$area,$item,$itmk,$itme,$itms,$itmsk)=explode(',',$itemlist);
 		$itemdata[$i]['itmk_words'] = get_itmkwords($itemlist['itmk']);
 		$itemdata[$i]['itmsk_words'] = get_itmskwords($itemlist['itmk'],$itemlist['itmsk']);
-//		foreach($iteminfo as $info_key => $info_value){
-//			if(strpos($itemlist['itmk'],$info_key)===0){
-//				$itemdata[$i]['itmk_words'] = $info_value;
-//				break;
-//			}
-//		}
-//		$itemdata[$i]['itmsk_words'] = '';
-//		if($itemlist['itmsk']){
-//			for ($j = 0; $j < strlen($itemlist['itmsk']); $j++) {
-//				$sub = substr($itemlist['itmsk'],$j,1);
-//				if(!empty($sub)){
-//					$itemdata[$i]['itmsk_words'] .= $itemspkinfo[$sub];
-//				}
-//			}
-//		}
 	}
 	
 	$mode = 'shop';

@@ -1,21 +1,64 @@
-<input type="hidden" name="mode" value="team">
-<input type="hidden" name="command" value="$teamcmd">
-<!--{if $teamcmd == 'teammake'}-->
+<input type="hidden" id="mode" name="mode" value="team">
+<input type="hidden" id="command" name="command" value="$teamcmd">
+<table style="width:500px;">
 	<!--{if $pdata['teamID']}-->
-	你已经加入了队伍  <span class="yellow">$teamID</span> 。<br>
-	<!--{elseif $pdata['sp'] <= $team_sp}-->
-	体力不足，不能创建队伍。至少需要 <span class="yellow">$team_sp</span> 点体力。<br>
+		<tr>
+			<td class="td1" style="height:25px">
+				<div>
+					你已经加入了队伍<span class="yellow">$teamID</span>。
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td2">
+				<div class="cmdbtn" onclick="$('mode').value='command';$('command').value='back';postCommand();">{lang back}</div>
+			</td>
+		</tr>
+	<!--{elseif $teamcmd == 'teammake' && $pdata['sp'] <= $team_sp}-->
+		<tr>
+			<td class="td1" style="height:25px">
+				<div>
+					你的体力不足，不能创建队伍。至少需要 <span class="yellow">$team_sp</span> 点体力。
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td2">
+				<div class="cmdbtn" onclick="$('mode').value='command';$('command').value='back';postCommand();">{lang back}</div>
+			</td>
+		</tr>
+	<!--{elseif $teamcmd == 'teamjoin' && $pdata['sp'] <= $teamj_sp}-->
+		<tr>
+			<td class="td1" style="height:25px">
+				<div>
+					你的体力不足，不能加入队伍。至少需要 <span class="yellow">$teamj_sp</span> 点体力。
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td2">
+				<div class="cmdbtn" onclick="$('mode').value='command';$('command').value='back';postCommand();">{lang back}</div>
+			</td>
+		</tr>
 	<!--{else}-->
-<div>队伍名称 : <input size="15" type="text" name="nteamID" maxlength="30"></div>
-<div>15个字以内。<div>
-<div>队伍密码 : <input size="15" type="text" name="nteamPass" maxlength="30"></div>
-<div>15个字以内。<div>
+		<tr>
+			<td class="td1" style="height:25px">
+				<div>
+					<!--{if $teamcmd == 'teammake'}-->创建队伍<!--{elseif $teamcmd == 'teamjoin'}-->加入队伍<!--{/if}-->
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td2">
+				<div style="text-align:left">队伍名称：<input size="15" type="text" name="nteamID" maxlength="30">15个字以内。<div>
+				<div style="text-align:left">队伍密码：<input size="15" type="text" name="nteamPass" maxlength="30">15个字以内。<div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td2">
+				<div class="cmdbtn" onclick="postCommand();">{lang ok}</div>
+				<div class="cmdbtn" onclick="$('mode').value='command';$('command').value='back';postCommand();">{lang back}</div>
+			</td>
+		</tr>
 	<!--{/if}-->
-<!--{elseif $teamcmd == 'teamjoin'}-->
-<div>队伍名称 : <input size="15" type="text" name="nteamID" maxlength="30"></div>
-<div>15个字以内。<div>
-<div>队伍密码 : <input size="15" type="text" name="nteamPass" maxlength="30"></div>
-<div>15个字以内。<div>
-<!--{/if}-->
-
-
+</table>

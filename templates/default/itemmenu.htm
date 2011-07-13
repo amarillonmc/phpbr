@@ -1,38 +1,40 @@
-<input type="hidden" name="mode" value="$mval">
-<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" >{lang back}</a><br><br>
-<!--{if $pdata['weps'] && $pdata['wepk'] != 'WN' && in_array('wep',$dlist)}-->
-<input type="radio" name="command" id="wep" value="{$cval}wep"><a onclick=sl('wep'); href="javascript:void(0);" >$pdata['wep']/$pdata['wepe']/$pdata['weps'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['arbs'] &&  $pdata['arbk'] != 'DN' && in_array('arb',$dlist)}-->
-<input type="radio" name="command" id="arb" value="{$cval}arb"><a onclick=sl('arb'); href="javascript:void(0);" >$pdata['arb']/$pdata['arbe']/$pdata['arbs'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['arhs'] && in_array('arh',$dlist)}-->
-<input type="radio" name="command" id="arh" value="{$cval}arh"><a onclick=sl('arh'); href="javascript:void(0);" >$pdata['arh']/$pdata['arhe']/$pdata['arhs'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['aras'] && in_array('ara',$dlist)}-->
-<input type="radio" name="command" id="ara" value="{$cval}ara"><a onclick=sl('ara'); href="javascript:void(0);" >$pdata['ara']/$pdata['arae']/$pdata['aras'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['arfs'] && in_array('arf',$dlist)}-->
-<input type="radio" name="command" id="arf" value="{$cval}arf"><a onclick=sl('arf'); href="javascript:void(0);" >$pdata['arf']/$pdata['arfe']/$pdata['arfs'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['arts'] && in_array('art',$dlist)}-->
-<input type="radio" name="command" id="art" value="{$cval}art"><a onclick=sl('art'); href="javascript:void(0);" >$pdata['art']/$pdata['arte']/$pdata['arts'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms1'] && in_array('itm1',$dlist)}-->
-<input type="radio" name="command" id="itm1" value="{$cval}itm1"><a onclick=sl('itm1'); href="javascript:void(0);" >$pdata['itm1']/$pdata['itme1']/$pdata['itms1'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms2'] && in_array('itm2',$dlist)}-->
-<input type="radio" name="command" id="itm2" value="{$cval}itm2"><a onclick=sl('itm2'); href="javascript:void(0);" >$pdata['itm2']/$pdata['itme2']/$pdata['itms2'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms3'] && in_array('itm3',$dlist)}-->
-<input type="radio" name="command" id="itm3" value="{$cval}itm3"><a onclick=sl('itm3'); href="javascript:void(0);" >$pdata['itm3']/$pdata['itme3']/$pdata['itms3'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms4'] && in_array('itm4',$dlist)}-->
-<input type="radio" name="command" id="itm4" value="{$cval}itm4"><a onclick=sl('itm4'); href="javascript:void(0);" >$pdata['itm4']/$pdata['itme4']/$pdata['itms4'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms5'] && in_array('itm5',$dlist)}-->
-<input type="radio" name="command" id="itm5" value="{$cval}itm5"><a onclick=sl('itm5'); href="javascript:void(0);" >$pdata['itm5']/$pdata['itme5']/$pdata['itms5'] </a><br>
-<!--{/if}-->
-<!--{if $pdata['itms6'] && in_array('itm6',$dlist)}-->
-<input type="radio" name="command" id="itm6" value="{$cval}itm6"><a onclick=sl('itm6'); href="javascript:void(0);" >$pdata['itm6']/$pdata['itme6']/$pdata['itms6'] </a><br>
-<!--{/if}-->
+<input type="hidden" id="mode" name="mode" value="$mval">
+<input type="hidden" id="command" name="command" value="">
+<table style="width:500px;">
+	<tr>
+		<td class="td1" style="height:20px">
+			<div>
+				$inotice
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2">
+			<div>
+				<!--{if $cval !== 'swap'}-->
+				<div class="itmbtn" onclick="$('mode').value='command';$('command').value='back';postCommand();">{lang back}</div>
+				<!--{/if}-->
+				<!--{if $pdata['weps'] && $pdata['wepk'] && in_array('wep',$dlist)}-->
+				<div class="itmbtn" onclick="$('command').value='{$cval}wep';postCommand();">$pdata['wep']/$pdata['wepe']/$pdata['weps']</div>
+				<!--{/if}-->
+				<!--{if $pdata['arbs'] &&  $pdata['arbk'] && in_array('arb',$dlist)}-->
+				<div class="itmbtn" onclick="$('command').value='{$cval}arb';postCommand();">$pdata['arb']/$pdata['arbe']/$pdata['arbs']</div>
+				<!--{/if}-->
+				<!--{loop array('arh','ara','arf','art') $p}-->
+					<!--{if $pdata[$p.'s'] && in_array($p,$dlist)}-->
+						<div class="itmbtn" onclick="$('command').value='{$cval}{$p}';postCommand();">$pdata[$p]/$pdata[$p.'e']/$pdata[$p.'s']</div>
+					<!--{/if}-->
+				<!--{/loop}-->
+				<!--{loop array(0,1,2,3,4,5,6) $i}-->
+					<!--{if $pdata['itms'.$i] && in_array('itm'.$i,$dlist)}-->
+						<!--{if $i == 0 && $cval == 'swap'}-->
+							<div class="itmbtn" onclick="$('command').value='dropitm0';postCommand();">$pdata['itm0']/$pdata['itme0']/$pdata['itms0']</div><br />
+						<!--{else}-->
+							<div class="itmbtn" onclick="$('command').value='{$cval}itm{$i}';postCommand();">$pdata['itm'.$i]/$pdata['itme'.$i]/$pdata['itms'.$i]</div>
+						<!--{/if}-->
+					<!--{/if}-->
+				<!--{/loop}-->
+			</div>
+		</td>
+	</tr>
+</table>

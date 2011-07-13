@@ -4,11 +4,11 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
-function findenemy($w_pdata) {
+function findenemy($edata) {
 	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$pdata,$nosta,$fog,$techniqueinfo;
 	//global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
-	if($w_pdata['pid'] !== $pdata['bid']){
+	if($edata['pid'] !== $pdata['bid']){
 		$log .= "<span class=\"yellow\">敌人数据出错。</span><br>";
 		$mode = 'command';
 		return;
@@ -17,47 +17,65 @@ function findenemy($w_pdata) {
 	$battle_title = '发现敌人';
 	
 	extract($pdata,EXTR_REFS);
-	extract($w_pdata,EXTR_PREFIX_ALL|EXTR_REFS,'w');
-	init_battle($w_pdata);
-	init_itemwords($w_pdata,'w_');
+	extract($edata,EXTR_PREFIX_ALL|EXTR_REFS,'w');
+	init_battle($edata);
+	init_itemwords($edata);
 	if($fog){
 		$log .= "你发现了敌人，但是看不清对方的相貌！<br>对方好像完全没有注意到你！<br>";
 	}else{
 		$log .= "你发现了敌人<span class=\"red\">$w_name</span>！<br>对方好像完全没有注意到你！<br>";
 	}
 	
-
-	$cmd .= '现在想要做什么？<br><br>';
-	$cmd .= '向对手大喊：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
-	$cmd .= '<input type="hidden" name="mode" value="combat">';
+	
+//	$cmd .= '现在想要做什么？<br><br>';
+//	$cmd .= '向对手大喊：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
+//	$cmd .= '<input type="hidden" name="mode" value="combat">';
 	$wp_kind = substr($wepk,1,1);
 	$w_wp_kind = substr($w_wepk,1,1);
 	
 	if(($wp_kind == 'G')&&($weps==$nosta)){ $wp_kind = 'g'; }
 	if(($w_wp_kind == 'G')&&($w_weps==$nosta)){ $w_wp_kind = 'g'; }
-	
-	$cmd .= '<input type="radio" name="command" id="natk" value="natk" checked><a onclick=sl("natk"); href="javascript:void(0);">'."$attinfo[$wp_kind]".'</a><br>';
+	$techcmd = Array();
 	if($technique){
 		$a_tech = $techniqueinfo['active']['combat'];
 		for($i=0;$i < strlen($technique); $i+=3){
 			$tstr = substr($technique,$i,3);
 			if(isset($a_tech[$tstr]) && ($a_tech[$tstr]['wep_kind'] == 'A' || strpos($a_tech[$tstr]['wep_kind'],$wp_kind) !== false) && ($a_tech[$tstr]['anti_kind'] == 'A' || strpos($a_tech[$tstr]['anti_kind'],$w_wp_kind) !== false || $fog) ){
-				$cmd .= '<input type="radio" name="command" id="'.$tstr.'" value="'.$tstr.'"><a onclick=sl("'.$tstr.'"); href="javascript:void(0);">'.$a_tech[$tstr]['name'].'('.$a_tech[$tstr]['dsp'].')</a><br>';
+				$techcmd[$tstr] = Array('name' => $a_tech[$tstr]['name'], 'dsp' => $a_tech[$tstr]['dsp']);
+				//$cmd .= '<input type="radio" name="command" id="'.$tstr.'" value="'.$tstr.'"><a onclick=sl("'.$tstr.'"); href="javascript:void(0);">'.$a_tech[$tstr]['name'].'('.$a_tech[$tstr]['dsp'].')</a><br>';
 			}
 		}
 	}
-	$cmd .= '<br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >逃跑</a><br>';
-
-	$main = 'battle';
+	ob_start();
+	include template('battlecmd');
+	$cmd = ob_get_contents();
+	ob_end_clean();
+	ob_start();
+	include template('battle');
+	$main = ob_get_contents();
+	ob_end_clean();
+//	$cmd .= '<input type="radio" name="command" id="natk" value="natk" checked><a onclick=sl("natk"); href="javascript:void(0);">'."$attinfo[$wp_kind]".'</a><br>';
+//	if($technique){
+//		$a_tech = $techniqueinfo['active']['combat'];
+//		for($i=0;$i < strlen($technique); $i+=3){
+//			$tstr = substr($technique,$i,3);
+//			if(isset($a_tech[$tstr]) && ($a_tech[$tstr]['wep_kind'] == 'A' || strpos($a_tech[$tstr]['wep_kind'],$wp_kind) !== false) && ($a_tech[$tstr]['anti_kind'] == 'A' || strpos($a_tech[$tstr]['anti_kind'],$w_wp_kind) !== false || $fog) ){
+//				$cmd .= '<input type="radio" name="command" id="'.$tstr.'" value="'.$tstr.'"><a onclick=sl("'.$tstr.'"); href="javascript:void(0);">'.$a_tech[$tstr]['name'].'('.$a_tech[$tstr]['dsp'].')</a><br>';
+//			}
+//		}
+//	}
+//	$cmd .= '<br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >逃跑</a><br>';
+	$mode = 'combat';
+	//$main = 'battle';
 	
 	return;
 }
 
-function findteam($w_pdata){
+function findteam($edata){
 	global $pdata,$log,$mode,$main,$cmd,$battle_title,$gamestate;
 	//global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
-	if($w_pdata['pid'] !== $pdata['bid']){
+	if($edata['pid'] !== $pdata['bid']){
 		$log .= "<span class=\"yellow\">队友数据出错。</span><br>";
 		$mode = 'command';
 		return;
@@ -69,9 +87,9 @@ function findteam($w_pdata){
 		return;
 	}
 	$battle_title = '发现队友';
-	extract($w_pdata,EXTR_PREFIX_ALL|EXTR_REFS,'w');
-	init_battle($w_pdata,1);
-	init_itemwords($w_pdata,'w_');
+	extract($edata,EXTR_PREFIX_ALL|EXTR_REFS,'w');
+	init_battle($edata,1);
+	init_itemwords($edata);
 	$log .= "你发现了队友<span class=\"yellow\">$w_name</span>！<br>";
 	
 	$cmd .= '现在想要做什么？<br><br>';
@@ -88,26 +106,30 @@ function findteam($w_pdata){
 	return;
 }
 
-function findcorpse($w_pdata){
+function findcorpse($edata){
 	global $log,$mode,$main,$battle_title,$cmd,$pdata,$iteminfo,$itemspkinfo;
 	//global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
-	if($w_pdata['pid'] !== $pdata['bid']){
+	if($edata['pid'] !== $pdata['bid']){
 		$log .= "<span class=\"yellow\">尸体数据出错。</span><br>";
 		$pdata['bid'] = 0;
 		$mode = 'command';
 		return;
 	}
 	$battle_title = '发现尸体';
-	extract($w_pdata,EXTR_PREFIX_ALL|EXTR_REFS,'w');
-	init_battle($w_pdata,1);
-	extract(init_itemwords($w_pdata,'w_'));
-	$main = 'battle';
-	$log .= '你发现了<span class="red">'.$w_name.'</span>的尸体！<br>';
-	
+	//extract($edata,EXTR_PREFIX_ALL|EXTR_REFS,'w');
+	init_battle($edata,1);
+	init_itemwords($edata);
+	//$main = 'battle';
+	//$log .= '你发现了<span class="red">'.$edata['name'].'</span>的尸体！<br>';
+	ob_start();
 	include template('corpse');
 	$cmd = ob_get_contents();
-	ob_clean();
+	ob_end_clean();
+	ob_start();
+	include template('battle');
+	$main = ob_get_contents();
+	ob_end_clean();
 	return;
 }
 
@@ -226,6 +248,7 @@ function senditem($sendtype = 't'){
 				$itm = $itmk = $itmsk = '';
 				$itme = $itms = $itmnp = 0;
 				$bid = 0;
+				$mode = 'command';
 				return;
 			}
 		}

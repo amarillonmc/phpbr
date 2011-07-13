@@ -1,9 +1,20 @@
-发现了物品 <span class="yellow">$pdata['itm0']</span>，类型：{$pdata['display']['itmk0_words']}<!--{if ($pdata['itmsk0'])}-->，属性：{$pdata['display']['itmsk0_words']}<!--{/if}-->，效：{$pdata['itme0']}，耐：{$pdata['itms0']}。
-<br>
-你想如何处理？
-<br>
-<input type="hidden" name="mode" value="itemmain">
-<input type="radio" name="command" id="itemget" value="itemget" checked><a onclick=sl("itemget"); href="javascript:void(0);" >拾取</a>
-<br>
-<input type="radio" name="command" id="itm0" value="dropitm0"><a onclick=sl("itm0"); href="javascript:void(0);" >丢弃</a>
-<br>
+<input type="hidden" id="mode" name="mode" value="itemmain">
+<input type="hidden" id="command" name="command" value="">
+<table style="width:500px">
+	<tr>
+		<td class="td1">
+			<div>
+				发现了物品 <span class="yellow">$pdata['itm0']</span>，类型：{$pdata['display']['itmk0_words']}<!--{if ($pdata['itmsk0'])}-->，属性：{$pdata['display']['itmsk0_words']}<!--{/if}-->，效：{$pdata['itme0']}，耐：{$pdata['itms0']}。<br>
+				你想如何处理？
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2">
+			<div>
+				<div class="cmdbtn" onclick="$('command').value='itemget';postCommand();">{lang itemget}</div>
+				<div class="cmdbtn" onclick="$('command').value='dropitm0';postCommand();">{lang itemdrop}</div>
+			</div>
+		</td>
+	</tr>
+</table>

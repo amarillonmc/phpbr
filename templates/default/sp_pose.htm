@@ -1,12 +1,24 @@
-想采取什么基本姿态？<br>
-
-<input type="hidden" name="mode" value="special">
-<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" >返回</a><br><br>
-<!--{loop $poseinfo $key $value}-->
-<!--{if $value}-->
-<input type="radio" name="command" id="pose$key" value="pose$key"><a onclick=sl('pose$key'); href="javascript:void(0);" >$value </a><br>
-<!--{/if}-->
-<!--{/loop}-->
-
- 
-
+<input type="hidden" id="mode" name="mode" value="special">
+<input type="hidden" id="command" name="command" value="">
+<table>
+	<tr>
+		<td class="td1" width="500px">
+			<div>
+				想采取什么基本姿态？
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" width="500px">
+			<div>
+				<div class="cmdbtn" onclick="$('command').value='menu';postCommand();">{lang back}</div>
+				<br>
+				<!--{loop $poseinfo $key $value}-->
+					<!--{if $value}-->
+						<div class="cmdbtn" onclick="$('command').value='pose{$key}';postCommand();">$value</div>
+					<!--{/if}-->
+				<!--{/loop}-->
+			</div>
+		</td>
+	</tr>
+</table>

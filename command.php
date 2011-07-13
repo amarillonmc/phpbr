@@ -106,12 +106,6 @@ if($command == 'switch'){//交换角色
 	}else{
 		$log .= '指令错误，同伴系统未开启。<br>';
 	}
-}elseif($command == 'promap'){//临时切换地图和玩家资料用
-	if($promap == 'pro'){
-		$promap = 'map';gsetcookie('promap','map');
-	}elseif($promap == 'map'){
-		$promap = 'pro';gsetcookie('promap','pro');
-	}
 }
 //初始化各变量
 //if($pldata['company'] && $companysystem){
@@ -129,8 +123,7 @@ $log = $main = '';
 //$gamedata = array();
 
 //显示枪声信息
-$log .= get_noise($pid);
-
+$noise = get_noise($pid);
 //读取玩家互动信息
 $result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
 while($logtemp = $db->fetch_array($result)){
@@ -155,7 +148,7 @@ if(isset($pdata['mapprop']['HH']) || isset($pdata['mapprop']['HS'])){
 	}
 }
 
-if($command != 'switch' && $command !='promap'){
+if($command != 'switch'){
 	//判断冷却时间是否过去
 	if($coldtimeon){
 		$cdover = $pdata['lastcmd']*1000 + $pdata['cdmsec'] + $pdata['cdtime'];
@@ -208,9 +201,10 @@ if($command != 'switch' && $command !='promap'){
 				$cval = substr($itemcmd,4);
 				if($itemcmd == 'itemoff'){
 					$dlist = Array('wep','arb','arh','arb','ara','arf','art');
-					
+					$inotice = '你想卸下什么？';
 				}elseif($itemcmd == 'itemdrop'){
 					$dlist = Array('wep','arb','arh','arb','ara','arf','art','itm1','itm2','itm3','itm4','itm5','itm6');
+					$inotice = '你想丢弃什么？';
 				}
 			} elseif($command == 'special') {
 				if($sp_cmd == 'sp_adtsk')
@@ -220,6 +214,9 @@ if($command != 'switch' && $command !='promap'){
 					$mode = 'command';
 				}elseif($sp_cmd == 'sp_tech'){
 					$newtech = show_new_tech($pdata,1);
+					$mode = $sp_cmd;
+				}elseif($sp_cmd == 'sp_poison'){
+					$mval = 'special';
 					$mode = $sp_cmd;
 				}else{
 					$mode = $sp_cmd;
@@ -234,8 +231,9 @@ if($command != 'switch' && $command !='promap'){
 				}
 			} elseif($command == 'company') {
 				if($cp_cmd == 'senditem'){
+					$inotice = '你想递送什么物品给同伴？';
 					$mode = 'senditem';
-					$mval = 'senditemcp';
+					$mval = 'cpitem';
 					$cval = '';
 					$dlist = Array('itm1','itm2','itm3','itm4','itm5','itm6');
 				}				
@@ -312,19 +310,18 @@ if($command != 'switch' && $command !='promap'){
 				$learntech = substr($command,4,3);
 				learn_tech($learntech);
 			}
-		} elseif(strpos($mode,'senditem') === 0) {
+		} elseif(strpos($mode,'senditem') === 0 || strpos($mode,'cpitem') === 0) {
 			include_once GAME_ROOT.'./include/game/battle.func.php';
-			if($mode=='senditemcp'){
+			if($mode=='cpitem'){
 				senditem('c');
 			}else{
-				senditem();
+				senditem('t');
 			}
 			
 		} elseif($mode == 'combat') {
 			include_once GAME_ROOT.'./include/game/combat.func.php';
 			combat(1,$command);
 		} elseif($mode == 'rest') {
-			//include_once GAME_ROOT.'./include/state.func.php';
 			$log .= set_rest($command,$pdata,1);//set_rest($command,$pdata,1);
 		} elseif($mode == 'corpse') {
 			include_once GAME_ROOT.'./include/game/itemmain.func.php';
@@ -353,9 +350,9 @@ if($command != 'switch' && $command !='promap'){
 				$mode = 'command';
 			}
 		} elseif($mode == 'hack'){
-			if($hackcmd !== 'back'){
+			if($command !== 'back'){
 				include_once GAME_ROOT.'./include/game/item2.func.php';
-				hack($item,$hackcmd);
+				hack($item,$command);
 			}else{
 				$log .= '你决定暂不hack禁区。<br>';
 				$mode = 'command';
@@ -392,33 +389,34 @@ init_profile($pdata);
 init_itemwords($pdata);
 init_techniquewords($pdata);
 $nmap = get_neighbor_map($pdata['pls']);
-$movetolist = init_moveto($pdata['pls']);
+$gst = $gstate[$gamestate];
 if($pdata['hp'] <= 0) {
 	gsetcookie('ctrl','pl');
-	if($pdata['type'] == 0 && $ctrl == 'pl'){
-		
-		$cmd = '<span class="dmg">你死了。</span><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br><br><br><input type="button" id="submit" onClick="location.href=\'end.php\'" value="提交">';
-		$gamedata['cmd'] = $cmd;
+	ob_start();
+	include template('death');
+	$gamedata['cmd'] = ob_get_contents();
+	ob_end_clean();
+} else{
+	if(show_new_tech($pdata) && $mode != 'sp_tech'){
+		$log .= '<span class="yellow">你能学习新的技能！</span>';
+		$canlearntech = true;
 	}else{
-		$cmd = '<span class="dmg">你死了。</span><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >切换角色</a><br><br><br><input type="button" id="submit" onClick="location.href=\'game.php\'" value="提交">';
-		$gamedata['cmd'] = $cmd;
+		$canlearntech = false;
 	}
 	
-} else{
-	if(show_new_tech($pdata) && $mode != 'sp_tech'){$log .= '<span class="yellow">你能学习新的技能！请从“特殊”菜单进入“学习技能”界面。</span>';}
-	
 	if(!$cmd) {
-		ob_clean();
-		if($mode&&file_exists(GAME_ROOT.TPLDIR.'/'.$mode.'.htm')) {
+		ob_start();
+		if($mode == 'itemdrop' || $mode == 'itemoff' || $mode == 'senditem'){
+			include template('itemmenu');
+		}elseif($mode&&file_exists(GAME_ROOT.TPLDIR.'/'.$mode.'.htm')) {
 			include template($mode);
 		} else {
 			include template('command');
 		}
 		$gamedata['cmd'] = ob_get_contents();
-		$gamedata['cmd'] .= '<br><br><input type="button" id="submit" onClick="postCommand();return false;" value="提交">';
+		ob_end_clean();
 	} else {
 		$gamedata['cmd'] = $cmd;
-		$gamedata['cmd'] .= '<br><br><input type="button" id="submit" onClick="postCommand();return false;" value="提交">';
 	}
 }
 
@@ -426,15 +424,30 @@ player_save($pdata);
 
 if($url){$gamedata['url'] = $url;}
 $gamedata['pls'] = $mapdata[$pdata['pls']]['name'];
-if(!isset($gamedata['movetolist'])){$gamedata['movetolist'] = init_moveto($pdata['pls']);}
+$gamedata['weather'] = $wthdata[$weather]['name'];
 //$gamedata['cteam'] = $teamID;
 //$gamedata['cpls'] = $pdata['pls'];
 $gamedata['anum'] = $alivenum;
-
-ob_clean();
-$main ? include template($main) : include template('main');
-$gamedata['main'] = ob_get_contents();
+ob_start();
+include template('profile');
+$gamedata['profile'] = ob_get_contents();
+ob_end_clean();
+if(!$main){
+	ob_start();
+	include template('main');
+	$gamedata['main'] = ob_get_contents();
+	ob_end_clean();
+}else{
+	$gamedata['main'] = $main;
+}
+ob_start();
+include template('eqp');
+$gamedata['eqp'] = ob_get_contents();
+ob_end_clean();
+$gamedata['noise'] = $noise;
+$gamedata['gst'] = $gst;
 $gamedata['log'] = $log;
+
 //foreach($gamedata as $k => $v){
 //	$w .= "{ $k } => { $v };\n\r";
 //}
@@ -444,7 +457,6 @@ $jgamedata = compatible_json_encode($gamedata);
 //$json = new Services_JSON();
 //$jgamedata = $json->encode($gamedata);
 echo $jgamedata;
-
 ob_end_flush();
 //$t_e=getmicrotime();
 //putmicrotime($t_s,$t_e,'cmd_time','');

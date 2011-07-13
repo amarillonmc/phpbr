@@ -1,15 +1,29 @@
-想购买什么物品？<br><br>
-<input type="hidden" name="mode" value="special">
-<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" onmouseover="status=' ';return true;">离开商店</a><br><br>
-<input type="radio" name="command" id="shop1" value="shop1"><a onclick=sl('shop1'); href="javascript:void(0);" onmouseover="status=' ';return true;">【补给品】</a><br>
-<input type="radio" name="command" id="shop2" value="shop2"><a onclick=sl('shop2'); href="javascript:void(0);" onmouseover="status=' ';return true;">【药剂】</a><br>
-<input type="radio" name="command" id="shop3" value="shop3"><a onclick=sl('shop3'); href="javascript:void(0);" onmouseover="status=' ';return true;">【$iteminfo['WP']】</a><br>
-<input type="radio" name="command" id="shop4" value="shop4"><a onclick=sl('shop4'); href="javascript:void(0);" onmouseover="status=' ';return true;">【$iteminfo['WK']】</a><br>
-<input type="radio" name="command" id="shop5" value="shop5"><a onclick=sl('shop5'); href="javascript:void(0);" onmouseover="status=' ';return true;">【$iteminfo['WG']】</a><br>
-<input type="radio" name="command" id="shop6" value="shop6"><a onclick=sl('shop6'); href="javascript:void(0);" onmouseover="status=' ';return true;">【$iteminfo['WC']】</a><br>
-<input type="radio" name="command" id="shop7" value="shop7"><a onclick=sl('shop7'); href="javascript:void(0);" onmouseover="status=' ';return true;">【$iteminfo['WD']】</a><br>
-<input type="radio" name="command" id="shop8" value="shop8"><a onclick=sl('shop8'); href="javascript:void(0);" onmouseover="status=' ';return true;">【{$iteminfo['WF']}材料】</a><br>
-<input type="radio" name="command" id="shop9" value="shop9"><a onclick=sl('shop9'); href="javascript:void(0);" onmouseover="status=' ';return true;">【防具】</a><br>
-<input type="radio" name="command" id="shop10" value="shop10"><a onclick=sl('shop10'); href="javascript:void(0);" onmouseover="status=' ';return true;">【书籍】</a><br>
-<input type="radio" name="command" id="shop11" value="shop11"><a onclick=sl('shop11'); href="javascript:void(0);" onmouseover="status=' ';return true;">【电子装备】</a><br>
-<input type="radio" name="command" id="shop12" value="shop12"><a onclick=sl('shop12'); href="javascript:void(0);" onmouseover="status=' ';return true;">【杂物】</a><br>
+<input type="hidden" id="mode" name="mode" value="special">
+<input type="hidden" id="command" name="command" value="">
+<table style="width:500px">
+	<tr>
+		<td class="td1" colspan="2" style="height:25px">
+			<div>想购买什么类型的商品？</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" colspan="2">
+			<div>
+				<div class="cmdbtn" onclick="$('command').value='menu';postCommand();">{lang quitshop}</div>
+			</div>
+		</td>
+	</tr>
+	<!--{loop array(1,2,3,4,5,6,7,8,9,10,11,12) $i}-->
+		<!--{if $i % 2}-->
+			<tr>
+				<td class="td2" width="50%">
+					<div class="cmdbtn" onclick="$('command').value='shop$i';postCommand();">$shoplistinfo[$i]</div>
+				</td>
+		<!--{else}-->
+				<td class="td2" width="50%">
+					<div class="cmdbtn" onclick="$('command').value='shop$i';postCommand();">$shoplistinfo[$i]</div>
+				</td>
+			</tr>
+		<!--{/if}-->
+	<!--{/loop}-->
+</table>

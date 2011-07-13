@@ -126,7 +126,7 @@ function rs_game($mode = 0) {
 			$result = $db->query("SELECT * FROM {$tablepre}winners ORDER BY gid DESC LIMIT 1");
 			$sdata = $db->fetch_array($result);
 			if(!empty($sdata['name'])){
-				$sdata['name'] = '影_'.$sdata['name'];
+				$sdata['name'] = '影-'.$sdata['name'];
 				$sdata['type'] = 91;
 				$sdata['lastcmd'] = $sdata['lasteff'] = $now;
 				$sdata['sNo'] = $sdata['bid'] = 0;
@@ -338,7 +338,7 @@ function add_once_area($atime) {
 				} elseif($sub['type'] != 1 && $sub['type'] != 7 && $sub['type'] != 9) {
 //					$canmoveto = get_neighbor_map($sub['pls']);
 //					$canmoveto = shuffle($canmoveto);
-					$pls = $arealist[rand($areanum+1,$plsnum)];
+					$pls = $arealist[rand($areanum+1,$plsnum-1)];
 					$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid");
 				}
 			}
@@ -621,6 +621,95 @@ function set_credits(){
 	}
 	$db->multi_update("{$tablepre}users", $updatelist, 'username', "lastgame='$gamenum'");
 	
+	return;
+}
+
+function update_gamemap(){//自动生成地图
+	global $mapdata;
+	return;
+	$gamemaphtm = GAME_ROOT.TPLDIR.'/gamemap.htm';
+	for($i=0;$i<count($mapdata);$i++){
+		$mpp[$mapdata[$i]['mapx']][$mapdata[$i]['mapy']]=$i;
+	}
+	
+	
+	$mapcontent = '<TABLE border="1" cellspacing="0" cellpadding="0" align=center background="map/map.jpg" style="position:relative;background-repeat:no-repeat;background-position:right bottom;">';
+	
+	for($i=1;$i<=10;$i++){
+		$mapcontent .= '<tr align="center">';
+		for($j=1;$j<=10;$j++){
+			if(isset($mpp[$i][$j])){
+				if($mpp[$i][$j] == 30){
+					$mapcontent .= '<!--{if $arealock}-->
+			<td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td>
+		<!--{else}-->
+			<td width="38" height="38" align="middle" id="30"
+				<!--{if CURSCRIPT == \'game\'}-->
+					<!--{if $pdata[\'pls\'] == 30}-->
+						class="maptdyellow" <!--{if $mode == \'command\'}-->onclick="$(\'command\').value=\'search\';postCommand();"<!--{/if}--> title="{lang search}"
+					<!--{elseif in_array(30,array_keys($nmap))}-->
+						class="maptdlime" <!--{if $mode == \'command\'}-->onclick="$(\'command\').value=\'move\';$(\'subcmd\').name=\'moveto\',$(\'subcmd\').value=\'30\';postCommand();"<!--{/if}--> title="{$nmap[30]}"
+					<!--{else}-->
+						class="map2"
+					<!--{/if}-->
+				<!--{else}-->class="map2"<!--{/if}-->><span class="mapspanlime">'.$mapdata[$mpp[$i][$j]]['name'].'</span></td>
+		<!--{/if}-->';
+				}else{
+					$mapcontent .= '<td width="38" height="38" align="middle" id="'.$mpp[$i][$j].'"
+			<!--{if CURSCRIPT == \'game\'}-->
+				<!--{if $pdata[\'pls\'] == '.$mpp[$i][$j].'}-->
+					class="maptdyellow" <!--{if $mode == \'command\'}-->onclick="$(\'command\').value=\'search\';postCommand();"<!--{/if}--> title="{lang search}"
+				<!--{elseif in_array('.$mpp[$i][$j].',array_keys($nmap))}-->
+					class="maptdlime" <!--{if $mode == \'command\'}-->onclick="$(\'command\').value=\'move\';$(\'subcmd\').name=\'moveto\',$(\'subcmd\').value=\''.$mpp[$i][$j].'\';postCommand();"<!--{/if}--> title="{$nmap['.$mpp[$i][$j].']}"
+				<!--{else}-->
+					class="map2"
+				<!--{/if}-->
+			<!--{else}-->class="map2"<!--{/if}-->><span 
+				<!--{if $hack || array_search('.$mpp[$i][$j].',$arealist) > ($areanum + $areaadd)}-->
+					class="mapspanlime"
+				<!--{elseif array_search('.$mpp[$i][$j].',$arealist) <= $areanum}-->
+					class="mapspanred"
+				<!--{else}-->
+					class="mapspanyellow"
+				<!--{/if}-->>'.$mapdata[$mpp[$i][$j]]['name'].'</span></td>';
+				}
+				
+			}else{
+				$mapcontent .= '<td width="38" height="38" class="map2" align=middle><IMG src="map/blank.gif" width="38" height="38" border=0></td>';
+			}
+		}
+		$mapcontent .= '</tr>';
+	}
+	$mapcontent .= '</table>';
+	writeover($gamemaphtm,$mapcontent);
+	return;
+}
+
+function update_radar(){
+	global $mapdata,$typeinfo;
+	$filehtm = GAME_ROOT.TPLDIR.'/radar.htm';
+	$tplist = Array(0,3,4,11,12,13);
+	$mapnamewidth = 100;
+	$tdheight = 10;
+	$screenheight = count($mapdata)*$tdheight;
+	$cantdetect = '??'; $forbidstr='<span class="red">禁</span>';
+	
+	$radarscreen = '<div style="width:400px;height:400px;overflow:auto;overflow-x:hidden"><table style="width:400px;vertical-align:middle;"><tbody>';
+	$radarscreen .= '<tr><td class="td1" style="height:'.$tdheight.'px;width:'.$mapnamewidth.'px"><div></div></td>';
+	foreach ($tplist as $value){
+		$radarscreen .= '<td class=td1><div>'.$typeinfo[$value].'</div></td>';
+	}
+	$radarscreen .= '</tr>';
+	
+	for($i=0;$i<count($mapdata)-1;$i++) {//去掉冬木市
+		$radarscreen .= '<tr><td class=td2 style="height:'.$tdheight.'px"><div>'.$mapdata[$i]['name'].'</div></td>';
+		foreach ($tplist as $value){
+			$radarscreen .= '<td class=td2><div><!--{if array_search('.$i.',$arealist)>$areanum||$hack}--><!--{if $pls == '.$i.'}--><span class="yellow">{$radar['.$i.']['.$value.']}</span><!--{elseif $level > 0}-->{$radar['.$i.']['.$value.']}<!--{else}-->'.$cantdetect.'<!--{/if}--><!--{else}-->'.$forbidstr.'<!--{/if}--></div></td>';
+		}
+		$radarscreen .= '</tr>';
+	}
+	$radarscreen .= '</tbody></table></div>';
+	writeover($filehtm,$radarscreen);
 	return;
 }
 

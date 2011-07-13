@@ -9,6 +9,8 @@ include './gamedata/banlist.php';
 
 if(isset($cuser) && isset($cpass)){
 	gexit($_ERROR['logged_in'],__file__,__line__);
+}elseif(!$allowreg){
+	gexit($_ERROR['reg_off'],__file__,__line__);
 }
 if(!isset($cmd)){
 	$ustate = 'register';

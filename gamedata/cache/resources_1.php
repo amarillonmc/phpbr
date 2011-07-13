@@ -6,14 +6,16 @@
 $nowep = '拳头';
 //■ 无防具 ■
 $noarb = '内衣';
+//■ 无装备 ■
+$noeqp = '无装备';
 //■ 无道具 ■
-$noitm = '--';
+$noitm = '无道具';
 //■ 无限耐久度 ■
 $nosta = '∞';
 //■ 无种类 ■
 $noitmk = '无';
 //■ 无属性 ■
-$nospk = '--';
+$nospk = '无属性';
 //■ 多种类武器 ■
 //$mltwk = '泛用兵器';
 
@@ -42,7 +44,7 @@ $clubinfo = Array(
 	17=>'深空枷锁',
 	18=>'魔法少女',
 );
-$wthinfo = Array('晴天','大晴','多云','小雨','暴雨','台风','雷雨','下雪','起雾','浓雾','<span class="yellow">瘴气</span>','<span class="red">龙卷风</span>','<span class="clan">暴风雪</span>','<span class="blue">冰雹</span>');
+//$wthinfo = Array('晴天','大晴','多云','小雨','暴雨','台风','雷雨','下雪','起雾','浓雾','<span class="yellow">瘴气</span>','<span class="red">龙卷风</span>','<span class="clan">暴风雪</span>','<span class="blue">冰雹</span>');
 $sexinfo = Array('m' => '男生', 'f' => '女生', 'n' => '未定');
 $hpinfo = Array('并无大碍','伤痕累累','生命危险','已经死亡');
 $spinfo = Array('精力充沛','略有疲惫','精疲力尽','已经死亡');
@@ -173,40 +175,40 @@ $npcchat = Array(
 		)
 	),
 	4 => Array(
-//		'冴月 麟' => Array(
-//			'meet' => '“在咱看来你只是代码而已。咱出手不知轻重，请你原谅。”',
-//			'attackfine1' => '“为了摆出攻击姿势，你忽略了隐蔽？”',
-//			'attackfine2' => '“为了寻找重要道具，你丢弃了谨慎？”',
-//			'attackhurt1' => '“记住，NPC先制攻击的几率跟他的HP无关。”',
-//			'attackhurt2' => '“记住，NPC是不会‘真正意义上’主动进攻的。”',
-//			'defendfine1' => '“这样的伤害值……也许你的熟练度还不够高？”',
-//			'defendfine2' => '“这样的伤害值……也许你的武器攻击力还不够高？”',
-//			'defendhurt1' => '“HP有点低啊，看来下次我出场的时候应该果断开始静养”',
-//			'defendhurt2' => '“HP有点低啊，或许下次加个自动躲避功能会更有趣一点？”',
-//			'death' => '“控血果然容易出意外啊。”',
-//			'escape' => '“唔，随机数竟然是……你的运气不错呢。”',
-//			'cannot' => '“唔，攻击范围不够……你很懂得动脑筋呢。”',
-//			'critical' => '冴月 麟周身释放出了无数代码：“魂！常磐之力！Unlimited Code Works！”',
-//			'kill' => '“记住，轻敌可是会死的。”',
-//			'color' => 'yellow'
-//		),
-//		'四面' => Array(
-//			'meet' => '“于是我又乱入战场了，希望这次没被放在重要地区。”',
-//			'attackfine1' => '“爆炸物早已被我埋设好了，因此无论你射程多远都来不及反击。”',
-//			'attackfine2' => '“各种属性攻击是可以用防具防御的，不过这样的防具没那么容易找到。”',
-//			'attackhurt1' => '“我的内定称号是‘黑衣组织’，所以毒攻命中率有所提升。”',
-//			'attackhurt2' => '“而冴冴的内定称号是‘超能力者’，小心被她的必杀技秒了。”',
-//			'defendfine1' => '“伤害是可以估算的，它与你的攻击力成正比，与敌人的防御力成反比。”',
-//			'defendfine2' => '“伤害与熟练度也是成正比的，而且不同系熟练度增长率不一样。”',
-//			'defendhurt1' => '“把我打惨了啊，小心信四面会落魄到吃⑨冰哦。”',
-//			'defendhurt2' => '“把我打惨了啊，小心信四面会落魄到踩阔剑哦。”',
-//			'death' => '“果然又被杀掉了啊，高速脱离战场。”',
-//			'escape' => '“我实在不知道为什么反击还得有概率……”',
-//			'cannot' => '“爆系的射程是很蛋疼的啊……”',
-//			'critical' => '“唔，好像我不懂得发动必杀技来着？……”',
-//			'kill' => '“又杀人了啊，下次再来吧。”',
-//			'color' => 'yellow'
-//		)
+		'冴月 麟' => Array(
+			'meet' => '“一个新的世界。你做好死亡的准备了吗？”',
+			'attackfine1' => '“隐蔽性也是一种生存能力，你没想到这一点吗？”',
+			'attackfine2' => '“有的人抵挡住了攻击，却没抵挡住侥幸心理。”',
+			'attackhurt1' => '“你攻击一个人的次数越多，异常情况出现的概率就越大。”',
+			'attackhurt2' => '“如果你希望看到咱主动出手，咱可以装备一定程度的AI。”',
+			'defendfine1' => '“一次成功的攻击能让敌人无法还手，但你没能做到这一点。”',
+			'defendfine2' => '“好的敌人是死的敌人，但你没能做到这一点。”',
+			'defendhurt1' => '“HP低下，下次应该果断带补给出来。”',
+			'defendhurt2' => '“HP低下，看来刚才不应该AFK。”',
+			'death' => '“控血果然容易出意外啊。”',
+			'escape' => '“嘛，随机数竟然是……你的运气不错。”',
+			'cannot' => '“嘛，攻击范围不够……你的作战意识不错。”',
+			'critical' => '冴月 麟周身释放出了无数代码：“魂！常磐之力！Unlimited Code Works！”',
+			'kill' => '“在咱看来你只是代码而已。咱出手不知轻重，还请你原谅。”',
+			'color' => 'yellow'
+		),
+		'四面' => Array(
+			'meet' => '“打完这一仗，我就要……不对，这是死亡台词……”',
+			'attackfine1' => '“爆炸物早已被我埋设好了，因此无论你射程多远都来不及反击。”',
+			'attackfine2' => '“带有爆炸属性的武器能够保证伤害值，因此善加利用能事半功倍。”',
+			'attackhurt1' => '“你的熟练度的高低决定你能否发挥出连击武器的最大效果。”',
+			'attackhurt2' => '“各种攻击是可以用对应防具防御的，不过并非每次都能奏效。”',
+			'defendfine1' => '“伤害是可以估算的，它与你的攻击力成正比，与敌人的防御力成反比。”',
+			'defendfine2' => '“伤害与熟练度也是成正比的，而且不同系熟练度增长率不一样。”',
+			'defendhurt1' => '“AI开启的情况下，部分NPC受伤后会进入治疗状态，部分则会使用补给。”',
+			'defendhurt2' => '“地图上散落着的带毒补给和高伤陷阱常常是新手的最大敌人。”',
+			'death' => '“果然又被杀掉了啊，高速脱离战场。”',
+			'escape' => '“随机数也不站在我这边啊……”',
+			'cannot' => '“爆系的射程是很蛋疼的啊……”',
+			'critical' => '“唔，好像我不懂得发动必杀技来着？……”',
+			'kill' => '“又杀人了啊。请下次再来吧。”',
+			'color' => 'yellow'
+		)
 	),
 );
 $iteminfo = Array(//注意顺序，AB必须在A的前面，以此类推
@@ -451,7 +453,7 @@ $wthdata = Array(
 	0 => Array(
 		'name' => '快晴',
 		'kind' => 'SUNNY',
-		'findr' => 10, 'hider' => 0, 'activer' => 20, 'hitr' => 10, 'counterr' => 0, 'attp' => 10, 'defp' => 20,
+		'findr' => 10, 'hider' => 0, 'activer' => 20, 'hitr' => 10,'sidestep' => 5, 'counterr' => 0, 'attp' => 10, 'defp' => 20,
 		'infref' => Array('i' => 5),
 		'refwords' => '在阳光照射下',
 		'special' => Array(),
@@ -459,7 +461,7 @@ $wthdata = Array(
 	1 => Array(
 		'name' => '昙天',
 		'kind' => 'CLOUDY',
-		'findr' => 0, 'hider' => 0, 'activer' => 0, 'hitr' => 0, 'counterr' => 0, 'attp' => 0, 'defp' => 0,
+		'findr' => 0, 'hider' => 0, 'activer' => 0, 'hitr' => 0,'sidestep' => 0, 'counterr' => 0, 'attp' => 0, 'defp' => 0,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -467,7 +469,7 @@ $wthdata = Array(
 	2 => Array(
 		'name' => '疎雨',
 		'kind' => 'RAIN',
-		'findr' => -3, 'hider' => 0, 'activer' => 0, 'hitr' => -5, 'counterr' => 0, 'attp' => 0, 'defp' => -5,
+		'findr' => -3, 'hider' => 0, 'activer' => 0, 'hitr' => -5,'sidestep' => 0, 'counterr' => 0, 'attp' => 0, 'defp' => -5,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -475,7 +477,7 @@ $wthdata = Array(
 	3 => Array(
 		'name' => '风雨',
 		'kind' => 'RAIN',
-		'findr' => -6, 'hider' => 0, 'activer' => -5, 'hitr' => -10, 'counterr' => -5, 'attp' => -5, 'defp' => -15,
+		'findr' => -6, 'hider' => 0, 'activer' => -5, 'hitr' => -10,'sidestep' => -5, 'counterr' => -5, 'attp' => -5, 'defp' => -15,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -483,7 +485,7 @@ $wthdata = Array(
 	4 => Array(
 		'name' => '台风',
 		'kind' => 'RAIN',
-		'findr' => -10, 'hider' => 0, 'activer' => -10, 'hitr' => -15, 'counterr' => -10, 'attp' => -5, 'defp' => -20,
+		'findr' => -10, 'hider' => 0, 'activer' => -10, 'hitr' => -15,'sidestep' => -5, 'counterr' => -10, 'attp' => -5, 'defp' => -20,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -491,7 +493,7 @@ $wthdata = Array(
 	5 => Array(
 		'name' => '天气雨',
 		'kind' => 'SHOWER',
-		'findr' => -5, 'hider' => -10, 'activer' => 15, 'hitr' => -5, 'counterr' => -20, 'attp' => 0, 'defp' => -25,
+		'findr' => -5, 'hider' => -10, 'activer' => 15, 'hitr' => -15, 'sidestep' => -10, 'counterr' => -20, 'attp' => 0, 'defp' => -25,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -499,7 +501,7 @@ $wthdata = Array(
 	6 => Array(
 		'name' => '雪',
 		'kind' => 'SNOW',
-		'findr' => -10,		'hider' => 5,		'activer' => -10,		'hitr' => 0,		'counterr' => 0,		'attp' => 0,		'defp' => 0,
+		'findr' => -10,		'hider' => 5,		'activer' => -10,		'hitr' => 0,	'sidestep' => -5,	'counterr' => 0,		'attp' => 0,		'defp' => 0,
 		'infref' => Array('u'=> 5),
 		'refwords' => '你把雪敷在烧伤处，感觉好多了',
 		'special' => Array(),
@@ -507,7 +509,7 @@ $wthdata = Array(
 	7 => Array(
 		'name' => '川雾',
 		'kind' => 'FOG',
-		'findr' => -10,		'hider' => 5,		'activer' => -10,		'hitr' => -10,		'counterr' => -5,		'attp' => -5,		'defp' => -20,
+		'findr' => -10,		'hider' => 5,		'activer' => -10,		'hitr' => -10,	'sidestep' => 0,	'counterr' => -5,		'attp' => -5,		'defp' => -20,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -515,7 +517,7 @@ $wthdata = Array(
 	8 => Array(
 		'name' => '浓雾',
 		'kind' => 'FOG',
-		'findr' => -20,		'hider' => 10,		'activer' => -10,		'hitr' => -10,		'counterr' => -5,		'attp' => 0,		'defp' => -40,
+		'findr' => -20,		'hider' => 10,		'activer' => -10,		'hitr' => -10,	'sidestep' => 5,	'counterr' => -5,		'attp' => 0,		'defp' => -40,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -523,7 +525,7 @@ $wthdata = Array(
 	20 => Array(
 		'name' => '<span class="yellow">黄砂</span>',
 		'kind' => 'CLOUDY',
-		'findr' => -5,		'hider' => 5,		'activer' => -10,		'hitr' => -20,		'counterr' => -20,		'attp' => 20,		'defp' => -60,
+		'findr' => -5,		'hider' => 5,		'activer' => -10,		'hitr' => -20,	'sidestep' => -20,	'counterr' => -20,		'attp' => 20,		'defp' => -60,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -531,7 +533,7 @@ $wthdata = Array(
 	21 => Array(
 		'name' => '<span class="red">烈日</span>',
 		'kind' => 'SUNNY',
-		'findr' => 20,		'hider' => -5,		'activer' => 10,		'hitr' => 10,		'counterr' => -5,		'attp' => 20,		'defp' => 10,
+		'findr' => 20,		'hider' => -5,		'activer' => 10,		'hitr' => 10,	'sidestep' => 0,	'counterr' => -5,		'attp' => 20,		'defp' => 10,
 		'infref' => Array('i' => 15),
 		'refwords' => '在烈日照射下',
 		'special' => Array(
@@ -544,7 +546,7 @@ $wthdata = Array(
 	22 => Array(
 		'name' => '<span class="purple">极光</span>',
 		'kind' => 'TELEPORT',
-		'findr' => 0,		'hider' => 0,		'activer' => -5,		'hitr' => 0,		'counterr' => -5,		'attp' => 5,		'defp' => 5,
+		'findr' => 0,		'hider' => 0,		'activer' => -5,		'hitr' => 0,	'sidestep' => 0,	'counterr' => -5,		'attp' => 5,		'defp' => 5,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(
@@ -554,7 +556,7 @@ $wthdata = Array(
 	23 => Array(
 		'name' => '<span class="clan">钻石尘</span>',
 		'kind' => 'FOG',
-		'findr' => 9,		'hider' => 9,		'activer' => 9,		'hitr' => 9,		'counterr' => 9,		'attp' => 9,		'defp' => 9,
+		'findr' => 9,		'hider' => 9,		'activer' => 9,		'hitr' => 9,	'sidestep' => 9,	'counterr' => 9,		'attp' => 9,		'defp' => 9,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(),
@@ -562,7 +564,7 @@ $wthdata = Array(
 	24 => Array(
 		'name' => '<span class="blue">雹</span>',
 		'kind' => 'HAILSTONE',
-		'findr' => -25,		'hider' => -20,		'activer' => -10,		'hitr' => 0,		'counterr' => -20,		'attp' => -10,		'defp' => -10,
+		'findr' => -25,		'hider' => -20,		'activer' => -10,		'hitr' => 0,	'sidestep' => -10,	'counterr' => -20,		'attp' => -10,		'defp' => -10,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(
@@ -576,7 +578,7 @@ $wthdata = Array(
 	25 => Array(
 		'name' => '<span class="lime">凪</span>',
 		'kind' => 'CLOUDY',
-		'findr' => 0,		'hider' => 0,		'activer' => 5,		'hitr' => 5,		'counterr' => 5,		'attp' => 0,		'defp' => 0,
+		'findr' => 0,		'hider' => 0,		'activer' => 5,		'hitr' => 5,	'sidestep' => 0,	'counterr' => 5,		'attp' => 0,		'defp' => 0,
 		'infref' => Array(),
 		'refwords' => '',
 		'special' => Array(
@@ -1101,8 +1103,8 @@ $mapdata = Array(
 	30 => Array(
 		'name' => '冬木市',
 		'notice' => "一座很美丽的城市，融合了东西方建筑，还有高耸入云的摩天大楼……<br><span class=\"yellow\"不对！这地方先前在地图上压根不存在的啊！？</span><br>",
-		'mapx' => 6,
-		'mapy' => 5,
+		'mapx' => 1,
+		'mapy' => 10,
 		'function' => Array(),
 		'event' => '',
 		'kind' => 'LOCK',
@@ -1117,4 +1119,5 @@ $mapdata = Array(
 	)
 );
 
+$shoplistinfo = Array(1 => '补给品',2 => '药剂',3 => '钝器',4 => '锐器',5 => '枪械',6 => '投掷武器',7 => '爆炸物',8 => '灵力兵器材料',9 => '防具',10 => '书籍',11 => '电子设备',12 => '杂物',);
 ?>

@@ -182,5 +182,7 @@ function get_defend_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 	return $defend/100;
 }
 
-
+function get_sidestep_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf = '',$active = 1){
+	
+}
 ?>

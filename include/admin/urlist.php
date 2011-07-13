@@ -113,6 +113,41 @@ if($command == 'check') {
 //			echo "无法删除用户 $name 。";
 //		}
 //	}
+}elseif($command == 'new0') {
+	echo <<<EOT
+<form method="post" name="urlist" onsubmit="admin.php">
+<input type="hidden" name="mode" value="urlist">
+<input type="hidden" name="command" value="new1">
+<table class="admin">
+	<tr>
+		<td>账号</td><td>密码</td><td>重复密码</td>
+	</tr>
+	<tr>
+		<td><input type="text" name="nuser" value=""></td><td><input type="password" name="npass" value=""></td><td><input type="password" name="npass2" value=""></td>
+	</tr>
+</table>
+<input type="submit" name="submit" value="提交">
+</form>
+EOT;
+}elseif($command == 'new1') {
+	include './include/user.func.php';
+	include './gamedata/banlist.php';
+	$name_check = name_check($nuser);
+	$pass_check = pass_check($npass,$npass2);
+	
+	if($name_check!='name_ok'){
+		echo $_ERROR[$name_check];
+	}elseif($pass_check!='pass_ok'){
+		echo $_ERROR[$pass_check];
+	}else{
+		$npass=md5($npass);
+		$result = $db->query("INSERT INTO {$tablepre}users (username,`password`,groupid) VALUES ('$nuser', '$npass', '1')");
+		if($result){
+			echo '已建立帐户：'.$nuser;
+		}else{
+			echo '未能建立帐户：'.$nuser;
+		}
+	}	
 }elseif($command == 'edit') {
 	echo '此功能尚未开放！';
 } else {
@@ -131,6 +166,7 @@ $gmlist
 	<option value="lastgame">最新游戏<br />
 	<option value="uid">用户编号<br />
 </select>查看用户列表</a><br>
+<input type="radio" name="command" id="new0" value="new0"><a onclick=sl('new0'); href="javascript:void(0);" >添加帐户</a><br>
 <input type="radio" name="command" id="del2" value="del2"><a onclick=sl('del2'); href="javascript:void(0);" >删除未使用账户（每次1000个）</a><br>
 <input type="submit" name="submit" value="提交">
 </form>

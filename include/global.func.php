@@ -299,9 +299,9 @@ function get_noise($pid = -1, $limit = 0){
 		}
 		
 	}
-//	if(!$noiselog){
-//		$noiselog = '没有听到任何异常响动。<br>';
-//	}
+	if(!$noiselog){
+		$noiselog = '没有听到任何异常响动。<br>';
+	}
 	return $noiselog;
 }
 
@@ -351,9 +351,9 @@ function get_neighbor_map($pls) {
 		if(($map != 30 && (!in_array($map,$forbidden) || $hack)) || ($map == 30 && !$arealock)){
 			$distance = pow(($mapdata[$pls]['mapx']-$mapdata[$map]['mapx']),2) + pow(($mapdata[$pls]['mapy']-$mapdata[$map]['mapy']),2);
 			if($distance <= 2){$movesp = 15;}
-			elseif($distance <=8){$movesp = 32;}
-			elseif($distance <=18){$movesp = 50;}
-			else{$movesp = 70;}
+			elseif($distance <=8){$movesp = 20;}
+			elseif($distance <=18){$movesp = 25;}
+			else{$movesp = 30;}
 			$nmap[$map] = $movesp;
 		}
 	}

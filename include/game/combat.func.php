@@ -245,17 +245,33 @@ function combat($active = 1, $battle_cmd = 'natk') {
 			include_once GAME_ROOT . './include/game/battle.func.php';
 			findcorpse ( $edata );
 		}else{
-			$main = 'battle';
+			$mode = 'command';
 			init_battle ( $edata,1 );
 			init_itemwords($edata,'w_');
-			$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
+			ob_start();
+			include template('battle');
+			$main = ob_get_contents();
+			ob_end_clean();
+			ob_start();
+			include template('ok');
+			$cmd = ob_get_contents();
+			ob_end_clean();
+			//$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
 			$bid = $hp <= 0 ? $bid : 0;
 		}
 	}else{
-		$main = 'battle';
+		$mode = 'command';
 		init_battle ( $edata,1 );
 		init_itemwords($edata,'w_');
-		$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
+		ob_start();
+		include template('battle');
+		$main = ob_get_contents();
+		ob_end_clean();
+		ob_start();
+		include template('ok');
+		$cmd = ob_get_contents();
+		ob_end_clean();
+		//$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
 		$bid = $hp <= 0 ? $bid : 0;
 	}	
 	player_save ( $edata );
@@ -954,9 +970,8 @@ function get_mustdie($adata,$ddata,$attkey,$defkey,$active = 0){
 		$dlv = & $ddata['lvl'];
 		$nm_a = $active ? '你' : $adata['name'];
 		$nm_d = $active ? $ddata['name'] : '你';
-		$prob = $adata[$attkey['AD'].'np'] * (1 + $alv/($alv+$dlv));
+		$prob = $adata[$attkey['AD'][0].'np'] * (1 + $alv/($alv+$dlv));
 		$dice = rand(0,999);
-		echo $prob;
 		if($dice < $prob){
 			$log .= "{$nm_a}使出的<span class=\"red\">即死攻击</span>命中了{$nm_d}！<span class=\"yellow\">{$nm_d}被直接杀死了！</span><br>";
 			naddnews ( $now, 'mustdie', $adata['name'], $ddata['name']);

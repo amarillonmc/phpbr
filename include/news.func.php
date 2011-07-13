@@ -38,7 +38,9 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 		} elseif($news == 'gameover') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">第{$a}回ACFUN大逃杀结束了</span><br>\n";
 		} elseif($news == 'newpc') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}({$b})进入了虚拟战场 (IP：{$c})</span><br>\n";
+			$ip = explode('.',$c);
+			$ip = $ip[0].'.'.$ip[1].'.*.*';
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}({$b})进入了虚拟战场 (IP：{$ip})</span><br>\n";
 		} elseif($news == 'teammake') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$b}创建了队伍{$a}</span><br>\n";
 		} elseif($news == 'teamjoin') {
@@ -96,7 +98,7 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			} elseif($news == 'death19') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被轨道空间站发动<span class=\"red\">精确打击</span>炸死";
 			} elseif($news == 'death20') {
-				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"yellow\">$c</span><span class=\"red\">$nowep</span>击飞";
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"yellow\">$c</span><span class=\"red\">空手击飞</span>";
 			} elseif($news == 'death21') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>被<span class=\"yellow\">$c</span>使用<span class=\"red\">$d</span>殴打致死";
 			} elseif($news == 'death22') {

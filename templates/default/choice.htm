@@ -1,0 +1,21 @@
+<input type="hidden" id="mode" name="mode" value="$chcmode">
+<input type="hidden" id="command" name="command" value="">
+<input type="hidden" id="subcmd" name="" value="">
+<table style="width:500px;"> 
+	<tr>
+		<td class="td1" width="500px">
+			<div>
+				$chcnotice
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" width="500px">
+			<div>
+				<!--{loop $chcinfo $cinfo}-->
+					<div class="cmdbtn" onclick="$('command').value='{$cinfo['command']}';<!--{if isset($cinfo['subcmd'])}-->$('subcmd').name='{$cinfo['subcmd']['name']}';$('subcmd').value='{$cinfo['subcmd']['value']}';<!--{/if}-->postCommand();">{$cinfo['notice']}</div>
+				<!--{/loop}-->
+			</div>
+		</td>
+	</tr>
+</table>

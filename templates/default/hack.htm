@@ -1,8 +1,21 @@
-<input type="hidden" name="mode" value="hack">
+<input type="hidden" id="mode" name="mode" value="hack">
+<input type="hidden" id="command" name="command" value="">
 <input type="hidden" name="item" value="$item">
-
-你想要做什么？<br />
-<input type="radio" name="hackcmd" id="clean" value="clean"><a onclick=sl('clean'); href="javascript:void(0);" >解除所有禁区</a><br />
-<input type="radio" name="hackcmd" id="add" value="add"><a onclick=sl('add'); href="javascript:void(0);" >立刻增加禁区</a><br /><br />
-<input type="radio" name="hackcmd" id="back" value="back" checked><a onclick=sl('back'); href="javascript:void(0);" >返回</a><br />
-<br />
+<table style="width:500px;">
+	<tr>
+		<td class="td1" style="height:25px">
+			<div>
+				你想要做什么？
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2">
+			<div>
+				<div class="cmdbtn" onclick="$('command').value='clean';postCommand();">解除所有禁区</div>
+				<div class="cmdbtn" onclick="$('command').value='add';postCommand();">立刻增加禁区</div>
+				<div class="cmdbtn" onclick="$('command').value='back';postCommand();">返回</div>
+			</div>
+		</td>
+	</tr>
+</table>

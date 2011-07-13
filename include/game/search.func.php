@@ -5,7 +5,7 @@ if(!defined('IN_GAME')) {
 }
 
 function move($moveto = 99) {
-	global $pdata,$log,$mapdata,$arealist,$areanum,$hack,$gamestate,$weather,$inf_move_ref_r,$wthdata,$infdata,$companysystem;
+	global $pdata,$log,$mapdata,$arealist,$areanum,$hack,$gamestate,$weather,$inf_move_ref_r,$wthdata,$infdata,$companysystem,$arealock;
 	extract($pdata,EXTR_REFS);
 	
 	$canmoveto = get_neighbor_map($pls);
@@ -19,8 +19,11 @@ function move($moveto = 99) {
 	} elseif(!in_array($moveto,array_keys($canmoveto))){
 		$log .= '从此处无法到达指定地点。<br>';
 		return;
-	} elseif(array_search($moveto,$arealist) <= $areanum && !$hack){
+	} elseif(array_search($moveto,$arealist) <= $areanum && !$hack && $moveto != 30){
 		$log .= $mapdata[$moveto]['name'].'是禁区，还是离远点吧！<br>';
+		return;
+	} elseif($moveto == 30 && $arealock){
+		$log .= $mapdata[$moveto]['name'].'是什么，可以吃么？<br>';
 		return;
 	}
 	$cannot_cmd = false;
@@ -210,11 +213,14 @@ function move($moveto = 99) {
 }
 
 function search(){
-	global $pdata,$log,$arealist,$areanum,$hack,$mapdata,$gamestate,$weather,$inf_search_ref_r,$wthdata,$infdata;
+	global $pdata,$log,$arealist,$areanum,$hack,$mapdata,$gamestate,$weather,$inf_search_ref_r,$wthdata,$infdata,$arealock;
 	extract($pdata,EXTR_REFS);
 	
-	if(array_search($pls,$arealist) <= $areanum && !$hack){
+	if(array_search($pls,$arealist) <= $areanum && !$hack && $pls != 30){
 		$log .= $mapdata[$pls]['name'].'是禁区，还是赶快逃跑吧！<br>';
+		return;
+	}elseif($pls == 30 && $arealock){
+		$log .= $mapdata[$pls]['name'].'是什么，可以吃么？<br>';
 		return;
 	}
 	

@@ -5,8 +5,9 @@ define('CURSCRIPT', 'game');
 require './include/common.inc.php';
 require './include/game.func.php';
 require './include/display.func.php';
-
-
+require './include/system.func.php';
+//update_gamemap();
+//update_radar();
 active_AI();
 if(!$cuser||!$cpass) { gexit($_ERROR['no_login'],__file__,__line__); } 
 if($mode == 'quit') {
@@ -14,7 +15,6 @@ if($mode == 'quit') {
 	gsetcookie('user','');
 	gsetcookie('pass','');
 	gsetcookie('ctrl','');
-	gsetcookie('promap','');
 	header("Location: index.php");
 	exit();
 
@@ -84,7 +84,7 @@ $pdata['mapprop'] = player_property($pdata);
 //init_playerdata($pdata);
 
 $log = '';
-$log .= get_noise($pid);
+$noise = get_noise($pid);
 
 //读取玩家互动信息
 $result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
@@ -104,13 +104,34 @@ if($pdata['hp'] > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行�
 if($pdata['inf']){
 	check_cannot_cmd($pdata,1,1);
 }
+
 init_displaydata($pdata);
 init_profile($pdata);
 init_itemwords($pdata);
 init_techniquewords($pdata);
 $nmap = get_neighbor_map($pdata['pls']);
-$movetolist = init_moveto($pdata['pls']);
-if(show_new_tech($pdata)){$log .= '<span class="yellow">你能学习新的技能！请从“特殊”菜单进入“学习技能”界面。</span>';}
+$gst = $gstate[$gamestate];
+if(show_new_tech($pdata)){
+	$log .= '<span class="yellow">你能学习新的技能！</span>';
+	$canlearntech = true;
+}else{
+	$canlearntech = false;
+}
+ob_start();
+if($pdata['state'] >=1 && $pdata['state'] <= 3){
+	include template('rest');
+	$cmd = ob_get_contents();
+	$mode = 'rest';
+}elseif($pdata['itms0']){
+	include template('itemfind');
+	$cmd = ob_get_contents();
+	$mode = 'itemfind';
+}else{
+	include template('command');
+	$cmd = ob_get_contents();
+	$mode = 'command';
+}
+ob_end_clean();
 include template('game');
 
 ?>

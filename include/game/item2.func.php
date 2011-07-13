@@ -368,7 +368,7 @@ function deathnote($itmd=0,$dnname='',$dndeath='',$sfn) {
 	}
 	if(!$dndeath){$dndeath = '心脏麻痹';}
 	//echo "name=$dnname,gender = $dngender,icon=$dnicon,";
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$dnname' AND type = 0");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$dnname' AND type = 0 AND hp > 0");
 	if(!$db->num_rows($result)) { 
 		$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？<br>"; 
 	} else {

@@ -13,22 +13,22 @@
 			<div>
 				<div class="itmbtn" onclick="$('command').value='menu';postCommand();">{lang back}</div>
 				<!--{if $edata['money']}-->
-					<div class="itmbtn" onclick="$('command').value='money';postCommand();">{$edata['money']}{lang moneyunit}</div>
+					<div class="itmbtn" onclick="$('command').value='corpsemoney';postCommand();">{$edata['money']}{lang moneyunit}</div>
 				<!--{/if}-->
 				<!--{if $edata['weps'] && $edata['wepk'] && $edata['wepk']!='WN'}-->
-					<div class="itmbtn" onclick="$('command').value='wep';postCommand();">{$edata['wep']}/{$edata['display']['wepk_words']}/{$edata['wepe']}/{$edata['weps']}<!--{if $edata['display']['wepsk_words']}-->/{$edata['display']['wepsk_words']}<!--{/if}--></div>
+					<div class="itmbtn" onclick="$('command').value='corpsewep';postCommand();">{$edata['wep']}/{$edata['display']['wepk_words']}/{$edata['wepe']}/{$edata['weps']}<!--{if $edata['display']['wepsk_words']}-->/{$edata['display']['wepsk_words']}<!--{/if}--></div>
 				<!--{/if}-->
 				<!--{if $edata['arbs'] && $edata['arbk'] && $edata['arbk']!='DN'}-->
-					<div class="itmbtn" onclick="$('command').value='arb';postCommand();">{$edata['arb']}/{$edata['display']['arbk_words']}/{$edata['arbe']}/{$edata['arbs']}<!--{if $edata['display']['arbsk_words']}-->/{$edata['display']['arbsk_words']}<!--{/if}--></div>
+					<div class="itmbtn" onclick="$('command').value='corpsearb';postCommand();">{$edata['arb']}/{$edata['display']['arbk_words']}/{$edata['arbe']}/{$edata['arbs']}<!--{if $edata['display']['arbsk_words']}-->/{$edata['display']['arbsk_words']}<!--{/if}--></div>
 				<!--{/if}-->
 				<!--{loop array('arh','ara','arf','art') $p}-->
 					<!--{if $edata[$p.'s']}-->
-						<div class="itmbtn" onclick="$('command').value='$p';postCommand();">{$edata[$p]}/{$edata['display'][$p.'k_words']}/{$edata[$p.'e']}/{$edata[$p.'s']}<!--{if $edata['display'][$p.'sk_words']}-->/{$edata['display'][$p.'sk_words']}<!--{/if}--></div>
+						<div class="itmbtn" onclick="$('command').value='corpse$p';postCommand();">{$edata[$p]}/{$edata['display'][$p.'k_words']}/{$edata[$p.'e']}/{$edata[$p.'s']}<!--{if $edata['display'][$p.'sk_words']}-->/{$edata['display'][$p.'sk_words']}<!--{/if}--></div>
 					<!--{/if}-->
 				<!--{/loop}-->
 				<!--{loop array(0,1,2,3,4,5,6) $i}-->
 					<!--{if $edata['itms'.$i]}-->
-						<div class="itmbtn" onclick="$('command').value='itm$i';postCommand();">{$edata['itm'.$i]}/{$edata['display']['itmk'.$i.'_words']}/{$edata['itme'.$i]}/{$edata['itme'.$i]}<!--{if $edata['display']['itmsk'.$i.'_words']}-->/{$edata['display']['itmk'.$i.'_words']}<!--{/if}--></div>
+						<div class="itmbtn" onclick="$('command').value='corpseitm$i';postCommand();">{$edata['itm'.$i]}/{$edata['display']['itmk'.$i.'_words']}/{$edata['itme'.$i]}/{$edata['itms'.$i]}<!--{if $edata['display']['itmsk'.$i.'_words']}-->/{$edata['display']['itmk'.$i.'_words']}<!--{/if}--></div>
 					<!--{/if}-->
 				<!--{/loop}-->
 			</div>

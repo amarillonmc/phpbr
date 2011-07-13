@@ -5,7 +5,7 @@ define('CURSCRIPT', 'game');
 require './include/common.inc.php';
 require './include/game.func.php';
 require './include/display.func.php';
-require './include/system.func.php';
+//require './include/game/combat.func.php';
 //update_gamemap();
 //update_radar();
 active_AI();

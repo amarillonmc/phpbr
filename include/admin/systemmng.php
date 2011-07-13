@@ -64,6 +64,7 @@ if($command == 'edit') {
 		if(in_array('adminmsg',array_keys($edlist))){
 			$adminmsgfile = file_get_contents('./gamedata/adminmsg.php');
 			$nadminmsg = $edlist['adminmsg'];
+			$nadminmsg = html_entity_decode($nadminmsg,ENT_COMPAT);
 			$adminmsgfile = preg_replace("/[$]adminmsg\s*\=\s*[\"'].*?[\"'];/is", "\$adminmsg = '$nadminmsg';", $adminmsgfile);
 			file_put_contents('./gamedata/adminmsg.php',$adminmsgfile);
 		}

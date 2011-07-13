@@ -42,7 +42,7 @@ function combat($active = 1, $battle_cmd = 'natk') {
 			return;
 		} elseif ($edata ['hp'] <= 0) {
 			global $corpseprotect,$gamestate;
-			$log .= "<span class=\"red\">$edata ['name']</span>已经死亡，不能被攻击。<br>";
+			$log .= "<span class=\"red\">{$edata['name']}</span>已经死亡，不能被攻击。<br>";
 			if($edata['lasteff'] < $now -$corpseprotect && $gamestate < 40){
 				include_once GAME_ROOT . './include/game/battle.func.php';
 				findcorpse ( $edata );
@@ -53,7 +53,7 @@ function combat($active = 1, $battle_cmd = 'natk') {
 		
 		$w_log = '';
 		if ($message) {
-			$log .= "<span class=\"lime\">你对{$edata ['name']}大喊：{$message}</span><br>";
+			$log .= "<span class=\"lime\">你对{$edata['name']}大喊：{$message}</span><br>";
 			if (! $edata ['type']) {
 				$w_log .= "<span class=\"lime\">{$name}对你大喊：{$message}</span><br>";
 				//logsave ( $edata ['pid'], $now, $w_log ,'c');
@@ -245,7 +245,6 @@ function combat($active = 1, $battle_cmd = 'natk') {
 			include_once GAME_ROOT . './include/game/battle.func.php';
 			findcorpse ( $edata );
 		}else{
-			$mode = 'command';
 			init_battle ( $edata,1 );
 			init_itemwords($edata,'w_');
 			ob_start();
@@ -260,7 +259,6 @@ function combat($active = 1, $battle_cmd = 'natk') {
 			$bid = $hp <= 0 ? $bid : 0;
 		}
 	}else{
-		$mode = 'command';
 		init_battle ( $edata,1 );
 		init_itemwords($edata,'w_');
 		ob_start();
@@ -275,6 +273,7 @@ function combat($active = 1, $battle_cmd = 'natk') {
 		$bid = $hp <= 0 ? $bid : 0;
 	}	
 	player_save ( $edata );
+	$mode = 'combatresult';
 	return;
 }
 

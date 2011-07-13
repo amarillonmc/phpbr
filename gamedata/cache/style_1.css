@@ -8,9 +8,9 @@ table {
 	cellspacing:0;cellpadding:0;
 	font:bold 12px "微软雅黑" serif;
 }
-tr {margin: 0px;padding:0px;}
-td {margin: 0px;padding:0px;}
-th {margin: 0px;padding:0px;}
+tr{margin: 0px;padding:0px;}
+th{margin: 0px;padding:0px;}
+td{margin: 0px;padding:0px;}
 p {line-height:16px;}
 li {font: bold 10pt "微软雅黑" serif;line-height:16px}
 input {cursor: crosshair;}
@@ -48,24 +48,24 @@ input {cursor: crosshair;}
 	position:relative;
 }
 
-.td2 .itmbtn {
+.itmbtn {
 	TEXT-ALIGN: center;
 	margin:2px 8px 2px 8px;
 	border: #fff 1px solid;
 }
 
-.td2 .itmbtn:hover {
+.itmbtn:hover {
 	background-color:rgba(30,70,30,0.6);
 	color:#3f9;
 }
 
-.td2 .cmdbtn {
+.cmdbtn {
 	height:20px;
 	margin:2px 8px 2px 8px;
 	border: #fff 1px solid;
 }
 
-.td2 .cmdbtn:hover {
+.cmdbtn:hover {
 	background-color:rgba(30,30,60,0.6);
 	color:#3af;
 }
@@ -119,9 +119,6 @@ input {cursor: crosshair;}
 #main {
 white-space:nowrap;
 vertical-align:middle;
-}
-.battle td{
-text-align: center;
 }
 
 .nttx{

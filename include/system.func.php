@@ -269,7 +269,8 @@ function rs_sttime() {
 
 function add_once_area($atime) {
 	//实际上GAMEOVER的判断是在common.inc.php里
-	global $db,$tablepre,$now,$gamestate,$areaesc,$arealist,$areanum,$arealimit,$areaadd,$mapdata,$weather,$hack,$validnum,$alivenum,$deathnum;
+	global $db,$tablepre,$now,$gamecfg,$gamestate,$areaesc,$arealist,$areanum,$arealimit,$areaadd,$mapdata,$weather,$hack,$validnum,$alivenum,$deathnum;
+	include config('npc',$gamecfg);
 	if (($gamestate > 10)&&($now > $atime)) {
 		$plsnum = sizeof($mapdata) - 1;
 		if(($areanum >= $arealimit*$areaadd)&&($validnum<=0)) {//无人参加GAMEOVER不是因为这里，这里只是保险。
@@ -335,7 +336,7 @@ function add_once_area($atime) {
 						//$pls = $arealist[rand($areanum+1,$plsnum)];
 						$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid ");
 					}
-				} elseif($sub['type'] != 1 && $sub['type'] != 7 && $sub['type'] != 9) {
+				} elseif(!in_array($sub['type'],$npcstatic)) {
 //					$canmoveto = get_neighbor_map($sub['pls']);
 //					$canmoveto = shuffle($canmoveto);
 					$pls = $arealist[rand($areanum+1,$plsnum-1)];
@@ -687,6 +688,7 @@ function update_gamemap(){//自动生成地图
 
 function update_radar(){
 	global $mapdata,$typeinfo;
+	return;
 	$filehtm = GAME_ROOT.TPLDIR.'/radar.htm';
 	$tplist = Array(0,3,4,11,12,13);
 	$mapnamewidth = 100;

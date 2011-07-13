@@ -1,0 +1,23 @@
+<input type="hidden" id="mode" name="mode" value="itemmain">
+<input type="hidden" name="command" value="itemmerge">
+<input type="hidden" name="merge1" value="0">
+<input type="hidden" id="merge2" name="merge2" value="n">
+<table style="width:500px;"> 
+	<tr>
+		<td class="td1" width="500px">
+			<div>
+				是否将<span class="yellow">$pdata['itm0']</span>与以下物品合并？
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="td2" width="500px">
+			<div>
+				<div class="cmdbtn" onclick="postCommand;">不合并</div>
+				<!--{loop $sameitem $sitmn}-->
+					<div class="cmdbtn" onclick="$('merge2').value='$sitmn';postCommand();">{$pdata['itm'.$sitmn]}/{$pdata['itme'.$sitmn]}/{$pdata['itms'.$sitmn]}</div>
+				<!--{/loop}-->
+			</div>
+		</td>
+	</tr>
+</table> 

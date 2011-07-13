@@ -323,9 +323,10 @@ if($command != 'switch'){
 			combat(1,$command);
 		} elseif($mode == 'rest') {
 			$log .= set_rest($command,$pdata,1);//set_rest($command,$pdata,1);
-		} elseif($mode == 'corpse') {
+		} elseif($mode == 'corpse' && strpos($command,'corpse')===0) {
+			$itmpos = substr($command,6);
 			include_once GAME_ROOT.'./include/game/itemmain.func.php';
-			getcorpse($command);
+			getcorpse($itmpos);
 		} elseif($mode == 'team') {
 			include_once GAME_ROOT.'./include/game/team.func.php';
 			$command($nteamID,$nteamPass);
@@ -419,7 +420,6 @@ if($pdata['hp'] <= 0) {
 		$gamedata['cmd'] = $cmd;
 	}
 }
-
 player_save($pdata);
 
 if($url){$gamedata['url'] = $url;}

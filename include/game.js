@@ -39,22 +39,11 @@ function demiSecTimerStarter(msec){
 	timerid = setInterval("demiSecTimer()",itv);
 }
 
-//icon select
-//function iconMover(){
-//	gd = document.valid.gender[0].checked ? 'm' : 'f';
-//	inum = document.valid.icon.selectedIndex;
-//	$('iconImg').innerHTML = '<img src="img/' + gd + '_' + inum + '.gif" alt="' + inum + '">';
-//}
 function userIconMover(){
 	ugd = $('male').checked ? 'm' : 'f';
 	uinum = $('icon').selectedIndex;
 	$('userIconImg').innerHTML = '<img src="img/' + ugd + '_' + uinum + '.gif" alt="' + uinum + '">';
 }
-//function dniconMover(){
-//	dngd = document.cmd.dngender[0].checked ? 'm' : 'f';
-//	dninum =document.cmd.dnicon.selectedIndex;
-//	$('dniconImg').innerHTML = '<img src="img/' + dngd + '_' + dninum + '.gif" alt="' + dninum + '">';
-//}
 
 function showNotice(sNotice) {
 	$('notice').innerText = sNotice;
@@ -105,10 +94,13 @@ function showData(sdata){
 			}
 		}
 	}
+	if(gamedata['timer'] && typeof(timerid)=='undefined'){
+		demiSecTimerStarter(gamedata['timer']);
+	}
 }
 
 function postCommand(){
-
+	
 	var oXmlHttp = zXmlHttp.createRequest();
 	var sBody = getRequestBody(document.forms['cmd']);
 	oXmlHttp.open("post", "command.php", true);

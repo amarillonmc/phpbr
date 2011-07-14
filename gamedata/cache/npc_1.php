@@ -22,7 +22,7 @@ $npcinit = array
 		'itm6' => '',	'itmk6' => '',	'itme6' => 0,	'itms6' => 0,	'itmsk6' => '',	'itmnp6' => 0
 	);
 //决定NPC是否躲避禁区
-$npcstatic = Array(1,2,21);
+$npcstatic = Array(1,2,21,91);
 //NPC资料数组
 $npcinfo = array
 	( 

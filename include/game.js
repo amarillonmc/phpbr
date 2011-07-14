@@ -53,23 +53,29 @@ function sl(id) {
 	$(id).checked = true;
 }
 
-function postCmd(cmdName,formName,sendto){
-	$(cmdName).disabled = true;
-	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms[formName]);
-	oXmlHttp.open("post", sendto, true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showData(oXmlHttp.responseText);
-				$(cmdName).disabled = false;
-			} else {
-				showNotice(oXmlHttp.statusText);
+function postCmd(formName,sendto){
+	if($('submittable').value == 1){
+		$('submittable').value = 0;
+		$('notice').innerHTML = 'Posting...';
+		var oXmlHttp = zXmlHttp.createRequest();
+		var sBody = getRequestBody(document.forms[formName]);
+		oXmlHttp.open("post", sendto, true);
+		oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		oXmlHttp.onreadystatechange = function () {
+			if (oXmlHttp.readyState == 4) {
+				if (oXmlHttp.status == 200) {
+					showData(oXmlHttp.responseText);
+					$('submittable').value = 1;
+					$('notice').innerHTML = '';
+				} else {
+					showNotice(oXmlHttp.statusText);
+				}
 			}
-		}
-	};
-	oXmlHttp.send(sBody);
+		};
+		oXmlHttp.send(sBody);
+	}else{
+		$('notice').innerHTML = 'Duplicate submissions.';
+	}
 }
 
 function showData(sdata){
@@ -94,28 +100,33 @@ function showData(sdata){
 			}
 		}
 	}
-	if(gamedata['timer'] && typeof(timerid)=='undefined'){
-		demiSecTimerStarter(gamedata['timer']);
+	if(shwData['timer'] && typeof(timerid)=='undefined'){
+		demiSecTimerStarter(shwData['timer']);
 	}
 }
 
 function postCommand(){
-	
-	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms['cmd']);
-	oXmlHttp.open("post", "command.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showGamedata(oXmlHttp.responseText);
-				
-			} else {
-				showNotice(oXmlHttp.statusText);
+	if($('submittable').value == 1){
+		$('submittable').value = 0;
+		var oXmlHttp = zXmlHttp.createRequest();
+		var sBody = getRequestBody(document.forms['cmd']);
+		oXmlHttp.open("post", "command.php", true);
+		oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		oXmlHttp.onreadystatechange = function () {
+			if (oXmlHttp.readyState == 4) {
+				if (oXmlHttp.status == 200) {
+					showGamedata(oXmlHttp.responseText);
+					$('submittable').value = 1;
+					$('notice').innerHTML = '';
+				} else {
+					showNotice(oXmlHttp.statusText);
+				}
 			}
-		}
-	};
-	oXmlHttp.send(sBody);
+		};
+		oXmlHttp.send(sBody);
+	}else{
+		$('notice').innerHTML = 'Duplicate submissions.';
+	}
 }
 
 function showGamedata(sGamedata){

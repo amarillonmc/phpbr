@@ -317,7 +317,7 @@ $techniqueinfo = Array(
 				'name' => '强力攻击','wep_kind' => 'A','anti_kind' => 'A',
 				'info' => '主动技能：战斗中攻击力上升30%，但防御力下降20%。',
 				'dsp' => 30, 'attack' => 1.3, 'defend' => 0.8,
-				'lvl' => 0, 'subseq' => Array('Ac1','AF1','HGc','HG1'),
+				'lvl' => 1, 'subseq' => Array('Ac1','AF1','HGc','HG1'),
 			),
 			'Ac1' => Array(
 				'name' => '蓄力攻击','wep_kind' => 'NPKC','anti_kind' => 'A',
@@ -329,27 +329,27 @@ $techniqueinfo = Array(
 				'name' => '灵力集中','wep_kind' => 'F','anti_kind' => 'A',
 				'info' => '主动技能：战斗中灵力武器的攻击力上升50%，但防御力下降30%，回避率下降20%。',
 				'dsp' => 35, 'attack' => 1.5,'defend' => 0.7,'sidestep' => 0.8,
-				'lvl' => 1, 'subseq' => Array('TA0'),
+				'lvl' => 2, 'subseq' => Array('TA0'),
 			),
 			'DA0' => Array(
 				'name' => '防守反击','wep_kind' => 'A','anti_kind' => 'A',
 				'info' => '主动技能：战斗中防御力上升50%，但攻击力下降40%。',
 				'dsp' => 30, 'attack' => 0.6, 'defend' => 1.5,
-				'lvl' => 0, 'subseq' => Array('cA0','cc0','sA0'),
+				'lvl' => 1, 'subseq' => Array('cA0','cc0','sA0'),
 			),
 			'TA0' => Array(
 				'name' => '连续攻击','wep_kind' => 'A','anti_kind' => 'A',
 				'info' => '主动技能：战斗中用普通武器能发动2-3次攻击，连击武器的攻击次数增加；但是攻击力下降10%，命中率下降10%。',
 				'dsp' => 75, 'attack' => 0.9,'hitrate' => 0.9,
 				'hittime' => '1-2',
-				'lvl' => 3, 'subseq' => Array('FG1','FC1'),
+				'lvl' => 4, 'subseq' => Array('FG1','FC1'),
 			),
 			'FG1' => Array(
 				'name' => '乱射','wep_kind' => 'G','anti_kind' => 'A',
 				'info' => '主动技能：战斗中枪械武器的攻击次数加倍；但是攻击力下降20%，防御力下降30%，命中率下降15%。',
 				'dsp' => 100, 'attack' => 0.8,'defend' => 0.7,'hitrate' => 0.85,
 				'hitfac' => 2,
-				'lvl' => 4, 
+				'lvl' => 5, 
 			),
 			
 			'FG2' => Array(
@@ -364,19 +364,19 @@ $techniqueinfo = Array(
 				'info' => '主动技能：战斗中投掷武器的攻击次数加倍；但是攻击力下降30%，防御力下降30%，命中率下降10%。',
 				'dsp' => 100, 'attack' => 0.7,'defend' => 0.7,'hitrate' => 0.9,
 				'hitfac' => 2,
-				'lvl' => 4, 
+				'lvl' => 5, 
 			),
 			'HGc' => Array(
 				'name' => '抵近射击','wep_kind' => 'G','anti_kind' => 'NPK',
 				'info' => '主动技能：战斗中使用枪械时，对敌方近程武器的命中率上升20%，但是防御力下降20%。',
 				'dsp' => 40, 'hitrate' => 1.2,'defend' => 0.8,
-				'lvl' => 2, 'subseq' => Array('TA0'),
+				'lvl' => 3, 'subseq' => Array('TA0'),
 			),
 			'HG1' => Array(
 				'name' => '狙击','wep_kind' => 'G','anti_kind' => 'A',
 				'info' => '主动技能：战斗中使用枪械时，命中率上升25%，但回避率下降30%。',
 				'dsp' => 50, 'hitrate' => 1.25,'sidestep' => 0.7,
-				'lvl' => 2, 'subseq' => Array('TA0'),
+				'lvl' => 3, 'subseq' => Array('TA0'),
 			),
 		),
 		'map' => Array(

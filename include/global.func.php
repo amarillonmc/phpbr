@@ -197,6 +197,31 @@ function naddnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
 	return;
 }
 
+function add_multi_news($news,$lw = 0){
+	global $now,$db,$tablepre,$gamenum;
+	if(!is_array($news) || empty($news)){return;}
+	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
+	touch($newsfile);
+	if($lw){
+		$lwlist = array();
+		$result = $db->query("SELECT username,lastword FROM {$tablepre}users WHERE lastgame = '$gamenum'");
+		while($udata = $db->fetch_array($result)){
+			$lwlist[$udata['username']] = $udata['lastword'];
+		}
+		
+	}
+	foreach($news as $nval){
+		$t = $val['t'] ? $val['t'] : $now;
+		if(is_array($val['a'])){
+			$a=implode('_',$val['a']);
+		}else{
+			$a = $val['a'];
+		}
+		$n = $val['n'];$b = $val['b'];$c = $val['c'];$d = $val['d'];$e = $val['e'];
+		
+	}
+}
+
 function systemchat($chatmsg,$t = 0){
 	global $now,$db,$tablepre;
 	$t = $t ? $t : $now;

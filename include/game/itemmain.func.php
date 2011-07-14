@@ -738,7 +738,7 @@ function getcorpse($item){
 
 	player_save($edata);
 
-	if(!$itme0 || !$itms0) {
+	if(!$itmk0 || !$itms0) {
 		$log .= '该物品不存在！';
 	} else {
 		itemget();

@@ -184,7 +184,7 @@ function combat($active = 1, $battle_cmd = 'natk') {
 	$att_dmg = isset($att_dmg) ? $att_dmg : 0;
 	$def_dmg = isset($def_dmg) ? $def_dmg : 0;
 	
-	if (! $w_type) {//生成其他玩家的作战简报
+	if (! $w_type || $w_type == 100) {//生成其他玩家的作战简报
 		$w_inf_log = '';
 		if ($w_combat_inf) {
 			for($i=0;$i < strlen($w_combat_inf);$i++){

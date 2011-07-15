@@ -29,12 +29,14 @@ function kill_all_AFKer($timelimit=30){
 	}
 
 	if(!$afkerlist){echo '没有符合条件的角色。';return;}
+	$adnws = array();
 	foreach($afkerlist as $kid => $kcontent){
 		$db->query("UPDATE {$tablepre}players SET hp='0',state='32' WHERE pid='$kid' AND type='0' AND hp>'0' AND state<'10'");
 		if($db->affected_rows()){
 			adminlog('killafker',$kid);
 			echo '角色 '.$kcontent['name'].' 被杀死。<br>';
-			naddnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
+			$adnws[] = array($now,'death32',$kcontent['name'],'',$kcontent['pls']);
+			//naddnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
 			$alivenum--;
 			$deathnum++;
 			
@@ -42,6 +44,7 @@ function kill_all_AFKer($timelimit=30){
 			echo '无法杀死角色 '.$kcontent['name'].' 。<br>';
 		}
 	}
+	add_multi_news($adnws);
 	save_gameinfo();
 	return;
 }

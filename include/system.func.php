@@ -86,6 +86,7 @@ function rs_game($mode = 0) {
 		$npcqry = '';
 		$an = $areanum ? ceil($areanum/$areaadd) : 0;
 		$passlist = array_slice($arealist,0,$areanum+1);
+		$adnws = array();
 		foreach($npcinfo as $type => $npcdata){
 			if($npcdata['area'] == $an || $npcdata['area'] == 99){
 				for($j = 1;$j <= $npcdata['num'];$j++){
@@ -113,11 +114,13 @@ function rs_game($mode = 0) {
 					$npcqry .= "('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['lastcmd']."','".$npc['lasteff']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['state']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['itm6']."','".$npc['itmk6']."','".$npc['itme6']."','".$npc['itms6']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."','".$npc['itmsk6']."','".$npc['wepnp']."','".$npc['arbnp']."','".$npc['arhnp']."','".$npc['aranp']."','".$npc['arfnp']."','".$npc['artnp']."','".$npc['itmnp0']."','".$npc['itmnp1']."','".$npc['itmnp2']."','".$npc['itmnp3']."','".$npc['itmnp4']."','".$npc['itmnp5']."','".$npc['itmnp6']."'),";
 					
 				}
+				
 				if($npcdata['attention']){
 					if($npcdata['num'] == 1){
-						naddnews($now, 'addnpc',$typeinfo[$type].' '.$npc['name']);
+						//naddnews($now, 'addnpc',$typeinfo[$type].' '.$npc['name']);
+						$adnws[] = array($now, 'addnpc',$typeinfo[$type].' '.$npc['name']);
 					}	elseif($npcdata['num'] > 1){
-						naddnews($now, 'addnpcs',$typeinfo[$type],$npcdata['num']);
+						$adnws[] = array($now, 'addnpcs',$typeinfo[$type],$npcdata['num']);
 					}
 				}
 			}
@@ -141,7 +144,7 @@ function rs_game($mode = 0) {
 				$sdata['itm1'] = '击倒'.$sdata['name'].'的证明';$sdata['itmk1'] = 'Z';$sdata['itme1'] = 1;$sdata['itms1'] = 1;
 				$sdata['pls'] = 0;
 				$npcqry .= "('".$sdata['name']."','".$sdata['pass']."','".$sdata['type']."','".$sdata['lastcmd']."','".$sdata['lasteff']."','".$sdata['gd']."','".$sdata['sNo']."','".$sdata['icon']."','".$sdata['club']."','".$sdata['hp']."','".$sdata['mhp']."','".$sdata['sp']."','".$sdata['msp']."','".$sdata['att']."','".$sdata['def']."','".$sdata['pls']."','".$sdata['lvl']."','".$sdata['exp']."','".$sdata['money']."','".$sdata['bid']."','".$sdata['inf']."','".$sdata['rage']."','".$sdata['pose']."','".$sdata['tactic']."','".$sdata['killnum']."','".$sdata['state']."','".$sdata['wp']."','".$sdata['wk']."','".$sdata['wg']."','".$sdata['wc']."','".$sdata['wd']."','".$sdata['wf']."','".$sdata['teamID']."','".$sdata['teamPass']."','".$sdata['wep']."','".$sdata['wepk']."','".$sdata['wepe']."','".$sdata['weps']."','".$sdata['arb']."','".$sdata['arbk']."','".$sdata['arbe']."','".$sdata['arbs']."','".$sdata['arh']."','".$sdata['arhk']."','".$sdata['arhe']."','".$sdata['arhs']."','".$sdata['ara']."','".$sdata['arak']."','".$sdata['arae']."','".$sdata['aras']."','".$sdata['arf']."','".$sdata['arfk']."','".$sdata['arfe']."','".$sdata['arfs']."','".$sdata['art']."','".$sdata['artk']."','".$sdata['arte']."','".$sdata['arts']."','".$sdata['itm0']."','".$sdata['itmk0']."','".$sdata['itme0']."','".$sdata['itms0']."','".$sdata['itm1']."','".$sdata['itmk1']."','".$sdata['itme1']."','".$sdata['itms1']."','".$sdata['itm2']."','".$sdata['itmk2']."','".$sdata['itme2']."','".$sdata['itms2']."','".$sdata['itm3']."','".$sdata['itmk3']."','".$sdata['itme3']."','".$sdata['itms3']."','".$sdata['itm4']."','".$sdata['itmk4']."','".$sdata['itme4']."','".$sdata['itms4']."','".$sdata['itm5']."','".$sdata['itmk5']."','".$sdata['itme5']."','".$sdata['itms5']."','".$sdata['itm6']."','".$sdata['itmk6']."','".$sdata['itme6']."','".$sdata['itms6']."','".$sdata['wepsk']."','".$sdata['arbsk']."','".$sdata['arhsk']."','".$sdata['arask']."','".$sdata['arfsk']."','".$sdata['artsk']."','".$sdata['itmsk0']."','".$sdata['itmsk1']."','".$sdata['itmsk2']."','".$sdata['itmsk3']."','".$sdata['itmsk4']."','".$sdata['itmsk5']."','".$sdata['itmsk6']."','".$sdata['wepnp']."','".$sdata['arbnp']."','".$sdata['arhnp']."','".$sdata['aranp']."','".$sdata['arfnp']."','".$sdata['artnp']."','".$sdata['itmnp0']."','".$sdata['itmnp1']."','".$sdata['itmnp2']."','".$sdata['itmnp3']."','".$sdata['itmnp4']."','".$sdata['itmnp5']."','".$sdata['itmnp6']."'),";
-				naddnews($now, 'addnpc',$typeinfo[91].' '.$sdata['name']);
+				$adnws[] = array($now, 'addnpc',$typeinfo[91].' '.$sdata['name']);
 			}
 		}
 		if(!empty($npcqry)){
@@ -149,8 +152,9 @@ function rs_game($mode = 0) {
 			$db->query($npcqry);
 			unset($npcqry);
 		}
-		
-		
+		if(!empty($adnws)){
+			add_multi_news($adnws);
+		}		
 	}
 	if ($mode & 16) {
 		//echo " - 地图道具/陷阱初始化 - ";
@@ -273,13 +277,15 @@ function add_once_area($atime) {
 	include config('npc',$gamecfg);
 	if (($gamestate > 10)&&($now > $atime)) {
 		$plsnum = sizeof($mapdata) - 1;
+		$adnws = array();
 		if(($areanum >= $arealimit*$areaadd)&&($validnum<=0)) {//无人参加GAMEOVER不是因为这里，这里只是保险。
 			gameover($atime,4);
 			return;
 		} elseif(($areanum + $areaadd) >= $plsnum) {
 			//$areaaddlist = array_slice($arealist,$areanum+1);
 			$areaaddlist = str_replace(',','、',get_areawords(-2));
-			naddnews($atime, 'addarea',$areaaddlist,$weather);
+			$adnws[] = array($atime, 'addarea',$areaaddlist,$weather);
+			//naddnews($atime, 'addarea',$areaaddlist,$weather);
 			$msg = "下列地点变为禁区：".$areaaddlist;
 			systemchat($msg,$atime);
 			$areanum = $plsnum;
@@ -293,9 +299,11 @@ function add_once_area($atime) {
 				$bid = 0;
 				$lasteff = $atime;
 				$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', lasteff='$lasteff' WHERE pid=$pid");
-				naddnews($atime,"death$state",$sub['name'],$sub['type'],$deathpls);
+				$adnws[] = array($atime,"death$state",$sub['name'],$sub['type'],$deathpls);
+				//naddnews($atime,"death$state",$sub['name'],$sub['type'],$deathpls);
 			}
 			$db->free_result($query);
+			add_multi_news($adnws);
 			$alivenum = 0;
 			$dquery = $db->query("SELECT pid FROM {$tablepre}players WHERE hp<=0");
 			$deathnum = $db->num_rows($dquery);
@@ -306,7 +314,8 @@ function add_once_area($atime) {
 			//$areaaddlist = array_slice($arealist,$areanum+1,$areaadd);
 			
 			$areaaddlist = str_replace(',','、',get_areawords(-2));
-			naddnews($atime, 'addarea',$areaaddlist,$weather);
+			$adnws[] = array($atime, 'addarea',$areaaddlist,$weather);
+			//naddnews($atime, 'addarea',$areaaddlist,$weather);
 			$msg = "下列地点变为禁区：".$areaaddlist;
 			systemchat($msg,$atime);
 			if($hack > 0){$hack--;}
@@ -328,7 +337,8 @@ function add_once_area($atime) {
 						$bid = 0;
 						$lasteff = $atime;
 						$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', lasteff='$lasteff' WHERE pid=$pid");
-						naddnews($atime,"death$state",$sub['name'],$sub['type'],$deathpls);
+						$adnws[] = array($atime,"death$state",$sub['name'],$sub['type'],$deathpls);
+						//naddnews($atime,"death$state",$sub['name'],$sub['type'],$deathpls);
 						$deathnum++;
 					} else {
 						shuffle($canmoveto);
@@ -343,6 +353,7 @@ function add_once_area($atime) {
 					$db->query("UPDATE {$tablepre}players SET pls='$pls' WHERE pid=$pid");
 				}
 			}
+			add_multi_news($adnws);
 			$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);
 			if(($alivenum == 1)&&($gamestate >= 30)) { 
 				gameover($atime);
@@ -372,8 +383,12 @@ function duel($time = 0,$keyitm = ''){
 		$time = $time == 0 ? $now : $time;
 		$gamestate = 50;
 		save_gameinfo();
-		naddnews($time,'duelkey',$name,$keyitm);
-		naddnews($time,'duel');
+		$adnws = array();
+		$adnws[] = array($time,'duelkey',$name,$keyitm);
+		$adnws[] = array($time,'duel');
+		add_multi_news($adnws);
+//		naddnews($time,'duelkey',$name,$keyitm);
+//		naddnews($time,'duel');
 		return 50;
 	}
 }
@@ -454,8 +469,12 @@ function gameover($time = 0, $mode = 0, $winname = '') {
 	save_gameinfo();
 	//echo '**游戏结束**';
 	//$gamestate = 0;
-	naddnews($time, "end$winmode",$winner);
-	naddnews($time, 'gameover' ,$gamenum);
+	$adnws = array();
+	$adnws[] = array($time, "end$winmode",$winner);
+	$adnws[] = array($time, 'gameover' ,$gamenum);
+	add_multi_news($adnws);
+//	naddnews($time, "end$winmode",$winner);
+//	naddnews($time, 'gameover' ,$gamenum);
 	systemchat('游戏结束',$time);
 	include_once './include/news.func.php';//保存进行状况
 	$newsinfo = nparse_news(0,65535);
@@ -690,13 +709,13 @@ function update_radar(){
 	global $mapdata,$typeinfo;
 	return;
 	$filehtm = GAME_ROOT.TPLDIR.'/radar.htm';
-	$tplist = Array(0,3,4,11,12,13);
+	$tplist = Array(0,100,3,4,11,12,13);
 	$mapnamewidth = 100;
 	$tdheight = 10;
 	$screenheight = count($mapdata)*$tdheight;
 	$cantdetect = '??'; $forbidstr='<span class="red">禁</span>';
 	
-	$radarscreen = '<div style="width:400px;height:400px;overflow:auto;overflow-x:hidden"><table style="width:400px;vertical-align:middle;"><tbody>';
+	$radarscreen = '<div style="width:400px;height:400px;overflow:auto;overflow-x:hidden;font-size:9px"><table style="width:400px;vertical-align:middle;"><tbody>';
 	$radarscreen .= '<tr><td class="td1" style="height:'.$tdheight.'px;width:'.$mapnamewidth.'px"><div></div></td>';
 	foreach ($tplist as $value){
 		$radarscreen .= '<td class=td1><div>'.$typeinfo[$value].'</div></td>';

@@ -171,55 +171,93 @@ function openfile($filename){
 }
 
 function naddnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
-	global $now,$db,$tablepre;
-	$t = $t ? $t : $now;
-	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
-	touch($newsfile);
-	if(is_array($a)){
-		$a=implode('_',$a);
-	}
-	if(strpos($n,'death11') === 0  || strpos($n,'death32') === 0 || strpos($n,'death34') === 0) {//这几个死法还需要加入称号功能
-		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
-		if($db->num_rows($result)){
-			$e = $lastword = $db->result($result, 0);
-		}else{
-			$e = $lastword = 'addnews判断遗言出错，请检查';
-		}		
-		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$c','$lastword')");
-	}	elseif(strpos($n,'death15') === 0 || strpos($n,'death16') === 0) {
-		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
-		$e = $lastword = $db->result($result, 0);
-		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '0'");
-		$place = $db->result($result, 0);
-		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$place','$lastword')");
-	}
-	$db->query("INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ('$t','$n','$a','$b','$c','$d','$e')");
+	add_multi_news(array(array($t,$n,$a,$b,$c,$d,$e)));
+//	global $now,$db,$tablepre;
+//	$t = $t ? $t : $now;
+//	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
+//	touch($newsfile);
+//	if(is_array($a)){
+//		$a=implode('_',$a);
+//	}
+//	if(strpos($n,'death11') === 0  || strpos($n,'death32') === 0 || strpos($n,'death34') === 0) {//这几个死法还需要加入称号功能
+//		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+//		if($db->num_rows($result)){
+//			$e = $lastword = $db->result($result, 0);
+//		}else{
+//			$e = $lastword = 'addnews判断遗言出错，请检查';
+//		}		
+//		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$c','$lastword')");
+//	}	elseif(strpos($n,'death15') === 0 || strpos($n,'death16') === 0) {
+//		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+//		$e = $lastword = $db->result($result, 0);
+//		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '0'");
+//		$place = $db->result($result, 0);
+//		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$place','$lastword')");
+//	}
+//	$db->query("INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ('$t','$n','$a','$b','$c','$d','$e')");
+//	
 	return;
 }
 
-function add_multi_news($news,$lw = 0){
+function add_multi_news($news){
 	global $now,$db,$tablepre,$gamenum;
 	if(!is_array($news) || empty($news)){return;}
 	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
 	touch($newsfile);
-	if($lw){
-		$lwlist = array();
-		$result = $db->query("SELECT username,lastword FROM {$tablepre}users WHERE lastgame = '$gamenum'");
-		while($udata = $db->fetch_array($result)){
-			$lwlist[$udata['username']] = $udata['lastword'];
-		}
-		
-	}
-	foreach($news as $nval){
-		$t = $val['t'] ? $val['t'] : $now;
-		if(is_array($val['a'])){
-			$a=implode('_',$val['a']);
+	$usersread = $playersread = false;
+	$chatqry = '';$newsqry = '';
+	foreach($news as $val){
+		$t = $val[0] ? $val[0] : $now;
+		if(is_array($val[2])){
+			$a=implode('_',$val[2]);
 		}else{
-			$a = $val['a'];
+			$a = $val[2];
 		}
-		$n = $val['n'];$b = $val['b'];$c = $val['c'];$d = $val['d'];$e = $val['e'];
-		
+		$n = $val[1];
+		$b = isset($val[3]) ? $val[3] : '';
+		$c = isset($val[4]) ? $val[4] : '';
+		$d = isset($val[5]) ? $val[5] : '';
+		$e = isset($val[6]) ? $val[6] : '';
+		if(in_array(substr($n,5),array(11,15,16,32,34))){
+			if(!$usersread){
+				$lwlist = array();
+				$result = $db->query("SELECT username,lastword FROM {$tablepre}users WHERE lastgame = '$gamenum'");
+				while($udata = $db->fetch_array($result)){
+					$lwlist[$udata['username']] = $udata['lastword'];
+				}
+				$db->free_result($result);
+				$usersread = true;
+			}
+			$lastword = $lwlist[$a];
+			if(in_array(substr($n,5),array(15,16))){
+				if(!$playersread){
+					$plslist = array();
+					$result = $db->query("SELECT name,pls FROM {$tablepre}players WHERE name = '$a' AND (type = '0' OR type = '100')");
+					while($pldata = $db->fetch_array($result)){
+						$plslist[$pldata['name']] = $pldata['pls'];
+					}
+					$db->free_result($result);
+					$playersread = true;
+				}
+				$place = $plslist[$a];
+				$chatqry .= "('3','$t','$a','$place','$lastword'),";
+			}else{
+				$chatqry .= "('3','$t','$a','$c','$lastword'),";
+			}
+			$newsqry .= "('$t','$n','$a','$b','$c','$d','$lastword'),";
+		}else{
+			$newsqry .= "('$t','$n','$a','$b','$c','$d','$e'),";
+		}		
 	}
+	if(!empty($chatqry)){
+		$chatqry = "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ".substr($chatqry,0,-1);
+		$db->query($chatqry);
+	}
+	if(!empty($newsqry)){
+		$newsqry = "INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ".substr($newsqry,0,-1);
+		$db->query($newsqry);
+	}
+	return;
 }
 
 function systemchat($chatmsg,$t = 0){
@@ -389,6 +427,7 @@ function get_mapweapon(){
 	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$deathnum;
 	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
 	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
+	$adnws = array();
 	while($mwdata = $db->fetch_array($result)) {
 		$mwtime = $mwdata['time'];
 		$mwpls = $mwdata['pls'];
@@ -396,7 +435,8 @@ function get_mapweapon(){
 		$mwlpid = $mwdata['lpid'];
 		$mwlog = "{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！";
 		systemchat($mwlog,$mwtime);
-		naddnews($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
+		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
+		//naddnews($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
 		$parray = Array();
 		$result2 = $db->query("SELECT pid, name, type, hp, state FROM {$tablepre}players WHERE pls = '$mwpls' AND hp > 0 AND type = 0");
 		while($pldata = $db->fetch_array($result2)) {
@@ -408,7 +448,8 @@ function get_mapweapon(){
 			
 			if($hp <= 0){
 				$hp = 0; $state = $mapweaponinfo[$mwtype]['state'];
-				naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
+				$adnws[] = array($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
+				//naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
 				$deathnum++;
 			}
 			unset($pldata['name'],$pldata['type']);
@@ -419,6 +460,7 @@ function get_mapweapon(){
 		save_gameinfo();
 		$db->multi_update("{$tablepre}players", $parray, 'pid', " pls='$mwpls'", "lasteff = '$now'");
 	}
+	add_multi_news($adnws);
 	$db->query("DELETE FROM {$tablepre}mapweapon WHERE time <= '$now'");
 	return;
 }

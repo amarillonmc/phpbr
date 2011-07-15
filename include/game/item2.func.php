@@ -245,7 +245,7 @@ function radar($m = 0){
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
-	$tplist = Array(0,3,4,11,12,13);
+	$tplist = Array(0,100,3,4,11,12,13);
 	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0 AND state < 98");
 	while($cd = $db->fetch_array($result)) {
 		$chdata[] = $cd;

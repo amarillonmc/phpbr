@@ -5,7 +5,23 @@ define('CURSCRIPT', 'game');
 require './include/common.inc.php';
 require './include/game.func.php';
 require './include/display.func.php';
-//require './include/game/combat.func.php';
+
+//$t_s=getmicrotime();
+//for($i = 0;$i<1;$i++){
+//	naddnews(0,'death16','admin','',0,'','');
+//}
+//$t_e = getmicrotime();
+//putmicrotime($t_s,$t_e,'cmd_time','ori');
+//$t_s=getmicrotime();
+//$a = array();
+//for($i = 0;$i<1;$i++){
+//	$a[] = array(0,'death16','admin','',0,'','');
+//}
+//add_multi_news($a);
+//$t_e = getmicrotime();
+//putmicrotime($t_s,$t_e,'cmd_time','adv');
+
+//require './include/system.func.php';
 //update_gamemap();
 //update_radar();
 active_AI();

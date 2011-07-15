@@ -1,7 +1,13 @@
+2011/7/14 v3.00d
+
+现在雷达可以显示同伴的数目了: {radar.htm; item2.func.php;}
+现在同伴如果受到攻击也能显示作战信息了: {combat.func.php;}
+提高了写进行状况函数的数据库读写效率: {global.func.php; system.func.php; news.func.php; pcmng.php; antiAFKmng.php;}
+-----------------------------------------------------
 2011/7/14 v3.00c
 
 修复了拾取效果=0的道具的时候提示道具不存在的问题: {itemmain.func.php}
-加入了反重复提交的功能: {game.js; header.htm; game.htm; }
+加入了反重复提交的功能: {game.js; header.htm; game.htm; rank.htm;}
 修复了特殊事件显示不正确的问题: {event.func.php;}
 ------------------------------------------------
 

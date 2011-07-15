@@ -12,12 +12,14 @@ if($subcmd == 'kill') {
 			$pclist[] = ${'pc_'.$i};
 		}
 	}
+	$adnws = array();
 	foreach($pclist as $n => $name) {
-		$db->query("UPDATE {$tablepre}players SET hp='0',state='15' WHERE name='$name'AND type='0' AND hp>'0' AND state<'10'");
+		$db->query("UPDATE {$tablepre}players SET hp='0',state='15' WHERE name='$name' AND type='0' AND hp>'0' AND state<'10'");
 		if($db->affected_rows()){
 			adminlog('killpc',$name,$adminmsg);
 			echo " 角色 $name 被杀死。<br>";
-			naddnews($now,'death15',$name);
+			//naddnews($now,'death15',$name);
+			$adnws[] = array($now,'death15',$name);
 			$alivenum--;
 			$deathnum++;
 			save_gameinfo();
@@ -25,18 +27,21 @@ if($subcmd == 'kill') {
 			echo "无法杀死角色 $name 。";
 		}
 	}
+	add_multi_news($adnws);
 } elseif($subcmd == 'live') {
 	for($i=0;$i<$showlimit;$i++){
 		if(isset(${'pc_'.$i})) {
 			$pclist[] = ${'pc_'.$i};
 		}
 	}
+	$adnws = array();
 	foreach($pclist as $n => $name) {
 		$db->query("UPDATE {$tablepre}players SET hp='100',state='0' WHERE name='$name'AND type='0' AND (hp<='0' OR state>='10')");
 		if($db->affected_rows()){
 			adminlog('livepc',$name,$adminmsg);
 			echo " 角色 $name 被复活。<br>";
-			naddnews($now,'alive',$name);
+			$adnws[] = array($now,'alive',$name);
+			//naddnews($now,'alive',$name);
 			$alivenum++;
 			$deathnum--;
 			save_gameinfo();
@@ -44,12 +49,14 @@ if($subcmd == 'kill') {
 			echo "无法复活角色 $name 。";
 		}
 	}
+	add_multi_news($adnws);
 } elseif($subcmd == 'del') {
 	for($i=0;$i<$showlimit;$i++){
 		if(isset(${'pc_'.$i})) {
 			$pclist[] = ${'pc_'.$i};
 		}
 	}
+	$adnws = array();
 	foreach($pclist as $n => $name) {
 		$result = $db->query("SELECT hp,state FROM {$tablepre}players WHERE name='$name'AND type='0'");
 		$pc = $db->fetch_array($result);
@@ -59,7 +66,8 @@ if($subcmd == 'kill') {
 			$db->query("UPDATE {$tablepre}players SET hp=0,state=99 WHERE name='$name'AND type=0");
 			adminlog('delpc',$name,$adminmsg);
 			echo " 角色 $name 被清除了。<br>";
-			naddnews($now,'death16',$name);
+			$adnws[] = array($now,'death16',$name);
+			//naddnews($now,'death16',$name);
 			$alivenum--;
 			$deathnum++;
 			save_gameinfo();
@@ -67,9 +75,11 @@ if($subcmd == 'kill') {
 			$db->query("UPDATE {$tablepre}players SET state=99 WHERE name='$name'AND type=0");
 			adminlog('delcp',$name,$adminmsg);
 			echo " 角色 $name 的尸体被清除了。<br>";
-			naddnews($now,'delcp',$name);
+			$adnws[] = array($now,'delcp',$name);
+			//naddnews($now,'delcp',$name);
 		}
 	}
+	add_multi_news($adnws);
 } elseif($subcmd == 'edit') {
 	for($i=0;$i<$showlimit;$i++){
 		if(isset(${'pc_'.$i})) {

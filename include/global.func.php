@@ -261,13 +261,33 @@ function add_multi_news($news){
 }
 
 function systemchat($chatmsg,$t = 0){
+//	multi_systemchat(array(array($chatmsg,$t)));
 	global $now,$db,$tablepre;
 	$t = $t ? $t : $now;
 	if($chatmsg){
-		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,msg) VALUES ('5','$t','','$chatmsg')");
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,msg) VALUES ('5','$t','$chatmsg')");
 	}
 	return;
 }
+
+//function multi_systemchat($chat){
+//	global $now,$db,$tablepre;
+//	if(!is_array($chat) || empty($chat)){return;}
+//	$chatqry = '';
+//	foreach($chat as $val){
+//		if(!empty($val[0])){
+//			$t = $val[1] ? $val[1] : $now;
+//			$send = '';
+//			$msg = $val[0];
+//			$chatqry .= "('5','$t','$msg'),";
+//		}		
+//	}
+//	if(!empty($chatqry)){
+//		$chatqry = "INSERT INTO {$tablepre}chat (type,`time`,msg) VALUES ".substr($chatqry,0,-1);
+//		$db->query($chatqry);
+//	}
+//	return;
+//}
 
 function get_areawords($num = 0){//0表示显示全部地区，-1表示显示全部禁区，-2表示显示下回禁区，正数表示显示第几个到第几个地区。
 	global $hack,$areatime,$areahour,$areaadd,$areanum,$arealist,$mapdata;
@@ -428,6 +448,11 @@ function get_mapweapon(){
 	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
 	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
 	$adnws = array();
+//	$mwdata = array();
+//	while($md = $db->fetch_array($result)) {
+//		$mwdata[] = $md;
+//	}
+//	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
 	while($mwdata = $db->fetch_array($result)) {
 		$mwtime = $mwdata['time'];
 		$mwpls = $mwdata['pls'];

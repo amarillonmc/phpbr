@@ -1,3 +1,7 @@
+2011/7/15 v3.00d/e
+修改了初始HP和SP: {gamecfg_1.php;}
+取消了同伴专用装备的设定: {company_1.php; resources_1.php; item.func.php;}
+---------------------------------------------------------
 2011/7/14 v3.00d
 
 现在雷达可以显示同伴的数目了: {radar.htm; item2.func.php;}

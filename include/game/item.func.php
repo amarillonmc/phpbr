@@ -58,11 +58,11 @@ function itemuse($itmn) {
 			$eqp = 'art';
 			$noeqp = '';
 		}
-		if(substr($itmk,2,1) == 'C' && $pdata['type'] != 100){
-			$log .= '这是同伴专用装备，玩家无法使用！<br>';
-			$mode = 'command';
-			return;
-		}
+//		if(substr($itmk,2,1) == 'C' && $pdata['type'] != 100){
+//			$log .= '这是同伴专用装备，玩家无法使用！<br>';
+//			$mode = 'command';
+//			return;
+//		}
 		if (($noeqp && strpos ( $pdata[$eqp.'k'], $noeqp ) === 0) || ! $pdata[$eqp.'s']) {
 			$pdata[$eqp] = $itm;
 			$pdata[$eqp.'k'] = $itmk;

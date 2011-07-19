@@ -3,7 +3,7 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 function get_event($kind){
-	global $mode,$log,$pdata;
+	global $mode,$log,$pdata,$infdata;
 	$pls = $pdata['pls'];
 	$hp = & $pdata['hp'];$sp = & $pdata['sp'];$inf = & $pdata['inf'];$rage = & $pdata['rage'];
 	

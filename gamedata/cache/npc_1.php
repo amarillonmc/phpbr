@@ -156,7 +156,7 @@ $npcinfo = array
 	
 	3 => array
 		(
-		'area' => 0,
+		'area' => 1,
 		'attention' => 1,
 		'num' => 1,
 		

@@ -1,3 +1,9 @@
+2011/7/17 v3.01
+
+提高了地图炮判断函数的数据库读写效率并修复了部分BUG: {global.func.php; }
+圣杯战争的结局已经加入，感谢晓魂所作的工作: {end.htm; news.func.php;}
+
+------------------------------------------------
 2011/7/15 v3.00d/e
 修改了初始HP和SP: {gamecfg_1.php;}
 取消了同伴专用装备的设定: {company_1.php; resources_1.php; item.func.php;}

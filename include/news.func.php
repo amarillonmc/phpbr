@@ -78,6 +78,8 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}引爆了核弹，毁坏了虚拟战场</span><br>\n";
 		} elseif($news == 'end6') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">本局游戏被GM中止</span><br>\n";
+		} elseif($news == 'end7') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}对圣杯许下了愿望，本局游戏的存在被重置了</span><br>\n";
 		} elseif(strpos($news,'death') === 0) {
 			if($news == 'death11') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因滞留在<span class=\"red\">禁区【{$mapdata[$c]['name']}】</span>死亡";
@@ -139,19 +141,24 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">不明原因</span>死亡";
 			}
 //			$dname = $typeinfo[$b].' '.$a;
-			if(!$e){
-				if($b != 0) {
-					$lastword = '';//待处理，这里的$a已经加了头衔，无法作为判断；而且在这里调用数据库是很蛋疼的
-//					$lwresult = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
-//					$lastword = $db->result($lwresult, 0);
-				} else {
-					$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
-				}				
-			}else{
-				$lastword = $e;
-			}
-			if($lastword){
-				$newsinfo .= "<span class=\"yellow\">【{$a}：“{$lastword}”】</span><br>\n";
+//			if(!$e){
+//				if($b != 0) {
+//					$lastword = '';//待处理，这里的$a已经加了头衔，无法作为判断；而且在这里调用数据库是很蛋疼的
+////					$lwresult = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+////					$lastword = $db->result($lwresult, 0);
+//				} else {
+//					$lastword = is_array($lwinfo[$b]) ? $lwinfo[$b][$a] : $lwinfo[$b];
+//				}				
+//			}else{
+//				$lastword = $e;
+//			}
+//			if($lastword){
+//				$newsinfo .= "<span class=\"yellow\">【{$a}：“{$lastword}”】</span><br>\n";
+//			}else{
+//				$newsinfo .= "<span class=\"yellow\">【{$a} 什么都没说就死去了】</span><br>\n";
+//			}
+			if($e){
+				$newsinfo .= "<span class=\"yellow\">【{$a}：“{$e}”】</span><br>\n";
 			}else{
 				$newsinfo .= "<span class=\"yellow\">【{$a} 什么都没说就死去了】</span><br>\n";
 			}
@@ -208,7 +215,7 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 		} elseif($news == 'honour') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>获得了称号<span class=\"yellow\">$b</span><br>\n";
 		} else {
-			$newsinfo .= "<li>$time,$news,$a,$b,$c,$d<br>\n";
+			$newsinfo .= "<li>$time,$news,$a,$b,$c,$d,$e<br>\n";
 		}
 	}
 

@@ -261,7 +261,7 @@ function add_multi_news($news){
 }
 
 function systemchat($chatmsg,$t = 0){
-//	multi_systemchat(array(array($chatmsg,$t)));
+	//multi_systemchat(array(array($chatmsg,$t)));
 	global $now,$db,$tablepre;
 	$t = $t ? $t : $now;
 	if($chatmsg){
@@ -270,24 +270,24 @@ function systemchat($chatmsg,$t = 0){
 	return;
 }
 
-//function multi_systemchat($chat){
-//	global $now,$db,$tablepre;
-//	if(!is_array($chat) || empty($chat)){return;}
-//	$chatqry = '';
-//	foreach($chat as $val){
-//		if(!empty($val[0])){
-//			$t = $val[1] ? $val[1] : $now;
-//			$send = '';
-//			$msg = $val[0];
-//			$chatqry .= "('5','$t','$msg'),";
-//		}		
-//	}
-//	if(!empty($chatqry)){
-//		$chatqry = "INSERT INTO {$tablepre}chat (type,`time`,msg) VALUES ".substr($chatqry,0,-1);
-//		$db->query($chatqry);
-//	}
-//	return;
-//}
+function multi_systemchat($chat){
+	global $now,$db,$tablepre;
+	if(!is_array($chat) || empty($chat)){return;}
+	$chatqry = '';
+	foreach($chat as $val){
+		if(!empty($val[0])){
+			$t = $val[1] ? $val[1] : $now;
+			$send = '';
+			$msg = $val[0];
+			$chatqry .= "('5','$t','$msg'),";
+		}		
+	}
+	if(!empty($chatqry)){
+		$chatqry = "INSERT INTO {$tablepre}chat (type,`time`,msg) VALUES ".substr($chatqry,0,-1);
+		$db->query($chatqry);
+	}
+	return;
+}
 
 function get_areawords($num = 0){//0表示显示全部地区，-1表示显示全部禁区，-2表示显示下回禁区，正数表示显示第几个到第几个地区。
 	global $hack,$areatime,$areahour,$areaadd,$areanum,$arealist,$mapdata;
@@ -315,6 +315,26 @@ function logsave($pid,$time,$log = '',$type = 's'){
 	$ldata['log']=$log;
 	//$db->query("INSERT INTO {$tablepre}log (toid,type,`time`,log) VALUES ('$pid','$type','$time','$log')");
 	$db->array_insert("{$tablepre}log", $ldata);
+	return;	
+}
+
+function multi_logsave($lg){
+	global $now,$db,$tablepre;
+	if(!is_array($lg) || empty($lg)){return;}
+	$logqry = '';
+	foreach($lg as $val){
+		if(!empty($val[2])){
+			$pid = $val[0];
+			$time = $val[1] ? $val[1] : $now;
+			$log = $val[2];
+			$type = isset($val[3]) ? $val[3] : 's';
+			$logqry .= "('$pid','$time','$log','$type'),";
+		}		
+	}
+	if(!empty($logqry)){
+		$logqry = "INSERT INTO {$tablepre}log (toid,`time`,log,type) VALUES ".substr($logqry,0,-1);
+		$db->query($logqry);
+	}
 	return;	
 }
 
@@ -443,51 +463,109 @@ function get_neighbor_map($pls) {
 	return $nmap;
 }
 
-function get_mapweapon(){
-	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$deathnum;
-	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
-	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
-	$adnws = array();
-//	$mwdata = array();
-//	while($md = $db->fetch_array($result)) {
-//		$mwdata[] = $md;
-//	}
+//function old_get_mapweapon(){
+//	$t_s=getmicrotime();
+//	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$deathnum;
 //	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
-	while($mwdata = $db->fetch_array($result)) {
-		$mwtime = $mwdata['time'];
-		$mwpls = $mwdata['pls'];
-		$mwtype = $mwdata['type'];
-		$mwlpid = $mwdata['lpid'];
-		$mwlog = "{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！";
-		systemchat($mwlog,$mwtime);
-		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
-		//naddnews($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
-		$parray = Array();
-		$result2 = $db->query("SELECT pid, name, type, hp, state FROM {$tablepre}players WHERE pls = '$mwpls' AND hp > 0 AND type = 0");
-		while($pldata = $db->fetch_array($result2)) {
-			extract($pldata,EXTR_REFS);
-			$hp -= $mapweaponinfo[$mwtype]['dmg'];
-			
-			$plog = "你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！";
-			logsave($pid,$mwtime,$plog);
-			
-			if($hp <= 0){
-				$hp = 0; $state = $mapweaponinfo[$mwtype]['state'];
-				$adnws[] = array($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
-				//naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
-				$deathnum++;
-			}
-			unset($pldata['name'],$pldata['type']);
-			$parray[] = $pldata;
-//			$qry =
-//			"UPDATE {} SET hp = CASE";
-		}
-		save_gameinfo();
-		$db->multi_update("{$tablepre}players", $parray, 'pid', " pls='$mwpls'", "lasteff = '$now'");
+//	if(!$db->num_rows($result)){return;}
+//	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
+//	$adnws = array();
+////	$mwdata = array();
+////	while($md = $db->fetch_array($result)) {
+////		$mwdata[] = $md;
+////	}
+////	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
+//	while($mwdata = $db->fetch_array($result)) {
+//		$mwtime = $mwdata['time'];
+//		$mwpls = $mwdata['pls'];
+//		$mwtype = $mwdata['type'];
+//		$mwlpid = $mwdata['lpid'];
+//		$mwlog = "{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！";
+//		systemchat($mwlog,$mwtime);
+//		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
+//		//naddnews($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
+//		$parray = Array();
+//		$result2 = $db->query("SELECT pid, name, type, hp, state FROM {$tablepre}players WHERE pls = '$mwpls' AND hp > 0 AND type = 0");
+//		while($pldata = $db->fetch_array($result2)) {
+//			extract($pldata,EXTR_REFS);
+//			$hp -= $mapweaponinfo[$mwtype]['dmg'];
+//			
+//			$plog = "你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！";
+//			logsave($pid,$mwtime,$plog);
+//			
+//			if($hp <= 0){
+//				$hp = 0; $state = $mapweaponinfo[$mwtype]['state'];
+//				$adnws[] = array($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
+//				//naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
+//				$deathnum++;
+//			}
+//			unset($pldata['name'],$pldata['type']);
+//			$parray[] = $pldata;
+////			$qry =
+////			"UPDATE {} SET hp = CASE";
+//		}
+//		save_gameinfo();
+//		$db->multi_update("{$tablepre}players", $parray, 'pid', " pls='$mwpls'", "lasteff = '$now'");
+//	}
+//	add_multi_news($adnws);
+//	$db->query("DELETE FROM {$tablepre}mapweapon WHERE time <= '$now'");
+//	$t_e = getmicrotime();
+//	putmicrotime($t_s,$t_e,'cmd_time','adv');
+//	return;
+//}
+
+function get_mapweapon(){
+//	$t_s=getmicrotime();
+	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$alivenum,$deathnum;
+	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
+	$adnws = $mwdata = $pldata = $chat = $lg = array();
+	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time");
+	if(!$db->num_rows($result)){return;}
+	while($md = $db->fetch_array($result)) {
+		$mwdata[] = $md;
 	}
+	$result = $db->query("SELECT pid, name, type, pls, hp, state FROM {$tablepre}players WHERE hp > 0 AND type = 0");
+	while($pl = $db->fetch_array($result)) {
+		$pldata[$pl['pls']][] = $pl;
+	}
+	foreach($mwdata as $mwval){
+		$mwtime = $mwval['time'];
+		$mwpls = $mwval['pls'];
+		$mwtype = $mwval['type'];
+		$mwlpid = $mwval['lpid'];
+		$chat[] = array("{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！",$now);
+		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
+		if(isset($pldata[$mwpls])){
+			foreach($pldata[$mwpls] as & $plval){
+				if($plval['hp'] > 0){
+					$plval['hp'] -= $mapweaponinfo[$mwtype]['dmg'];
+					$lg[] = array($plval['pid'],$now,"你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！");
+					if($plval['hp'] <= 0){
+						$plval['hp'] = 0; $plval['state'] = $mapweaponinfo[$mwtype]['state'];
+						$adnws[] = array($mwtime, 'death34', $plval['name'], $plval['type'], $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
+						//naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
+						$alivenum--;
+						$deathnum++;
+						$plupdata[$plval['pid']] = $plval;
+					}
+				}				
+			}
+		}
+	}
+	save_gameinfo();
+	if(!empty($plupdata)){
+		$wherestr = implode(',',array_keys($plupdata));
+		$db->multi_update("{$tablepre}players", $plupdata, 'pid', " pid IN ($wherestr)", "lasteff = '$now'");
+	}
+	//$db->multi_update("{$tablepre}players", $plupdata, 'pid', " hp > 0 AND type IN (0,100)", "lasteff = '$now'");
 	add_multi_news($adnws);
+	multi_systemchat($chat);
+	multi_logsave($lg);
 	$db->query("DELETE FROM {$tablepre}mapweapon WHERE time <= '$now'");
-	return;
+	
+//	$t_e = getmicrotime();
+//	putmicrotime($t_s,$t_e,'cmd_time','adv');
+	return;	
 }
 
 function compatible_json_encode($data){	//自动选择使用内置函数或者自定义函数，结合JSON.php可做到兼容低版本PHP

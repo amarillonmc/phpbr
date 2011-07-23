@@ -457,7 +457,7 @@ function gameover($time = 0, $mode = 0, $winname = '') {
 		$wdata['getime'] = $time;
 		$wdata['hdmg'] = $hdamage;
 		$wdata['hdp'] = $hplayer;
-		$db->query("INSERT INTO {$tablepre}winners (gid,name,pass,gamehonour,gd,sNo,icon,club,technique,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,inf,rage,pose,tactic,killnum,wp,wk,wg,wc,wd,wf,teamID,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,motto,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('".$gamenum."','".$wdata['name']."','".$wdata['pass']."','".$wdata['gamehonour']."','".$wdata['gd']."','".$wdata['sNo']."','".$wdata['icon']."','".$wdata['club']."','".$wdata['technique']."','".$wdata['hp']."','".$wdata['mhp']."','".$wdata['sp']."','".$wdata['msp']."','".$wdata['att']."','".$wdata['def']."','".$wdata['pls']."','".$wdata['lvl']."','".$wdata['exp']."','".$wdata['money']."','".$wdata['inf']."','".$wdata['rage']."','".$wdata['pose']."','".$wdata['tactic']."','".$wdata['killnum']."','".$wdata['wp']."','".$wdata['wk']."','".$wdata['wg']."','".$wdata['wc']."','".$wdata['wd']."','".$wdata['wf']."','".$wdata['teamID']."','".$wdata['wep']."','".$wdata['wepk']."','".$wdata['wepe']."','".$wdata['weps']."','".$wdata['arb']."','".$wdata['arbk']."','".$wdata['arbe']."','".$wdata['arbs']."','".$wdata['arh']."','".$wdata['arhk']."','".$wdata['arhe']."','".$wdata['arhs']."','".$wdata['ara']."','".$wdata['arak']."','".$wdata['arae']."','".$wdata['aras']."','".$wdata['arf']."','".$wdata['arfk']."','".$wdata['arfe']."','".$wdata['arfs']."','".$wdata['art']."','".$wdata['artk']."','".$wdata['arte']."','".$wdata['arts']."','".$wdata['itm0']."','".$wdata['itmk0']."','".$wdata['itme0']."','".$wdata['itms0']."','".$wdata['itm1']."','".$wdata['itmk1']."','".$wdata['itme1']."','".$wdata['itms1']."','".$wdata['itm2']."','".$wdata['itmk2']."','".$wdata['itme2']."','".$wdata['itms2']."','".$wdata['itm3']."','".$wdata['itmk3']."','".$wdata['itme3']."','".$wdata['itms3']."','".$wdata['itm4']."','".$wdata['itmk4']."','".$wdata['itme4']."','".$wdata['itms4']."','".$wdata['itm5']."','".$wdata['itmk5']."','".$wdata['itme5']."','".$wdata['itms5']."','".$wdata['itm6']."','".$wdata['itmk6']."','".$wdata['itme6']."','".$wdata['itms6']."','".$wdata['motto']."','".$wdata['wmode']."','".$wdata['vnum']."','".$wdata['gtime']."','".$wdata['gstime']."','".$wdata['getime']."','".$wdata['hdmg']."','".$wdata['hdp']."','".$wdata['hkill']."','".$wdata['hkp']."','".$wdata['wepsk']."','".$wdata['arbsk']."','".$wdata['arhsk']."','".$wdata['arask']."','".$wdata['arfsk']."','".$wdata['artsk']."','".$wdata['itmsk0']."','".$wdata['itmsk1']."','".$wdata['itmsk2']."','".$wdata['itmsk3']."','".$wdata['itmsk4']."','".$wdata['itmsk5']."','".$wdata['itmsk6']."')");
+		$db->query("INSERT INTO {$tablepre}winners (gid,name,pass,gamehonour,gainhonour,gd,sNo,icon,club,technique,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,inf,rage,pose,tactic,killnum,wp,wk,wg,wc,wd,wf,teamID,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,motto,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('".$gamenum."','".$wdata['name']."','".$wdata['pass']."','".$wdata['gamehonour']."','".$wdata['gainhonour']."','".$wdata['gd']."','".$wdata['sNo']."','".$wdata['icon']."','".$wdata['club']."','".$wdata['technique']."','".$wdata['hp']."','".$wdata['mhp']."','".$wdata['sp']."','".$wdata['msp']."','".$wdata['att']."','".$wdata['def']."','".$wdata['pls']."','".$wdata['lvl']."','".$wdata['exp']."','".$wdata['money']."','".$wdata['inf']."','".$wdata['rage']."','".$wdata['pose']."','".$wdata['tactic']."','".$wdata['killnum']."','".$wdata['wp']."','".$wdata['wk']."','".$wdata['wg']."','".$wdata['wc']."','".$wdata['wd']."','".$wdata['wf']."','".$wdata['teamID']."','".$wdata['wep']."','".$wdata['wepk']."','".$wdata['wepe']."','".$wdata['weps']."','".$wdata['arb']."','".$wdata['arbk']."','".$wdata['arbe']."','".$wdata['arbs']."','".$wdata['arh']."','".$wdata['arhk']."','".$wdata['arhe']."','".$wdata['arhs']."','".$wdata['ara']."','".$wdata['arak']."','".$wdata['arae']."','".$wdata['aras']."','".$wdata['arf']."','".$wdata['arfk']."','".$wdata['arfe']."','".$wdata['arfs']."','".$wdata['art']."','".$wdata['artk']."','".$wdata['arte']."','".$wdata['arts']."','".$wdata['itm0']."','".$wdata['itmk0']."','".$wdata['itme0']."','".$wdata['itms0']."','".$wdata['itm1']."','".$wdata['itmk1']."','".$wdata['itme1']."','".$wdata['itms1']."','".$wdata['itm2']."','".$wdata['itmk2']."','".$wdata['itme2']."','".$wdata['itms2']."','".$wdata['itm3']."','".$wdata['itmk3']."','".$wdata['itme3']."','".$wdata['itms3']."','".$wdata['itm4']."','".$wdata['itmk4']."','".$wdata['itme4']."','".$wdata['itms4']."','".$wdata['itm5']."','".$wdata['itmk5']."','".$wdata['itme5']."','".$wdata['itms5']."','".$wdata['itm6']."','".$wdata['itmk6']."','".$wdata['itme6']."','".$wdata['itms6']."','".$wdata['motto']."','".$wdata['wmode']."','".$wdata['vnum']."','".$wdata['gtime']."','".$wdata['gstime']."','".$wdata['getime']."','".$wdata['hdmg']."','".$wdata['hdp']."','".$wdata['hkill']."','".$wdata['hkp']."','".$wdata['wepsk']."','".$wdata['arbsk']."','".$wdata['arhsk']."','".$wdata['arask']."','".$wdata['arfsk']."','".$wdata['artsk']."','".$wdata['itmsk0']."','".$wdata['itmsk1']."','".$wdata['itmsk2']."','".$wdata['itmsk3']."','".$wdata['itmsk4']."','".$wdata['itmsk5']."','".$wdata['itmsk6']."')");
 		if(isset($GLOBALS['pdata']) && $GLOBALS['pdata']['pid'] == $pdata['pid']){
 			$GLOBALS['pdata']['story'] = 100;
 		}
@@ -622,9 +622,9 @@ function get_honour_obtain($pldata,$udata){
 }
 
 function set_credits(){
-	global $db,$tablepre,$winmode,$gamenum,$winner;
+	global $db,$tablepre,$winmode,$gamenum,$winner,$pdata;
 	$result = $db->query("SELECT * FROM {$tablepre}players WHERE type='0'");
-	$list = $honourlist = $creditlist = $updatelist = Array();
+	$list = $honourlist = $creditlist = $updatelist = Array();// = $udghkey = $udghlist
 	while($data = $db->fetch_array($result)){
 		$list[$data['name']]['players'] = $data;
 	}	
@@ -635,12 +635,24 @@ function set_credits(){
 	foreach($list as $key => $val){
 		if(isset($val['players']) && isset($val['users'])){
 			$credits = get_credit_up($val['players'],$winner,$winmode) + $val['users']['credits'];
-			$honour = $val['users']['honour'] . get_honour_obtain($val['players'],$val['users']);
+			$obtain = get_honour_obtain($val['players'],$val['users']);
+			$honour = $val['users']['honour'] . $obtain;
 			$updatelist[] = Array('username' => $key, 'credits' => $credits, 'honour' => $honour);
+//			if(!empty($obtain)){
+//				$udghkey[] = $key;
+//				if($pdata['name'] == $key){
+//					$pdata['gainhonour'] = $obtain;
+//				}else{
+//					$udghlist[] = Array('name' => $key, 'gainhonour' => $obtain);
+//				}
+//			}			
 		}
 	}
 	$db->multi_update("{$tablepre}users", $updatelist, 'username', "lastgame='$gamenum'");
-	
+//	if(!empty($udghkey)){
+//		$udghkey = implode(',',$udghkey);
+//		$db->multi_update("{$tablepre}players", $upghlist, 'name', "name IN ($udghkey)");
+//	}
 	return;
 }
 

@@ -92,17 +92,30 @@ function findteam($edata){
 	init_itemwords($edata);
 	$log .= "你发现了队友<span class=\"yellow\">$w_name</span>！<br>";
 	
-	$cmd .= '现在想要做什么？<br><br>';
-	$cmd .= '留言：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
-	$cmd .= '想要转让什么？<input type="hidden" name="mode" value="senditem"><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >不转让</a><br><br>';
-	for($i = 1;$i <= 6; $i++){
-		global ${'itms'.$i};
-		if(${'itms'.$i}) {
-			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i};
-			$cmd .= '<input type="radio" name="command" id="itm'.$i.'" value="itm'.$i.'"><a onclick=sl("itm'.$i.'"); href="javascript:void(0);" >'."${'itm'.$i}/${'itme'.$i}/${'itms'.$i}".'</a><br>';
-		}
-	}
-	$main = 'battle';
+	$inotice = '你想转让什么物品给队友？<div class="itmbtn">转让赠言：<input size="30" type="text" name="message" maxlength="60"></div>';
+	//$mode = 'senditem';
+	$mval = 'senditem';
+	$cval = '';
+	$dlist = Array('itm1','itm2','itm3','itm4','itm5','itm6');
+	ob_start();
+	include template('itemmenu');
+	$cmd = ob_get_contents();
+	ob_end_clean();
+	ob_start();
+	include template('battle');
+	$main = ob_get_contents();
+	ob_end_clean();
+//	$cmd .= '现在想要做什么？<br><br>';
+//	$cmd .= '留言：<br><input size="30" type="text" name="message" maxlength="60"><br><br>';
+//	$cmd .= '想要转让什么？<input type="hidden" name="mode" value="senditem"><br><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >不转让</a><br><br>';
+//	for($i = 1;$i <= 6; $i++){
+//		global ${'itms'.$i};
+//		if(${'itms'.$i}) {
+//			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i};
+//			$cmd .= '<input type="radio" name="command" id="itm'.$i.'" value="itm'.$i.'"><a onclick=sl("itm'.$i.'"); href="javascript:void(0);" >'."${'itm'.$i}/${'itme'.$i}/${'itms'.$i}".'</a><br>';
+//		}
+//	}
+	//$main = 'battle';
 	return;
 }
 
@@ -206,7 +219,7 @@ function senditem($sendtype = 't'){
 	if($message){
 		$log .= "<span class=\"lime\">你对{$edata['name']}说：“{$message}”</span><br>";
 		$w_log = "<span class=\"lime\">{$name}对你说：“{$message}”</span><br>";
-		if(!$edata['type']){logsave($edata['pid'],$now,$w_log,'c');}
+		if($edata['type'] == 0 || $edata['type'] == 100){logsave($edata['pid'],$now,$w_log,'c');}
 	}
 	
 	if($command != 'back'){
@@ -241,7 +254,7 @@ function senditem($sendtype = 't'){
 				$log .= "你将<span class=\"yellow\">${'w_itm'.$i}</span>送给了<span class=\"yellow\">$w_name</span>。<br>";
 				if($sendtype == 't'){
 					$w_log = "<span class=\"yellow\">$name</span>将<span class=\"yellow\">${'w_itm'.$i}</span>送给了你。";
-					if(!$w_type){logsave($w_pid,$now,$w_log,'t');}
+					if($edata['type'] == 0 || $edata['type'] == 100){logsave($w_pid,$now,$w_log,'t');}
 					naddnews($now,'senditem',$name,$w_name,$itm);
 				}				
 				player_save($edata);

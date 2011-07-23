@@ -174,8 +174,13 @@ function init_displaydata(&$data){
 	$disp['upexp'] = round ( (2 * $data['lvl'] + 1) * $baseexp );
 	$disp['iconImg'] = $data['type'] ? 'n_'.$data['icon'].'.gif' : $data['gd'].'_'.$data['icon'].'.gif';
 	$disp['ardef'] = $data['arbe'] + $data['arhe'] + $data['arae'] + $data['arfe'];
-	$disp['gamehonourinfo'] = $data['gamehonour'] ? $honourinfo[$data['gamehonour']]['name'] : $typeinfo[$data['type']];
-	
+	if(!empty($data['gamehonour'])){
+		$disp['gamehonourinfo'] = $honourinfo[$data['gamehonour']]['name'];
+	}elseif(!empty($data['gainhonour'])){
+		$disp['gamehonourinfo'] = $honourinfo[substr($data['gainhonour'],-2,2)]['name'];
+	}else{
+		$disp['gamehonourinfo'] = $typeinfo[$data['type']];
+	}
 	if($data['inf']){
 		$disp['infwords'] = '';
 		foreach(str_split($data['inf'],1) as $val){

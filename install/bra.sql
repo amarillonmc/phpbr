@@ -42,6 +42,7 @@ CREATE TABLE bra_winners (
   gid smallint unsigned NOT NULL default '0',
   name char(15) NOT NULL default '',
   gamehonour char(4) NOT NULL default '',
+  gainhonour varchar(20) NOT NULL default '',
   pass char(32) NOT NULL default '',
   gd char(1) NOT NULL default 'm',
   sNo smallint unsigned NOT NULL default '0',

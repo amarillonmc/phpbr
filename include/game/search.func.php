@@ -126,7 +126,7 @@ function move($moveto = 99) {
 			if($companysystem){
 				global $cdata;
 				if($cdata['pose'] == 6){//还需要加入同伴体力消耗和伤害判断等，并结合search结构大改
-					if($cdata['pls'] == $pls0){
+					if($cdata['pls'] == $pls0 && $cdata['hp'] > 0){
 						$cdata['pls'] = $moveto;
 						player_save($cdata);
 						$log .= "同伴<span class=\"yellow\">{$cdata['name']}</span>跟随着来到了<span class=\"yellow\">{$mapdata[$pls]['name']}</span>。<br>";

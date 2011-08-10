@@ -168,7 +168,7 @@ if($command != 'switch'){
 	}else{
 		
 		//进入指令判断
-		if($mode !== 'combat' && $mode !== 'corpse' && $mode !== 'senditem'){
+		if($mode !== 'combat' && $mode !== 'corpse' && $mode !== 'sendtm'){
 			$pdata['bid'] = 0;
 		}
 		
@@ -232,10 +232,11 @@ if($command != 'switch'){
 			} elseif($command == 'company') {
 				if($cp_cmd == 'senditem'){
 					$inotice = '你想递送什么物品给同伴？';
-					$mode = 'senditem';
-					$mval = 'cpitem';
-					$cval = '';
-					$dlist = Array('itm1','itm2','itm3','itm4','itm5','itm6');
+					$mode = 'senditemchoice';
+					$sendmode = 'sendcp';
+//					$mval = 'cpitem';
+//					$cval = '';
+//					$dlist = Array('itm1','itm2','itm3','itm4','itm5','itm6');
 				}				
 			}
 		} elseif($mode == 'item') {
@@ -310,11 +311,11 @@ if($command != 'switch'){
 				$learntech = substr($command,4,3);
 				learn_tech($learntech);
 			}
-		} elseif(strpos($mode,'senditem') === 0 || strpos($mode,'cpitem') === 0) {
+		} elseif(strpos($mode,'send') === 0) {
 			include_once GAME_ROOT.'./include/game/battle.func.php';
-			if($mode=='cpitem'){
+			if($mode=='sendcp'){
 				senditem('c');
-			}else{
+			}elseif($mode=='sendtm'){
 				senditem('t');
 			}
 			
@@ -372,6 +373,7 @@ if($command != 'switch'){
 		}else{
 			$pdata['lastcmd'] = $now;
 		}
+		player_save($pdata);
 	}
 	
 	//显示指令执行结果
@@ -407,7 +409,7 @@ if($pdata['hp'] <= 0) {
 	
 	if(!$cmd) {
 		ob_start();
-		if($mode == 'itemdrop' || $mode == 'itemoff' || $mode == 'senditem'){
+		if($mode == 'itemdrop' || $mode == 'itemoff'){
 			include template('itemmenu');
 		}elseif($mode&&file_exists(GAME_ROOT.TPLDIR.'/'.$mode.'.htm')) {
 			include template($mode);
@@ -420,7 +422,7 @@ if($pdata['hp'] <= 0) {
 		$gamedata['cmd'] = $cmd;
 	}
 }
-player_save($pdata);
+//player_save($pdata);
 
 if($url){$gamedata['url'] = $url;}
 $gamedata['pls'] = $mapdata[$pdata['pls']]['name'];

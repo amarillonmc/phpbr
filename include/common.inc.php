@@ -16,7 +16,6 @@ $_COOKIE = gstrfilter($_COOKIE);
 $_POST = gstrfilter($_POST);
 $_FILES = gstrfilter($_FILES);
 extract($_POST);
-unset($_GET);
 
 require GAME_ROOT.'./config.inc.php';
 $now = time() + $moveut*3600 + $moveutmin*60;   
@@ -74,13 +73,6 @@ if($gamestate == 10) {
 		
 	}
 }
-//if (($gamestate > 10)&&($now > $areatime)) {
-//	include_once GAME_ROOT.'./include/system.func.php';
-//	addarea($areatime);
-//	save_gameinfo();
-//}
-//$combatinfo = file_get_contents(GAME_ROOT.'./gamedata/combatinfo.php');
-//list($hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode) = explode(',',$combatinfo);
 
 if (($gamestate > 10)&&($now > $areatime)) {
 	include_once GAME_ROOT.'./include/system.func.php';

@@ -614,7 +614,7 @@ function itemuse($itmn) {
 					$pdata['itme' . $i] += $itme;
 					$itms --;
 					$flag = true;
-					$log .= "为<span class=\"yellow\">${'itm'.$i}</span>充了电。";
+					$log .= "为<span class=\"yellow\">{$pdata['itm' . $i]}</span>充了电。";
 					break;
 				}
 			}

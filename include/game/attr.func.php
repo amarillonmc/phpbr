@@ -148,7 +148,7 @@ function get_attack_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 //		}
 //	}
 	$attack = $attack > 0 ? $attack : 1;
-//	echo '实际攻击加成：' . $attack.'<br>';
+//	echo '实际攻击：' . $attack.'<br>';
 	return $attack/100;
 }
 //防御力修正，百分比
@@ -178,11 +178,34 @@ function get_defend_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 //		}
 //	}
 	$defend = $defend > 0 ? $defend : 1;
-//	echo '实际防御加成：' . $defend.'<br>';
+//	echo '实际防御：' . $defend.'<br>';
 	return $defend/100;
 }
 
-function get_sidestep_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf = '',$active = 1){
-	
+function get_sidestep_p($pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf = '',$active = 1){
+	global $inf_sidestep_p,$mapdata,$wthdata,$weather,$log;
+	$_SIDESTEP = Array
+		(
+		'pose' => array(0,-5,5,-10,10,-20,0),
+		'tactic' => array(0,0,5,-5,12,0),
+		);
+
+	$sidestep = 100;
+	$sidestep += $wthdata[$weather]['sidestep'];
+	$sidestep += $mapdata[$pls]['sidestep'];
+	if($active){$sidestep += $_SIDESTEP['pose'][$pose];}
+	else{$sidestep += $_SIDESTEP['tactic'][$tactic];}
+	foreach ($inf_sidestep_p as $inf_ky => $value) {
+		if(strpos($inf, $inf_ky)!==false){$sidestep *= $value;}
+	}	
+//	if($battle_cmd != 'natk'){
+//		$b_cmd_fac = $techniqueinfo['active'][$battle_cmd];
+//		if(isset($b_cmd_fac['def'])){
+//			$defend += $b_cmd_fac['def'];
+//		}
+//	}
+	$sidestep = $sidestep > 0 ? $sidestep : 1;
+//	$log .= '实际回避率：' . $sidestep.'<br>';
+	return $sidestep/100;
 }
 ?>

@@ -355,7 +355,7 @@ function active_AI(){
 	unset($narray);
 	if(!empty($ndbarray)){
 		$pidarray = implode(',',array_keys($ndbarray));
-		$db->multi_update("{$tablepre}players", $ndbarray, 'pid',"pid IN ($pidarray)");
+		$db->multi_update("{$tablepre}players", $ndbarray, 'pid');
 	}
 	//$t_e=getmicrotime();
 	//putmicrotime($t_s,$t_e,'cmd_time','');

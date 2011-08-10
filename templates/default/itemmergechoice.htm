@@ -13,7 +13,7 @@
 	<tr>
 		<td class="td2" width="500px">
 			<div>
-				<div class="cmdbtn" onclick="postCommand;">不合并</div>
+				<div class="cmdbtn" onclick="postCommand();">不合并</div>
 				<!--{loop $sameitem $sitmn}-->
 					<div class="cmdbtn" onclick="$('merge2').value='$sitmn';postCommand();">{$pdata['itm'.$sitmn]}/{$pdata['itme'.$sitmn]}/{$pdata['itms'.$sitmn]}</div>
 				<!--{/loop}-->

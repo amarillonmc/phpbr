@@ -1,3 +1,19 @@
+2011/7/23 v3.01c
+
+微调了command.php的结构，减少不必要的数据库读写: {command.php;}
+修正了同伴死亡后依然会提示同伴跟随移动的问题: {search.func.php;}
+修正了使用电池的提示信息问题: {item.func.php;}
+改进了multi_update()函数的实现方式: {db_mysql.class.php; global.func.php; system.func.php; game.func.php;}
+增加了sidestep也就是回避率，足部受伤和冻结都会影响回避率: {attr.func.php; combatcfg_1.php; combat.func.php; resources_1.php;}
+------------------------------------------------
+
+2011/7/20 v3.01b
+
+修正了冥土追魂在没有受伤时无法治疗特殊状态的问题: {command.htm;}
+修复了捡到东西提示合并时无法选择不合并的问题: {itemmain.func.php; itemmergechoice.htm; battle.func.php;}
+修改了递送物品的页面: {command.php; battle.func.php; senditemchoice.htm;}
+------------------------------------------------
+
 2011/7/19 v3.01a
 
 修复了同伴递送物品菜单显示问题: {battle.func.php;}

@@ -411,7 +411,7 @@ function get_noise($pid = -1, $limit = 0){
 function getchat($last,$cteam='',$cpls=-1,$limit=0) {
 	global $db,$tablepre,$chatlimit,$chatinfo,$mapdata;
 	$limit = $limit ? $limit : $chatlimit;
-	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid > '$last' ORDER BY cid DESC LIMIT $limit");
+	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid > '$last' ORDER BY time DESC,cid DESC LIMIT $limit");
 	
 	$chatdata = Array('lastcid' => $last, 'msg' => Array());
 	if(!$db->num_rows($result)){return $chatdata;}
@@ -518,7 +518,7 @@ function get_mapweapon(){
 //	$t_s=getmicrotime();
 	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$alivenum,$deathnum;
 	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
-	$adnws = $mwdata = $pldata = $chat = $lg = array();
+	$adnws = $mwdata = $pldata = $plupdata = $chat = $lg = array();
 	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time");
 	if(!$db->num_rows($result)){return;}
 	while($md = $db->fetch_array($result)) {
@@ -533,13 +533,13 @@ function get_mapweapon(){
 		$mwpls = $mwval['pls'];
 		$mwtype = $mwval['type'];
 		$mwlpid = $mwval['lpid'];
-		$chat[] = array("{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！",$now);
+		$chat[] = array("{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！",$mwtime);
 		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
 		if(isset($pldata[$mwpls])){
 			foreach($pldata[$mwpls] as & $plval){
 				if($plval['hp'] > 0){
 					$plval['hp'] -= $mapweaponinfo[$mwtype]['dmg'];
-					$lg[] = array($plval['pid'],$now,"你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！");
+					$lg[] = array($plval['pid'],$mwtime,"你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！");
 					if($plval['hp'] <= 0){
 						$plval['hp'] = 0; $plval['state'] = $mapweaponinfo[$mwtype]['state'];
 						$adnws[] = array($mwtime, 'death34', $plval['name'], $plval['type'], $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
@@ -554,8 +554,7 @@ function get_mapweapon(){
 	}
 	save_gameinfo();
 	if(!empty($plupdata)){
-		$wherestr = implode(',',array_keys($plupdata));
-		$db->multi_update("{$tablepre}players", $plupdata, 'pid', " pid IN ($wherestr)", "lasteff = '$now'");
+		$db->multi_update("{$tablepre}players", $plupdata, 'pid', "lasteff = '$now'");
 	}
 	//$db->multi_update("{$tablepre}players", $plupdata, 'pid', " hp > 0 AND type IN (0,100)", "lasteff = '$now'");
 	add_multi_news($adnws);

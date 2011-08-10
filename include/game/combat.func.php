@@ -13,69 +13,60 @@ function combat($active = 1, $battle_cmd = 'natk') {
 		$mode = 'command';
 		return;
 	}
+	$battle_title = '战斗发生';
 	$pdata = & $GLOBALS['pdata'];
 	extract($pdata,EXTR_REFS);
-	$battle_title = '战斗发生';
 	$battle_fac = $w_battle_fac = array('attack' => 1, 'defend' => 1, 'counter' => 1, 'hitrate' => 1, 'sidestep' => 1, 'hittime' => 0, 'hitfac' => 1);
 	
-	if ($active) {
-		if($bid==0){
-			$log .= "<span class=\"yellow\">你没有遇到敌人，或已经离开战场！</span><br>";
-			$bid = 0;
-			$mode = 'command';
-			return;
+	if($bid==0){
+		$log .= "<span class=\"yellow\">你没有遇到敌人，或已逃离战场！</span><br>";
+		$bid = 0;
+		$mode = 'command';
+		return;
+	}
+	$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$bid'" );
+	if (! $db->num_rows ( $result )) {
+		$log .= "对方不存在！<br>";
+		$bid = 0;
+		$mode = 'command';
+		return;
+	}		
+	$edata = $db->fetch_array ( $result );
+	
+	if ($edata ['pls'] != $pls) {
+		$log .= "<span class=\"yellow\">{$edata['name']}</span>已经离开了<span class=\"yellow\">{$mapdata[$pls]['name']}</span>。<br>";
+		$bid = 0;
+		$mode = 'command';
+		return;
+	} elseif ($edata ['hp'] <= 0) {
+		global $corpseprotect,$gamestate;
+		$log .= "<span class=\"red\">{$edata['name']}</span>已经死亡，不能被攻击。<br>";
+		if($edata['lasteff'] < $now -$corpseprotect && $gamestate < 40){
+			include_once GAME_ROOT . './include/game/battle.func.php';
+			findcorpse ( $edata );
 		}
-		
-		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$bid'" );
-		if (! $db->num_rows ( $result )) {
-			$log .= "对方不存在！<br>";
-			$bid = 0;
-			$mode = 'command';
-			return;
-		}		
-		$edata = $db->fetch_array ( $result );
-		
-		if ($edata ['pls'] != $pls) {
-			$log .= "<span class=\"yellow\">{$edata['name']}</span>已经离开了<span class=\"yellow\">{$mapdata[$pls]['name']}</span>。<br>";
-			$bid = 0;
-			$mode = 'command';
-			return;
-		} elseif ($edata ['hp'] <= 0) {
-			global $corpseprotect,$gamestate;
-			$log .= "<span class=\"red\">{$edata['name']}</span>已经死亡，不能被攻击。<br>";
-			if($edata['lasteff'] < $now -$corpseprotect && $gamestate < 40){
-				include_once GAME_ROOT . './include/game/battle.func.php';
-				findcorpse ( $edata );
-			}
-			$bid = 0;
-			return;
+		$bid = 0;
+		return;
+	}
+	$w_log = '';
+	$wep_kind = check_wep_kind($wepk,$weps);
+	$wep_temp = $wep;
+	extract ( $edata, EXTR_PREFIX_ALL|EXTR_REFS, 'w' );		
+	$w_wep_kind = check_wep_kind($w_wepk,$w_weps);
+	$w_wep_temp = $w_wep;
+	if ($message) {
+		$log .= "<span class=\"lime\">你对{$edata['name']}大喊：{$message}</span><br>";
+		if (! $edata ['type']) {
+			$w_log .= "<span class=\"lime\">{$name}对你大喊：{$message}</span><br>";
 		}
-		
-		$w_log = '';
-		if ($message) {
-			$log .= "<span class=\"lime\">你对{$edata['name']}大喊：{$message}</span><br>";
-			if (! $edata ['type']) {
-				$w_log .= "<span class=\"lime\">{$name}对你大喊：{$message}</span><br>";
-				//logsave ( $edata ['pid'], $now, $w_log ,'c');
-			}
-		}
-		
-		$wep_kind = check_wep_kind($wepk,$weps);
-		$wep_temp = $wep;
-		
-		extract ( $edata, EXTR_PREFIX_ALL|EXTR_REFS, 'w' );		
-		$w_wep_kind = check_wep_kind($w_wepk,$w_weps);
-		$w_wep_temp = $w_wep;
-		
-		check_technique($battle_cmd, $pdata, $battle_fac, $wep_kind, $w_wep_kind,1);
-		
-		init_battle ($edata, 1 );
-		include_once GAME_ROOT . './include/game/attr.func.php';
-		
-			
-		set_enemy_rev($edata);
-		$w_cannot_cmd = check_cannot_cmd($edata);
-		
+	}
+	init_battle ( $edata,1 );
+	include_once GAME_ROOT . './include/game/attr.func.php';
+	check_technique($battle_cmd, $pdata, $battle_fac, $wep_kind, $w_wep_kind,1);
+	set_enemy_rev($edata);
+	$w_cannot_cmd = check_cannot_cmd($edata);
+	
+	if ($active) {			
 		$w_lasteff = $now;
 		$log .= "你向<span class=\"red\">$w_name</span>发起了攻击！<br>";
 		$att_dmg = get_dmg($pdata,$edata,$battle_fac,$w_battle_fac,$wep_kind,1);//attack ( $edata,$wep_kind, 1 );
@@ -83,15 +74,6 @@ function combat($active = 1, $battle_cmd = 'natk') {
 		
 		if (($w_hp > 0) && ($w_tactic != 4) && ($w_pose != 5)) {
 			global $rangeinfo;
-			
-//			$w_wep_kind = substr ( $w_wepk, 1, 1 );
-//			if (($w_wep_kind == 'G') && ($w_weps == $nosta)) {
-//				$w_wep_kind = 'P';
-//			} elseif(!$w_wep_kind) {
-//				$w_wep_kind = 'N';
-//			}
-
-			//if (($rangeinfo [$wep_kind] == $rangeinfo [$w_wep_kind]) || ($rangeinfo [$w_wep_kind] == 'M')) {
 			if ($rangeinfo [$wep_kind] <= $rangeinfo [$w_wep_kind] && $rangeinfo [$wep_kind] !== 0) {
 				$counter = get_counter ($w_pls,$w_wep_kind, $w_tactic, $w_club, $w_inf);
 				$counter_dice = rand ( 0, 99 );
@@ -121,20 +103,6 @@ function combat($active = 1, $battle_cmd = 'natk') {
 		}
 		
 	} else {
-		$wep_kind = check_wep_kind($wepk,$weps);
-		$wep_temp = $wep;
-		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$bid'" );
-		$edata = $db->fetch_array ( $result );
-		$w_log = '';
-		extract ( $edata, EXTR_PREFIX_ALL|EXTR_REFS, 'w' );
-		init_battle ( $edata,1 );
-		include_once GAME_ROOT . './include/game/attr.func.php';
-		$w_wep_kind = check_wep_kind($w_wepk,$w_weps);
-		$w_wep_temp = $w_wep;
-		check_technique($battle_cmd, $pdata, $battle_fac, $wep_kind, $w_wep_kind,1);
-		set_enemy_rev($edata);
-		$w_cannot_cmd = check_cannot_cmd($edata);
-		$w_lasteff = $now;
 		
 		if($w_wep_kind == 'D'){
 			$log .= "你突然遭遇爆炸袭击！<br>";
@@ -291,7 +259,10 @@ function get_dmg($adata,$ddata,$abfac,$dbfac,$wep_kind = 'N',$active = 0){ //计
 	$att_key = player_property($adata,'att');
 	$def_key = player_property($ddata,'def');
 	$wep_skill = & ${'a_'.$skillinfo [$wep_kind]};
-	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $a_inf, $a_pls ) * $abfac['hitrate'] / $dbfac['sidestep'];
+	$w_sidestep = get_sidestep_p($a_pls,$d_pose,$d_tactic,$d_club,$d_inf,1-$active) * $dbfac['sidestep'];
+	$log .= $w_sidestep;
+	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $a_inf, $a_pls ) * $abfac['hitrate'];
+	$hitrate /= $w_sidestep;
 	if($active){
 		$damage_p = set_dmg_p($adata, $att_key, $message ,1);
 	}else{

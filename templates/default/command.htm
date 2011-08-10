@@ -56,7 +56,7 @@
 				<!--{/if}-->
 				<div class="cmdbtn"  onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_pose';postCommand();">基础姿态</div>
 				<div class="cmdbtn"  onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_tac';postCommand();">应战策略</div>
-				<!--{if (strpos($pdata['inf'],'h')!==false||strpos($pdata['inf'],'b')!==false)||strpos($pdata['inf'],'a')!==false||strpos($pdata['inf'],'f')!==false}-->
+				<!--{if $pdata['inf']}-->
 					<div class="cmdbtn"  onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_inf';postCommand();">包扎伤口</div>
 				<!--{/if}-->
 				<!--{if ($pdata['type'] == 0&&$canlearntech)}-->

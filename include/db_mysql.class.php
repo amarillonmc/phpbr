@@ -123,17 +123,18 @@ class dbstuff {
 		return $query;
 	}
 	
-	function multi_update($dbname, $data, $confield, $where, $singleqry = ''){
-		$fields = Array();
+	function multi_update($dbname, $data, $confield, $singleqry = ''){
+		$fields = $range = Array();
 		foreach($data as $rval){
-			${$confield} = $rval[$confield];
+			$con = $rval[$confield];
+			$range[] = "'$con'";
 			foreach($rval as $fkey => $fval){
 				if($fkey != $confield){
 					if(isset(${$fkey.'qry'})){
-						${$fkey.'qry'} .= "WHEN '${$confield}' THEN '$fval' ";
+						${$fkey.'qry'} .= "WHEN '$con' THEN '$fval' ";
 					}else{
 						$fields[] = $fkey;
-						${$fkey.'qry'} = "(CASE $confield WHEN '${$confield}' THEN '$fval' ";
+						${$fkey.'qry'} = "(CASE $confield WHEN '$con' THEN '$fval' ";
 					}
 				}				
 			}
@@ -147,7 +148,7 @@ class dbstuff {
 		}
 		if(!empty($query)){
 			if($singleqry){$singleqry = ','.$singleqry;}
-			$query = "UPDATE {$dbname} SET ".substr($query,0,-1)."$singleqry WHERE $where";
+			$query = "UPDATE {$dbname} SET ".substr($query,0,-1)."$singleqry WHERE $confield IN (".implode(',',$range).")";
 			$this->query ($query);
 		}
 		return $query;

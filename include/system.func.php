@@ -648,7 +648,7 @@ function set_credits(){
 //			}			
 		}
 	}
-	$db->multi_update("{$tablepre}users", $updatelist, 'username', "lastgame='$gamenum'");
+	$db->multi_update("{$tablepre}users", $updatelist, 'username');
 //	if(!empty($udghkey)){
 //		$udghkey = implode(',',$udghkey);
 //		$db->multi_update("{$tablepre}players", $upghlist, 'name', "name IN ($udghkey)");

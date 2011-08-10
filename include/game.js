@@ -1,3 +1,20 @@
+//document.onkeydown = hotkey();
+
+function hotkey(evt) 
+{ 
+	if(document.activeElement.tagName != 'INPUT'){
+		evt = (evt) ? evt : ((window.event) ? window.event : '');
+		var ky = evt.keyCode ? evt.keyCode : evt.which;
+		if(ky==90 && !evt.ctrlKey && !evt.altKey && !evt.shiftKey){
+		}
+//		alert('!'); 
+//		if(ky==65) 
+//		{ 
+//			alert("Äã°´ÁËa¼ü°É"); 
+//		} 
+	}	
+}
+
 //update time
 function updateTime(timing,mode)
 {

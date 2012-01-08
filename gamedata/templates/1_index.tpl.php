@@ -1,10 +1,25 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); include template('header'); ?>
-<table border="0" align="center">
-<tr><td><span class="yellow">官方网站：</span></td><td><a href="<?=$homepage?>" class="evergreen" target="_blank"><?=$homepage?></a> MODDED By <u>冴月麟</u>　　</td></tr>
-<tr><td><span class="yellow">当前时刻：</span></td><td><span class="evergreen"><?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></span></td></tr>
-<tr><td><span class="yellow">站长留言：</span></td><td><span class="evergreen"><?=$adminmsg?></span></td></tr>
-<tr><td><span class="yellow">游戏情报：</span></td><td><span class="evergreen2">第 <?=$gamenum?> 回游戏 <?=$gstate[$gamestate]?></span></td></tr>
-</table>
+<table align="center" style="text-align:center;border:0;padding:0;">
+<tr>
+<td><span class="yellow">官方网站：</span></td>
+<td style="text-align:left;"><a href="<?=$homepage?>" class="evergreen" target="_blank"><?=$homepage?></a> MODDED By <u>冴月麟</u></td>
+<td style="text-align:center;padding:0 0 0 25px;"><span class="yellow">站长留言</span></td>
+</tr>
+<tr>
+<td><span class="yellow">当前时刻：</span></td>
+<td style="text-align:left;"><span class="evergreen"><?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></span></td>
+<td rowspan="4" style="width:500px;vertical-align:top;text-align:left;padding:0 0 0 25px;"><span class="evergreen"><?=$adminmsg?></span></td>
+</tr>
+<tr>
+<td><span class="yellow">系统状况：</span></td>
+<td style="text-align:left;"><span class="evergreen"><?=$adminmsg2?></span></td>
+</tr>
+<tr>
+<td><span class="yellow">游戏情报：</span></td>
+<td style="text-align:left;"><span class="evergreen"><span class="evergreen2">第 <?=$gamenum?> 回游戏 <?=$gstate[$gamestate]?></span></span></td>
+</tr>
+<tr>
+<td colspan="2" style="vertical-align:top;">
 <div>
 <? if($gamestate > 10 ) { ?>
 本局游戏已经进行  <span id="timing"></span><script type="text/javascript">updateTime(<?=$timing?>,1);</script><br> 
@@ -61,4 +76,7 @@
 </form>
 <? } ?>
 <span class="evergreen2">第一次玩的，请先看 <a href="help.php" class="clit">游戏帮助</a> !!!</span><br>
+</td>
+</tr>
+</table>
 <? include template('footer'); ?>

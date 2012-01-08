@@ -6,24 +6,13 @@ if(!defined('IN_GAME')) {
 }
 
 function teammake($tID,$tPass) {
-	global $pdata,$log,$mode,$db,$tablepre,$noitm,$team_sp,$now,$gamestate,$companysystem;
-	$name = $pdata['name'];$type = $pdata['type'];
+	global $log,$mode,$teamID,$teamPass,$db,$tablepre,$noitm,$sp,$team_sp,$now,$name,$gamestate;
 	if($gamestate >= 40) {
 		$log .= '连斗时不能组建队伍。<br>';
 		$mode = 'command';
 		return;
 	}
-	if($type != 0) {
-		$log .= '非参战者不能组建队伍。<br>';
-		$mode = 'command';
-		return;
-	}
-	$teamID = & $pdata['teamID'];$teamPass = & $pdata['teamPass'];
-	if($companysystem && $pdata['company']){
-		global $cdata;
-		$cpteamID = & $cdata['teamID'];$cpteamPass = & $cdata['teamPass'];
-	}
-	$sp = & $pdata['sp'];
+
 	if(!$tID || !$tPass) {
 		$log .= '队伍名和密码不能为空，请重新输入。<br>';
 		$mode = 'command';
@@ -54,18 +43,14 @@ function teammake($tID,$tPass) {
 		if($db->num_rows($result)){
 			$log .= '队伍<span class="yellow">'.$tID.'</span>已经存在，请更换队伍名。<br>';
 		} else {
-			if($companysystem && $pdata['company']){
-				$teamID = $cpteamID = $tID;$teamPass = $cpteamPass = $tPass;
-				player_save($cdata);
-			}else{
-				$teamID = $tID;$teamPass = $tPass;
-			}			
+			$teamID = $tID;
+			$teamPass = $tPass;
 			$sp -= $team_sp;
 			$log .= '你创建了队伍<span class="yellow">'.$teamID.'</span>。<br>';
 			naddnews($now,'teammake',$teamID,$name);
-			//global $gamedata,$chatinfo;
-			//$gamedata['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";
-			//$gamedata['team'] = $teamID;
+			global $gamedata,$chatinfo;
+			$gamedata['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";
+			$gamedata['team'] = $teamID;
 		}
 	$mode = 'command';
 	return;
@@ -74,24 +59,12 @@ function teammake($tID,$tPass) {
 }
 
 function teamjoin($tID,$tPass) {
-	global $log,$mode,$pdata,$db,$tablepre,$noitm,$team_sp,$teamj_sp,$now,$teamlimit,$gamestate,$companysystem;
-	$name = $pdata['name'];$type = $pdata['type'];
+	global $log,$mode,$teamID,$teamPass,$db,$tablepre,$noitm,$sp,$team_sp,$teamj_sp,$now,$name,$teamlimit,$gamestate;
 	if($gamestate >= 40) {
 		$log .= '连斗时不能加入队伍。<br>';
 		$mode = 'command';
 		return;
 	}
-	if($type != 0) {
-		$log .= '非参战者不能加入队伍。<br>';
-		$mode = 'command';
-		return;
-	}
-	$teamID = & $pdata['teamID'];$teamPass = & $pdata['teamPass'];
-	if($companysystem && $pdata['company']){
-		global $cdata;
-		$cpteamID = & $cdata['teamID'];$cpteamPass = & $cdata['teamPass'];
-	}
-	$sp = & $pdata['sp'];
 	if(!$tID || !$tPass){
 		$log .= '队伍名和密码不能为空，请重新输入。<br>';
 		$mode = 'command';
@@ -126,18 +99,14 @@ function teamjoin($tID,$tPass) {
 		} else {
 			$password = $db->result($result,0);
 			if($tPass == $password) {
-				if($companysystem && $pdata['company']){
-					$teamID = $cpteamID = $tID;$teamPass = $cpteamPass = $tPass;
-					player_save($cdata);
-				}else{
-					$teamID = $tID;$teamPass = $tPass;
-				}	
+				$teamID = $tID;
+				$teamPass = $tPass;
 				$sp -= $teamj_sp;
 				$log .= '你加入了队伍<span class="yellow">'.$teamID.'</span>。<br>';
 				naddnews($now,'teamjoin',$teamID,$name);
-				//global $gamedata,$chatinfo;
-				//$gamedata['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";
-				//$gamedata['team'] = $teamID;
+				global $gamedata,$chatinfo;
+				$gamedata['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";
+				$gamedata['team'] = $teamID;
 			} else {
 				$log .= '密码错误，不能加入队伍<span class="yellow">'.$tID.'</span>。<br>';
 			}
@@ -149,33 +118,14 @@ function teamjoin($tID,$tPass) {
 }
 
 function teamquit() {
-	global $log,$mode,$pdata,$now,$gamestate,$companysystem;
-	$name = $pdata['name'];$type = $pdata['type'];
-	if($gamestate >= 40) {
-		$log .= '连斗时不能退出队伍。<br>';
-		$mode = 'command';
-		return;
-	}
-	if($type != 0) {
-		$log .= '非参战者不能退出队伍。<br>';
-		$mode = 'command';
-		return;
-	}
-	$teamID = & $pdata['teamID'];$teamPass = & $pdata['teamPass'];
-	
-	if($companysystem && $pdata['company']){
-		global $cdata;
-		$cpteamID = & $cdata['teamID'];$cpteamPass = & $cdata['teamPass'];
-	}
+	global $log,$mode,$teamID,$teamPass,$now,$name,$gamestate;
+
 	if($teamID && $gamestate<40){
 		$log .= '你退出了队伍<span class="yellow">'.$teamID.'</span>。<br>';
 		naddnews($now,'teamquit',$teamID,$name);
-		if($companysystem && $pdata['company']){
-			$teamID = $cpteamID = $teamPass = $cpteamPass = '';
-			player_save($cdata);
-		}else{
-			$teamID = $teamPass = '';
-		}	
+		$teamID =$teamPass = '';
+		global $gamedata,$chatinfo;
+		$gamedata['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]</select>";
 	} else {
 		$log .= '你不在队伍中。<br>';
 	}

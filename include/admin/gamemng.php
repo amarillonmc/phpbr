@@ -41,7 +41,7 @@ echo <<<EOT
 <!--<input type="radio" name="command" id="chatmng" value="chatmng"><a onclick=sl('chatmng'); href="javascript:void(0);" >聊天管理</a><br>-->
 <!--<input type="radio" name="command" id="newsmng" value="newsmng"><a onclick=sl('newsmng'); href="javascript:void(0);" >新闻管理</a><br>-->
 <input type="radio" name="command" id="gameinfomng" value="gameinfomng"><a onclick=sl('gameinfomng'); href="javascript:void(0);" >游戏状态管理</a><br>
-<!--<input type="radio" name="command" id="infomng" value="infomng"><a onclick=sl('infomng'); href="javascript:void(0);" >游戏状态同步（用于激活，生存或死亡人数与实际不符时）</a><br>-->
+<input type="radio" name="command" id="infomng" value="infomng"><a onclick=sl('infomng'); href="javascript:void(0);" >游戏状态同步（用于激活，生存或死亡人数与实际不符时）</a><br>
 <input type="radio" name="command" id="antiAFKmng" value="antiAFKmng"><a onclick=sl('antiAFKmng'); href="javascript:void(0);" >启动反挂机功能</a><br>
 <input type="radio" name="command" id="sttimemng" value="sttimemng"><a onclick=sl('sttimemng'); href="javascript:void(0);" >设置下局时间</a><br>
 <input type="submit" name="submit" value="提交">

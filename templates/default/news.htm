@@ -4,15 +4,12 @@
 
 <div align="left">
 <div class="clearfix">
-<!--{if $bossdeath}-->
-{lang newsnotice2}
-<!--{else}-->
-{lang newsnotice}
-<!--{/if}-->
+<span style="float:left;" ><img border="0" src="img/question.gif"></span>
+<span>{lang newsnotice}</span>
 </div>
 <br>
 <span class="evergreen">当前时间：{lang gamedate}</span><br />
-<span class="evergreen">当前天气：{$wthdata[$weather]['name']}</span><br />
+<span class="evergreen">当前天气：{$wthinfo[$weather]}</span><br />
 <!--{if $gamestate==40}--><span class="yellow">游戏已经进入连斗阶段！</span><br /><!--{/if}-->
 <!--{if $gamestate==50}--><span class="red">游戏已经进入死斗模式！</span><br /><!--{/if}-->
 <!--{if $hack}--><span class="evergreen">（禁区已解除）</span><!--{/if}-->

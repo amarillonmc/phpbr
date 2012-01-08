@@ -156,10 +156,10 @@
 	如果补给耗尽，选择“睡眠”指令并提交可以随时间回复体力，选“治疗”指令则是回复生命，在“精灵中心”以及“对天使用作战本部”还可以选择“静养”指令，同时回复体力和生命。<BR>
 	点击“提交”能看到回复量，在回复时，无法进行其他行动；点击“返回”并提交则返回作战状态。<BR>
 	此外，等级提升时也能回复少量体力和生命值。<BR>
-	<DT>问：受伤了怎么办？中毒怎么办？
-	<DD>答：受伤跟中毒都不会自动解除。<BR>
+	<DT>问：受伤了怎么办？进入异常状态了怎么办？
+	<DD>答：受伤跟异常状态都不会自动解除。<BR>
 	受伤时在“特殊”下拉框选择“包扎伤口”指令，消耗一定体力包扎伤口。<BR>
-	如果中毒只有寻找或购买解毒剂并服用才能解除。<BR>
+	如果进入异常状态，有两种办法：一是只有寻找或购买相应的药剂并服用才能解除；二是到有医院的地图通过“静养”指令解除。<BR>
 	</DD>
 </DL>
 </DIV>
@@ -211,7 +211,7 @@
 如玩家想挑战游戏BOSS，也必须先解除禁区，才能到管理后台与BOSS决战。<br><br>
 
 当禁区数量增加到一定程度，或者在游戏中死亡的玩家和NPC总数超过一定数目时，都将使游戏进入<span class="yellow">“连斗阶段”</span>。<br>
-当前服务器的设定是<span class="yellow">禁区增加{$arealimit}次</span>或者<span class="yellow">死亡{$deathlimit}人</span>则进入连斗，别的服务器可能会有所调整。<br>
+当前服务器的设定是<span class="yellow">禁区增加三次</span>或者<span class="yellow">死亡100人</span>则进入连斗，别的服务器可能会有所调整。<br>
 进入连斗以后，<span class="yellow">游戏停止激活</span>，<span class="yellow">所有尸体消失且无法再摸到尸体</span>，<span class="yellow">所有队伍解散</span>，<span class="yellow">躲避姿态也无法回避禁区</span>，剩下的人必须决一死战。<br>
 同时禁区还会继续增加，如果全部地区都变为禁区，那么所有的参与者都会死亡，这局游戏将没有胜利者。</p>
 <p>此外，在游戏进入连斗以后，如果玩家杀死了<span class="yellow">代码聚合体</span>并使用掉落的<span class="yellow">“代码聚合体的ID卡”</span>，则会使游戏进入<span class="red">“死斗模式”</span>。<br>
@@ -268,7 +268,7 @@
 <span class="yellow">『睡眠』</span> 根据睡眠的时间和体力上限，按一定比例恢复体力。<br>
 <span class="yellow">『治疗』</span>
 根据睡眠的时间和生命上限，按一定比例恢复生命，但是不会治疗伤口或解除异常状态。伤口治疗在“特殊”功能内。<br>
-<span class="yellow">『静养』</span> 同时恢复生命和体力，只能在精灵中心和对天使用作战本部内进行。</p>
+<span class="yellow">『静养』</span> 同时恢复生命和体力，同时有一定概率解除异常状态，静养时间越长，解除概率越高。只能在精灵中心和对天使用作战本部内进行。</p>
 
 
 
@@ -444,7 +444,7 @@
 			<div class="nttx">治疗姿态</div>
 			</TD>
 			<TD class="b3">
-			<div class="nttx">注重睡眠和治疗效率的姿态</div>
+			<div class="nttx">注重睡眠、治疗和静养效率的姿态</div>
 			</TD>
 			<TD class="b3">
 			<div class="nttx"><span class="yellow">↓↓↓</span></div>
@@ -534,7 +534,7 @@
 			<div class="nttx">重视防御</div>
 			</TD>
 			<TD class="b3">
-			<div class="nttx">增加防御力的策略，减少反击率</div>
+			<div class="nttx">增加战斗和应对陷阱的防御力的策略，减少反击率</div>
 			</TD>
 			<TD class="b3">
 			<div class="nttx"><span class="yellow">↓↓↓</span></div>
@@ -1012,6 +1012,17 @@
 	</tr>
 	<tr>
 		<td class="b2" height=20px>
+		<div class="nttx">伤害抹消</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">将受到的普通攻击的伤害减至最少，接近神一般的存在</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">……</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
 		<div class="nttx">防拳</div>
 		</td>
 		<td class="b3">
@@ -1089,13 +1100,24 @@
 	</tr>
 	<tr>
 		<td class="b2" height=20px>
-		<div class="nttx">全属性防御</div>
+		<div class="nttx">属性防御</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">所有属性攻击的伤害减半，且不会中异常状态</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">有时无法发挥防御作用</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">属性抹消</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">将受到的属性攻击的伤害减至最少，并且防御异常状态，接近神一般的存在</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">……</div>
 		</td>
 	</tr>
 	<tr>
@@ -1199,6 +1221,28 @@
 	</tr>
 	<tr>
 		<td class="b2" height=20px>
+		<div class="nttx">陷阱探测</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">增加遭遇陷阱时的回避率</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">无</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">陷阱迎击</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">遭遇陷阱时可以免疫伤害</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">效果的发生有一定概率</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
 		<div class="nttx">天然</div>
 		</td>
 		<td class="b3">
@@ -1208,7 +1252,28 @@
 		<div class="nttx">现在AC大逃杀玩家中天然呆数量急剧上升中……</div>
 		</td>
 	</tr>
-
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">菁英</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">带有此属性的物品可以用“宝石”系道具强化效果值</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">物品强化次数越高越容易失败</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">奇迹</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">人类，可以超越神么？……</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">……</div>
+		</td>
+	</tr>
 </table>
 <br>
 <br>
@@ -1253,7 +1318,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx"><span class="red">胸部受伤</span></div>
 		</td>
 		<td class="b3">
-		<div class="nttx">睡眠、治疗效果<span class="yellow">↓↓</span></div>
+		<div class="nttx">睡眠、治疗、静养效果<span class="yellow">↓↓</span></div>
 		</td>
 		<td class="b3">
 		<div class="nttx">防御力<span class="yellow">↓↓</span></div>
@@ -1345,7 +1410,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">攻击力、防御力、命中率、先制攻击率<span class="yellow">↓</span></div>
 		</td>
 		<td class="b3">
-		<div class="nttx">解冻药水<br>此外，晴天和大晴时每次行动有一定几率恢复。</div>
+		<div class="nttx">解冻药水</div>
 		</td>
 	</tr>
 	<tr>
@@ -1375,7 +1440,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 			class="yellow">↓↓</span></div>
 		</td>
 		<td class="b3">
-		<div class="nttx">清醒药剂<br>此外，每次行动有一定几率恢复。</div>
+		<div class="nttx">清醒药剂</div>
 		</td>
 	</tr>
 
@@ -1533,7 +1598,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">特殊</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">hack成功率极高，且不会导致严重后果；合成电子设备有效果加成；探雷装备效率提高；电气属性致伤率增加；</div>
+		<div class="nttx">hack成功率极高，且不会导致严重后果；合成电子设备有效果加成；陷阱探测类装备效率提高；电气属性致伤率增加；</div>
 		</td>
 		<td class="b3">
 		<div class="nttx">能够用电池或探测器电池为武器增加电击属性</div>
@@ -2443,7 +2508,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">伞符『雨伞的星之交响』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/20/∞/冻气</div>
+		<div class="nttx">灵力武器/24/∞/冻气</div>
 		</td>
 	</tr>
 	<tr>
@@ -2463,7 +2528,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">梦符『梦想妙珠』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/30/∞/连击</div>
+		<div class="nttx">灵力武器/40/∞/连击</div>
 		</td>
 	</tr>
 	<tr>
@@ -2483,7 +2548,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">星符『星尘狂欢』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/50/∞/火焰</div>
+		<div class="nttx">灵力武器/60/∞/火焰</div>
 		</td>
 	</tr>
 	<tr>
@@ -2503,7 +2568,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">秘术『一子单传的弹幕』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/50/∞/爆炸</div>
+		<div class="nttx">灵力武器/60/∞/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2523,7 +2588,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">时符『Private Square』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/120/∞/冻气</div>
+		<div class="nttx">灵力武器/150/∞/冻气</div>
 		</td>
 	</tr>
 	<tr>
@@ -2543,7 +2608,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">幽鬼剑『妖童饿鬼之断食』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/120/∞/重击辅助</div>
+		<div class="nttx">灵力武器/150/∞/重击辅助</div>
 		</td>
 	</tr>
 	<tr>
@@ -2563,7 +2628,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">风符『风神一扇』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/210/∞</div>
+		<div class="nttx">灵力武器/200/∞/爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2583,7 +2648,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">『收缩的世界』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/120/∞/冻气连击</div>
+		<div class="nttx">灵力武器/150/∞/冻气连击</div>
 		</td>
 	</tr>
 	<tr>
@@ -2621,10 +2686,70 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">→</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">冰符『Icicle Fall - easy』</div>
+		<div class="nttx">冰符『Icicle Fall』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/9/∞/冻气</div>
+		<div class="nttx">灵力武器/9/∞/冻气连击</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">西瓜</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">水果刀</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">磨刀石</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">西瓜刀</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">锐器/99/∞/重击辅助</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">冰沙</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">小棍棒</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">御神签</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">冰棍棒</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">钝器/9/19/连击</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">冰符『Icicle Fall』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">西瓜刀</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">冰棍棒</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">奥义『超⑨武神霸斩』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">灵力武器/199/∞/重击辅助连击冻气</div>
 		</td>
 	</tr>
 	<tr>
@@ -2644,7 +2769,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">紫奥义『弹幕结界』</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">灵力武器/222/∞/连击爆炸</div>
+		<div class="nttx">灵力武器/300/∞/连击爆炸</div>
 		</td>
 	</tr>
 	<tr>
@@ -2664,7 +2789,7 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">★一发逆转神话★</div>
 		</td>
 		<td class="b3">
-		<div class="nttx">陷阱/9999/1</div>
+		<div class="nttx">陷阱/1/1/奇迹</div>
 		</td>
 	</tr>
 </table>
@@ -3380,7 +3505,46 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">灵力武器/240/150/音波</div>
 		</td>
 	</tr>
-
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">红色的宝石刀</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">悲叹之种</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★恐惧的黑色安息日★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">锐器/240/240/连击火焰爆炸</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">银色的宝石符卡</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">悲叹之种</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★失落的银色镇魂歌★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">灵力兵器/240/240/连击音波爆炸</div>
+		</td>
+	</tr>
 	<tr>
 		<td class="b3" height=20px>
 		<div class="nttx">绿宝石方块</div>
@@ -3481,6 +3645,769 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		<div class="nttx">饰物/240/150/HP制御</div>
 		</td>
 	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">红色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">红色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">红色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★烈焰冲撞★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">钝器/152/152/连击火焰</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">黄色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">黄色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">黄色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★高压电击★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">爆炸物/152/251/连击电击爆炸</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">绿色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">绿色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">绿色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★飞叶快刀★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">锐器/152/152/连击带毒</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">蓝色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">蓝色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">蓝色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★急冻光线★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">远程武器/152/152/连击冻气重击辅助</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">金色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">金色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">金色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★齿轮飞碟★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/152/386/连击爆炸</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">银色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">银色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">银色方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★精神破坏★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">灵力武器/152/152/连击音波</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">水晶方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">水晶方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">水晶方块</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★灭亡之歌★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">陷阱/900/3</div>
+		</td>
+	</tr>
+</table>
+<br>
+<br>
+<p><span class="red">游戏王卡系列合成表</span>：</p>
+<table cellSpacing=0 cellPadding=0>
+	<tr>
+		<td class="b1" height=20px>
+		<div class="nttx">合成材料一</div>
+		</td>
+		<td class="b1">
+		<div class="nttx">合成材料二</div>
+		</td>
+		<td class="b1">
+		<div class="nttx">合成材料三</div>
+		</td>
+		<td class="b1"></td>
+		<td class="b1">
+		<div class="nttx">合成结果</div>
+		</td>
+		<td class="b1">
+		<div class="nttx">用途</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「被封印者的左腕」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印者的右腕」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印者的双腕」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">特殊/2/1</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「被封印者的左足」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印者的右足」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印者的双足」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">特殊/2/1</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「被封印的艾克佐迪亚」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印者的双腕」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印者的双足」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「被封印的黑暗大法师」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/8192/1</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「被封印的黑暗大法师」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★神卡认证★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『黑暗大法师』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/8192/∞/全系防御全属性防御菁英</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「隼骑士」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆四星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「隼骑士」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/100/∞/连击</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「V-喷气虎」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆四星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「V-喷气虎」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/160/180/带毒</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「W-弹射飞翼」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆四星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「W-弹射飞翼」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/130/150/火焰</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「X-首领加农」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆四星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「X-首领加农」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/180/150/冻气</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「Y-龙头」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆四星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「Y-龙头」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/150/160/电击</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「Z-金属履带」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆四星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「Z-金属履带」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/150/130/音波</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「V-喷气虎」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「W-弹射飞翼」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「VW-强击虎」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/200/∞/带毒火焰</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「X-首领加农」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「Y-龙头」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「Z-金属履带」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「XYZ-神龙炮」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/280/∞/冻气电击音波</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「VW-强击虎」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「XYZ-神龙炮」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「VWXYZ-神龙强击炮」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/300/∞/带毒火焰冻气电击音波</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「绝对防御将军」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆六星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「绝对防御将军」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/250/∞/全系防御</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「人造人-念力震慑者」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆六星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「人造人-念力震慑者」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/240/∞/陷阱探测</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「恶魔召唤」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆六星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「恶魔召唤」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/250/∞/重击辅助</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「真紅眼黑龍」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆八星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「真紅眼黑龍」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/240/∞/火焰</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「真紅眼黑龍」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「金属化·魔法反射装甲」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「真紅眼黑龍鐵龍」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/280/∞/火焰全系防御</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「真紅眼黑龍」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★神卡认证★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「真紅眼闇龍」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/2400/∞/重击辅助连击火焰菁英</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「恶魔召唤」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「真紅眼黑龍」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「暗黑魔龙」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/320/∞/重击辅助连击火焰</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「左轮手枪龙」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆八星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「左轮手枪龙」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/260/∞/连击</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「破龙剑士」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆八星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「破龙剑士」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/260/∞/重击辅助防投</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「黑魔术师」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆八星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「黑魔术师」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/250/∞/重击辅助防投</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「黑魔术师」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「破龙剑士」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「超魔导剑士-黑暗帕拉丁」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/290/∞/重击辅助连击爆炸菁英</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「青眼白龙」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">☆八星认证☆</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「青眼白龙」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/300/∞/爆炸</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「青眼白龙」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「青眼白龙」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">【逆转的女神】</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">「青眼究极龙」</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/450/∞/重击辅助连击火焰爆炸</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「奥西里斯之天空龙」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★神卡认证★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『奥西里斯之天空龙』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/4000/∞/全系防御重击辅助连击电击菁英</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「欧贝利斯克之巨神兵」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★神卡认证★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『欧贝利斯克之巨神兵』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/4000/∞/全系防御重击辅助连击冻气菁英</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">「太阳神之翼神龙」-仮</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">★神卡认证★</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">－</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『太阳神之翼神龙』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/4000/∞/全系防御重击辅助连击火焰菁英</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b3" height=20px>
+		<div class="nttx">『奥西里斯之天空龙』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『欧贝利斯克之巨神兵』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">『太阳神之翼神龙』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">→</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">◎光之创造神◎</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">投掷武器/65535/∞/全系防御重击辅助连击爆炸菁英</div>
+		</td>
+	</tr>
 </table>
 <br>
 
@@ -3575,6 +4502,34 @@ NPC也会发出重击和必杀技，请随时小心。</p>
 		</td>
 		<td class="b3">
 		<div class="nttx">使用时产生哪种效果是随机决定的</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">『祝福宝石』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">可以强化“菁英”属性道具的效果值</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">商店出售</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">强化效果与已进行强化的次数有关，但次数过高容易失败</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="b2" height=20px>
+		<div class="nttx">『灵魂宝石』</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">可以强化“菁英”属性道具的效果值，成功率比祝福宝石更高</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">商店出售</div>
+		</td>
+		<td class="b3">
+		<div class="nttx">强化效果与已进行强化的次数有关，但次数过高容易失败</div>
 		</td>
 	</tr>
 	<tr>

@@ -2,20 +2,18 @@
 
 if(!defined('IN_GAME')){exit('Access Denied');}
 
-$gamenum = 2;
+$gamenum = 3147;
 $gamestate = 20;
-$starttime = 1310226660;
-$winmode = 3;
-$winner = 'admin';
-$arealist = array(0,27,13,5,4,7,12,22,11,15,23,3,17,26,8,29,18,9,1,24,28,19,14,25,21,20,2,10,16,6);
+$starttime = 1321727580;
+$winmode = 2;
+$winner = 'yy0506';
+$arealist = array(0,4,22,23,26,2,1,11,9,3,19,7,17,5,20,8,28,25,16,10,21,14,6,13,12,18,27,24,29,15);
 $areanum = 0;
-$areatime = 1310227800;
-$weather = 7;
+$areatime = 1321730400;
+$weather = 2;
 $hack = 0;
-$validnum = 1;
-$alivenum = 1;
-$deathnum = 0;
-$bossdeath = 0;
-$arealock = 1;
+$validnum = 18;
+$alivenum = 10;
+$deathnum = 55;
 
 ?>

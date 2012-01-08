@@ -1,89 +1,92 @@
-<table style="border:0;width:400px;height:400px">
-	<tr>
-		<td align="center" style="width:100px;height:400px;">
-			<div class="battletitle">
-				$battle_title
-			</div>
-		</td>
-		<td style="width:300px;vertical-align:top">
-			<table style="border:0;width:300px">
-				<tr>
-					<td class="td1" style="height:30px">
-						<div>
-							{lang hp} $edata['display']['hpstate']
-						</div>
-					</td>
-					<td class="td1">
-						<div>
-							{lang sp} $edata['display']['spstate']
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="td2" style="height:30px">
-						<div>
-							{lang pose} $edata['display']['pose']
-						</div>
-					</td>
-					<td class="td2">
-						<div>
-							{lang tactic} $edata['display']['tactic']
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="td2" colspan="2">
-						<table style="border:0;text-align:right;width:300px;height:80px;table-layout:fixed">
-							<tr>
-								<td colspan="2">
-									<div>{$edata['display']['gamehonourinfo']}</div>
-								</td>
-								<td width="140px" height="80px" rowspan="3">
-									<div>
-										<IMG src="img/$edata['display']['iconImg']" height=80px border="0" align="middle" <!--{if $edata['hp']<=0}-->style="filter:Xray()"<!--{/if}--> />
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<div class="nameline"><span>{$edata['display']['name']}</span></div>
-								</td>
-							</tr>
-							<tr>
-								<td width=50%>
-									<div>{$edata['display']['sNoinfo']}</div>
-								</td>
-								<td width=50%>
-									<div>{lang level} <span class="val">Lv. $edata['display']['lvl']</span></div>
-								</td>
-							</tr>
+<table border="0" width=640px height=320px cellspacing="0" cellpadding="0"  valign="middle">
+	<TR align="center" >
+		<TD valign="middle" class="b5">
+			<TABLE border="0" width=640px align="center"  cellspacing="0" cellpadding="0"  class="battle">
+				<tr><td>
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr><td>
+					<table border="0"  cellspacing="0" cellpadding="0" valign="top">
+						<tr>
+							<td class="b1" colspan=2 width=140px height=20px><div class=nttx>Lv. $w_lvl</div></td>
+							
+							<td class="b1" colspan=2 width=150px><div class=nttx>$w_name</div></td>
+							
+							<td class="b1" colspan=2 width=190px><div class=nttx>$w_sNoinfo</div></td>
+							
+							<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/$w_iconImg" height=80px border="0" align="middle" <!--{if $w_hp==0}-->style="filter:Xray()"<!--{/if}--> /></td>
+						</tr>
+						<tr>
+							<td class="b2" width=65px height=20px><div class=nttx>{lang rage}</div></td>
+							<td class="b3" width=70px><div class=nttx>$w_ragestate</div></td>
+							<td class="b2" width=65px><div class=nttx>{lang sp}</div></td>
+							<td class="b3" width=80px><div class=nttx>$w_spstate</div></td>
+							<td class="b2" width=65px><div class=nttx>{lang hp}</div></td>
+							<td class="b3" width=120px><div class=nttx>$w_hpstate</div></td>
+						</tr>
+						<tr>
+							<td class="b2" height=20px><div class=nttx>{lang wep}{lang effect}</div></td>
+							<td class="b3"><div class=nttx>$w_wepestate</div></td>
+							<td class="b2"><div class=nttx>{lang wep}{lang kind1}</div></td>
+							<td class="b3"><div class=nttx><!--{if $w_wepk != ''}-->$iteminfo[$w_wepk]<!--{else}-->？？？<!--{/if}--></div></td>
+							<td class="b2"><div class=nttx>{lang wep}</div></td>
+							<td class="b3"><div class=nttx>$w_wep</div></td>
+						</tr>
+						<tr>
+							<td class="b2" height=20px><div class=nttx>{lang tactic}</div></td>
+							<td class="b3"><div class=nttx><!--{if $w_tactic >= 0}-->$tacinfo[$w_tactic]<!--{else}-->？？？<!--{/if}--></div></td>
+							<td class="b2"><div class=nttx>{lang pose}</div></td>
+							<td class="b3"><div class=nttx><!--{if $w_pose >= 0}-->$poseinfo[$w_pose]<!--{else}-->？？？<!--{/if}--></div></td>
+							<td class="b2"><div class=nttx>{lang inf}</div></td>
+							<td class="b3"><div class=nttx><!--{if $w_infdata}-->$w_infdata<!--{else}-->无<!--{/if}--></div></td>
+							
+						</tr>
 						</table>
-					</td>
-				</tr>
+				</td></tr>
+				</table>
+				</td></TR>
 				<tr>
-					<td class="td2" style="height:30px" colspan="2">
-						<div>
-							{lang inf} $edata['display']['infdata']
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="td2" style="height:40px" colspan="2">
-						<!--{if $edata['display']['wepk']}-->
-							<div>
-								{lang wep} $edata['display']['wepk'] $edata['display']['wepestate']
-							</div>
-							<div>
-								<span class="val" style="font-size:16px">$edata['display']['wep']</span>
-							</div>
-						<!--{else}-->
-							<div>
-								{lang wep} <span class="val" style="font-size:16px">$GLOBALS['nowep']</span>
-							</div>
-						<!--{/if}-->
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
+				<TD class="b3" height=160px><DIV class=nttx><B><FONT color="#ff0000" size="5" face="黑体">$battle_title</FONT></B></div></TD>
+				</TR>
+				<tr><td>
+					<table border="0" width=640px cellspacing="0" cellpadding="0" valign="middle">
+						<tr>
+							<td class="b5" rowspan=4 colspan=1 width=140px height=80px><IMG src="img/$iconImg" height=80px border="0" align="middle" <!--{if $hp==0}-->style="filter:Xray()"<!--{/if}--> /></td>
+							<td class="b1" colspan=2 width=190px height=20px><div class=nttx>$typeinfo[$type]({$sexinfo[$gd]}{$sNo}号)</div></td>
+							
+							<td class="b1" colspan=2 width=150px><div class=nttx>$name</div></td>
+							
+							<td class="b1" colspan=2 width=140px><div class=nttx>Lv. $lvl</div></td>
+							
+							
+						</tr>
+						<tr>
+							<td class="b2" width=65px height=20px><div class=nttx>{lang hp}</div></td>
+							<td class="b3" width=120px><div class=nttx><span class="$hpcolor">$hp / $mhp</span></div></td>
+							<td class="b2" width=65px><div class=nttx>{lang sp}</div></td>
+							<td class="b3" width=80px><div class=nttx>$sp / $msp</div></td>
+							<td class="b2" width=65px><div class=nttx>{lang rage}</div></td>
+							<td class="b3" width=70px><div class=nttx><!--{if $rage >=30}--><span class="yellow">$rage</span><!--{else}-->$rage<!--{/if}--></div></td>
+						</tr>
+						<tr>
+							<td class="b2" height=20px><div class=nttx>{lang wep}</div></td>
+							<td class="b3"><div class=nttx>$wep</div></td>
+							<td class="b2"><div class=nttx>{lang wep}{lang kind1}</div></td>
+							<td class="b3"><div class=nttx>$iteminfo[$wepk]</div></td>
+							<td class="b2"><div class=nttx>{lang wep}{lang effect}</div></td>
+							<td class="b3"><div class=nttx>$wepe</div></td>
+						</tr>
+						<tr>
+							<td class="b2" height=20px><div class=nttx>{lang inf}</div></td>
+							<td class="b3"><div class=nttx><!--{if $infdata}-->$infdata<!--{else}-->无<!--{/if}--></div></td>
+							<td class="b2"><div class=nttx>{lang pose}</div></td>
+							<td class="b3"><div class=nttx>$poseinfo[$pose]</div></td>
+							<td class="b2"><div class=nttx>{lang tactic}</div></td>
+							<td class="b3"><div class=nttx>$tacinfo[$tactic]</div></td>
+
+						</tr>
+					</table>
+				</td></tr>
+			</TABLE>
+		</TD>
+	</TR>
 </table>

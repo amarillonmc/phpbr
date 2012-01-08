@@ -1,134 +1,197 @@
-<table style="border:0;cellspacing:0;cellpadding:0;align:center;vertical-align:top;width:300px;">
-	<tr><!--HP行-->
-		<td class="td1" style="width:300px;height:20px;">
-			<div id="hpbar" style="width:300px;height:20px;text-align:left;position:relative;">
-				<img src="img/hpbar.gif" border="0" style="width:{$pdata['display']['hpimgwidth']}%;height:100%;left:0" />
-				<div id="hpval" style="width:140px;text-align:right;position:absolute;left:0px;top:0px;z-index:1">
-					$pdata['hp']
-				</div>
-				<div style="width:20px;position:absolute;left:141px;top:0px">/</div>
-				<div id="mhpval" style="width:140px;text-align:left;position:absolute;right:0px;top:0px;z-index:1">
-					$pdata['mhp']
-				</div>
-			</div>
-		</td>
-	</tr>	
-	<tr><!--SP行-->
-		<td class="td2" style="width:300px;height:20px;">
-			<div id="spbar" style="width:300px;height:20px;text-align:left;position:relative;">
-				<img src="img/spbar.gif" border="0" style="width:{$pdata['display']['spimgwidth']}%;height:100%;left:0" />
-				<div id="spval" style="width:140px;text-align:right;position:absolute;left:0px;top:0px;z-index:1">
-					$pdata['sp']
-				</div>
-				<div style="width:1wpx;position:absolute;left:141px;top:0px">/</div>
-				<div id="mspval" style="width:140px;text-align:left;position:absolute;right:0px;top:0px;z-index:1">
-					$pdata['msp']
-				</div>
-			</div>
-		</td>
-	</tr>
-	<tr><!--头像和称号行-->
-		<td class="td2">
-			<table style="border:0;cellspacing:0;cellpadding:0;align:left;width:300px;height:80px;table-layout:fixed">
-				<tr>
-					<td width="140px" height="80px" rowspan="3">
-						<div id="iconImg">
-							<img src="img/{$pdata['display']['iconImg']}" border="0" style="width:140;height:80;<!--{if $pdata['hp']==0}-->filter:Xray()<!--{/if}-->" />
-						</div>
-					</td>
-					<td colspan="2">
-						<div>{$pdata['display']['gamehonourinfo']}</div>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<div><span class="nameline">{$pdata['name']}</span></div>
-					</td>
-				</tr>
-				<tr>
-					<td width=50%>
-						<div>{$sexinfo[$pdata['gd']]}<!--{if $pdata['type']==0}-->{$pdata['sNo']}号<!--{/if}--></div>
-					</td>
-					<td width=50%>
-						<div>{lang level} <span class="val">Lv. $pdata['lvl']</span></div>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr><!--受伤部位行-->
-		<td class="td2" height="30px">
-			<div id="inf">
-				{lang inf} $pdata['display']['infwords']
-			</div>
-		</td>
-	</tr>
-	<tr><!--基本信息行-->
-		<td class="td2">
-			<div>
-				<table style="border:0;cellspacing:0;cellpadding:0;align:left;width:300px;height:120px;table-layout:fixed">
-					<tr>
-						<td width="50%">
-							<div>{lang exp} <span class="val">$pdata['exp']</span> / $pdata['display']['upexp']</div>
+<table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle">
+<tr><td>
+<table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle" background="img/profile.gif" style="background-position:bottom left;background-repeat:no-repeat;">
+	<tr><td height="20" width="210" colspan="3" class="b1"><div class=nttx>$name</div></td>
+		<td width="100" colspan="1" class="b1"><div class=nttx>{$sexinfo[$gd]}{$sNo}号</div></td>
+		<td width="95" colspan="2" class="b1"><div class=nttx>{lang weather}:$wthinfo[$weather]</div></td>
+		<td width="215" colspan="1" class="b1"><div class=nttx>{lang gamedate}<!--{if $gamestate == 40 }--><span class="yellow">{lang combo}</span><!--{/if}--><!--{if $gamestate == 50 }--><span class="red">{lang duel}</span><!--{/if}--></div></td>
+		</tr>
+	<tr><td rowspan="4" colspan="2" width="150" height="80" class="b3"><div class=nttx><img src="img/$iconImg" border="0" style="width:140;height:80" <!--{if $hp==0}-->style="filter:Xray()"<!--{/if}--> /></div></td>
+		<td width="60" class="b2"><div class=nttx>{lang level}</div></td>
+		<td width="100" class="b3"><div class=nttx>Lv. $lvl</div></td>
+		<td width="45" class="b2"><div class=nttx><!--{if $wp >= 25}-->{lang wp}{lang skill}<!--{else}--><span class="grey">{lang wp}{lang skill}</span><!--{/if}--></div></td>
+		<td width="55" class="b3"><div class=nttx>$wp</div></td>
+		<td rowspan="8" width="215" height="160" class="b3">
+			<div class=nttx>
+				<table border="0" width=215px height=160px cellspacing="0" cellpadding="0">
+					<tr height=160px>
+						<td width=160px background="img/state1.gif" style="position:relative;background-repeat:no-repeat;background-position:right top;">
+							<div style="border:0; margin:0; cellspacing:0; cellpadding:0; position:absolute;z-index:10;top:0;left:0;">
+								$infimg
+							</div>
+							<div style="border:0; margin:0; cellspacing:0; cellpadding:0; position:absolute;top:0px;left:105px;z-index:1;">
+								$newspimg
+							</div>
 						</td>
-						<td width="50%">
-							<div>{lang money} <span class="val">$pdata['money']{lang moneyunit}</span></div>
-						</td>
-					</tr>
-					<tr>
-						<td width="50%">
-							<div>{lang killnum} <span class="val">$pdata['killnum']</span></div>
-						</td>
-						<td width="50%">
-							<div>{lang rage} <span class="val">$pdata['rage']</span></div>
-						</td>
-					</tr>
-					<tr>
-						<td width="50%">
-							<div>{lang pose} <span class="val">$poseinfo[$pdata['pose']]</span></div>
-						</td>
-						<td width="50%">
-							<div>{lang tactic} <span class="val">$tacinfo[$pdata['tactic']]</span></div>
-						</td>
-					</tr>
-					<tr>
-						<td width="50%">
-							<div>{lang club} <span class="val">$clubinfo[$pdata['club']]</span></div>
-						</td>
-						<td width="50%">
-							<div>占位符</div>
-						</td>
-					</tr>
-					<tr>
-						<td width="50%">
-							<div>{lang att} <span class="val">$pdata['att']</span> + <span class="val">$pdata['wepe']</span></div>
-						</td>
-						<td width="50%">
-							<div>{lang def} <span class="val">$pdata['def']</span> + <span class="val">$pdata['display']['ardef']</span></div>
+						<td width=55px background="img/state2.gif" style="position:relative;background-repeat:no-repeat;background-position:left top;">
+							<div style="border:0; margin:0; cellspacing:0; cellpadding:0; position:absolute;top:0px;right:55px;z-index:1;">
+								$newhpimg
+							</div>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</td>
-	</tr>
-	<tr><!--熟练度行-->
-		<td class="td2" height="20px">
-			<div id="skill">
-				熟练度 
-				{lang wp} <span class="val">$pdata['wp']</span> 
-				{lang wk} <span class="val">$pdata['wk']</span> 
-				{lang wg} <span class="val">$pdata['wg']</span> 
-				{lang wc} <span class="val">$pdata['wc']</span> 
-				{lang wd} <span class="val">$pdata['wd']</span> 
-				{lang wf} <span class="val">$pdata['wf']</span>
-			</div>
+		</tr>
+	<tr><td height="20" class="b2"><div class=nttx>{lang exp}</div></td>
+		<td class="b3"><div class=nttx>$exp / $upexp</div></td>
+		<td class="b2"><div class=nttx><!--{if $wk >= 25}-->{lang wk}{lang skill}<!--{else}--><span class="grey">{lang wk}{lang skill}</span><!--{/if}--></div></td>
+		<td class="b3"><div class=nttx>$wk</div></td>
+		</tr>
+	<tr><td height="20" class="b2"><div class=nttx>{lang team}</div></td>
+		<td class="b3"><div class=nttx><!--{if $teamID && $gamestate < 40 }-->$teamID<!--{else}--> 无 <!--{/if}--></div></td>
+		<td class="b2"><div class=nttx><!--{if $wg >= 25}-->{lang wg}{lang skill}<!--{else}--><span class="grey">{lang wg}{lang skill}</span><!--{/if}--></div></td>
+		<td class="b3"><div class=nttx>$wg</div></td>
+		</tr>
+	<tr><td height="20" class="b2"><div class=nttx>{lang club}</div></td>
+		<td class="b3"><div class=nttx>$clubinfo[$club]</div></td>
+		<td class="b2"><div class=nttx><!--{if $wc >= 25}-->{lang wc}{lang skill}<!--{else}--><span class="grey">{lang wc}{lang skill}</span><!--{/if}--></div></td>
+		<td class="b3"><div class=nttx>$wc</div></td>
+		</tr>
+	<tr><td height="20" width="60" class="b2"><div class=nttx>{lang att}</div></td>
+		<td width="80" class="b3"><div class=nttx>$att + $wepe</div></td>
+		<td class="b2"><div class=nttx>{lang money}</div></td>
+		<td class="b3"><div class=nttx>$money {lang moneyunit}</div></td>
+		<td class="b2"><div class=nttx><!--{if $wd >= 25}-->{lang wd}{lang skill}<!--{else}--><span class="grey">{lang wd}{lang skill}</span><!--{/if}--></div></td>
+		<td class="b3"><div class=nttx>$wd</div></td>
+		</tr>
+	<tr><td height="20" class="b2"><div class=nttx>{lang def}</div></td>
+		<td class="b3"><div class=nttx>$def + $ardef</div></td>
+		<td class="b2"><div class=nttx>{lang inf}</div></td>
+		<td class="b3"><div class=nttx><!--{if $infdata}-->$infdata<!--{else}-->无<!--{/if}--></div></td>
+		<td class="b2"><div class=nttx><!--{if $wf >= 25}-->{lang wf}{lang skill}<!--{else}--><span class="grey">{lang wf}{lang skill}</span><!--{/if}--></div></td>
+		<td class="b3"><div class=nttx>$wf</div></td>
+		</tr>
+	<tr><td height="20" class="b2"><div class=nttx>{lang pose}</div></td>
+		<td class="b3"><div class=nttx>$poseinfo[$pose]</div></td>
+		<td class="b2"><div class=nttx>{lang sp}</div></td>
+		<td class="b3"><div class=nttx><span class="$spcolor">$sp / $msp</span></div></td>
+		<td class="b2"><div class=nttx>{lang rage}</div></td>
+		<td class="b3"><div class=nttx><!--{if $rage >= 30}--><span class="yellow">$rage</span><!--{else}-->$rage<!--{/if}--></div></td>
+		</tr>
+	<tr><td height="20" class="b2"><div class=nttx>{lang tactic}</div></td>
+		<td class="b3"><div class=nttx>$tacinfo[$tactic]</div></td>
+		<td class="b2"><div class=nttx>{lang hp}</div></td>
+		<td class="b3"><div class=nttx><span class="$hpcolor">$hp / $mhp</span></div></td>
+		<td class="b2"><div class=nttx>{lang killnum}</div></td>
+		<td class="b3"><div class=nttx>$killnum</div></td>
+		</tr>
 		</td>
 	</tr>
-	<tr>
-		<td class="td2" style="height:65px;vertical-align:top">
-			<div id="technique" style="height:65px;vertical-align:top;overflow:auto;">
-				{lang technique}<br>$pdata['display']['techwords']
-			</div>
-		</td>
-	</tr>
+</table>
+</td>
+</tr>
+<tr><td height="10" class="b5"></td></tr>
+<tr><td>
+  		<TABLE border="0" cellSpacing=0 cellPadding=0 height=140 width=640 background="img/enp.gif" style="background-position:bottom left;background-repeat:no-repeat;">
+  			<tr>
+  				<td>
+  				<TABLE border="0" cellSpacing=0 cellPadding=0 height=100% width=100%>
+  				<TR>
+          			<TD class=b1 height="20" width="65"><div class=nttx>装备种类</div></TD>
+          			<TD class=b1><div class=nttx>名称</div></TD>
+          			<TD class=b1 width="65"><div class=nttx>属性</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>效</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>耐</div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx><!--{if $wepk_words}-->$wepk_words<!--{else}-->$mltwk<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $weps}-->$wep<!--{else}-->$nowep<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$wepsk_words</div></TD>
+                      <TD class=b3><div class=nttx>$wepe</div></TD>
+                      <TD class=b3><div class=nttx>$weps</div></TD>
+          </tr>
+          <tr>
+          	          <TD class=b2 height="20"><div class=nttx><!--{if $arbs}-->$iteminfo['DB']<!--{else}--><span class="grey">$iteminfo['DB']</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $arbs}-->$arb<!--{else}-->$noarb<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arbsk_words</div></TD>
+                      <TD class=b3><div class=nttx>$arbe</div></TD>
+                      <TD class=b3><div class=nttx>$arbs</div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx><!--{if $arhs}-->$iteminfo['DH']<!--{else}--><span class="grey">$iteminfo['DH']</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $arhs}-->$arh<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arhsk_words</div></TD>
+                      <TD class=b3><div class=nttx>$arhe</div></TD>
+                      <TD class=b3><div class=nttx>$arhs</div></TD>
+          </tr>
+          <tr>
+          			  		<TD class=b2 height="20"><div class=nttx><!--{if $aras}-->$iteminfo['DA']<!--{else}--><span class="grey">$iteminfo['DA']</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $aras}-->$ara<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arask_words</div></TD>
+                      <TD class=b3><div class=nttx>$arae</div></TD>
+                      <TD class=b3><div class=nttx>$aras</div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx><!--{if $arfs}-->$iteminfo['DF']<!--{else}--><span class="grey">$iteminfo['DF']</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $arfs}-->$arf<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$arfsk_words</div></TD>
+                      <TD class=b3><div class=nttx>$arfe</div></TD>
+                      <TD class=b3><div class=nttx>$arfs</div></TD>
+          </tr>
+          <tr>
+          						<TD class=b2 height="20"><div class=nttx><!--{if $arts}-->$artk_words<!--{else}--><span class="grey">$iteminfo['A']</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $arts}-->$art<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$artsk_words</div></TD>
+                      <TD class=b3><div class=nttx>$arte</div></TD>
+                      <TD class=b3><div class=nttx>$arts</div></TD>
+          </tr>
+        </table>
+      </td>
+      <td>
+      	<TABLE border="0" cellSpacing=0 cellPadding=0 height=100% width=100%>
+      		<tr>
+         			<TD class=b1 height="20" width="65"><div class=nttx>道具用途</div></TD>
+         			<TD class=b1><div class=nttx>名称</div></TD>
+         			<TD class=b1 width="65"><div class=nttx>属性</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>效</div></TD>
+          			<TD class=b1 width="25"><div class=nttx>耐</div></TD>
+          </TR>
+          		<tr>          			  
+                      <TD class=b2><div class=nttx><!--{if $itmk1_words}-->$itmk1_words<!--{else}--><span class="grey">{lang pack}1</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $itms1}-->$itm1<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk1_words</div></TD>
+                      <TD class=b3><div class=nttx>$itme1</div></TD>
+                      <TD class=b3><div class=nttx>$itms1</div></TD>
+                      </tr>
+                <tr>
+                      <TD class=b2><div class=nttx><!--{if $itmk2_words}-->$itmk2_words<!--{else}--><span class="grey">{lang pack}2</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $itms2}-->$itm2<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk2_words</div></TD>
+                      <TD class=b3><div class=nttx>$itme2</div></TD>
+                      <TD class=b3><div class=nttx>$itms2</div></TD>
+                      </tr>
+                <tr>          			  
+                      <TD class=b2><div class=nttx><!--{if $itmk3_words}-->$itmk3_words<!--{else}--><span class="grey">{lang pack}3</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $itms3}-->$itm3<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk3_words</div></TD>
+                      <TD class=b3><div class=nttx>$itme3</div></TD>
+                      <TD class=b3><div class=nttx>$itms3</div></TD>
+                      </tr>
+                <tr>          	
+                      <TD class=b2><div class=nttx><!--{if $itmk4_words}-->$itmk4_words<!--{else}--><span class="grey">{lang pack}4</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $itms4}-->$itm4<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk4_words</div></TD>
+                      <TD class=b3><div class=nttx>$itme4</div></TD>
+                      <TD class=b3><div class=nttx>$itms4</div></TD>
+                      </tr>
+                <tr>          			  
+                      <TD class=b2><div class=nttx><!--{if $itmk5_words}-->$itmk5_words<!--{else}--><span class="grey">{lang pack}5</span><!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx><!--{if $itms5}-->$itm5<!--{else}-->$noitm<!--{/if}--></div></TD>
+                      <TD class=b3><div class=nttx>$itmsk5_words</div></TD>
+                      <TD class=b3><div class=nttx>$itme5</div></TD>
+                      <TD class=b3><div class=nttx>$itms5</div></TD>
+                      </tr>
+               <tr>          			  
+                      <TD class=b2><div class=nttx>工事中</div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+               </tr>
+              </table>
+            </td></tr>
+  			
+  		</TABLE>
+</td></tr>
 </table>

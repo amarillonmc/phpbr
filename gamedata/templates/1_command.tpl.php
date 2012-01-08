@@ -1,137 +1,61 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
 <input type="hidden" name="mode" value="command">
-<input type="hidden" id="command" name="command" value="">
-<input type="hidden" id="moveto" name="moveto" value="">
-<input type="hidden" id="itemcmd" name="itemcmd" value="">
-<input type="hidden" id="sp_cmd" name="sp_cmd" value="">
-<input type="hidden" id="teamcmd" name="teamcmd" value="">
-<input type="hidden" id="cp_cmd" name="cp_cmd" value="">
 现在想要做什么？<br /><br />
-<table>
-<tr>
-<td class="td1" width="40px">
-<div>
-道具
-</div>
-</td>
-<td class="td2" width="240px">
-<div>
-<? if($pdata['itms1']) { ?>
-<div class="itmbtn" onclick=$('command').value='itm1';postCommand(); "><?=$pdata['itm1']?>/<?=$pdata['itme1']?>/<?=$pdata['itms1']?> >>使用</div>
-<? } else { ?>
-<div class="itmbtn"> </div>
-<? } if($pdata['itms2']) { ?>
-<div class="itmbtn" onclick=$('command').value='itm2';postCommand(); "><?=$pdata['itm2']?>/<?=$pdata['itme2']?>/<?=$pdata['itms2']?> >>使用</div>
-<? } else { ?>
-<div class="itmbtn"> </div>
-<? } if($pdata['itms3']) { ?>
-<div class="itmbtn" onclick=$('command').value='itm3';postCommand(); "><?=$pdata['itm3']?>/<?=$pdata['itme3']?>/<?=$pdata['itms3']?> >>使用</div>
-<? } else { ?>
-<div class="itmbtn"> </div>
-<? } if($pdata['itms4']) { ?>
-<div class="itmbtn" onclick=$('command').value='itm4';postCommand(); "><?=$pdata['itm4']?>/<?=$pdata['itme4']?>/<?=$pdata['itms4']?> >>使用</div>
-<? } else { ?>
-<div class="itmbtn"> </div>
-<? } if($pdata['itms5']) { ?>
-<div class="itmbtn" onclick=$('command').value='itm5';postCommand(); "><?=$pdata['itm5']?>/<?=$pdata['itme5']?>/<?=$pdata['itms5']?> >>使用</div>
-<? } else { ?>
-<div class="itmbtn"> </div>
-<? } if($pdata['itms6']) { ?>
-<div class="itmbtn" onclick=$('command').value='itm6';postCommand(); "><?=$pdata['itm6']?>/<?=$pdata['itme6']?>/<?=$pdata['itms6']?> >>使用</div>
-<? } else { ?>
-<div class="itmbtn"> </div>
+<input type="radio" name="command" id="move" value="move"><select name="moveto" onclick=sl('move'); href="javascript:void(0);">
+<? include template('move'); ?>
+</select><br />
+<? if(array_search($pls,$arealist) > $areanum || $hack) { ?>
+<input type="radio" name="command" id="search" value="search" checked><a onclick=sl('search'); href="javascript:void(0);" >搜寻</a><br />
+<? } if($itms1) { ?>
+&nbsp;<input type="radio" name="command" id="itm1" value="itm1"><a onclick=sl('itm1'); href="javascript:void(0);" ><?=$itm1?>/<?=$itme1?>/<?=$itms1?> >>使用</a><br />
+<? } if($itms2) { ?>
+&nbsp;<input type="radio" name="command" id="itm2" value="itm2"><a onclick=sl('itm2'); href="javascript:void(0);" ><?=$itm2?>/<?=$itme2?>/<?=$itms2?> >>使用</a><br />
+<? } if($itms3) { ?>
+&nbsp;<input type="radio" name="command" id="itm3" value="itm3"><a onclick=sl('itm3'); href="javascript:void(0);" ><?=$itm3?>/<?=$itme3?>/<?=$itms3?> >>使用</a><br />
+<? } if($itms4) { ?>
+&nbsp;<input type="radio" name="command" id="itm4" value="itm4"><a onclick=sl('itm4'); href="javascript:void(0);" ><?=$itm4?>/<?=$itme4?>/<?=$itms4?> >>使用</a><br />
+<? } if($itms5) { ?>
+&nbsp;<input type="radio" name="command" id="itm5" value="itm5"><a onclick=sl('itm5'); href="javascript:void(0);" ><?=$itm5?>/<?=$itme5?>/<?=$itms5?> >>使用</a><br />
 <? } ?>
-</div>
-</td>
-</tr>
-<tr>
-<td class="td1">
-<div>
-包裹
-</div>
-</td>
-<td class="td2">
-<div>
-<div class="cmdbtn" onclick=$('command').value='itemmain';$('itemcmd').value='itemmix';postCommand(); ">道具合成</div>
-<div class="cmdbtn" onclick=$('command').value='itemmain';$('itemcmd').value='itemdrop';postCommand(); ">道具丢弃</div>
-<div class="cmdbtn"  onclick=$('command').value='itemmain';$('itemcmd').value='itemmerge';postCommand(); ">整理包裹</div>
-<div class="cmdbtn"  onclick=$('command').value='itemmain';$('itemcmd').value='itemoff';postCommand(); ">卸下装备</div>
-</div>
-</td>
-</tr>
-<tr>
-<td class="td1">
-<div>
-修整
-</div>
-</td>
-<td class="td2">
-<div>
-<div class="cmdbtn"  onclick=$('command').value='rest1';postCommand(); ">睡眠</div>
-<div class="cmdbtn"  onclick=$('command').value='rest2';postCommand(); ">治疗</div>
-<? if(in_array('HOSPITAL',$mapdata[$pdata['pls']]['function'])) { ?>
-<div class="cmdbtn"  onclick=$('command').value='rest3';postCommand(); ">静养</div>
+<input type="radio" name="command" id="itemmain" value="itemmain"><select name="itemcmd" onclick=sl('itemmain'); href="javascript:void(0);">
+<option value="main">■ 道具 ■</option>
+<option value="itemmix">道具合成</option>
+<option value="itemdrop">道具丢弃</option>
+<option value="itemmerge">整理包裹</option>
+<option value="itemoff">卸下装备</option>
+<!--除下各个部位，丢弃武器-->
+</select>
+<br />
+<input type="radio" name="command" id="rest1" value="rest1"><a onclick=sl('rest1'); href="javascript:void(0);">睡眠</a>
+<input type="radio" name="command" id="rest2" value="rest2"><a onclick=sl('rest2'); href="javascript:void(0);">治疗</a>
+<? if(in_array($pls,$hospitals)) { ?>
+<input type="radio" name="command" id="rest3" value="rest3"><a onclick=sl('rest3'); href="javascript:void(0);">静养</a>
 <? } ?>
-</div>
-</td>
-</tr>
-<tr>
-<td class="td1">
-<div>
-特殊
-</div>
-</td>
-<td class="td2">
-<div>
-<? if(in_array('SHOP',$mapdata[$pdata['pls']]['function'])) { ?>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_shop';postCommand(); ">进入商店</div>
+<br />
+<input type="radio" name="command" id="special" value="special"><select name="sp_cmd" onclick=sl('special'); href="javascript:void(0);">
+<option value="main" selected>■ 特殊 ■</option>
+<? if(in_array($pls,$shops)) { ?>
+<option value="sp_shop">商　店</option>
 <? } ?>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_pose';postCommand(); ">基础姿态</div>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_tac';postCommand(); ">应战策略</div>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_inf';postCommand(); ">包扎伤口</div>
-<? if($pdata['type'] == 0) { ?>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_tech';postCommand(); ">学习技能</div>
-<? } if($pdata['club'] == 7) { ?>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_adtsk';postCommand(); ">武器带电</div>
-<? } if($pdata['club'] == 8) { ?>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_poison';postCommand(); ">检查毒物</div>
-<? } if($pdata['club'] == 8) { ?>
-<div class="cmdbtn"  onclick=$('command').value='special';$('sp_cmd').value='sp_adtsk';postCommand(); ">武器淬毒</div>
+<option value="sp_pose">基础姿态</option>
+<option value="sp_tac">应战策略</option>
+<option value="sp_word">留言变更</option>
+<option value="sp_pswd">修改密码</option>
+<option value="sp_inf">包扎伤口</option>
+<? if($club == 7) { ?>
+<option value="sp_adtsk">武器带电</option>
+<? } if($club == 8) { ?>
+<option value="sp_poison">检查毒物</option>
+<? } if($club == 8) { ?>
+<option value="sp_adtsk">武器淬毒</option>
 <? } ?>
-</div>
-</td>
-</tr>
-<tr>
-<td class="td1">
-<div>
-队伍
-</div>
-</td>
-<td class="td2">
-<div>
-<? if($gamestate < 40 && $pdata['type'] == 0) { if(empty($pdata['teamID'])) { ?>
-<div class="cmdbtn"  onclick=$('command').value='team';$('teamcmd').value='teammake';postCommand(); ">组建队伍</div>
-<div class="cmdbtn"  onclick=$('command').value='team';$('teamcmd').value='teamjoin';postCommand(); ">加入队伍</div>
-<? } else { ?>
-<div class="cmdbtn"  onclick=$('command').value='team';$('teamcmd').value='teamquit';postCommand(); ">脱离队伍</div>
-<? } } ?>
-</div>
-</td>
-</tr>
-<tr>
-<td class="td1">
-<div>
-同伴
-</div>
-</td>
-<td class="td2">
-<div>
-<? if($pdata['company'] > 0 && $cdata['hp'] > 0 && $companysystem) { ?>
-<div class="cmdbtn"  onclick=$('command').value='switch';postCommand(); ">交换操控角色</div>
-<div class="cmdbtn"  onclick=$('command').value='company';$('cp_cmd').value='senditem';postCommand(); ">递送物品</div>
+</select>
+<br />
+<? if($gamestate < 40) { ?>
+<input type="radio" name="command" id="team" value="team"><select name="teamcmd" onclick=sl('team'); href="javascript:void(0);">
+<option value="main" selected>■ 队伍 ■</option>
+<option value="teammake">组建队伍</option>
+<option value="teamjoin">加入队伍</option>
+<option value="teamquit">脱离队伍</option>
+</select>
 <? } ?>
-</div>
-</td>
-</tr>
-</table>
-</div>

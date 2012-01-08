@@ -1,9 +1,3 @@
-2011/4/15
-加入了第六格背包，数据库字段修改（command.php;game.php;end.php;valid.php;corpse.htm;itemdrop.htm; itemmerge.htm; itemmix.htm; sp_poison.htm; command.htm; profile.htm; game.func.php; system.func.php; state.func.php; player.sql; bra.sql; battle.func.php; search.func.php; combat.func.php; item.func.php; itemmain.func.php）
-修复了聊天时输入/会导致乱码的错误（chat.php）
-修改了游戏初始化过程中的错误，为游戏初始化增加了信息显示；（system.func.php; npc_1.php; news.func.php）
-以及其他一些小改动
-
 2011/4/13
 现在IP限制由原本的只计算同IP生存人数改为计算同IP进入游戏的人数了，同时禁止了带Unicode控制字符的用户名的注册和登录（valid.php; user.func.php）
 

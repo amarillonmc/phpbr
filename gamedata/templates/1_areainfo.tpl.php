@@ -1,2 +1,2 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
-<span class="evergreen"><b>现在的禁区是：</b></span>&nbsp;无月之影&nbsp;<br><span class="evergreen"><b>下回的禁区是：</b></span><b>0时10分：</b> &nbsp;花菱商厦&nbsp;&nbsp;三体星&nbsp;；<b>0时25分：</b> &nbsp;指挥中心&nbsp;&nbsp;索拉利斯&nbsp;；<b>0时40分：</b> &nbsp;清水池&nbsp;&nbsp;夏之镇&nbsp;
+<span class="evergreen"><b>现在的禁区是：</b></span>&nbsp;无月之影<br><span class="evergreen"><b>下回的禁区是：</b></span><b>3时20分：</b> &nbsp;索拉利斯&nbsp;&nbsp;初始之树&nbsp;&nbsp;幻想世界&nbsp;&nbsp;键刃墓场&nbsp;；<b>4时0分：</b> &nbsp;RF高校&nbsp;&nbsp;端点&nbsp;&nbsp;对天使用作战本部&nbsp;&nbsp;墓地&nbsp;；<b>4时40分：</b> &nbsp;雪之镇&nbsp;&nbsp;精灵中心&nbsp;&nbsp;清水池&nbsp;&nbsp;常磐台中学&nbsp;

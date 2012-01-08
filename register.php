@@ -9,16 +9,12 @@ include './gamedata/banlist.php';
 
 if(isset($cuser) && isset($cpass)){
 	gexit($_ERROR['logged_in'],__file__,__line__);
-}elseif(!$allowreg){
-	gexit($_ERROR['reg_off'],__file__,__line__);
 }
+
 if(!isset($cmd)){
 	$ustate = 'register';
-	$icon = 0;
-	$gender = 'm';
 	$iconarray = get_iconlist();
 	$select_icon = 0;
-	$motto = $criticalmsg = $killmsg = $lastword = '';
 	include template('register');
 }elseif($cmd = 'post_register'){
 	$ustate = 'register';
@@ -41,7 +37,7 @@ if(!isset($cmd)){
 			$groupid = 1;
 			$credits = 0;
 			$password = md5($npass);
-			$result = $db->query("INSERT INTO {$tablepre}users (username,`password`,groupid,ip,credits,gender,`icon`,motto,criticalmsg,killmsg,lastword) VALUES ('$username', '$password', '$groupid', '$onlineip', '$credits', '$gender', '$icon', '$motto','$criticalmsg', '$killmsg', '$lastword')");
+			$result = $db->query("INSERT INTO {$tablepre}users (username,`password`,groupid,ip,credits,gender,`icon`) VALUES ('$username', '$password', '$groupid', '$onlineip', '$credits', '$gender', '$icon')");
 			if($result){
 				$gamedata['info'] = $_INFO['reg_success'];
 				$ustate = 'check';

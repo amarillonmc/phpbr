@@ -1,19 +1,4 @@
-<input type="hidden" id="mode" name="mode" value="rest">
-<input type="hidden" id="command" name="command" value="">
-<table style="width:500px">
-	<tr>
-		<td class="td1" style="height:25px">
-			<div>
-				你正在{$restinfo[$pdata['state']]}中……
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="td2">
-			<div>
-				<div class="cmdbtn" onclick="$('command').value='rest';postCommand();">$restinfo[$pdata['state']]</div>
-				<div class="cmdbtn" onclick="$('command').value='back';postCommand();">{lang back}</div>
-			</div>
-		</td>
-	</tr>
-</table>
+$restinfo[$state] 中。。。<br>
+<input type="hidden" name="mode" value="rest"><br>
+<input type="radio" name="command" id="rest" value="rest" checked><a onclick=sl("rest"); href="javascript:void(0);" >$restinfo[$state]</a><br>
+<input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >返回</a>

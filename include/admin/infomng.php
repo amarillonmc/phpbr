@@ -18,8 +18,11 @@ $alivenum = $db->num_rows($result);
 $result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp<=0 OR state>=10");
 $deathnum = $db->num_rows($result);
 
+movehtm();
+
 save_gameinfo();
 
 adminlog('infomng');
 echo "状态更新：激活人数 {$validnum},生存人数 {$alivenum},死亡人数 {$deathnum}<br>";
+echo "已重置移动地点缓存数据";
 ?>

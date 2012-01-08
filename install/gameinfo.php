@@ -1,7 +1,5 @@
 <?php
 
-if(!defined('IN_GAME')){exit('Access Denied');}
-
 $gamenum = 0;
 $gamestate = 0;
 $starttime = 0;

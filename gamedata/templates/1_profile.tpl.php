@@ -2,10 +2,9 @@
 <table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle">
 <tr><td>
 <table border="0" width="640" cellspacing="0" cellpadding="0"  valign="middle" background="img/profile.gif" style="background-position:bottom left;background-repeat:no-repeat;">
-<tr><td height="20" width="60" class="b1"><div class=nttx><?=$pdata['display']['gamehonourinfo']?></div></td>
-<td width="145" colspan="2" class="b1"><div class=nttx><?=$pdata['name']?></div></td>
-<td width="100" colspan="1" class="b1"><div class=nttx><?=$sexinfo[$pdata['gd']]?><?=$pdata['sNo']?>号</div></td>
-<td width="95" colspan="2" class="b1"><div class=nttx>天气:<?=$wthdata[$weather]['name']?></div></td>
+<tr><td height="20" width="210" colspan="3" class="b1"><div class=nttx><?=$name?></div></td>
+<td width="100" colspan="1" class="b1"><div class=nttx><?=$sexinfo[$gd]?><?=$sNo?>号</div></td>
+<td width="95" colspan="2" class="b1"><div class=nttx>天气:<?=$wthinfo[$weather]?></div></td>
 <td width="215" colspan="1" class="b1"><div class=nttx><?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?>
 <? if($gamestate == 40 ) { ?>
 <span class="yellow">连斗</span>
@@ -14,21 +13,21 @@
 <? } ?>
 </div></td>
 </tr>
-<tr><td rowspan="4" colspan="2" width="150" height="80" class="b3"><div class=nttx><img src="img/<?=$pdata['display']['iconImg']?>" border="0" style="width:140;height:80" 
-<? if($pdata['hp']==0) { ?>
+<tr><td rowspan="4" colspan="2" width="150" height="80" class="b3"><div class=nttx><img src="img/<?=$iconImg?>" border="0" style="width:140;height:80" 
+<? if($hp==0) { ?>
 style="filter:Xray()"
 <? } ?>
  /></div></td>
 <td width="60" class="b2"><div class=nttx>等级</div></td>
-<td width="100" class="b3"><div class=nttx>Lv. <?=$pdata['lvl']?></div></td>
+<td width="100" class="b3"><div class=nttx>Lv. <?=$lvl?></div></td>
 <td width="45" class="b2"><div class=nttx>
-<? if($pdata['wp'] >= 25) { ?>
+<? if($wp >= 25) { ?>
 殴熟
 <? } else { ?>
 <span class="grey">殴熟</span>
 <? } ?>
 </div></td>
-<td width="55" class="b3"><div class=nttx><?=$pdata['wp']?></div></td>
+<td width="55" class="b3"><div class=nttx><?=$wp?></div></td>
 <td rowspan="8" width="215" height="160" class="b3">
 <div class=nttx>
 <table border="0" width=215px height=160px cellspacing="0" cellpadding="0">
@@ -52,90 +51,95 @@ style="filter:Xray()"
 </td>
 </tr>
 <tr><td height="20" class="b2"><div class=nttx>经验值</div></td>
-<td class="b3"><div class=nttx><?=$pdata['exp']?> / <?=$pdata['display']['upexp']?></div></td>
+<td class="b3"><div class=nttx><?=$exp?> / <?=$upexp?></div></td>
 <td class="b2"><div class=nttx>
-<? if($pdata['wk'] >= 25) { ?>
+<? if($wk >= 25) { ?>
 斩熟
 <? } else { ?>
 <span class="grey">斩熟</span>
 <? } ?>
 </div></td>
-<td class="b3"><div class=nttx><?=$pdata['wk']?></div></td>
+<td class="b3"><div class=nttx><?=$wk?></div></td>
 </tr>
 <tr><td height="20" class="b2"><div class=nttx>队伍</div></td>
 <td class="b3"><div class=nttx>
-<? if($pdata['teamID'] && $gamestate < 40 ) { ?>
-<?=$pdata['teamID']?>
+<? if($teamID && $gamestate < 40 ) { ?>
+<?=$teamID?>
 <? } else { ?>
  无 
 <? } ?>
 </div></td>
 <td class="b2"><div class=nttx>
-<? if($pdata['wg'] >= 25) { ?>
+<? if($wg >= 25) { ?>
 射熟
 <? } else { ?>
 <span class="grey">射熟</span>
 <? } ?>
 </div></td>
-<td class="b3"><div class=nttx><?=$pdata['wg']?></div></td>
+<td class="b3"><div class=nttx><?=$wg?></div></td>
 </tr>
 <tr><td height="20" class="b2"><div class=nttx>内定称号</div></td>
-<td class="b3"><div class=nttx><?=$clubinfo[$pdata['club']]?></div></td>
+<td class="b3"><div class=nttx><?=$clubinfo[$club]?></div></td>
 <td class="b2"><div class=nttx>
-<? if($pdata['wc'] >= 25) { ?>
+<? if($wc >= 25) { ?>
 投熟
 <? } else { ?>
 <span class="grey">投熟</span>
 <? } ?>
 </div></td>
-<td class="b3"><div class=nttx><?=$pdata['wc']?></div></td>
+<td class="b3"><div class=nttx><?=$wc?></div></td>
 </tr>
 <tr><td height="20" width="60" class="b2"><div class=nttx>攻击力</div></td>
-<td width="80" class="b3"><div class=nttx><?=$pdata['att']?> + <?=$pdata['wepe']?></div></td>
+<td width="80" class="b3"><div class=nttx><?=$att?> + <?=$wepe?></div></td>
 <td class="b2"><div class=nttx>金钱</div></td>
-<td class="b3"><div class=nttx><?=$pdata['money']?> 元</div></td>
+<td class="b3"><div class=nttx><?=$money?> 元</div></td>
 <td class="b2"><div class=nttx>
-<? if($pdata['wd'] >= 25) { ?>
+<? if($wd >= 25) { ?>
 爆熟
 <? } else { ?>
 <span class="grey">爆熟</span>
 <? } ?>
 </div></td>
-<td class="b3"><div class=nttx><?=$pdata['wd']?></div></td>
+<td class="b3"><div class=nttx><?=$wd?></div></td>
 </tr>
 <tr><td height="20" class="b2"><div class=nttx>防御力</div></td>
-<td class="b3"><div class=nttx><?=$pdata['def']?> + <?=$pdata['display']['ardef']?></div></td>
+<td class="b3"><div class=nttx><?=$def?> + <?=$ardef?></div></td>
 <td class="b2"><div class=nttx>受伤部位</div></td>
-<td class="b3"><div class=nttx><?=$pdata['display']['infwords']?></div></td>
+<td class="b3"><div class=nttx>
+<? if($infdata) { ?>
+<?=$infdata?>
+<? } else { ?>
+无
+<? } ?>
+</div></td>
 <td class="b2"><div class=nttx>
-<? if($pdata['wf'] >= 25) { ?>
+<? if($wf >= 25) { ?>
 灵熟
 <? } else { ?>
 <span class="grey">灵熟</span>
 <? } ?>
 </div></td>
-<td class="b3"><div class=nttx><?=$pdata['wf']?></div></td>
+<td class="b3"><div class=nttx><?=$wf?></div></td>
 </tr>
 <tr><td height="20" class="b2"><div class=nttx>基础姿态</div></td>
-<td class="b3"><div class=nttx><?=$poseinfo[$pdata['pose']]?></div></td>
+<td class="b3"><div class=nttx><?=$poseinfo[$pose]?></div></td>
 <td class="b2"><div class=nttx>体力</div></td>
-<td class="b3"><div class=nttx><span class="<?=$spcolor?>"><?=$pdata['sp']?> / <?=$pdata['msp']?></span></div></td>
+<td class="b3"><div class=nttx><span class="<?=$spcolor?>"><?=$sp?> / <?=$msp?></span></div></td>
 <td class="b2"><div class=nttx>怒气</div></td>
-<td class="b3"><div class=nttx><span class="yellow"><?=$pdata['rage']?></span></div></td>
+<td class="b3"><div class=nttx>
+<? if($rage >= 30) { ?>
+<span class="yellow"><?=$rage?></span>
+<? } else { ?>
+<?=$rage?>
+<? } ?>
+</div></td>
 </tr>
 <tr><td height="20" class="b2"><div class=nttx>应战策略</div></td>
-<td class="b3"><div class=nttx><?=$tacinfo[$pdata['tactic']]?></div></td>
+<td class="b3"><div class=nttx><?=$tacinfo[$tactic]?></div></td>
 <td class="b2"><div class=nttx>生命</div></td>
-<td class="b3"><div class=nttx><span class="<?=$hpcolor?>"><?=$pdata['hp']?> / <?=$pdata['mhp']?></span></div></td>
+<td class="b3"><div class=nttx><span class="<?=$hpcolor?>"><?=$hp?> / <?=$mhp?></span></div></td>
 <td class="b2"><div class=nttx>击杀数</div></td>
-<td class="b3"><div class=nttx><?=$pdata['killnum']?></div></td>
-</tr>
-<tr><td height="20" class="b2"><div class=nttx>工事中</div></td>
-<td class="b3"><div class=nttx>工事中</div></td>
-<td class="b2"><div class=nttx>工事中</div></td>
-<td class="b3"><div class=nttx>工事中</div></td>
-<td class="b2"><div class=nttx>技能</div></td>
-<td class="b3" colspan="2"><div class=nttx><?=$pdata['display']['techwords']?></div></td>
+<td class="b3"><div class=nttx><?=$killnum?></div></td>
 </tr>
 </td>
 </tr>
@@ -157,117 +161,117 @@ style="filter:Xray()"
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx>
-<? if($pdata['display']['wepk_words']) { ?>
-<?=$pdata['display']['wepk_words']?>
+<? if($wepk_words) { ?>
+<?=$wepk_words?>
 <? } else { ?>
 <?=$mltwk?>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['weps']) { ?>
-<?=$pdata['wep']?>
+<? if($weps) { ?>
+<?=$wep?>
 <? } else { ?>
 <?=$nowep?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['wepsk_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['wepe']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['weps']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$wepsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$wepe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$weps?></div></TD>
           </tr>
           <tr>
           	          <TD class=b2 height="20"><div class=nttx>
-<? if($pdata['arbs']) { ?>
+<? if($arbs) { ?>
 <?=$iteminfo['DB']?>
 <? } else { ?>
-<span class="grey"><?=$iteminfo['DN']?></span>
+<span class="grey"><?=$iteminfo['DB']?></span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['arbs']) { ?>
-<?=$pdata['arb']?>
+<? if($arbs) { ?>
+<?=$arb?>
 <? } else { ?>
 <?=$noarb?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['arbsk_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arbe']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arbs']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arbsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arbe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arbs?></div></TD>
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx>
-<? if($pdata['arhs']) { ?>
+<? if($arhs) { ?>
 <?=$iteminfo['DH']?>
 <? } else { ?>
 <span class="grey"><?=$iteminfo['DH']?></span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['arhs']) { ?>
-<?=$pdata['arh']?>
+<? if($arhs) { ?>
+<?=$arh?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['arhsk_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arhe']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arhs']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arhsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arhe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arhs?></div></TD>
           </tr>
           <tr>
           			  		<TD class=b2 height="20"><div class=nttx>
-<? if($pdata['aras']) { ?>
+<? if($aras) { ?>
 <?=$iteminfo['DA']?>
 <? } else { ?>
 <span class="grey"><?=$iteminfo['DA']?></span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['aras']) { ?>
-<?=$pdata['ara']?>
+<? if($aras) { ?>
+<?=$ara?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['arask_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arae']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['aras']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arask_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arae?></div></TD>
+                      <TD class=b3><div class=nttx><?=$aras?></div></TD>
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx>
-<? if($pdata['arfs']) { ?>
+<? if($arfs) { ?>
 <?=$iteminfo['DF']?>
 <? } else { ?>
 <span class="grey"><?=$iteminfo['DF']?></span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['arfs']) { ?>
-<?=$pdata['arf']?>
+<? if($arfs) { ?>
+<?=$arf?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['arfsk_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arfe']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arfs']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arfsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arfe?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arfs?></div></TD>
           </tr>
           <tr>
           						<TD class=b2 height="20"><div class=nttx>
-<? if($pdata['arts']) { ?>
-<?=$pdata['display']['artk_words']?>
+<? if($arts) { ?>
+<?=$artk_words?>
 <? } else { ?>
 <span class="grey"><?=$iteminfo['A']?></span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['arts']) { ?>
-<?=$pdata['art']?>
+<? if($arts) { ?>
+<?=$art?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['artsk_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arte']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['arts']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$artsk_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arte?></div></TD>
+                      <TD class=b3><div class=nttx><?=$arts?></div></TD>
           </tr>
         </table>
       </td>
@@ -282,117 +286,105 @@ style="filter:Xray()"
           </TR>
           		<tr>          			  
                       <TD class=b2><div class=nttx>
-<? if($pdata['display']['itmk1_words']) { ?>
-<?=$pdata['display']['itmk1_words']?>
+<? if($itmk1_words) { ?>
+<?=$itmk1_words?>
 <? } else { ?>
 <span class="grey">包裹1</span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['itms1']) { ?>
-<?=$pdata['itm1']?>
+<? if($itms1) { ?>
+<?=$itm1?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['itmsk1_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itme1']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itms1']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk1_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme1?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms1?></div></TD>
                       </tr>
                 <tr>
                       <TD class=b2><div class=nttx>
-<? if($pdata['display']['itmk2_words']) { ?>
-<?=$pdata['display']['itmk2_words']?>
+<? if($itmk2_words) { ?>
+<?=$itmk2_words?>
 <? } else { ?>
 <span class="grey">包裹2</span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['itms2']) { ?>
-<?=$pdata['itm2']?>
+<? if($itms2) { ?>
+<?=$itm2?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['itmsk2_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itme2']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itms2']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk2_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme2?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms2?></div></TD>
                       </tr>
                 <tr>          			  
                       <TD class=b2><div class=nttx>
-<? if($pdata['display']['itmk3_words']) { ?>
-<?=$pdata['display']['itmk3_words']?>
+<? if($itmk3_words) { ?>
+<?=$itmk3_words?>
 <? } else { ?>
 <span class="grey">包裹3</span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['itms3']) { ?>
-<?=$pdata['itm3']?>
+<? if($itms3) { ?>
+<?=$itm3?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['itmsk3_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itme3']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itms3']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk3_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme3?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms3?></div></TD>
                       </tr>
                 <tr>          	
                       <TD class=b2><div class=nttx>
-<? if($pdata['display']['itmk4_words']) { ?>
-<?=$pdata['display']['itmk4_words']?>
+<? if($itmk4_words) { ?>
+<?=$itmk4_words?>
 <? } else { ?>
 <span class="grey">包裹4</span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['itms4']) { ?>
-<?=$pdata['itm4']?>
+<? if($itms4) { ?>
+<?=$itm4?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['itmsk4_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itme4']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itms4']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk4_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme4?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms4?></div></TD>
                       </tr>
                 <tr>          			  
                       <TD class=b2><div class=nttx>
-<? if($pdata['display']['itmk5_words']) { ?>
-<?=$pdata['display']['itmk5_words']?>
+<? if($itmk5_words) { ?>
+<?=$itmk5_words?>
 <? } else { ?>
 <span class="grey">包裹5</span>
 <? } ?>
 </div></TD>
                       <TD class=b3><div class=nttx>
-<? if($pdata['itms5']) { ?>
-<?=$pdata['itm5']?>
+<? if($itms5) { ?>
+<?=$itm5?>
 <? } else { ?>
 <?=$noitm?>
 <? } ?>
 </div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['itmsk5_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itme5']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itms5']?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itmsk5_words?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itme5?></div></TD>
+                      <TD class=b3><div class=nttx><?=$itms5?></div></TD>
                       </tr>
                <tr>          			  
-                      <TD class=b2><div class=nttx>
-<? if($pdata['display']['itmk6_words']) { ?>
-<?=$pdata['display']['itmk6_words']?>
-<? } else { ?>
-<span class="grey">包裹6</span>
-<? } ?>
-</div></TD>
-                      <TD class=b3><div class=nttx>
-<? if($pdata['itms6']) { ?>
-<?=$pdata['itm6']?>
-<? } else { ?>
-<?=$noitm?>
-<? } ?>
-</div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['display']['itmsk6_words']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itme6']?></div></TD>
-                      <TD class=b3><div class=nttx><?=$pdata['itms6']?></div></TD>
+                      <TD class=b2><div class=nttx>工事中</div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
+                      <TD class=b3><div class=nttx> </div></TD>
                </tr>
               </table>
             </td></tr>

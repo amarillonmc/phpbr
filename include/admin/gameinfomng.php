@@ -2,9 +2,9 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 2){
-	exit($_ERROR['no_power']);
-}
+//if($mygroup < 5){
+//	exit($_ERROR['no_power']);
+//}
 
 if($subcmd == 'infosync'){
 	if($mygroup < 2){exit($_ERROR['no_power']);}
@@ -39,7 +39,7 @@ if($subcmd == 'infosync'){
 }elseif($subcmd == 'gameover'){
 	if($mygroup < 8){exit($_ERROR['no_power']);}
 	include_once GAME_ROOT.'./include/system.func.php';
-	gameover($now,6);
+	gameover($now,'end6');
 	save_gameinfo();
 	echo "第 $gamenum 局大逃杀紧急中止<br>";
 	adminlog('gameover');

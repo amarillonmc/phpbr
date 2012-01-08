@@ -13,7 +13,7 @@ if($write){
 }
 
 include_once $dir.'banlist.php';
-$iplimit = str_replace('\\.','.',$iplimit);
+
 //foreach(Array('nm','ip') as $ar_nm){
 //	${$ar_nm.'lmtlist0'} = ${$ar_nm.'lmtlist'} = '';
 //	foreach(${$ar_nm.'limit'} as $value){
@@ -37,7 +37,6 @@ function write_list($dir,$nmlmtstr,$iplmtstr){
 //			${$ar_nm.'lmtlist'} = 'Array()';
 //		}
 //	}
-	$iplmtstr = str_replace('.','\\.',$iplmtstr);
 	$vldata = "<?php\n\n\$nmlimit = '$nmlmtstr';\n\$iplimit = '$iplmtstr';\n\n?>";
 	if($fp = fopen("{$dir}banlist.php", 'w')) {
 		if(flock($fp,LOCK_EX)) {

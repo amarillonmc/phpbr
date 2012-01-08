@@ -4,15 +4,12 @@
 
 <div align="left">
 <div class="clearfix">
-<? if($bossdeath) { ?>
-<div style="float:left;"><img border="0" src="img/question.gif"></div><div class="linen">“………………”</div>
-<? } else { ?>
-<div style="float:left;"><img border="0" src="img/n_7.gif"></div><div class="linen">“以下是到现在为止的游戏状况。<br />各位参战者请加油哦！”</div>
-<? } ?>
+<span style="float:left;" ><img border="0" src="img/question.gif"></span>
+<span><span class="evergreen">“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”</span></span>
 </div>
 <br>
 <span class="evergreen">当前时间：<?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></span><br />
-<span class="evergreen">当前天气：<?=$wthdata[$weather]['name']?></span><br />
+<span class="evergreen">当前天气：<?=$wthinfo[$weather]?></span><br />
 <? if($gamestate==40) { ?>
 <span class="yellow">游戏已经进入连斗阶段！</span><br />
 <? } if($gamestate==50) { ?>

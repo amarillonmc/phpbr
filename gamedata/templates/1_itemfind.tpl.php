@@ -1,9 +1,9 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
-发现了物品 <span class="yellow"><?=$pdata['itm0']?></span>，类型：<?=$pdata['display']['itmk0_words']?>
-<? if(($pdata['itmsk0'])) { ?>
-，属性：<?=$pdata['display']['itmsk0_words']?>
+发现了物品 <span class="yellow"><?=$itm0?></span>，类型：<?=$itmk0_words?>
+<? if(($itmsk0) && !is_numeric($itmsk0)) { ?>
+，属性：<?=$itmsk0_words?>
 <? } ?>
-，效：<?=$pdata['itme0']?>，耐：<?=$pdata['itms0']?>。
+，效：<?=$itme0?>，耐：<?=$itms0?>。
 <br>
 你想如何处理？
 <br>

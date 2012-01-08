@@ -54,7 +54,7 @@ if($language) {
 
 	$lockfile = './gamedata/install.lock';
 	if(file_exists($lockfile)) {
-		exit("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>".$lang['lock_exists']."</body></html>");
+		exit($lang['lock_exists']);
 	}
 
 	$fp = fopen($sqlfile, 'rb');
@@ -243,7 +243,6 @@ if(!$action) {
 			$tablepre = 'bra_';
 			$authkey = 'bra';
 			$moveut = 0;
-			$moveutmin = 0;
 			$gamefounder = 'admin';
 
 			@include './config.inc.php';
@@ -286,7 +285,7 @@ if(!$action) {
                 </tr>
                 <tr>
                   <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="4"><?=$lang['hour']?><input type="text" name="moveutmin" value="<?=$moveutmin?>" size="4"><?=$lang['min']?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="30"></td>
                   <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut_comment']?><br><?=$nowyear?><?=$lang['year']?><?=$nowmonth?><?=$lang['month']?><?=$nowday?><?=$lang['day']?><?=$nowhour?><?=$lang['hour']?><?=$nowmin?><?=$lang['min']?></td>
                 </tr>
                 <tr>
@@ -497,7 +496,6 @@ if(!$action) {
 				$bbsurl = setconfig($_POST['bbsurl']);
 				$gameurl = setconfig($_POST['gameurl']);
 				$moveut = (int)$_POST['moveut'];
-				$moveutmin = (int)$_POST['moveutmin'];
 
 				$fp = fopen('./config.inc.php', 'r');
 				$configfile = fread($fp, filesize('./config.inc.php'));
@@ -512,7 +510,6 @@ if(!$action) {
 				$configfile = preg_replace("/[$]bbsurl\s*\=\s*[\"'].*?[\"'];/is", "\$bbsurl = '$bbsurl';", $configfile);
 				$configfile = preg_replace("/[$]gameurl\s*\=\s*[\"'].*?[\"'];/is", "\$gameurl = '$gameurl';", $configfile);
 				$configfile = preg_replace("/[$]moveut\s*\=\s*-?[0-9]+;/is", "\$moveut = $moveut;", $configfile);
-				$configfile = preg_replace("/[$]moveutmin\s*\=\s*-?[0-9]+;/is", "\$moveutmin = $moveutmin;", $configfile);
 
 				$fp = fopen('./config.inc.php', 'w');
 				fwrite($fp, trim($configfile));

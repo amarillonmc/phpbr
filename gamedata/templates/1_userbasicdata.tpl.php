@@ -1,5 +1,6 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
-<table align="center">
+<span>账户基本资料</span>
+<table>
 <? if($ustate == 'register') { ?>
 <tr>
 <td>账号</td>
@@ -8,13 +9,13 @@
 </tr>
 <tr>
 <td>新密码</td>
-<td><input type="password" id="npass" name="npass" size="24" maxlength="24" value=""></td>
-<td>最长24个字符，留空为不修改</td>
+<td><input type="password" name="npass" size="24" maxlength="24" value=""></td>
+<td>最长24个字符</td>
 </tr>
 <tr>
 <td>重复新密码</td>
-<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
-<td>最长24个字符，留空为不修改</td>
+<td><input type="password" name="rnpass" size="24" maxlength="24" value=""></td>
+<td>最长24个字符</td>
 </tr>
 <? } elseif($ustate == 'edit') { ?>
 <tr>
@@ -24,18 +25,18 @@
 </tr>
 <tr>
 <td>原密码</td>
-<td><input type="password" id="opass" name="opass" size="24" maxlength="24" value=""></td>
+<td><input type="password" name="opass" size="24" maxlength="24" value=""></td>
 <td> </td>
 </tr>
 <tr>
 <td>新密码</td>
-<td><input type="password" id="npass" name="npass" size="24" maxlength="24" value=""></td>
-<td>最长24个字符，留空为不修改</td>
+<td><input type="password" name="npass" size="24" maxlength="24" value=""></td>
+<td>最长24个字符</td>
 </tr>
 <tr>
 <td>重复新密码</td>
-<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
-<td>最长24个字符，留空为不修改</td>
+<td><input type="password" name="rnpass" size="24" maxlength="24" value=""></td>
+<td>最长24个字符</td>
 </tr>
 <? } else { ?>
 <tr>
@@ -45,7 +46,7 @@
 </tr>
 <tr>
 <td>密码</td>
-<td>此处无法修改</td>
+<td>修改密码点此（未完成）</td>
 <td> </td>
 </tr>
 <? } ?>

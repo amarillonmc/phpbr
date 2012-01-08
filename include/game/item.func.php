@@ -1042,6 +1042,25 @@ function itemuse($itmn) {
 		} elseif ($itm == 'NPC增加机') {
 			include_once GAME_ROOT . './include/system.func.php';
 			echo addnpc ( 10, 0,1);
+		} elseif ($itm == '挑战者之印') {
+			include_once GAME_ROOT . './include/system.func.php';
+			$log .= '你已经呼唤了幻影执行官，现在寻找并击败他们，<br>并且搜寻他们的ID卡吧！<br>';
+			addnpc ( 7, 0,3);
+			naddnews ($now , 'secphase', $name);
+				$itm = $itmk = $itmsk = '';
+				$itme = $itms = 0;
+		} elseif ($itm == '提示纸条A') {
+			$log .= '你读着纸条上的内容：<br>“执行官其实都是幻影，那个红暮的身上应该有召唤幻影的玩意。”<br>“用那个东西然后打倒幻影的话能用游戏解除钥匙出去吧。”<br>';
+		} elseif ($itm == '提示纸条B') {
+			$log .= '你读着纸条上的内容：<br>“我设下的灵装被残忍地清除了啊……”<br>“不过资料没全部清除掉。<br>用那个碎片加上传奇的画笔和天然属性……”<br>“应该能重新组合出那个灵装。”<br>';
+		} elseif ($itm == '提示纸条C') {
+			$log .= '你读着纸条上的内容：<br>“小心！那个叫红暮的家伙很强！”<br>“不过她太依赖自己的枪了，有什么东西能阻挡那伤害的话……”<br>';
+		} elseif ($itm == '提示纸条D') {
+			$log .= '你读着纸条上的内容：<br>“我不知道另外那个孩子的底细。如果我是你的话，不会随便乱惹她。”<br>“但是她貌似手上拿着符文册之类的东西。”<br>“也许可以利用射程优势？！”<br>“你知道的，法师的射程都不咋样……”';
+		} elseif ($itm == '提示纸条E') {
+			$log .= '你读着纸条上的内容：<br>“生存并不能靠他人来喂给你知识，”<br>“有一套和元素有关的符卡的公式是没有出现在帮助里面的，用逻辑推理好好推理出正确的公式吧。”<br>“金木水火土在这里都能找到哦～”<br>';
+		} elseif ($itm == '提示纸条F') {
+			$log .= '你读着纸条上的内容：<br>“喂你真的是全部买下来了么……”<br>“这样的提示纸条不止这六种，其他的纸条估计被那两位撒出去了吧。”<br>“总之祝你好运。”<br>';
 		} elseif ($itm == '『灵魂宝石』' || $itm == '『祝福宝石』') {
 			global $cmd;
 			$cmd = '<input type="hidden" name="mode" value="item"><input type="hidden" name="usemode" value="qianghua"><input type="hidden" name="itmp" value="' . $itmn . '">你想强化哪一件装备？<br><input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';

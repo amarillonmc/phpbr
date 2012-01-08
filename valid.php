@@ -170,17 +170,17 @@ if($mode == 'enter') {
 //		$art = '不发装备了，这个收好';$artk = 'A'; $arte = 1; $arts = 1; $artsk = 'HcM';
 //	}
 
-	if ($name == '内衣') {
-		$itm[3] = '奖品-泽克西斯之荣耀模样的杏仁豆腐'; $itmk[3] = 'HB'; $itme[3] = 50; $itms[3] = 15; $itmsk[2] = 'z';
-		$itm[4] = '奖品-Flint Lock模样的杏仁豆腐'; $itmk[4] = 'HB'; $itme[4] = 50; $itms[4] = 15; $itmsk[3] = 'z';
-		$itm[5] = '『灵魂宝石』模样的杏仁豆腐'; $itmk[5] = 'HB'; $itme[5] = 50; $itms[5] = 15; $itmsk[4] = 'Z';
-		$wep = '奖品-福林洛克';$wepk = 'WP';$wepe = 85;$weps = 85;$wepsk = 'dZ';
-		$arb = '奖品-黑暗星云之祝福';$arbk = 'DB'; $arbe = 85; $arbs = 85; $arbsk = 'AaZ';
-		$arh = '奖品-黄色铃铛';$arhk = 'DH'; $arhe = 85; $arhs = 85; $arhsk = 'AaZ';
-		$ara = '奖品-地元素挂饰';$arak = 'DA'; $arae = 85; $aras = 85; $arask = 'AaZ';
-		$arf = '奖品-福林克之靴';$arfk = 'DF'; $arfe = 85; $arfs = 85; $arfsk = 'AaZ';
-		$art = '奖品-泽克西斯菁英';$artk = 'A'; $arte = 85; $arts = 85; $artsk = 'AaZ';
-	}
+//	if ($name == '内衣') {
+//		$itm[3] = '奖品-泽克西斯之荣耀模样的杏仁豆腐'; $itmk[3] = 'HB'; $itme[3] = 50; $itms[3] = 15; $itmsk[2] = 'z';
+//		$itm[4] = '奖品-Flint Lock模样的杏仁豆腐'; $itmk[4] = 'HB'; $itme[4] = 50; $itms[4] = 15; $itmsk[3] = 'z';
+//		$itm[5] = '『灵魂宝石』模样的杏仁豆腐'; $itmk[5] = 'HB'; $itme[5] = 50; $itms[5] = 15; $itmsk[4] = 'Z';
+//		$wep = '奖品-福林洛克';$wepk = 'WP';$wepe = 85;$weps = 85;$wepsk = 'dZ';
+//		$arb = '奖品-黑暗星云之祝福';$arbk = 'DB'; $arbe = 85; $arbs = 85; $arbsk = 'AaZ';
+//		$arh = '奖品-黄色铃铛';$arhk = 'DH'; $arhe = 85; $arhs = 85; $arhsk = 'AaZ';
+//		$ara = '奖品-地元素挂饰';$arak = 'DA'; $arae = 85; $aras = 85; $arask = 'AaZ';
+//		$arf = '奖品-福林克之靴';$arfk = 'DF'; $arfe = 85; $arfs = 85; $arfsk = 'AaZ';
+//		$art = '奖品-泽克西斯菁英';$artk = 'A'; $arte = 85; $arts = 85; $artsk = 'AaZ';
+//	}
 	$state = 0;
 	$bid = 0;
 

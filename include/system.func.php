@@ -569,42 +569,43 @@ function movehtm($atime = 0) {
 	return;
 }
 
-//function addnpc($type,$sub,$num=1,$time=0) {
-//	global $now,$db,$tablepre,$log,$plsinfo,$typeinfo;
-//	$time = $time == 0 ? $now : $time;
-//	$plsnum = sizeof($plsinfo);
-//	include_once config('addnpc',$gamecfg);
-//	$npc=$npcinfo[$type];
-//	if(!$npc){
-//		//echo 'no npc.';
-//		return;
-//	} else {
-//		$npc = array_merge($npc,$npc['sub'][$sub]);
-//		for($i=0;$i< $num;$i++){
-//			$npc['type'] = $type;
-//			$npc['endtime'] = $time;
-//			$npc['exp'] = round(($npc['lvl']*2+1)*$GLOBALS['baseexp']);
-//			$npc['sNo'] = $i;
-//			$npc['hp'] = $npc['mhp'];
-//			$npc['sp'] = $npc['msp'];
-//			$npc['state'] = 0;
-//			$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
-//			if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
-//			if($npc['pls'] == 99){$npc['pls'] = rand(1,$plsnum-1);}
-//			$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['death']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."')");
-////			$newsname=$typeinfo[$type].' '.$npc['name'];
-////			addnews($now, 'addnpc', $newsname);
-//		}
-//	}
-//	if($num > $npc['num']){
-//		$newsname=$typeinfo[$type];
-//		naddnews($time, 'addnpcs', $newsname,$i);
-//	}else{
-//		$newsname=$typeinfo[$type].' '.$npc['name'];
-//		naddnews($time, 'addnpc', $newsname);
-//	}
-//	return $i;
-//}
+function addnpc($type,$sub,$num,$time=0) {
+	global $now,$db,$tablepre,$log,$plsinfo,$typeinfo;
+	$time = $time == 0 ? $now : $time;
+	$plsnum = sizeof($plsinfo);
+	include_once config('addnpc',$gamecfg);
+	$npc=$npcinfo[$type];
+	if(!$npc){
+		//echo 'no npc.';
+		return;
+	} else {
+		$npc = array_merge($npc,$npc['sub'][$sub]);
+		for($i=0;$i< $num;$i++){
+			$npc['type'] = $type;
+			$npc['endtime'] = $time;
+			$npc['exp'] = round(($npc['lvl']*2+1)*$GLOBALS['baseexp']);
+			$npc['sNo'] = $i;
+			$npc['hp'] = $npc['mhp'];
+			$npc['sp'] = $npc['msp'];
+			$npc['state'] = 0;
+			$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
+			if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
+			if($npc['pls'] == 99){$npc['pls'] = rand(1,$plsnum-1);}
+			$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['death']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."')");
+			$newsname=$typeinfo[$type].' '.$npc['name'];
+			naddnews($now, 'addnpc', $newsname);
+		}
+	}
+	if($num > $npc['num']){
+	//if($num > 1){
+		$newsname=$typeinfo[$type];
+		naddnews($time, 'addnpcs', $newsname,$i);
+	}else{
+		$newsname=$typeinfo[$type].' '.$npc['name'];
+		naddnews($time, 'addnpc', $newsname);
+	}
+	return $i;
+}
 
 
 ?>

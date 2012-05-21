@@ -1,22 +1,9 @@
-<input type="hidden" id="mode" name="mode" value="command">
-<input type="hidden" id="command" name="command" value="back">
-<table style="width:500px;">
-	<tr>
-		<td class="td1" style="height:30px">
-			<div>
-				<span class="red" style="font-size:18px">你死了。</span>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="td2">
-			<div>
-				<!--{if $pdata['type']==0}-->
-					<div class="cmdbtn" onclick="location.href='end.php'">{lang ok}</div>
-				<!--{elseif $pdata['type']==100}-->
-					<div class="cmdbtn" onclick="location.href='game.php'">{lang switch}</div>
-				<!--{/if}-->
-			</div>
-		</td>
-	</tr>
-</table>
+<br>
+<div class="subtitle">$stateinfo[$state]</div>
+<div>$dinfo[$state]</div>
+<div>死亡时间：$dtime</div>
+<!--{if !empty($kname) && $state>=10}--><div>凶手：$kname</div><!--{/if}-->
+<br>
+<span class="dmg">你死了。</span>
+<br><br>
+<input type="button" class="cmdbutton" value="我靠！" disabled>

@@ -4,42 +4,42 @@
 <table border="0" cellspacing="0" align="center">
   <tbody>
 <tr>
-<td class="b1"><DIV class=nttx>姓名</div></td>
-<td class="b3"><DIV class=nttx><?=$cuser?></div></td>
-<td rowspan="3" colspan="2" class="b3"><DIV class=nttx><img src="./img/<?=$gd?>_<?=$icon?>.gif" border="0" /></div></td>
+<td class="b1"><span>姓名</span></td>
+<td class="b3"><span><?=$cuser?></span></td>
+<td rowspan="3" colspan="2" class="b3"><span><img src="./img/<?=$gd?>_<?=$icon?>.gif" border="0" /></span></td>
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>学号</div></td>
-<td class="b3"><DIV class=nttx><?=$sexinfo[$gd]?><?=$sNo?>号</div></td>
+<td class="b1"><span>学号</span></td>
+<td class="b3"><span><?=$sexinfo[$gd]?><?=$sNo?>号</span></td>
 
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>内定称号</div></td>
-<td class="b3"><DIV class=nttx><?=$clubinfo[$club]?></div></td>
+<td class="b1"><span>内定称号</span></td>
+<td class="b3"><span><?=$clubinfo[$club]?></span></td>
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>生命</div></td>
-<td class="b3"><DIV class=nttx><?=$hp?> / <?=$mhp?></div></td>
-<td class="b1"><DIV class=nttx>体力</div></td>
-<td class="b3"><DIV class=nttx><?=$sp?> / <?=$msp?></div></td>
+<td class="b1"><span>生命</span></td>
+<td class="b3"><span><?=$hp?> / <?=$mhp?></span></td>
+<td class="b1"><span>体力</span></td>
+<td class="b3"><span><?=$sp?> / <?=$msp?></span></td>
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>攻击力</div></td>
-<td class="b3"><DIV class=nttx><?=$att?></div></td>
-<td class="b1"><DIV class=nttx>防御力</div></td>
-<td class="b3"><DIV class=nttx><?=$def?></div></td>
+<td class="b1"><span>攻击力</span></td>
+<td class="b3"><span><?=$att?></span></td>
+<td class="b1"><span>防御力</span></td>
+<td class="b3"><span><?=$def?></span></td>
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>武器</div></td>
-<td class="b3" colspan="3"><DIV class=nttx><?=$wep?></div></td>
+<td class="b1"><span>武器</span></td>
+<td class="b3" colspan="3"><span><?=$wep?></span></td>
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>随机道具1</div></td>
-<td class="b3" colspan="3"><DIV class=nttx><?=$itm['3']?></div></td>
+<td class="b1"><span>随机道具1</span></td>
+<td class="b3" colspan="3"><span><?=$itm['3']?></span></td>
 </tr>
 <tr>
-<td class="b1"><DIV class=nttx>随机道具2</div></td>
-<td class="b3" colspan="3"><DIV class=nttx><?=$itm['4']?></div></td>
+<td class="b1"><span>随机道具2</span></td>
+<td class="b3" colspan="3"><span><?=$itm['4']?></span></td>
 </tr>
   </tbody>
 </table>

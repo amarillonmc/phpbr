@@ -27,7 +27,7 @@ checked
 <td>
 <div id="userIconImg" class="iconImg" >
 <img src="img/
-<? if($gender != f) { ?>
+<? if($gender != 'f') { ?>
 m
 <? } else { ?>
 f

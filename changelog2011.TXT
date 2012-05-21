@@ -13,7 +13,7 @@
 
 2011/4/4
 修改了登陆逻辑；（login.php; user.func.php; resources.php）
-修改了屏蔽列表逻辑，现在屏蔽列表将使用正则表达式；（banlist.php; banlistmng.php; admin.php;login.php）
+修改了屏蔽列表逻辑，现在屏蔽列表将使用正则表达式；（banlist.list; banlistmng.php; admin.php;login.php）
 
 2011/4/3
 根据陷阱机制，将陷阱和道具分成两张表，加快了游戏速度（maptrap.sql; system.func.php; search.func.php; item.func.php）

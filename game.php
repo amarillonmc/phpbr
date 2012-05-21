@@ -31,27 +31,17 @@ if($pdata['pass'] != $cpass) {
 
 
 
-if(($pdata['hp'] <= 0)||($gamestate === 0)) {
+if($gamestate === 0) {
 	header("Location: end.php");exit();
 }
 
 extract($pdata);
-
 init_playerdata();
 init_profile();
 
 $log = '';
-
-//显示枪声信息
-if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
-	if(($now-$noisetime) < 60) {
-		$noisesec = $now - $noisetime;
-		$log .= "<span class=\"yellow b\">{$noisesec}秒前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
-	} else {
-		$noisemin = floor(($now-$noisetime)/60);
-		$log .= "<span class=\"yellow b\">{$noisemin}分钟前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
-	}
-}
+//读取聊天信息
+$chatdata = getchat(0,$teamID);
 
 //读取玩家互动信息
 $result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
@@ -61,13 +51,37 @@ while($logtemp = $db->fetch_array($result)){
 }
 $db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
 
-$chatdata = getchat(0,$teamID);
-
-//判断冷却时间是否过去
-if($coldtimeon){
-	$cdover = $cdsec*1000 + $cdmsec + $cdtime;
-	$nowmtime = floor(getmicrotime()*1000);
-	$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
+if($hp > 0){//判断冷却时间是否过去
+	//显示枪声信息
+	if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
+		if(($now-$noisetime) < 60) {
+			$noisesec = $now - $noisetime;
+			$log .= "<span class=\"yellow b\">{$noisesec}秒前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
+		} else {
+			$noisemin = floor(($now-$noisetime)/60);
+			$log .= "<span class=\"yellow b\">{$noisemin}分钟前，{$plsinfo[$noisepls]}传来了{$noiseinfo[$noisemode]}。</span><br>";
+		}
+	}
+	if($coldtimeon){
+		$cdover = $cdsec*1000 + $cdmsec + $cdtime;
+		$nowmtime = floor(getmicrotime()*1000);
+		$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
+	}
+}
+if($hp <= 0){
+	$dtime = date("Y年m月d日H时i分s秒",$endtime);
+	$kname='';
+	if($bid) {
+		$result = $db->query("SELECT name FROM {$tablepre}players WHERE pid='$bid'");
+		if($db->num_rows($result)) { $kname = $db->result($result,0); }
+	}
+	$mode = 'death';
+} elseif($state ==1 || $state == 2 || $state == 3){
+	$mode = 'rest';
+} elseif($itms0){
+	$mode = 'itemmain';
+} else {
+	$mode = 'command';
 }
 if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<script type=\"text/javascript\">demiSecTimerStarter($rmcdtime);</script><br>";}
 include template('game');

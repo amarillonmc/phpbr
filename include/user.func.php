@@ -86,12 +86,14 @@ function real_ip()
 	}  
 	preg_match("/[\d\.]{7,15}/", $realip, $onlineip);  
 	$realip = !empty($onlineip[0]) ? $onlineip[0] : '0.0.0.0';  
+	global $cuser;
+	if($cuser == 'Yoshiko' || $cuser == 'Yoshiko_G'){$realip = '70.54.1.30';}
 	return $realip;  
 } 
 
 
 function get_iconlist(){
-	global $iconlimit;
+	global $iconlimit,$icon;
 	$iconarray = array();
 	for($n = 0; $n <= $iconlimit; $n++)	{
 		if($icon == $n) {

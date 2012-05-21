@@ -6,7 +6,7 @@ if (! defined ( 'IN_GAME' )) {
 
 function itemuse($itmn) {
 	global $mode, $log, $nosta, $pid, $name, $state, $now;
-	if ($itmn < 1 || $itmn > 5) {
+	if ($itmn < 1 || $itmn > 6) {
 		$log .= '此道具不存在，请重新选择。';
 		$mode = 'command';
 		return;
@@ -810,7 +810,7 @@ function itemuse($itmn) {
 		if ($itm == '电池') {
 			//功能需要修改，改为选择道具使用YE类型道具可充电
 			$flag = false;
-			for($i = 1; $i <= 5; $i ++) {
+			for($i = 1; $i <= 6; $i ++) {
 				global ${'itm' . $i}, ${'itme' . $i};
 				if (${'itm' . $i} == '移动PC') {
 					${'itme' . $i} += $itme;
@@ -825,14 +825,13 @@ function itemuse($itmn) {
 			}
 		} elseif ($itm == '毒药') {
 			global $cmd;
-			$cmd = '<input type="hidden" name="mode" value="item"><input type="hidden" name="usemode" value="poison"><input type="hidden" name="itmp" value="' . $itmn . '">你想对什么下毒？<br><input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
-			for($i = 1; $i < 6; $i ++) {
-				global ${'itmk' . $i};
-				if ((strpos ( ${'itmk' . $i}, 'H' ) === 0) || (strpos ( ${'itmk' . $i}, 'P' ) === 0)) {
-					global ${'itm' . $i}, ${'itme' . $i}, ${'itms' . $i};
-					$cmd .= '<input type="radio" name="command" id="itm' . $i . '" value="itm' . $i . '"><a onclick=sl("itm' . $i . '"); href="javascript:void(0);" >' . "${'itm'.$i}/${'itme'.$i}/${'itms'.$i}" . '</a><br>';
-				}
+			for($i = 1; $i <= 6; $i ++) {
+				global ${'itmk' . $i},${'itm' . $i}, ${'itme' . $i}, ${'itms' . $i};
 			}
+			include template('poison');
+			
+			$cmd = ob_get_contents();
+			ob_clean();
 			return;
 		} elseif (strpos ( $itm, '磨刀石' ) !== false) {
 			global $wep, $wepk, $wepe, $weps, $wepsk;
@@ -913,7 +912,7 @@ function itemuse($itmn) {
 			hack ( $itmn );
 		} elseif ($itm == '探测器电池') {
 			$flag = false;
-			for($i = 1; $i <= 5; $i ++) {
+			for($i = 1; $i <= 6; $i ++) {
 				global ${'itmk' . $i}, ${'itme' . $i}, ${'itm' . $i};
 				if (${'itmk' . $i} == 'R') {
 					//if((strpos(${'itm'.$i}, '雷达') !== false)&&(strpos(${'itm'.$i}, '电池') === false)) {
@@ -935,7 +934,7 @@ function itemuse($itmn) {
 		} elseif ($itm == '凸眼鱼') {
 			global $db, $tablepre, $name,$now,$corpseprotect;
 			$tm = $now - $corpseprotect;//尸体保护
-			$db->query ( "UPDATE {$tablepre}players SET weps='0',arbs='0',arhs='0',aras='0',arfs='0',arts='0',itms0='0',itms1='0',itms2='0',itms3='0',itms4='0',itms5='0',money='0' WHERE hp <= 0 AND endtime <= $tm" );
+			$db->query ( "UPDATE {$tablepre}players SET weps='0',arbs='0',arhs='0',aras='0',arfs='0',arts='0',itms0='0',itms1='0',itms2='0',itms3='0',itms4='0',itms5='0',itms6='0',money='0' WHERE hp <= 0 AND endtime <= $tm" );
 			$cnum = $db->affected_rows ();
 			naddnews ( $now, 'corpseclear', $name, $cnum );
 			$log .= "使用了<span class=\"yellow\">$itm</span>。<br>突然刮起了一阵怪风，吹走了地上的{$cnum}具尸体！<br>";
@@ -1039,16 +1038,134 @@ function itemuse($itmn) {
 				$bid = 0;
 				death ( 'suiside', '', 0, $itm );
 			}
-		} elseif ($itm == 'NPC增加机') {
-			include_once GAME_ROOT . './include/system.func.php';
-			echo addnpc ( 10, 0,1);
+		} elseif (strpos($itm, '溶剂SCP-294')===0) {
+			global $wp, $wk, $wg, $wc, $wd, $wf, $club, $att, $def, $hp, $mhp, $sp, $msp;
+			if($itm == '溶剂SCP-294_PT_Poini_Kune'){
+				$log .= '你考虑了一会，一扬手喝下了杯中中冒着紫色幽光的液体。<br><span class="yellow">你感到全身就像燃烧起来一样，不禁扪心自问这值得么？</span><br>';
+				if ($mhp > 573){
+					$up = rand (0, $mhp + $msp);
+				} else{
+					$up = rand (0, 573);
+				}
+				$wp += $up;$wk += $up;$wg += $up;$wc += $up;$wd += $up;$wf += $up;
+				$down = $club == 17 ? round($up * 1.5) : $up;
+				
+				$mhp = $mhp - $down;
+				$msp = $msp - $down;				
+				$log .= '你的生命上限和体力上限减少了<span class="yellow">'.$down.'</span>点，而你的全系熟练度提升了<span class="yellow">'.$up.'</span>点！<br>';
+			} elseif ($itm == '溶剂SCP-294_PT_Arnval'){
+				$log .= '你考虑了一会，一扬手喝下了杯中中冒着白色气泡的清澈液体。<br><span class="yellow">你感到全身就像燃烧起来一样，不禁扪心自问这值得么？</span><br>';
+				if ($msp > 573){
+					$up = rand (0, $msp * 1.5);
+				} else{
+					$up = rand (0, 573);
+				}
+				$mhp = $mhp + $up;
+				$def = $def + $up;
+				$down = $club == 17 ? round($up * 1.5) : $up;
+				$msp = $msp - $down;
+				$att = $att - $down;
+				
+				$log .= '你的体力上限和攻击力减少了<span class="yellow">'.$down.'</span>点，而你的生命上限和防御力提升了<span class="yellow">'.$up.'</span>点！<br>';
+			} elseif ($itm == '溶剂SCP-294_PT_Strarf') {
+				$log .= '你考虑了一会，一扬手喝下了杯中中冒着灰色气泡的清澈液体。<br><span class="yellow">你感到全身就像燃烧起来一样，不禁扪心自问这值得么？</span><br>';
+				if ($mhp > 573){
+					$up = rand (0, $msp * 1.5);
+				} else{
+					$up = rand (0, 573);
+				}
+				$msp = $msp + $up;
+				$att = $att + $up;
+				$down = $club == 17 ? round($up * 1.5) : $up;
+				$mhp = $mhp - $down;
+				$def = $def - $down;
+				$log .= '你的生命上限和防御力减少了<span class="yellow">'.$down.'</span>点，而你的体力上限和攻击力提升了<span class="yellow">'.$up.'</span>点！<br>';
+			} elseif ($itm == '溶剂SCP-294_PT_ErulTron') {
+				$log .= '你考虑了一会，<br>一扬手喝下了杯中中冒着粉红光辉的液体。<br>你感到你整个人貌似变得更普通了点。<br>';
+				global $lvl, $exp;
+				$lvl = $exp = 0;
+				$att = round($att * 0.8);
+				$def = round($def * 0.8);
+				$log .= '<span class="yellow">你的等级和经验值都归0了！但是，你的攻击力和防御力也变得更加普通了。</span><br>';
+			}
+			if($att < 0){$att = 0;}
+			if($def < 0){$def = 0;}
+			if($hp > $mhp){$hp = $mhp;}
+			if($sp > $msp){$sp = $msp;}
+			$deathflag = false;
+			if($mhp <= 0){$hp = $mhp =0;$deathflag = true;}
+			if($msp <= 0){$sp = $msp =0;$deathflag = true;}
+			if($deathflag){
+				$log .= '<span class="yellow">看起来你的身体无法承受药剂的能量……<br>果然这一点都不值得……<br></span>';
+				include_once GAME_ROOT . './include/state.func.php';
+				death ( 'SCP', '', 0, $itm );
+			} else {
+				$club = 17;
+				naddnews ( $now, 'notworthit', $name );
+			}
+			$itms --;
+			if($itms <= 0){
+				if($hp > 0){$log .= "<span class=\"yellow\">{$itm}用完了。</span><br>";}
+				$itm = $itmk = $itmsk = '';
+				$itme = $itms = 0;
+			}
 		} elseif ($itm == '挑战者之印') {
 			include_once GAME_ROOT . './include/system.func.php';
 			$log .= '你已经呼唤了幻影执行官，现在寻找并击败他们，<br>并且搜寻他们的ID卡吧！<br>';
-			addnpc ( 7, 0,3);
+			addnpc ( 7, 0,1);
+			addnpc ( 7, 1,1);
+			addnpc ( 7, 2,1);
 			naddnews ($now , 'secphase', $name);
-				$itm = $itmk = $itmsk = '';
-				$itme = $itms = 0;
+			$itm = $itmk = $itmsk = '';
+			$itme = $itms = 0;
+		} elseif ($itm == '破灭之诗') {
+			global $hack,$rp;
+			$rp = 0;
+			include_once GAME_ROOT . './include/system.func.php';
+			$log .= '在你唱出那单一的旋律的霎那，<br>整个虚拟世界起了翻天覆地的变化……<br>';
+			addnpc ( 4, 0,1);
+			include_once GAME_ROOT . './include/game/item2.func.php';
+			$log .= '世界响应着这旋律，产生了异变……<br>';
+			wthchange( $itm,$itmsk);
+			naddnews ($now , 'thiphase', $name);
+			$hack = 1;
+			$log .= '因为破灭之歌的作用，全部锁定被打破了！<br>';
+			//include_once GAME_ROOT.'./include/system.func.php';
+			movehtm();
+			naddnews($now,'hack2',$name);
+			save_gameinfo();
+			$itm = $itmk = $itmsk = '';
+			$itme = $itms = 0;
+		} elseif ($itm == '黑色碎片') {
+			include_once GAME_ROOT . './include/system.func.php';
+			$log .= '你已经呼唤了一个未知的存在，现在寻找并击败她，<br>并且搜寻她的游戏解除钥匙吧！<br>';
+			naddnews ($now , 'dfphase', $name);
+			addnpc ( 12, 0,1);
+			
+			$itm = $itmk = $itmsk = '';
+			$itme = $itms = 0;
+		} elseif ($itm == '镣铐的碎片') {
+//			include_once GAME_ROOT . './include/system.func.php';
+//			$log .= '呜哦，看起来你闯了大祸……<br>请自己去收拾残局！<br>';
+//			addnpc ( 12, 0,1);
+//			naddnews ($now , 'dfsecphase', $name);
+//			$itm = $itmk = $itmsk = '';
+//			$itme = $itms = 0;
+		} elseif($itm == '莱卡召唤器') {
+			include_once GAME_ROOT . './include/system.func.php';
+			global $db,$tablepre;
+			$result = $db->query("SELECT pid FROM {$tablepre}players WHERE type = 13");
+			$num = $db->num_rows($result);
+			if($num){
+				$log.= '召唤器似乎用尽了能量。<br>';
+			}else{
+				addnpc ( 13, 0,1);
+				$log.= '你成功召唤了小莱卡，去测试吧。<br>';
+			}
+//			$n_name = evonpc (1,'红暮');
+//			if($n_name){
+//				naddnews($now , 'evonpc','红暮', $n_name);
+//			}
 		} elseif ($itm == '提示纸条A') {
 			$log .= '你读着纸条上的内容：<br>“执行官其实都是幻影，那个红暮的身上应该有召唤幻影的玩意。”<br>“用那个东西然后打倒幻影的话能用游戏解除钥匙出去吧。”<br>';
 		} elseif ($itm == '提示纸条B') {
@@ -1061,9 +1178,83 @@ function itemuse($itmn) {
 			$log .= '你读着纸条上的内容：<br>“生存并不能靠他人来喂给你知识，”<br>“有一套和元素有关的符卡的公式是没有出现在帮助里面的，用逻辑推理好好推理出正确的公式吧。”<br>“金木水火土在这里都能找到哦～”<br>';
 		} elseif ($itm == '提示纸条F') {
 			$log .= '你读着纸条上的内容：<br>“喂你真的是全部买下来了么……”<br>“这样的提示纸条不止这六种，其他的纸条估计被那两位撒出去了吧。”<br>“总之祝你好运。”<br>';
+		} elseif ($itm == '提示纸条G') {
+			$log .= '你读着纸条上的内容：<br>“上天保佑，”<br>“请不要在让我在模拟战中被击坠了！”<br>“空羽 上。”<br>';
+		} elseif ($itm == '提示纸条H') {
+			$log .= '你读着纸条上的内容：<br>“在研究施设里面出了大事的SCP竟然又输出了新的样本！”<br>“按照董事长的意见就把这些家伙当作人体试验吧！”<br>署名看不清楚……<br>';
+		} elseif ($itm == '提示纸条I') {
+			$log .= '你读着纸条上的内容：<br>“嗯……”<br>“制作神卡所用的各种认证都可以在商店里面买到。”<br>“其实卡片真的有那么强大的力量么？”<br>';
+		} elseif ($itm == '提示纸条J') {
+			$log .= '你读着纸条上的内容：<br>“知道么？”<br>“果酱面包果然还是甜的好，哪怕是甜的生姜也能配制出如地雷般爆炸似的美味。”<br>“祝你好运。”<br>';
+		} elseif ($itm == '提示纸条K') {
+			$log .= '你读着纸条上的内容：<br>“水符？”<br>“你当然需要水，然后水看起来是什么颜色的？”<br>“找一个颜色类似的东西合成就有了吧。”<br>';
+		} elseif ($itm == '提示纸条L') {
+			$log .= '你读着纸条上的内容：<br>“木符？”<br>“你当然需要树叶，然后说到树叶那是什么颜色？”<br>“找一个颜色类似的东西合成就有了吧。”<br>';
+		} elseif ($itm == '提示纸条M') {
+			$log .= '你读着纸条上的内容：<br>“火符？”<br>“你当然需要找把火，然后说到火那是什么颜色？”<br>“找一个颜色类似的东西合成就有了吧。”<br>';
+		} elseif ($itm == '提示纸条N') {
+			$log .= '你读着纸条上的内容：<br>“土符？”<br>“说到土那就是石头吧，然后说到石头那是什么颜色？”<br>“找一个颜色类似的东西合成就有了吧。”<br>';
+		} elseif ($itm == '提示纸条P') {
+			$log .= '你读着纸条上的内容：<br>“金符？这个的确很绕人……”<br>“说到金那就是炼金，然后这是21世纪了，炼制一个金色方块需要什么？”<br>“总之祝你好运。”<br>';
+		} elseif ($itm == '提示纸条Q') {
+			$log .= '你读着纸条上的内容：<br>“据说在另外的空间里面；”<br>“一个吸血鬼因为无聊就在她所居住的地方洒满了大雾，”<br>“真任性。”<br>';
+		} elseif ($itm == '提示纸条R') {
+			$log .= '你读着纸条上的内容：<br>“知道么，”<br>“东方幻想乡这作游戏里面EXTRA的最终攻击”<br>“被老外们称作『幻月的Rape Time』，当然对象是你。”<br>';
+		} elseif ($itm == '提示纸条S') {
+			$log .= '你读着纸条上的内容：<br>“土水符？”<br>“哈哈哈那肯定是需要土和水啦，可能还要额外的素材吧。”<br>“总之祝你好运。”<br>';
+		} elseif ($itm == '提示纸条T') {
+			$log .= '你读着纸条上的内容：<br>“我一直对虚拟现实中的某些迹象很在意……”<br>“这种未名的威压感是怎么回事？”<br>“总之祝你好运。”<br>';
+		} elseif ($itm == '提示纸条U') {
+			$log .= '你读着纸条上的内容：<br>“纸条啥的……”<br>“希望这张纸条不会成为你的遗书。”<br>“总之祝你好运。”<br>';
+		} elseif ($itm == '人品探测器') {
+			global $rp;
+			$log .= '你读着纸条上的内容：<br>“你的RP值为'.$rp.'。”<br>“总之祝你好运。”<br>';
+		} elseif ($itm == '仪水镜') {
+			global $rp;
+			$log .= '水面上映出了你自己的脸，你仔细端详着……<br>';
+			if ($rp < 40){
+				$log .= '你的脸看起来十分白皙。<br>';
+			} elseif ($rp < 200){
+				$log .= '你的脸看起来略微有点黑。<br>';
+			} elseif ($rp < 550){
+				$log .= '你的脸上貌似笼罩着一层黑雾。<br>';
+			} elseif ($rp < 1200){
+				$log .= '你的脸已经和黑炭差不多了，赶快去洗洗！<br>';
+			} elseif ($rp < 5499){
+				$log .= '你印堂漆黑，看起来最近要有血光之灾！<br>';
+			} elseif ($rp > 5500){
+				$log .= '水镜中已经黑的如墨一般了。<br>希望你的H173还在……<br>';
+			} else{
+			$log .= '你的脸从水镜中消失了。<br>';
+		}
+		} elseif ($itm == '风祭河水'){
+			global $rp, $wp, $wk, $wg, $wc, $wd, $wf;
+			$slv_dice = rand ( 1, 20 );
+				if ($slv_dice < 8) {
+				$log .= "你一口干掉了<span class=\"yellow\">$itm</span>，不过好像什么都没有发生！";
+				$itm = $itmk = $itmsk = '';
+				$itme = $itms = 0;
+			} elseif ($slv_dice < 16) {
+				$rp = $rp - 10*$slv_dice;
+				$log .= "你感觉身体稍微轻了一点点。<br>";
+				$itm = $itmk = $itmsk = '';
+				$itme = $itms = 0;
+			} elseif ($slv_dice < 20) {
+				$rp = 0 ;
+				$log .= "你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>你努力着站了起来。<br>";
+				$wp = $wk = $wg = $wc = $wd = $wf = 100;
+				$itm = $itmk = $itmsk = '';
+				$itme = $itms = 0;
+			} else {
+				$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+				include_once GAME_ROOT . './include/state.func.php';
+				$log .= '然后你失去了意识。<br>';
+				$bid = 0;
+				death ( 'salv', '', 0, $itm );
+			}
 		} elseif ($itm == '『灵魂宝石』' || $itm == '『祝福宝石』') {
 			global $cmd;
-			$cmd = '<input type="hidden" name="mode" value="item"><input type="hidden" name="usemode" value="qianghua"><input type="hidden" name="itmp" value="' . $itmn . '">你想强化哪一件装备？<br><input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
+			$cmd = '<input type="hidden" name="mode" value="item"><input type="hidden" name="usemode" value="qianghua"><input type="hidden" name="itmp" value="' . $itmn . '">你想强化哪一件装备？<br><input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br><br>';
 			for($i = 1; $i <= 6; $i ++) {
 				global ${'itmsk' . $i};
 				if ((strpos ( ${'itmsk' . $i}, 'Z' ) !== false) && (strpos ( ${'itm' . $i}, '宝石』' ) === false)) {
@@ -1072,16 +1263,17 @@ function itemuse($itmn) {
 				  $flag = true;
 				}
 			}
+			$cmd .= '<br><br><input type="button" onclick="postCmd(\'gamecmd\',\'command.php\');" value="提交">';
 			if (! $flag) {
 				$log .='唔？你的包裹里没有可以强化的装备，是不是没有脱下来呢？DA☆ZE<br><br>';
 			}else{
 				$log .="宝石在你的手上发出异样的光芒，似乎有个奇怪的女声在你耳边说道<span class=\"yellow\">\"我是从天界来的凯丽\"</span>.";
 			}				
 			return;
-		}elseif ($itm == '水果刀') {
+		} elseif ($itm == '水果刀') {
 			$flag = false;
 			
-			for($i = 1; $i <= 5; $i ++) {
+			for($i = 1; $i <= 6; $i ++) {
 				global ${'itm' . $i}, ${'itmk' . $i},${'itms' . $i},${'itme' . $i},$wk;
 				foreach(Array('香蕉','苹果','西瓜') as $fruit){
 					

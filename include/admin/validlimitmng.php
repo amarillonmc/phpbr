@@ -12,7 +12,7 @@ if($write){
 	echo '新的屏蔽列表已经写入。<br>';
 }
 
-include_once $dir.'banlist.php';
+include_once $dir.'banlist.list';
 
 //foreach(Array('nm','ip') as $ar_nm){
 //	${$ar_nm.'lmtlist0'} = ${$ar_nm.'lmtlist'} = '';
@@ -38,7 +38,7 @@ function write_valid_limit($dir,$nmlmtstr,$iplmtstr){
 		}
 	}
 	$vldata = "<?php\n\n\$nmlimit = {$nmlmtlist};\n\$iplimit = {$iplmtlist};\n\n?>";
-	if($fp = fopen("{$dir}banlist.php", 'w')) {
+	if($fp = fopen("{$dir}banlist.list", 'w')) {
 		if(flock($fp,LOCK_EX)) {
 			fwrite($fp, $vldata);
 		} else {

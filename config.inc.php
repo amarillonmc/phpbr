@@ -1,97 +1,97 @@
 <?php
-//ä»¥ä¸‹å†…å®¹åœ¨æ¸¸æˆå®‰è£…æ—¶åˆå§‹åŒ–ï¼Œä¸èƒ½é€šè¿‡æ¸¸æˆåŽå°ä¿®æ”¹
+//ÒÔÏÂÄÚÈÝÔÚÓÎÏ·°²×°Ê±³õÊ¼»¯£¬²»ÄÜÍ¨¹ýÓÎÏ·ºóÌ¨ÐÞ¸Ä
 // [EN]	Set below parameters according to your account information provided by your hosting
-// [CH] ä»¥ä¸‹å˜é‡è¯·æ ¹æ®ç©ºé—´å•†æä¾›çš„è´¦å·å‚æ•°ä¿®æ”¹,å¦‚æœ‰ç–‘é—®,è¯·è”ç³»æœåŠ¡å™¨æä¾›å•†
+// [CH] ÒÔÏÂ±äÁ¿Çë¸ù¾Ý¿Õ¼äÉÌÌá¹©µÄÕËºÅ²ÎÊýÐÞ?ÈçÓÐÒÉÎÊ,ÇëÁªÏµ·þÎñÆ÷Ìá¹©?
 
 	$dbhost = 'localhost';			// database server
-						// æ•°æ®åº“æœåŠ¡å™¨
+						// Êý¾Ý¿â·þÎñÆ÷
 
-	$dbuser = 'YOUR USERNAME';			// database username
-						// æ•°æ®åº“ç”¨æˆ·å
+	$dbuser = 'user';			// database username
+						// Êý¾Ý¿âÓÃ»§Ãû
 
-	$dbpw = 'YOUR PASSWORD';			// database password
-						// æ•°æ®åº“å¯†ç 
+	$dbpw = 'pass';			// database password
+						// Êý¾Ý¿âÃÜ?
 
-	$dbname = 'acdts';			// database name
-						// æ•°æ®åº“å
+	$dbname = 'dts';			// database name
+						// Êý¾Ý¿âÃû
 
 	$dbreport = 1;				// send db error report? 1=yes
-						// æ˜¯å¦å‘é€æ•°æ®åº“é”™è¯¯æŠ¥å‘Š? 0=å¦, 1=æ˜¯
+						// ÊÇ·ñ·¢ËÍÊý¾Ý¿â´íÎó±¨¸æ? 0=? 1=?
 	
 // [EN] If you have problems logging in Discuz!, then modify the following parameters, else please leave default
-// [CH] å¦‚æ‚¨å¯¹ cookie ä½œç”¨èŒƒå›´æœ‰ç‰¹æ®Šè¦æ±‚,æˆ–æ¸¸æˆç™»å½•ä¸æ­£å¸¸,è¯·ä¿®æ”¹ä¸‹é¢å˜é‡,å¦åˆ™è¯·ä¿æŒé»˜è®¤
+// [CH] ÈçÄú?cookie ×÷ÓÃ·¶Î§ÓÐÌØÊâÒª?»òÓÎÏ·µÇÂ¼²»Õý³£,ÇëÐÞ¸ÄÏÂÃæ±ä?·ñÔòÇë±£³ÖÄ¬?
 
 	$cookiedomain = ''; 			// cookie domain
-						// cookie ä½œç”¨åŸŸ
+						// cookie ×÷ÓÃ?
 
 	$cookiepath = '/';			// cookie path
-						// cookie ä½œç”¨è·¯å¾„
+						// cookie ×÷ÓÃÂ·¾¶
 
 
 // [EN] Special parameters, DO NOT modify these unless you are an expert in Discuz!
-// [CH] ä»¥ä¸‹å˜é‡ä¸ºç‰¹åˆ«é€‰é¡¹,ä¸€èˆ¬æƒ…å†µä¸‹æ²¡æœ‰å¿…è¦ä¿®æ”¹
+// [CH] ÒÔÏÂ±äÁ¿ÎªÌØ±ðÑ¡Ïî,Ò»°ãÇé¿öÏÂÃ»ÓÐ±ØÒªÐÞ¸Ä
 
 	$headercharset = 0;			// force outputing charset header
-						// å¼ºåˆ¶è®¾ç½®å­—ç¬¦é›†,åªä¹±ç æ—¶ä½¿ç”¨
+						// Ç¿ÖÆÉèÖÃ×Ö·û?Ö»ÂÒÂëÊ±Ê¹ÓÃ
 
 	$onlinehold = 900;			// time span of online recording
-						// åœ¨çº¿ä¿æŒæ—¶é—´,å•ä½ç§’
+						// ÔÚÏß±£³ÖÊ±¼ä,µ¥Î»?
 
 	$pconnect = true;				// persistent database connection, 0=off, 1=on
-						// æ•°æ®åº“æŒä¹…è¿žæŽ¥ false=å…³é—­, true=æ‰“å¼€
+						// Êý¾Ý¿â³Ö¾ÃÁ¬?false=¹Ø±Õ, true=´ò¿ª
 
-	$gamefounder = 'FOUNDER';			// super administrator's UID
-						// æ¸¸æˆåˆ›å§‹äºº UID, å¯ä»¥æ”¯æŒå¤šä¸ªåˆ›å§‹äººï¼Œä¹‹é—´ä½¿ç”¨ â€œ,â€ åˆ†éš”ã€‚
-						// å¦‚æžœä¸è®¾ç½®æ¸¸æˆåˆ›å§‹äººï¼Œåˆ™ç®¡ç†å‘˜ä¹‹é—´å¯ä»¥ç›¸äº’ç¼–è¾‘ï¼Œå…·ä½“æƒåŠ›å·®åˆ«è¯·è§æ¸¸æˆä½¿ç”¨æ–‡æ¡£
+	$gamefounder = 'founder';			// super administrator's UID
+						// ÓÎÏ·´´Ê¼?UID, ¿ÉÒÔÖ§³Ö¶à¸ö´´Ê¼ÈË£¬Ö®¼äÊ¹ÓÃ ??·Ö¸ô?
+						// Èç¹û²»ÉèÖÃÓÎÏ·´´Ê¼ÈË£¬Ôò¹ÜÀíÔ±Ö®¼ä¿ÉÒÔÏà»¥±à¼­£¬¾ßÌåÈ¨Á¦²î±ðÇë¼ûÓÎÏ·Ê¹ÓÃÎÄµµ
 
-	$postinterval = 1;   //ç”¨æˆ·æäº¤å‘½ä»¤çš„é—´éš”æ—¶é—´ï¼Œå•ä½ç§’
+	$postinterval = 1;   //ÓÃ»§Ìá½»ÃüÁîµÄ¼ä¸ôÊ±¼ä£¬µ¥Î»?
 
 	$moveut = 0; //set the difference of server time and client time 
-			//å¦‚æžœæœ¬åœ°æ—¶é—´è·ŸæœåŠ¡å™¨æ—¶é—´æœ‰æ—¶å·®ï¼Œåœ¨æ­¤å¤„æ›´æ”¹
+			//Èç¹û±¾µØÊ±¼ä¸ú·þÎñÆ÷Ê±¼äÓÐÊ±²î£¬ÔÚ´Ë´¦¸ü?
 			
-	$moveutmin = 8; //set the difference of server time and client time, by minutes
-	//å¦‚æžœæœ¬åœ°æ—¶é—´è·ŸæœåŠ¡å™¨æ—¶é—´æœ‰æ—¶å·®ï¼Œåœ¨æ­¤å¤„æ›´æ”¹
+	$moveutmin = 0; //set the difference of server time and client time, by minutes
+	//Èç¹û±¾µØÊ±¼ä¸ú·þÎñÆ÷Ê±¼äÓÐÊ±²î£¬ÔÚ´Ë´¦¸ü?
 
 // [EN] !ATTENTION! Do NOT modify following after your board was settle down
-// [CH] æ¸¸æˆæŠ•å…¥ä½¿ç”¨åŽä¸èƒ½ä¿®æ”¹çš„å˜é‡
+// [CH] ÓÎÏ·Í¶ÈëÊ¹ÓÃºó²»ÄÜÐÞ¸ÄµÄ±äÁ¿
 
-	$tablepre = 'acbra2_';   			// è¡¨åå‰ç¼€, åŒä¸€æ•°æ®åº“å®‰è£…å¤šä¸ªæ¸¸æˆè¯·ä¿®æ”¹æ­¤å¤„
+	$tablepre = 'acbra2_';   			// ±íÃûÇ°×º, Í¬Ò»Êý¾Ý¿â°²×°¶à¸öÓÎÏ·ÇëÐÞ¸Ä´Ë´¦
 						// table prefix, modify this when you are installingmore than 1 Discuz! in the same database.
 		
-	$authkey = 'bra';		//game encrypt key ,the same of plus key
-						//æ¸¸æˆåŠ å¯†å¯†é’¥ï¼Œè¦ä¸Žæ’ä»¶å¯†é’¥ç›¸åŒ
+	$authkey = 'key';		//game encrypt key ,the same of plus key
+						//ÓÎÏ·¼ÓÃÜÃÜÔ¿£¬ÒªÓë²å¼þÃÜÔ¿Ïà?
 
 // [EN] !ATTENTION! Preservation or debugging for developing
-// [CH] åˆ‡å‹¿ä¿®æ”¹ä»¥ä¸‹å˜é‡,ä»…ä¾›ç¨‹åºå¼€å‘è°ƒè¯•ç”¨!
+// [CH] ÇÐÎðÐÞ¸ÄÒÔÏÂ±äÁ¿,½ö¹©³ÌÐò¿ª·¢µ÷ÊÔÓÃ!
 
 	$database = 'mysql';			// 'mysql' for MySQL version and 'pgsql' for PostgreSQL version
-						// MySQL ç‰ˆæœ¬è¯·è®¾ç½® 'mysql', PgSQL ç‰ˆæœ¬è¯·è®¾ç½® 'pgsql'
+						// MySQL °æ±¾ÇëÉè?'mysql', PgSQL °æ±¾ÇëÉè?'pgsql'
 
 	$charset = 'utf-8';			// default character set, 'gbk', 'big5', 'utf-8' are available
-						// æ¸¸æˆé»˜è®¤å­—ç¬¦é›†, å¯é€‰ 'gbk', 'big5', 'utf-8'
+						// ÓÎÏ·Ä¬ÈÏ×Ö·û? ¿É?'gbk', 'big5', 'utf-8'
 
 	$dbcharset = 'utf8';			// default database character set, 'gbk', 'big5', 'utf8', 'latin1' and blank are available
-						// MySQL å­—ç¬¦é›†, å¯é€‰ 'gbk', 'big5', 'utf8', 'latin1', ç•™ç©ºä¸ºæŒ‰ç…§æ¸¸æˆå­—ç¬¦é›†è®¾å®š
+						// MySQL ×Ö·û? ¿É?'gbk', 'big5', 'utf8', 'latin1', Áô¿ÕÎª°´ÕÕÓÎÏ·×Ö·û¼¯Éè¶¨
 
 	$attackevasive = 0;			// protect against attacks via common request, 0=off, 1=cookie refresh limitation, 2=deny proxy request, 3=both
-						// é˜²æŠ¤å¤§é‡æ­£å¸¸è¯·æ±‚é€ æˆçš„æ‹’ç»æœåŠ¡æ”»å‡», 0=å…³é—­, 1=cookie åˆ·æ–°é™åˆ¶, 2=é™åˆ¶ä»£ç†è®¿é—®, 3=cookie+ä»£ç†é™åˆ¶
+						// ·À»¤´óÁ¿Õý³£ÇëÇóÔì³ÉµÄ¾Ü¾ø·þÎñ¹¥? 0=¹Ø±Õ, 1=cookie Ë¢ÐÂÏÞÖÆ, 2=ÏÞÖÆ´úÀí·ÃÎÊ, 3=cookie+´úÀíÏÞÖÆ
 
 	$tplrefresh = 1;			// auto check validation of templates, 0=off, 1=on
-						// æ¨¡æ¿è‡ªåŠ¨åˆ·æ–°å¼€å…³ 0=å…³é—­, 1=æ‰“å¼€, åœ¨ä¸ä¿®æ”¹é¡µé¢çš„æƒ…å†µä¸‹å¯ä»¥å…³é—­
+						// Ä£°å×Ô¶¯Ë¢ÐÂ¿ª?0=¹Ø±Õ, 1=´ò¿ª, ÔÚ²»ÐÞ¸ÄÒ³ÃæµÄÇé¿öÏÂ¿ÉÒÔ¹Ø±Õ
 
 	$bbsurl = '';    //the bbs url for the game plus
-									//å®‰è£…æ¸¸æˆæ’ä»¶çš„è®ºå›åœ°å€
+									//°²×°ÓÎÏ·²å¼þµÄÂÛÌ³µØÖ·
 
 	$gameurl = '';    // the url of game program files,for the full-window mode
-									//æ¸¸æˆç¨‹åºåœ°å€ï¼Œç”¨äºŽå…¨å±æ¨¡å¼
+									//ÓÎÏ·³ÌÐòµØÖ·£¬ÓÃÓÚÈ«ÆÁÄ£?
 
-	$homepage = 'http://www.amarilloviridian.co.cc/';      // game homepage
-									//å®˜æ–¹ç½‘ç«™åœ°å€
+	$homepage = 'http://www.76573.org/';      // game homepage
+									//¹Ù·½ÍøÕ¾µØÖ·
 
-	$title = 'ç”Ÿ  å­˜  æ¸¸  æˆ';     //game title
-							//æ¸¸æˆæ ‡é¢˜ 
+	$title = 'ACFUN ´ó ÌÓ É±';     //game title
+							//ÓÎÏ·±êÌâ 
 
-	$errorinfo = 0;				//æ˜¯å¦å¼€å¯é”™è¯¯ä¿¡æ¯æç¤ºï¼Œ1ä¸ºå¼€å¯ï¼Œ0ä¸ºå…³é—­ã€‚å¼€å¯ä¼šæ³„æ¼æ¸¸æˆå®‰è£…è·¯å¾„
+	$errorinfo = 0;				//ÊÇ·ñ¿ªÆô´íÎóÐÅÏ¢ÌáÊ¾£¬1Îª¿ªÆô£¬0Îª¹Ø±Õ¡£¿ªÆô»áÐ¹Â©ÓÎÏ·°²×°Â·¾¶
 
 
 // ============================================================================

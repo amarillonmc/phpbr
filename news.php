@@ -5,7 +5,7 @@ define('CURSCRIPT', 'news');
 require './include/common.inc.php';
 //$t_s=getmicrotime();
 //require_once GAME_ROOT.'./include/JSON.php';
-require  GAME_ROOT.'./include/news.func.php';
+require_once GAME_ROOT.'./include/news.func.php';
 
 
 $newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
@@ -16,6 +16,7 @@ if(filemtime($newsfile) > filemtime($lnewshtm)) {
 	$lnewsinfo = nparse_news(0,$newslimit);
 	writeover($lnewshtm,$lnewsinfo);
 }
+if(!isset($newsmode)){$newsmode = '';}
 
 if($newsmode == 'last') {
 	

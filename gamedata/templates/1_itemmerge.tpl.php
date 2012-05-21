@@ -17,6 +17,8 @@
 <option value="4"><?=$itm4?>/<?=$itme4?>/<?=$itms4?><br />
 <? } if($itms5) { ?>
 <option value="5"><?=$itm5?>/<?=$itme5?>/<?=$itms5?><br />
+<? } if($itms6) { ?>
+<option value="6"><?=$itm6?>/<?=$itme6?>/<?=$itms6?><br />
 <? } ?>
 </select>
 <br>
@@ -33,5 +35,9 @@
 <option value="4"><?=$itm4?>/<?=$itme4?>/<?=$itms4?><br />
 <? } if($itms5) { ?>
 <option value="5"><?=$itm5?>/<?=$itme5?>/<?=$itms5?><br />
+<? } if($itms6) { ?>
+<option value="6"><?=$itm6?>/<?=$itme6?>/<?=$itms6?><br />
 <? } ?>
 </select>
+<br>
+<input type="button" class="cmdbutton" name="submit" value="提交" onclick="postCmd('gamecmd','command.php');this.disabled=true;">

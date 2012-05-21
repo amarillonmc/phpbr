@@ -1,57 +1,59 @@
-<input type="hidden" name="mode" value="command">
+<input type="hidden" id="mode" name="mode" value="command">
+<input type="hidden" id="command" name="command" value="menu">
+<input type="hidden" id="subcmd" name="subcmd" value="">
 现在想要做什么？<br /><br />
-<input type="radio" name="command" id="move" value="move"><select name="moveto" onclick=sl('move'); href="javascript:void(0);">
+
+<input type="button" class="cmdbutton" id="search" name="search" value="搜寻" onclick="$('command').value='search';postCmd('gamecmd','command.php');this.disabled=true;" <!--{if array_search($pls,$arealist) <= $areanum && !$hack}-->disabled<!--{/if}-->>
+<select id="moveto" name="moveto" onchange="$('command').value='move';postCmd('gamecmd','command.php');this.disabled=true;">
 {template move}
-</select><br />
-<!--{if array_search($pls,$arealist) > $areanum || $hack}-->
-<input type="radio" name="command" id="search" value="search" checked><a onclick=sl('search'); href="javascript:void(0);" >搜寻</a><br />
-<!--{/if}-->
-<!--{if $itms1}-->
-&nbsp;<input type="radio" name="command" id="itm1" value="itm1"><a onclick=sl('itm1'); href="javascript:void(0);" >$itm1/$itme1/$itms1 {lang useitem}</a><br />
-<!--{/if}-->
-<!--{if $itms2}-->
-&nbsp;<input type="radio" name="command" id="itm2" value="itm2"><a onclick=sl('itm2'); href="javascript:void(0);" >$itm2/$itme2/$itms2 {lang useitem}</a><br />
-<!--{/if}-->
-<!--{if $itms3}-->
-&nbsp;<input type="radio" name="command" id="itm3" value="itm3"><a onclick=sl('itm3'); href="javascript:void(0);" >$itm3/$itme3/$itms3 {lang useitem}</a><br />
-<!--{/if}-->
-<!--{if $itms4}-->
-&nbsp;<input type="radio" name="command" id="itm4" value="itm4"><a onclick=sl('itm4'); href="javascript:void(0);" >$itm4/$itme4/$itms4 {lang useitem}</a><br />
-<!--{/if}-->
-<!--{if $itms5}-->
-&nbsp;<input type="radio" name="command" id="itm5" value="itm5"><a onclick=sl('itm5'); href="javascript:void(0);" >$itm5/$itme5/$itms5 {lang useitem}</a><br />
-<!--{/if}-->
-<input type="radio" name="command" id="itemmain" value="itemmain"><select name="itemcmd" onclick=sl('itemmain'); href="javascript:void(0);">
-	<option value="main">■ 道具 ■</option>
-	<option value="itemmix">道具合成</option>
-	<option value="itemdrop">道具丢弃</option>
-	<option value="itemmerge">整理包裹</option>
-	<option value="itemoff">卸下装备</option>
-	<!--除下各个部位，丢弃武器-->
 </select>
 <br />
-<input type="radio" name="command" id="rest1" value="rest1"><a onclick=sl('rest1'); href="javascript:void(0);">睡眠</a>
-<input type="radio" name="command" id="rest2" value="rest2"><a onclick=sl('rest2'); href="javascript:void(0);">治疗</a>
-<!--{if in_array($pls,$hospitals)}--><input type="radio" name="command" id="rest3" value="rest3"><a onclick=sl('rest3'); href="javascript:void(0);">静养</a><!--{/if}-->
 <br />
-<input type="radio" name="command" id="special" value="special"><select name="sp_cmd" onclick=sl('special'); href="javascript:void(0);">
-	<option value="main" selected>■ 特殊 ■</option>
-	<!--{if in_array($pls,$shops)}--><option value="sp_shop">商　店</option><!--{/if}-->
-	<option value="sp_pose">基础姿态</option>
-	<option value="sp_tac">应战策略</option>
-	<option value="sp_word">留言变更</option>
-	<option value="sp_pswd">修改密码</option>
-	<option value="sp_inf">包扎伤口</option>
-	<!--{if $club == 7}--><option value="sp_adtsk">武器带电</option><!--{/if}-->
-	<!--{if $club == 8}--><option value="sp_poison">检查毒物</option><!--{/if}-->
-	<!--{if $club == 8}--><option value="sp_adtsk">武器淬毒</option><!--{/if}-->
-</select>
+	<!--{if $itms1}-->
+	<input type="button" class="cmdbutton" <!--{if strpos($itmk1,'W')===0 || strpos($itmk1,'D')===0 || strpos($itmk1,'A')===0}-->value="装备"<!--{else}-->value="使用"<!--{/if}--> onclick="$('mode').value='command';$('command').value='itm1';postCmd('gamecmd','command.php');this.disabled=true;"><span class="yellow">{$itm1}</span>/{$itme1}/{$itms1}<br>
+	<!--{/if}-->
+	<!--{if $itms2}-->
+	<input type="button" class="cmdbutton" <!--{if strpos($itmk2,'W')===0 || strpos($itmk2,'D')===0 || strpos($itmk2,'A')===0}-->value="装备"<!--{else}-->value="使用"<!--{/if}--> onclick="$('mode').value='command';$('command').value='itm2';postCmd('gamecmd','command.php');this.disabled=true;"><span class="yellow">{$itm2}</span>/{$itme2}/{$itms2}<br>
+	<!--{/if}-->
+	<!--{if $itms3}-->
+	<input type="button" class="cmdbutton" <!--{if strpos($itmk3,'W')===0 || strpos($itmk3,'D')===0 || strpos($itmk3,'A')===0}-->value="装备"<!--{else}-->value="使用"<!--{/if}--> onclick="$('mode').value='command';$('command').value='itm3';postCmd('gamecmd','command.php');this.disabled=true;"><span class="yellow">{$itm3}</span>/{$itme3}/{$itms3}<br>
+	<!--{/if}-->
+	<!--{if $itms4}-->
+	<input type="button" class="cmdbutton" <!--{if strpos($itmk4,'W')===0 || strpos($itmk4,'D')===0 || strpos($itmk4,'A')===0}-->value="装备"<!--{else}-->value="使用"<!--{/if}--> onclick="$('mode').value='command';$('command').value='itm4';postCmd('gamecmd','command.php');this.disabled=true;"><span class="yellow">{$itm4}</span>/{$itme4}/{$itms4}<br>
+	<!--{/if}-->
+	<!--{if $itms5}-->
+	<input type="button" class="cmdbutton" <!--{if strpos($itmk5,'W')===0 || strpos($itmk5,'D')===0 || strpos($itmk5,'A')===0}-->value="装备"<!--{else}-->value="使用"<!--{/if}--> onclick="$('mode').value='command';$('command').value='itm5';postCmd('gamecmd','command.php');this.disabled=true;"><span class="yellow">{$itm5}</span>/{$itme5}/{$itms5}<br>
+	<!--{/if}-->
+	<!--{if $itms6}-->
+	<input type="button" class="cmdbutton" <!--{if strpos($itmk6,'W')===0 || strpos($itmk6,'D')===0 || strpos($itmk6,'A')===0}-->value="装备"<!--{else}-->value="使用"<!--{/if}--> onclick="$('mode').value='command';$('command').value='itm6';postCmd('gamecmd','command.php');this.disabled=true;"><span class="yellow">{$itm6}</span>/{$itme6}/{$itms6}<br>
+	<!--{/if}-->
+<br>
+<input type="button" class="cmdbutton" id="itemmix" name="itemmix" value="道具合成" onclick="$('command').value='itemmain';$('subcmd').name='itemcmd';$('subcmd').value='itemmix';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="itemmerge" name="itemmerge" value="整理包裹" onclick="$('command').value='itemmain';$('subcmd').name='itemcmd';$('subcmd').value='itemmerge';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="itemdrop" name="itemdrop" value="道具丢弃" onclick="$('command').value='itemmain';$('subcmd').name='itemcmd';$('subcmd').value='itemdrop';postCmd('gamecmd','command.php');this.disabled=true;">
+<br />
+<input type="button" class="cmdbutton" id="rest1" name="rest1" value="睡眠" onclick="$('command').value='rest1';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="rest2" name="rest2" value="治疗" onclick="$('command').value='rest2';postCmd('gamecmd','command.php');this.disabled=true;">
+<!--{if in_array($pls,$hospitals)}--><input type="button" class="cmdbutton" id="rest3" name="rest3" value="静养" onclick="$('command').value='rest3';postCmd('gamecmd','command.php');this.disabled=true;"><!--{/if}-->
 <br />
 <!--{if $gamestate < 40}-->
-<input type="radio" name="command" id="team" value="team"><select name="teamcmd" onclick=sl('team'); href="javascript:void(0);">
-	<option value="main" selected>■ 队伍 ■</option>
-	<option value="teammake">组建队伍</option>
-	<option value="teamjoin">加入队伍</option>
-	<option value="teamquit">脱离队伍</option>
-</select>
+	<!--{if !$teamID}-->
+	<input type="button" class="cmdbutton" id="teammake" name="teammake" value="组建队伍" onclick="$('command').value='team';$('subcmd').name='teamcmd';$('subcmd').value='teammake';postCmd('gamecmd','command.php');this.disabled=true;">
+	<input type="button" class="cmdbutton" id="teammake" name="teamjoin" value="加入队伍" onclick="$('command').value='team';$('subcmd').name='teamcmd';$('subcmd').value='teamjoin';postCmd('gamecmd','command.php');this.disabled=true;">
+	<!--{else}-->
+	<input type="button" class="cmdbutton" id="teammake" name="teamquit" value="脱离队伍" onclick="$('command').value='team';$('subcmd').name='teamcmd';$('subcmd').value='teamquit';postCmd('gamecmd','command.php');this.disabled=true;">
+	<!--{/if}-->
+<!--{/if}-->
+<br />
+<!--{if in_array($pls,$shops)}-->
+	<input type="button" class="cmdbutton" id="sp_shop" name="sp_shop" value="商店" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_shop';postCmd('gamecmd','command.php');this.disabled=true;">
+<!--{/if}-->
+<input type="button" class="cmdbutton" id="sp_word" name="sp_word" value="留言变更" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_word';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="sp_pswd" name="sp_pswd" value="修改密码" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_pswd';postCmd('gamecmd','command.php');this.disabled=true;">
+<br />
+<!--{if $club == 7}-->
+	<input type="button" class="cmdbutton" id="sp_adtsk" name="sp_adtsk" value="武器带电" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_adtsk';postCmd('gamecmd','command.php');this.disabled=true;">
+<!--{elseif $club == 8}-->
+	<input type="button" class="cmdbutton" id="sp_adtsk" name="sp_adtsk" value="武器淬毒" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_adtsk';postCmd('gamecmd','command.php');this.disabled=true;">
+	<input type="button" class="cmdbutton" id="sp_poison" name="sp_poison" value="检查毒物" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_poison';postCmd('gamecmd','command.php');this.disabled=true;">
 <!--{/if}-->

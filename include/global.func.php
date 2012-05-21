@@ -80,7 +80,7 @@ function template($file, $templateid = 0, $tpldir = '') {
 		return template($file, 1, './templates/default/');
 	}
 	if($tplrefresh == 1) {
-		if(filemtime($tplfile) > filemtime($objfile)) {
+		if(!file_exists($objfile) || filemtime($tplfile) > filemtime($objfile)) {
 			require_once GAME_ROOT.'./include/template.func.php';
 			parse_template($file, $templateid, $tpldir);
 		}
@@ -175,6 +175,7 @@ function writeover($filename,$data,$method="rb+",$iflock=1,$check=1,$chmod=1){
 		fclose($handle); 
 	}
 	$chmod && chmod($filename,0777);
+	return;
 }
 
 //打开文件，以数组形式返回
@@ -263,12 +264,56 @@ function logsave($pid,$time,$log = '',$type = 's'){
 	return;	
 }
 
+function load_gameinfo() {
+	global $now,$db,$tablepre;
+	global $gamenum,$gamestate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$weather,$hack,$validnum,$alivenum,$deathnum,$afktime,$optime;
+	$result = $db->query("SELECT * FROM {$tablepre}game");
+	$gameinfo = $db->fetch_array($result);
+	$gamenum = $gameinfo['gamenum'];
+	$gamestate = $gameinfo['gamestate'];
+	$starttime = $gameinfo['starttime'];
+	$winmode = $gameinfo['winmode'];
+	$winner = $gameinfo['winner'];
+	$arealist = explode(',',$gameinfo['arealist']);
+	$areanum = $gameinfo['areanum'];
+	$areatime = $gameinfo['areatime'];
+	$validnum = $gameinfo['validnum'];
+	$alivenum = $gameinfo['alivenum'];
+	$deathnum = $gameinfo['deathnum'];
+	$afktime = $gameinfo['afktime'];
+	$optime = $gameinfo['optime'];
+	$weather = $gameinfo['weather'];
+	$hack = $gameinfo['hack'];
+	return;
+}
+
 function save_gameinfo() {
-	global $gamenum,$gamestate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$weather,$hack,$validnum,$alivenum,$deathnum;
+	global $now,$db,$tablepre;
+	global $gamenum,$gamestate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$weather,$hack,$validnum,$alivenum,$deathnum,$afktime,$optime;
 	if(!isset($gamenum)||!isset($gamestate)){return;}
 	if($alivenum < 0){$alivenum = 0;}
 	if($deathnum < 0){$deathnum = 0;}
-	$gameinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\n?>";
+	if(empty($afktime)){$afktime = $now;}
+	if(empty($optime)){$optime = $now;}
+	$gameinfo = Array();
+	$gameinfo['gamenum'] = $gamenum;
+	$gameinfo['gamestate'] = $gamestate;
+	$gameinfo['starttime'] = $starttime;
+	$gameinfo['winmode'] = $winmode;
+	$gameinfo['winner'] = $winner;
+	$gameinfo['arealist'] = implode(',',$arealist);
+	$gameinfo['areanum'] = $areanum;
+	$gameinfo['areatime'] = $areatime;
+	$gameinfo['validnum'] = $validnum;
+	$gameinfo['alivenum'] = $alivenum;
+	$gameinfo['deathnum'] = $deathnum;
+	$gameinfo['afktime'] = $afktime;
+	$gameinfo['optime'] = $optime;
+	$gameinfo['weather'] = $weather;
+	$gameinfo['hack'] = $hack;
+	$db->array_update("{$tablepre}game",$gameinfo,1);
+	/*
+	$gameinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\$afktime = {$afktime};\n\$optime = {$optime};\n\n?>";
 	$dir = GAME_ROOT.'./gamedata/';
 	if($fp = fopen("{$dir}gameinfo.php", 'w')) {
 		if(flock($fp,LOCK_EX)) {
@@ -279,7 +324,7 @@ function save_gameinfo() {
 		fclose($fp);
 	} else {
 		gexit('Can not write to cache files, please check directory ./gamedata/ .', __file__, __line__);
-	}
+	}*/
 	return;
 }
 
@@ -311,7 +356,7 @@ function save_combatinfo(){
 function getchat($last,$team='',$limit=0) {
 	global $db,$tablepre,$chatlimit,$chatinfo,$plsinfo;
 	$limit = $limit ? $limit : $chatlimit;
-	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid>$last AND (type!='1' OR (type='1' AND recv='$team')) ORDER BY cid desc LIMIT $limit");
+	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid>'$last' AND (type!='1' OR (type='1' AND recv='$team')) ORDER BY cid desc LIMIT $limit");
 
 	if(!$db->num_rows($result)){$chatdata = array('lastcid' => $last, 'msg' => '');return $chatdata;}
 	

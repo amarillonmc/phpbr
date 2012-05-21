@@ -44,6 +44,16 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 		$state = 31;
 	} elseif ($death == 'gradius') {
 		$state = 33;
+	} elseif ($death == 'SCP') {
+		$state = 34;
+	} elseif ($death == 'salv'){
+		$state = 35;
+	} elseif ($death == 'kagari1'){
+		$state = 36;
+	} elseif ($death == 'kagari2'){
+		$state = 37;
+	} elseif ($death == 'kagari3'){
+		$state = 38;
 	} else {
 		$state = 10;
 	}
@@ -414,9 +424,7 @@ function rest($command) {
 		$mode = 'command';
 	}
 	
-	if ($command == 'rest') {
-		$cmd = '你正在' . $restinfo [$state] . '。<br><input type="hidden" name="mode" value="rest"><br><input type="radio" name="command" id="rest" value="rest" checked><a onclick=sl("rest"); href="javascript:void(0);" >' . $restinfo [$state] . '</a><br><input type="radio" name="command" id="back" value="back"><a onclick=sl("back"); href="javascript:void(0);" >返回</a>';
-	} else {
+	if ($command != 'rest') {
 		$state = 0;
 		$endtime = $now;
 		$mode = 'command';

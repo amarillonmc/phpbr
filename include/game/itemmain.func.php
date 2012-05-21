@@ -1,5 +1,13 @@
 <?php
 
+//
+//	date:2012-02-02
+///include/game/itemmain.func.php
+//	Issue：
+//	preg_replace
+//	
+//*/
+
 if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
@@ -68,7 +76,9 @@ function trap(){
 		if($damage){
 			$hp -= $damage;
 		
-			if($playerflag){naddnews($now,'trap',$name,$trname,$itm0);}
+			if($playerflag){
+				naddnews($now,'trap',$name,$trname,$itm0);
+			}
 			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 			if($goodmancard){
 				$gm = ceil($goodmancard*rand(80,120)/100);
@@ -81,12 +91,26 @@ function trap(){
 				include_once GAME_ROOT.'./include/state.func.php';
 				$killmsg = death('trap',$trname,$trtype,$itm0);
 				$log .= "你被{$trperfix}陷阱杀死了！";
+				
 				if($killmsg && !$selflag){
 					$log .= "<span class=\"yellow\">{$trname}对你说：“{$killmsg}”</span><br>";
 				}				
 			}
+			if($playerflag && !$selflag && $hp<=0){
+				$w_log = "<span class=\"red\">{$name}触发了你设置的陷阱{$itm0}并被杀死了！</span><br>";
+				logsave ( $itmsk0, $now, $w_log ,'b');
+			}elseif($playerflag && !$selflag){
+				$w_log = "<span class=\"yellow\">{$name}触发了你设置的陷阱{$itm0}！</span><br>";
+				logsave ( $itmsk0, $now, $w_log ,'b');
+			}
 		}else{
-			if($playerflag){naddnews($now,'trapdef',$name,$trname,$itm0);}
+			if($playerflag){
+				naddnews($now,'trapdef',$name,$trname,$itm0);
+				if(!$selflag){
+					$w_log = "<span class=\"yellow\">{$name}触发了你设置的陷阱{$itm0}，但是没有受到任何伤害！</span><br>";
+					logsave ( $itmsk0, $now, $w_log ,'b');
+				}				
+			}
 			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！<br>不过，身上装备着的自动迎击系统启动了！<span class=\"yellow\">在迎击功能的保护下你毫发无伤。</span><br>";
 		}
 		
@@ -94,8 +118,10 @@ function trap(){
 		$itme0 = $itms0 = 0;
 		return;
 	} else {
-		if($playerflag){
+		if($playerflag && !$selflag){
 			naddnews($now,'trapmiss',$name,$trname,$itm0);
+			$w_log = "<span class=\"yellow\">{$name}回避了你设置的陷阱{$itm0}！</span><br>";
+			logsave ( $itmsk0, $now, $w_log ,'b');
 		}
 		$dice = rand(0,99);
 		$fdrate = $club == 5 ? 40 + $lvl/3 : 5 + $lvl/3;
@@ -154,7 +180,7 @@ function itemget() {
 			$mode = 'command';
 			return;
 		}else{
-			for($i = 1;$i <= 5;$i++){
+			for($i = 1;$i <= 6;$i++){
 				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 				if((${'itms'.$i})&&($itm0 == ${'itm'.$i})&&($itmk0 == ${'itmk'.$i})&&($itme0 == ${'itme'.$i})&&($itmsk0 == ${'itmsk'.$i})){
 					${'itms'.$i} += $itms0;
@@ -168,17 +194,20 @@ function itemget() {
 		}
 	} elseif(preg_match('/^H|^P/',$itmk0) && $itms0 !== $nosta){
 		$sameitem = array();
-		for($i = 1;$i <= 5;$i++){
+		for($i = 1;$i <= 6;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i};
 			if(${'itms'.$i}&&($itm0 == ${'itm'.$i})&&($itme0 == ${'itme'.$i})&&(preg_match('/^(H|P)/',${'itmk'.$i}))){
 				$sameitem[] = $i;
 			}
 		}
 		if(isset($sameitem[0])){
-			$cmd .= '<input type="hidden" name="mode" value="itemmain"><input type="hidden" name="command" value="itemmerge"><input type="hidden" name="merge1" value="0"><br>是否将 <span class="yellow">'.$itm0.'</span> 与以下物品合并？<br><input type="radio" name="merge2" id="itmn" value="n" checked><a onclick=sl("itmn"); href="javascript:void(0);" >不合并</a><br><br>';
-			foreach($sameitem as $n) {
-				$cmd .= '<input type="radio" name="merge2" id="itm'.$n.'" value="'.$n.'"><a onclick=sl("itm'.$n.'"); href="javascript:void(0);">'."${'itm'.$n}/${'itme'.$n}/${'itms'.$n}".'</a><br>';
-			}
+			include template('itemmerge0');
+			$cmd = ob_get_contents();
+			ob_clean();
+//			$cmd .= '<input type="hidden" name="mode" value="itemmain"><input type="hidden" name="command" value="itemmerge"><input type="hidden" name="merge1" value="0"><br>是否将 <span class="yellow">'.$itm0.'</span> 与以下物品合并？<br><input type="radio" name="merge2" id="itmn" value="n" checked><a onclick=sl("itmn"); href="javascript:void(0);" >不合并</a><br><br>';
+//			foreach($sameitem as $n) {
+//				$cmd .= '<input type="radio" name="merge2" id="itm'.$n.'" value="'.$n.'"><a onclick=sl("itm'.$n.'"); href="javascript:void(0);">'."${'itm'.$n}/${'itme'.$n}/${'itms'.$n}".'</a><br>';
+//			}
 			return;
 		}
 		
@@ -295,7 +324,7 @@ function itemadd(){
 		$mode = 'command';
 		return;
 	}
-	for($i = 1;$i <= 5;$i++){
+	for($i = 1;$i <= 6;$i++){
 		global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
 		if(!${'itms'.$i}){
 			$log .= "将<span class=\"yellow\">$itm0</span>放入包裹。<br>";
@@ -310,13 +339,15 @@ function itemadd(){
 			return;
 		}
 	}
-	$log .= '你的包裹已经满了。想要丢掉哪个物品？<br>';
-	
-	$cmd .= '<input type="hidden" name="mode" value="itemmain"><br><input type="radio" name="command" id="dropitm0" value="dropitm0" checked><a onclick=sl("dropitm0"); href="javascript:void(0);" >'."$itm0/$itme0/$itms0".'</a><br><br>';
-
-	for($i = 1;$i <= 5;$i++){
-		$cmd .= '<input type="radio" name="command" id="swapitm'.$i.'" value="swapitm'.$i.'"><a onclick=sl("swapitm'.$i.'"); href="javascript:void(0);" >'."${'itm'.$i}/${'itme'.$i}/${'itms'.$i}".'</a><br>';
-	}
+	//$log .= '你的包裹已经满了。想要丢掉哪个物品？<br>';
+	include template('itemdrop0');
+	$cmd = ob_get_contents();
+	ob_clean();
+//	$cmd .= '<input type="hidden" name="mode" value="itemmain"><br><input type="radio" name="command" id="dropitm0" value="dropitm0" checked><a onclick=sl("dropitm0"); href="javascript:void(0);" >'."$itm0/$itme0/$itms0".'</a><br><br>';
+//
+//	for($i = 1;$i <= 6;$i++){
+//		$cmd .= '<input type="radio" name="command" id="swapitm'.$i.'" value="swapitm'.$i.'"><a onclick=sl("swapitm'.$i.'"); href="javascript:void(0);" >'."${'itm'.$i}/${'itme'.$i}/${'itms'.$i}".'</a><br>';
+//	}
 	return;
 }
 
@@ -400,36 +431,35 @@ function itemmerge($itn1,$itn2){
 	return;
 }
 
-function itemmix($m1=0,$m2=0,$m3=0) {
+function itemmix($mlist) {
 	global $log,$mode,$gamecfg,$name,$nosta;
-	global ${'itm'.$m1},${'itm'.$m2},${'itm'.$m3},$club,$wd;
-
-	if(($m1 && ($m1 == $m2 || $m1 == $m3)) || ($m2 && ($m2 == $m3))) {
-	//if((${'itm'.$m1} && ((${'itm'.$m1} == ${'itm'.$m2}) || (${'itm'.$m1} == ${'itm'.$m3}))) || ((${'itm'.$m2}) && (${'itm'.$m2} == ${'itm'.$m3}))) {
+	global $itm1,$itm2,$itm3,$itm4,$itm5,$itm6,$itms1,$itms2,$itms3,$itms4,$itms5,$itms6,$club,$wd;
+	
+	$mlist2 = array_unique($mlist);	
+	if(count($mlist) != count($mlist2)) {
 		$log .= '相同道具不能进行合成！<br>';
 		$mode = 'itemmix';
 		return;
 	}
-
 	
-	$mi1=${'itm'.$m1};$mi2=${'itm'.$m2};$mi3=${'itm'.$m3};
-	foreach(Array('/^锋利的/','/^电气/','/^毒性/','/-改$/') as $value){
-		if($mi1){$mi1 = preg_replace($value,'',$mi1);}
-		if($mi2){$mi2 = preg_replace($value,'',$mi2);}
-		if($mi3){$mi3 = preg_replace($value,'',$mi3);}
-	}
-	$mixitem = array();
-	if($mi1) { $mixitem[] = $mi1; }
-	if($mi2) { $mixitem[] = $mi2; }
-	if($mi3) { $mixitem[] = $mi3; }
-//	if(${'itm'.$m1}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$|^电气|^毒性)/','',${'itm'.$m1}); }
-//	if(${'itm'.$m2}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$|^电气|^毒性)/','',${'itm'.$m2}); }
-//	if(${'itm'.$m3}) { $mixitem[] = preg_replace('/(钉|^锋利的|-改$|^电气|^毒性)/','',${'itm'.$m3}); }
-
-	if(sizeof($mixitem) < 2){
+	if(count($mlist) < 2){
 		$log .= '至少需要2个道具才能进行合成！';
 		$mode = 'itemmix';
 		return;
+	}
+	
+	$mixitem = array();
+	foreach($mlist as $val){
+		if(!${'itm'.$val}){
+			$log .= '所选择的道具不存在！';
+			$mode = 'itemmix';
+			return;
+		}
+		$mitm = ${'itm'.$val};
+		foreach(Array('/^锋利的/','/^电气/','/^毒性/','/-改$/') as $value){
+			$mitm = preg_replace($value,'',$mitm);
+		}
+		$mixitem[] = $mitm;
 	}
 	
 	include_once config('mixitem',$gamecfg);
@@ -441,18 +471,24 @@ function itemmix($m1=0,$m2=0,$m3=0) {
 		}
 	}
 
+	$itmstr = '';
+	foreach($mixitem as $val){
+		$itmstr .= $val.' ';
+	}
+	$itmstr = substr($itmstr,0,-1);
+		
 	if(!$mixflag) {
-		$log .= "<span class=\"yellow\">$mixitem[0] $mixitem[1] $mixitem[2]</span> 不能合成！<br>";
+		$log .= "<span class=\"yellow\">$itmstr</span>不能合成！<br>";
 		$mode = 'itemmix';
 	} else {
-		if($m1) {itemreduce('itm'.$m1);}
-		if($m2) {itemreduce('itm'.$m2);}
-		if($m3) {itemreduce('itm'.$m3);}
-		
+		foreach($mlist as $val){
+			itemreduce('itm'.$val);
+		}
+
 		global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
 
 		list($itm0,$itmk0,$itme0,$itms0,$itmsk0) = $minfo['result'];
-		$log .= "<span class=\"yellow\">$mixitem[0] $mixitem[1] $mixitem[2]</span>合成了<span class=\"yellow\">{$minfo['result'][0]}</span><br>";
+		$log .= "<span class=\"yellow\">$itmstr</span>合成了<span class=\"yellow\">{$minfo['result'][0]}</span><br>";
 		naddnews($now,'itemmix',$name,$itm0);
 		//if($club == 5) { $wd += 2; }
 		//else { $wd+=1; }
@@ -493,7 +529,7 @@ function itemreduce($item){ //只限合成使用！！
 
 
 function itembuy($item,$shop,$bnum=1) {
-	global $log,$name,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$pls,$shops,$club;
+	global $log,$name,$mode,$now,$money,$areanum,$areaadd,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$pls,$shops,$club;
 	global $db,$tablepre;
 	$result=$db->query("SELECT * FROM {$tablepre}shopitem WHERE sid = '$item'");
 	$iteminfo = $db->fetch_array($result);
@@ -502,7 +538,8 @@ function itembuy($item,$shop,$bnum=1) {
 	//$itemlist = openfile($file);
 	//$iteminfo = $itemlist[$item];
 	if(!$iteminfo) {
-		$log .= '要购买的道具不存在！<br>';
+		$log .= '要购买的道具不存在！<br><br>';
+		$mode = 'command';
 		return;
 	}
 
@@ -513,22 +550,28 @@ function itembuy($item,$shop,$bnum=1) {
 	$bnum = (int)$bnum;
 	//list($num,$price,$iname,$ikind,$ieff,$ista,$isk) = explode(',',$iteminfo);
 	if($iteminfo['num'] <= 0) {
-		$log .= '此物品已经售空！<br>';
+		$log .= '此物品已经售空！<br><br>';
+		$mode = 'command';
 		return;
 	} elseif($bnum<=0) {
-		$log .= '购买数量必须为大于0的整数。<br>';
+		$log .= '购买数量必须为大于0的整数。<br><br>';
+		$mode = 'command';
 		return;
 	} elseif($bnum>$iteminfo['num']) {
-		$log .= '购买数量必须小于存货数量。<br>';
+		$log .= '购买数量必须小于存货数量。<br><br>';
+		$mode = 'command';
 		return;
 	} elseif($money < $price*$bnum) {
-		$log .= '你的钱不够，不能购买此物品！<br>';
+		$log .= '你的钱不够，不能购买此物品！<br><br>';
+		$mode = 'command';
 		return;
 	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$iteminfo['itmk'])&&$bnum>1) {
-		$log .= '此物品一次只能购买一个。<br>';
+		$log .= '此物品一次只能购买一个。<br><br>';
+		$mode = 'command';
 		return;
 	}elseif($iteminfo['area']> $areanum/$areaadd){
-		$log .= '此物品尚未开放出售！<br>';
+		$log .= '此物品尚未开放出售！<br><br>';
+		$mode = 'command';
 		return;
 	}
 //	if (strpos($ikind,'_') !== false) {

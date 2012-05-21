@@ -13,6 +13,9 @@
 <input type="radio" name="command" id="chkp4" value="chkp4"><a onclick=sl('chkp4'); href="javascript:void(0);" ><?=$itm4?> </a><br>
 <? } if($itms5 && ((strpos($itmk5,'P') === 0) || (strpos($itmk5,'H') === 0))) { ?>
 <input type="radio" name="command" id="chkp5" value="chkp5"><a onclick=sl('chkp5'); href="javascript:void(0);" ><?=$itm5?> </a><br>
+<? } if($itms6 && ((strpos($itmk6,'P') === 0) || (strpos($itmk6,'H') === 0))) { ?>
+<input type="radio" name="command" id="chkp6" value="chkp6"><a onclick=sl('chkp6'); href="javascript:void(0);" ><?=$itm6?> </a><br>
 <? } ?>
- 
+<br><br>
 
+<input type="button" class="cmdbutton" name="submit" value="提交" onclick="postCmd('gamecmd','command.php');this.disabled=true;">

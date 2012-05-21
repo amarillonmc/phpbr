@@ -14,7 +14,7 @@ if($gamestate > 10) {
 		$timing = 0;
 	}
 }
-
+$adminmsg = file_get_contents('./gamedata/adminmsg.htm') ;
 include template('index');
 
 ?>

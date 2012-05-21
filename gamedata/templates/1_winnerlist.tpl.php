@@ -7,44 +7,44 @@
 <input type="button" value="查看选择回数的进行状况" onclick="javascript:document.info.command.value='news';document.info.submit();">
 <center>
 <TABLE border="1" cellspacing="0" cellpadding="0">
-<TR height="20"><TD class="b1"><DIV class=nttx>&nbsp;</div></TD><TD class="b1"><DIV class=nttx>回</div></TD><TD class="b1"><DIV class=nttx>优胜者名</div></TD><TD class="b1"><DIV class=nttx>胜利方式</div></TD><TD class="b1"><DIV class=nttx>游戏结束时间</div></TD><TD class="b1"><DIV class=nttx>胜利者留言</div></TD><TD class="b1"><DIV class=nttx>使用武器</div></TD></TR>
+<TR height="20"><TD class="b1"><span>&nbsp;</span></TD><TD class="b1"><span>回</span></TD><TD class="b1"><span>优胜者名</span></TD><TD class="b1"><span>胜利方式</span></TD><TD class="b1"><span>游戏结束时间</span></TD><TD class="b1"><span>胜利者留言</span></TD><TD class="b1"><span>使用武器</span></TD></TR>
 <? if(is_array($winfo)) { foreach($winfo as $info) { if($info['wmode'] && $info['wmode'] != 4) { ?>
 <TR height="20">
-<TD class="b2"><DIV class=nttx><INPUT type="radio" name="gnum" value="<?=$info['gid']?>" ></div></TD>
-<TD class="b2"><DIV class=nttx><?=$info['gid']?></div></TD>
-<TD class="b3" style="white-space: nowrap;"><DIV class=nttx>
+<TD class="b2"><span><INPUT type="radio" name="gnum" value="<?=$info['gid']?>" ></span></TD>
+<TD class="b2"><span><?=$info['gid']?></span></TD>
+<TD class="b3" style="white-space: nowrap;"><span>
 <? if($info['name']) { ?>
 <b><?=$info['name']?></b>
 <? } else { ?>
 无
 <? } ?>
-</div></TD>
-<TD class="b3"><DIV class=nttx><?=$gwin[$info['wmode']]?></div></TD>
-<TD class="b3"><DIV class=nttx><?=$info['date']?></div></TD>
-<TD class="b3"><DIV class=nttx>
+</span></TD>
+<TD class="b3"><span><?=$gwin[$info['wmode']]?></span></TD>
+<TD class="b3"><span><?=$info['date']?></span></TD>
+<TD class="b3"><span>
 <? if($info['motto']) { ?>
 <?=$info['motto']?>
 <? } else { ?>
 无
 <? } ?>
-</div></TD>
-<TD class="b3"><DIV class=nttx>
+</span></TD>
+<TD class="b3"><span>
 <? if($info['wep']) { ?>
 <?=$info['wep']?>
 <? } else { ?>
 无
 <? } ?>
-</div></TD>
+</span></TD>
 </TR>
 <? } else { ?>
 <TR height="20">
 <TD class="b2"></TD>
-<TD class="b2"><DIV class=nttx><?=$info['gid']?></div></TD>
-<TD class="b3" style="white-space: nowrap;"><DIV class=nttx>无</div></TD>
-<TD class="b3"><DIV class=nttx><?=$gwin[$info['wmode']]?></div></TD>
-<TD class="b3"><DIV class=nttx><?=$info['date']?></div></TD>
-<TD class="b3"><DIV class=nttx>无</div></TD>
-<TD class="b3"><DIV class=nttx>无</div></TD>
+<TD class="b2"><span><?=$info['gid']?></span></TD>
+<TD class="b3" style="white-space: nowrap;"><span>无</span></TD>
+<TD class="b3"><span><?=$gwin[$info['wmode']]?></span></TD>
+<TD class="b3"><span><?=$info['date']?></span></TD>
+<TD class="b3"><span>无</span></TD>
+<TD class="b3"><span>无</span></TD>
 </TR>
 <? } } } ?>
 </TABLE>

@@ -1,18 +1,18 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); include template('header'); ?>
 <table align="center" style="text-align:center;border:0;padding:0;">
 <tr>
-<td><span class="yellow">官方网站：</span></td>
-<td style="text-align:left;"><a href="<?=$homepage?>" class="evergreen" target="_blank"><?=$homepage?></a> MODDED By <u>冴月麟</u></td>
+<td><span class="yellow">游戏版本：</span></td>
+<td style="text-align:left;"><span class="evergreen"><?=$gameversion?></span></td>
 <td style="text-align:center;padding:0 0 0 25px;"><span class="yellow">站长留言</span></td>
 </tr>
 <tr>
 <td><span class="yellow">当前时刻：</span></td>
 <td style="text-align:left;"><span class="evergreen"><?=$month?>月<?=$day?>日 星期<?=$week["$wday"]?> <?=$hour?>:<?=$min?></span></td>
-<td rowspan="4" style="width:500px;vertical-align:top;text-align:left;padding:0 0 0 25px;"><span class="evergreen"><?=$adminmsg?></span></td>
+<td rowspan="4" style="width:400px;vertical-align:top;text-align:left;padding:0 0 0 25px;"><span class="evergreen"><?=$adminmsg?></span></td>
 </tr>
 <tr>
 <td><span class="yellow">系统状况：</span></td>
-<td style="text-align:left;"><span class="evergreen"><?=$adminmsg2?></span></td>
+<td style="text-align:left;"><span class="evergreen"><?=$systemmsg?></span></td>
 </tr>
 <tr>
 <td><span class="yellow">游戏情报：</span></td>

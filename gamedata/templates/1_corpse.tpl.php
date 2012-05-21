@@ -78,6 +78,13 @@ checked
 /<?=$w_itmsk5_words?>
 <? } ?>
 </a><br>
+<? } if($w_itms6) { ?>
+<input type="radio" name="command" id="itm6" value="itm6"><a onclick=sl('itm6'); href="javascript:void(0);" ><?=$w_itm6?>/<?=$w_itmk6_words?>/<?=$w_itme6?>/<?=$w_itms6?>
+<? if($w_itmsk6_words) { ?>
+/<?=$w_itmsk6_words?>
+<? } ?>
+</a><br>
 <? } if($w_money) { ?>
 <input type="radio" name="command" id="money" value="money" checked><a onclick=sl('money'); href="javascript:void(0);" ><?=$w_money?> 元 </a><br>
 <? } ?>
+<input type="button" name="submit" value="提交" onclick="postCmd('gamecmd','command.php');this.disabled=true;">

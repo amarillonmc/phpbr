@@ -5,10 +5,10 @@
 <? } ?>
 ，效：<?=$itme0?>，耐：<?=$itms0?>。
 <br>
+<br>
 你想如何处理？
 <br>
-<input type="hidden" name="mode" value="itemmain">
-<input type="radio" name="command" id="itemget" value="itemget" checked><a onclick=sl("itemget"); href="javascript:void(0);" >拾取</a>
-<br>
-<input type="radio" name="command" id="itm0" value="dropitm0"><a onclick=sl("itm0"); href="javascript:void(0);" >丢弃</a>
-<br>
+<input type="hidden" id="mode" name="mode" value="itemmain">
+<input type="hidden" id="command" name="command" value="itemget">
+<input type="button" class="cmdbutton" name="itemget" value="拾取" onclick="postCmd('gamecmd','command.php');this.disabled=true;"><br><br>
+<input type="button" class="cmdbutton" name="dropitm0" value="丢弃" onclick="$('command').value='dropitm0';postCmd('gamecmd','command.php');this.disabled=true;">

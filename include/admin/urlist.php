@@ -2,167 +2,133 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 6){
-	exit($_ERROR['no_power']);
-}
-
-
-if($command == 'check') {
-	$urorder = $urorder ? $urorder : 'uid';
+if(!isset($urcmd)){$urcmd = '';}
+if($urcmd){
+	if(!isset($start)){$start = 0;}
+	if(!isset($pagemode)){$pagemode = '';}
 	$start = getstart($start,$pagemode);
-	$result = $db->query("SELECT * FROM {$tablepre}users ORDER BY $urorder DESC, uid DESC LIMIT $start,$showlimit");
-	if(!$db->num_rows($result)) { echo '没有符合条件的用户！'; }
-	else {
-		while($ur = $db->fetch_array($result)) {
-			$urdata[] = $ur;
+	if($pagecmd == 'check'){
+		if(empty($urorder) || !in_array($urorder,Array('uid','groupid','lastgame'))){
+			$urorder = 'uid';
 		}
-		foreach($urdata as $n => $ur) {
-			$urlisthtm .= "<tr><td><input type=\"checkbox\" name=\"user_$n\" value=\"{$ur['username']}\"></td><td>{$ur['username']}</td><td>{$urgroup[$ur['groupid']]}</td><td>第{$ur['lastgame']}局</td><td>{$ur['ip']}</td><td>{$ur['credits']}</td><td>{$ursex[$ur['gender']]}</td><td>{$ur['icon']}</td><td>{$clubinfo[$ur['club']]}</td><td>{$ur['motto']}</td><td>{$ur['killmsg']}</td><td>{$ur['lastword']}</td></tr>";
+		$urorder2 = $urorder2 == 'ASC' ? 'ASC' : 'DESC';
+		$result = $db->query("SELECT * FROM {$tablepre}users ORDER BY $urorder $urorder2, uid DESC LIMIT $start,$showlimit");	
+	}elseif($pagecmd == 'find'){
+		if($checkmode == 'ip') {
+			$result = $db->query("SELECT * FROM {$tablepre}users WHERE ip LIKE '%{$checkinfo}%' ORDER BY uid DESC LIMIT $start,$showlimit");
+		} else {
+			$result = $db->query("SELECT * FROM {$tablepre}users WHERE username LIKE '%{$checkinfo}%' ORDER BY uid DESC LIMIT $start,$showlimit");
 		}
-		echo count($urdata).'条结果。<br>';
-		$cmd = '<input type="hidden" name="command" value="check"><input type="hidden" name="urorder" value="'.$urorder.'">';
-		urlist($urlisthtm,$cmd,$start);
 	}
-} elseif($command == 'find') {
-	$start = getstart($start,$pagemode);
-	if($checkmode == 'ip') {
-		$result = $db->query("SELECT * FROM {$tablepre}users WHERE ip LIKE '%{$checkinfo}%' ORDER BY uid DESC LIMIT $start,$showlimit");
+	if(!$db->num_rows($result)) {
+		$cmd_info = '没有符合条件的帐户！';
+		$startno = $start + 1;
+		$resultinfo = '位置：第'.$startno.'条记录';
 	} else {
-		$result = $db->query("SELECT * FROM {$tablepre}users WHERE username LIKE '%{$checkinfo}%' ORDER BY uid DESC LIMIT $start,$showlimit");
-	}
-	if(!$db->num_rows($result)) { echo '没有符合条件的用户！'; }
-	else {
 		while($ur = $db->fetch_array($result)) {
-			$urdata[] = $ur;
+			if(!$ur['gender']){$ur['gender']='0';}
+			$urdata[] = $ur;			
 		}
-		foreach($urdata as $n => $ur) {
-			$urlisthtm .= "<tr><td><input type=\"checkbox\" name=\"user_$n\" value=\"{$ur['username']}\"></td><td>{$ur['username']}</td><td>{$urgroup[$ur['groupid']]}</td><td>第{$ur['lastgame']}局</td><td>{$ur['ip']}</td><td>{$ur['credits']}</td><td>{$ursex[$ur['gender']]}</td><td>{$ur['icon']}</td><td>{$clubinfo[$ur['club']]}</td><td>{$ur['motto']}</td><td>{$ur['killmsg']}</td><td>{$ur['lastword']}</td></tr>";
-		}
-		echo count($urdata).'条结果。<br>';
-		$cmd = '<input type="hidden" name="command" value="find"><input type="hidden" name="checkinfo" value="'.$checkinfo.'"><input type="hidden" name="checkmode" value="'.$checkmode.'">';
-		urlist($urlisthtm,$cmd,$start);
+		$startno = $start + 1;
+		$endno = $start + count($urdata);
+		$resultinfo = '第'.$startno.'条-第'.$endno.'条记录';
 	}
-} elseif($command == 'ban') {
+}
+if($urcmd == 'ban' || $urcmd == 'unban' || $urcmd == 'del') {
+	$operlist = $gfaillist = $ffaillist = array();
 	for($i=0;$i<$showlimit;$i++){
 		if(isset(${'user_'.$i})) {
-			$urlist[] = ${'user_'.$i};
+			if(isset($urdata[$i]) && $urdata[$i]['uid'] == ${'user_'.$i} && $urdata[$i]['groupid'] < $mygroup){
+				$operlist[${'user_'.$i}] = $urdata[$i]['username'];
+				if($urcmd == 'ban'){
+					$urdata[$i]['groupid'] = 0;
+				}elseif($urcmd == 'unban'){
+					$urdata[$i]['groupid'] = 1;
+				}elseif($urcmd == 'del'){
+					unset($urdata[$i]);
+				}
+//				adminlog('banur',$urdata[$i]['username']);
+			}elseif(isset($urdata[$i]) && $urdata[$i]['uid'] == ${'user_'.$i}){
+				$gfaillist[${'user_'.$i}] = $urdata[$i]['username'];
+			}else{
+				$ffaillist[] = ${'user_'.$i};
+			}			
 		}
 	}
-	foreach($urlist as $n => $name) {
-		$db->query("UPDATE {$tablepre}users SET groupid='0' WHERE username='$name' AND groupid<='$mygroup'");
-		if($db->affected_rows()){
-			adminlog('banur',$name);
-			echo " 用户 $name 被封停。<br>";
-		} else {
-			echo "无法封停用户 $name 。";
+	if($operlist || $gfaillist || $ffaillist){
+		$cmd_info = '';
+		if($urcmd == 'ban'){
+			$operword = '封停';
+			$qryword = "UPDATE {$tablepre}users SET groupid='0' ";
+		}elseif($urcmd == 'unban'){
+			$operword = '解封';
+			$qryword = "UPDATE {$tablepre}users SET groupid='1' ";
+		}elseif($urcmd == 'del'){
+			$operword = '删除';
+			$qryword = "DELETE FROM {$tablepre}users ";
 		}
-	}
-} elseif($command == 'unban') {
-	for($i=0;$i<$showlimit;$i++){
-		if(isset(${'user_'.$i})) {
-			$urlist[] = ${'user_'.$i};
+		if($operlist){
+			$qrywhere = '('.implode(',',array_keys($operlist)).')';
+			$opernames = implode(',',($operlist));
+			$db->query("$qryword WHERE uid IN $qrywhere");
+			$cmd_info .= " 帐户 $opernames 被 $operword 。<br>";
 		}
-	}
-	foreach($urlist as $n => $name) {
-		$db->query("UPDATE {$tablepre}users SET groupid='1' WHERE username='$name' AND groupid<='$mygroup'");
-		if($db->affected_rows()){
-			adminlog('unbanur',$name);
-			echo " 用户 $name 已解封。<br>";
-		} else {
-			echo "无法解封用户 $name 。";
+		if($gfaillist){
+			$gfailnames = implode(',',($gfaillist));
+			$cmd_info .= " 权限不够，无法 $operword 帐户 $gfailnames 。<br>";
 		}
-	}
-} elseif($command == 'del') {
-	for($i=0;$i<$showlimit;$i++){
-		if(isset(${'user_'.$i})) {
-			$urlist[] = ${'user_'.$i};
+		if($ffaillist){
+			$ffailnames = implode(',',($ffaillist));
+			$cmd_info .= " UID为 $ffailnames 的帐户不在当前查询范围。<br>";
 		}
+	}else{
+		$cmd_info = "指定的帐户超出查询范围或指令错误。";
 	}
-	foreach($urlist as $n => $name) {
-		$db->query("DELETE FROM {$tablepre}users WHERE username='$name' AND groupid<='$mygroup'");
-		if($db->affected_rows()){
-			adminlog('delur',$name);
-			echo " 用户 $name 被删除。<br>";
-		} else {
-			echo "无法删除用户 $name 。";
-		}
-	}
-}  elseif($command == 'del2') {
+	$urcmd = 'list';
+}  elseif($urcmd == 'del2') {
 	$result = $db->query("SELECT username,uid FROM {$tablepre}users WHERE lastgame = 0 AND groupid<='$mygroup' LIMIT 1000");
 	while($ddata = $db->fetch_array($result)){
 		$n = $ddata['username'];$u = $ddata['uid'];
 		adminlog('delur',$n);
-		echo " 用户 $n 被删除。<br>";
+		echo " 帐户 $n 被删除。<br>";
 		$db->query("DELETE FROM {$tablepre}users WHERE uid='$u'");
-		
 	}
-//	$i = $db->affected_rows();
-//	adminlog('delng');
-//	echo "$i名用户被删除。<br>";
-//	for($i=0;$i<$showlimit;$i++){
-//		if(isset(${'user_'.$i})) {
-//			$urlist[] = ${'user_'.$i};
-//		}
-//	}
-//	foreach($urlist as $n => $name) {
-//		$db->query("DELETE FROM {$tablepre}users WHERE username='$name' AND groupid<='$mygroup'");
-//		if($db->affected_rows()){
-//			adminlog('delur',$name);
-//			echo " 用户 $name 被删除。<br>";
-//		} else {
-//			echo "无法删除用户 $name 。";
-//		}
-//	}
-}elseif($command == 'edit') {
-	echo '此功能尚未开放！';
-} else {
-
-echo <<<EOT
-<form method="post" name="urlist" onsubmit="admin.php">
-$gmlist
-<input type="hidden" name="mode" value="urlist">
-<input type="radio" name="command" id="find" value="find" checked><a onclick=sl('find'); href="javascript:void(0);" >按<select name="checkmode">
-	<option value="username" selected>用户名<br />
-	<option value="ip">用户IP<br />
-</select>查找用户</a><input size="30" type="text" name="checkinfo" id="checkinfo" maxlength="30" /><br><br>
-<input type="radio" name="command" id="check" value="check"><a onclick=sl('check'); href="javascript:void(0);" >按
-	<select name="urorder">
-	<option value="groupid" selected>用户所属组<br />
-	<option value="lastgame">最新游戏<br />
-	<option value="uid">用户编号<br />
-</select>查看用户列表</a><br>
-<input type="radio" name="command" id="del2" value="del2"><a onclick=sl('del2'); href="javascript:void(0);" >删除未使用账户（每次1000个）</a><br>
-<input type="submit" name="submit" value="提交">
-</form>
-EOT;
+}elseif(strpos($urcmd ,'edit')===0) {
+	$uid = explode('_',$urcmd);
+	$no = (int)$uid[1];
+	$uid = (int)$uid[2];
+	if(!$uid){
+		$cmd_info = "帐户UID错误。";
+	}elseif(!isset($urdata[$no]) || $urdata[$no]['uid'] != $uid){
+		$cmd_info = "该帐户不存在或超出查询范围。";
+	}elseif($urdata[$no]['groupid'] >= $mygroup){
+		$cmd_info = "权限不够，不能修改此帐户信息！";
+	}else{
+		$urdata[$no]['motto'] = $urmotto = astrfilter(${'motto_'.$no});
+		$urdata[$no]['killmsg'] = $urkillmsg = astrfilter(${'killmsg_'.$no});
+		$urdata[$no]['lastword'] = $urlastword = astrfilter(${'lastword_'.$no});
+		$urdata[$no]['icon'] = $uricon = (int)(${'icon_'.$no});
+		if(!in_array(${'gender_'.$no},array('0','m','f'))){
+			$urdata[$no]['gender'] = $urgender = '0';
+		}else{
+			$urdata[$no]['gender'] = $urgender = ${'gender_'.$no};
+		}
+		if(!empty(${'pass_'.$no})){
+			$urpass = md5(${'pass_'.$no});
+			$db->query("UPDATE {$tablepre}users SET motto='$urmotto',killmsg='$urkillmsg',lastword='$urlastword',icon='$uricon',gender='$urgender',password='$urpass' WHERE uid='$uid'");
+			$cmd_info = "帐户 ".$urdata[$no]['username']." 的密码及其他信息已修改！";
+		}else{
+			$db->query("UPDATE {$tablepre}users SET motto='$urmotto',killmsg='$urkillmsg',lastword='$urlastword',icon='$uricon',gender='$urgender' WHERE uid='$uid'");
+			$cmd_info = "帐户 ".$urdata[$no]['username']." 的信息已修改！";
+		}		
+	}
+	$urcmd = 'list';
 }
+include template('admin_urlist');
 
 
 
 function urlist($htm,$cmd='',$start=0) {
-	echo <<<EOT
-<form method="post" name="urpage" onsubmit="admin.php">
-<input type="hidden" name="mode" value="urlist">
-<input type="hidden" name="start" value="$start">
-<input type="hidden" name="pagemode" value="down">
-$cmd
-<input type="button" value="上一页" onclick="javascript:document.urpage.pagemode.value='up';document.urpage.submit();">
-<input type="button" value="下一页" onclick="javascript:document.urpage.pagemode.value='down';document.urpage.submit();">
-</form>
-<form method="post" name="urlist" onsubmit="admin.php">
-<table class="admin"><tr><td>选</td><td>账号</td><td>所属组</td><td>最新游戏</td><td>ip</td><td>分数</td><td>性别</td><td>头像</td><td>社团</td><td>口头禅</td><td>杀人留言</td><td>遗言</td></tr>
-$htm
-</table>
-<input type="hidden" name="mode" value="urlist">
-<input type="radio" name="command" id="ban" value="ban"><a onclick=sl('ban'); href="javascript:void(0);" >封停用户</a>
-<input type="radio" name="command" id="unban" value="unban"><a onclick=sl('unban'); href="javascript:void(0);" >解封用户</a>
-<input type="radio" name="command" id="del" value="del"><a onclick=sl('del'); href="javascript:void(0);" >删除用户</a>
-<input type="radio" name="command" id="edit" value="edit"><a onclick=sl('edit'); href="javascript:void(0);" >修改用户资料</a><br>
-<input type="submit" name="submit" value="提交">
-</form>
-EOT;
-	
-	return $urhtm;
 }
 
 ?>

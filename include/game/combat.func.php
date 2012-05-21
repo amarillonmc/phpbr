@@ -9,8 +9,9 @@ function combat($active = 1, $wep_kind = '') {
 	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
 	global $w_pid, $w_name, $w_pass, $w_type, $w_endtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
-	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5;
+	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5,$w_itm6, $w_itmk6, $w_itme6, $w_itms6, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5, $w_itmsk6;
 	global $infinfo, $w_combat_inf;
+	global $rp,$w_rp;
 	
 	$battle_title = '战斗发生';
 	
@@ -135,7 +136,7 @@ function combat($active = 1, $wep_kind = '') {
 		
 		
 		$log .= npc_chat ( $w_type,$w_name, 'attack' );
-		
+		npc_changewep();
 		
 		$w_w1 = substr ( $w_wepk, 1, 1 );
 		$w_w2 = substr ( $w_wepk, 2, 1 );
@@ -204,35 +205,49 @@ function combat($active = 1, $wep_kind = '') {
 	
 	//$bid = $w_pid;
 	
-
-	if ($w_hp <= 0) {
+	if ($w_hp <= 0 && ($w_type == 0 || $w_club != 99)) {
 		$w_bid = $pid;
 		$w_hp = 0;
 		$killnum ++;
+		
 		include_once GAME_ROOT . './include/state.func.php';
 		$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
 		$log .= npc_chat ( $w_type,$w_name, 'death' );
 		
 		$log .= "<span class=\"red\">{$w_name}被你杀死了！</span><br>";
+		$rp = $rp + 20 ;
 		if($killmsg){$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";}
 		include_once GAME_ROOT . './include/game/battle.func.php';
 		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pid'" );
 		$cdata = $db->fetch_array ( $result );
 		findcorpse ( $cdata );
-		//$bid = 0;
 		return;
 	} else {
+		if($w_hp <= 0){//有第二阶段
+			$log .= npc_chat ( $w_type,$w_name, 'death' );
+			include_once GAME_ROOT . './include/system.func.php';
+			$npcdata = evonpc ($w_type,$w_name);
+			$log .= '<span class="yellow">'.$w_name.'却没死去，反而爆发出真正的实力！</span><br>';
+			if($npcdata){
+				naddnews($now , 'evonpc',$w_name, $npcdata['name'], $name);
+				foreach($npcdata as $key => $val){
+					${'w_'.$key} = $val;
+				}
+			}	
+		}
 		$main = 'battle';
 		init_battle ( 1 );
-		$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
+		include template('battleresult');
+		//$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
+		$cmd = ob_get_contents();
+		ob_clean();
 		$bid = $hp <= 0 ? $bid : 0;
 		return;
 	}
-
 }
 
 function attack($wep_kind = 'N', $active = 0) {
-	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate;
+	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate,$specialrate;
 	global $name, $lvl, $gd, $pid, $pls, $hp, $sp, $rage, $exp, $club, $att, $inf, $message;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
 	global $w_arbe, $w_arbsk, $w_arhe, $w_arae, $w_arfe;
@@ -240,6 +255,7 @@ function attack($wep_kind = 'N', $active = 0) {
 	global $w_hp, $w_rage, $w_lvl, $w_pid, $w_gd, $w_name, $w_type, $w_inf, $w_def;
 	global $w_wepsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_artk;
 	
+	//npc_changewep();
 	$is_wpg = false;
 	if ((strpos ( $wepk, 'G' ) == 1) && ($weps == $nosta)) {
 		if (($wep_kind == 'G') || ($wep_kind == 'P')) {
@@ -250,7 +266,8 @@ function attack($wep_kind = 'N', $active = 0) {
 			$watt = $wepe;
 		}
 	} elseif ($wep_kind == 'N') {
-		$watt =  round (${$skillinfo [$wep_kind]}*2/3);
+		global $wp;
+		$watt =  round ($wp*2/3);
 		
 	} else {
 		$watt = $wepe * 2;
@@ -259,7 +276,6 @@ function attack($wep_kind = 'N', $active = 0) {
 	$log .= "使用{$wep}<span class=\"yellow\">$attinfo[$wep_kind]</span>{$w_name}！<br>";
 	
 	$att_key = getatkkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk, $is_wpg );
-	
 	$w_def_key = getdefkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk );
 	global ${$skillinfo [$wep_kind]};
 	$wep_skill = & ${$skillinfo [$wep_kind]};
@@ -274,7 +290,9 @@ function attack($wep_kind = 'N', $active = 0) {
 		} else {
 			$w_active = 1 - $active;
 			$attack = $att + $watt;
-			$defend = $w_def + $w_arbe + $w_arhe + $w_arae + $w_arfe;
+			$defend = checkdef($w_def , $w_arbe + $w_arhe + $w_arae + $w_arfe , $att_key, 1);
+			
+			
 			
 			$damage = get_original_dmg ( '', 'w_', $attack, $defend, $wep_skill, $wep_kind );
 			
@@ -284,7 +302,7 @@ function attack($wep_kind = 'N', $active = 0) {
 			if ($wep_kind == 'F') {
 				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
 			}
-			checkarb ( $damage, $wep_kind, $w_def_key );
+			checkarb ( $damage, $wep_kind, $att_key, $w_def_key ,1);
 			$damage *= $damage_p;
 			
 			$damage = $damage > 1 ? round ( $damage ) : 1;
@@ -345,7 +363,7 @@ function attack($wep_kind = 'N', $active = 0) {
 }
 
 function defend($w_wep_kind = 'N', $active = 0) {
-	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate;
+	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate,$specialrate;
 	global $w_name, $w_lvl, $w_gd, $w_pid, $pls, $w_hp, $w_sp, $w_rage, $w_exp, $w_club, $w_att, $w_inf;
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk;
 	global $arbe, $arbsk, $arhe, $arae, $arfe;
@@ -354,13 +372,15 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	global $wepsk, $arhsk, $arask, $arfsk, $artsk, $artk;
 	global $w_type, $w_sNo, $w_killnum;
 	
+	//npc_changewep();
 	$w_wep_temp = $w_wep;
 	$is_wpg = false;
 	if ((strpos ( $w_wepk, 'G' ) == 1) && ($w_wep_kind == 'P')) {
 		$watt = round ( $w_wepe / 5 );
 		$is_wpg = true;
 	} elseif ($w_wep_kind == 'N') {
-		$watt = ${'w_' . $skillinfo [$w_wep_kind]};
+		global $w_wp;
+		$watt =  round ($w_wp*2/3);
 	} else {
 		$watt = $w_wepe * 2;
 	}
@@ -383,7 +403,8 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			global $w_att;
 			$w_active = 1 - $active;
 			$attack = $w_att + $watt;
-			$defend = $def + $arbe + $arhe + $arae + $arfe;
+			$defend = checkdef($def , $arbe + $arhe + $arae + $arfe,$w_att_key);
+			
 			
 			$damage = get_original_dmg ( 'w_', '', $attack, $defend, $w_wep_skill, $w_wep_kind );
 			
@@ -394,7 +415,7 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			if ($w_wep_kind == 'F') {
 				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
 			}
-			checkarb ( $damage, $w_wep_kind, $def_key );
+			checkarb ( $damage, $w_wep_kind, $w_att_key, $def_key );
 			$damage *= $damage_p;
 			
 			$damage = $damage > 1 ? round ( $damage ) : 1;
@@ -602,27 +623,47 @@ function checkdmg($p1, $p2, $d) {
 	return;
 }
 
-function checkarb(&$dmg, $w, $ar) {
-	global $log;
-	$dmginv = false;
-	if (strpos ( $ar, 'B' ) !== false) {
-		$dice = rand ( 0, 999 );
-		if ($dice < 1000) {
-			$dmg = 1;
-			$log .= "<span class=\"red\">攻击的力量完全被装备吸收了！</span><br>";
-			$dmginv = true;
-		}else{
-			$log .= "纳尼？装备使攻击无效化的属性竟然失效了！<br>";
+function checkdef($def, $ardef, $aky, $active = 0){
+	global $specialrate,$log,$w_name;
+	$defend = $def + $ardef;
+	if(strpos($aky,'N')!==false){
+		$Ndice = rand(0,99);
+		if($Ndice < $specialrate['N']){
+			$defend = $def + round($ardef / 2);
+			$log .= $active ? "<span class=\"yellow\">你的攻击隔着{$w_name}的防具造成了伤害！</span><br>" : "<span class=\"yellow\">{$w_name}的攻击隔着你的防具造成了伤害！</span><br>";
 		}
 	}
-	if (strpos ( $ar, $w ) !== false && !$dmginv) {
+	return $defend;
+}
+
+function checkarb(&$dmg, $w, $aky, $dky, $active = 0) {
+	global $log,$specialrate,$w_name;
+	$dmginv = false;
+	if (strpos ( $aky, 'n' ) !== false && (strpos ( $dky, 'B' ) !== false || strpos ( $dky, $w ) !== false)) {
+		$dice = rand ( 0, 99 );
+		if ($dice < $specialrate['n']) {
+			$log .= $active ? "<span class=\"yellow\">你的攻击贯穿了{$w_name}的防具！</span><br>" : "<span class=\"yellow\">{$w_name}的攻击贯穿了你的防具！</span><br>";
+			return;
+		}
+	}
+	if (strpos ( $dky, 'B' ) !== false) {
+		$dice = rand ( 0, 99 );
+		if ($dice < $specialrate['B']) {
+			$dmg = 1;
+			$log .= $active ? "<span class=\"yellow\">你的攻击完全被{$w_name}的装备吸收了！</span><br>" : "<span class=\"yellow\">{$w_name}的攻击完全被你的装备吸收了！</span><br>";
+			$dmginv = true;
+		}else{
+			$log .= $active ? "纳尼？你的装备使攻击无效化的属性竟然失效了！<br>" : "纳尼？{$w_name}的装备使攻击无效化的属性竟然失效了！<br>";
+		}
+	}
+	if (strpos ( $dky, $w ) !== false && !$dmginv) {
 		$dice = rand ( 0, 99 );
 		if ($dice < 90) {
 			$dmg /= 2;
-			$log .= "装备使攻击伤害减半了！<br>";
+			$log .= $active ? "<span class=\"yellow\">{$w_name}的装备使你的攻击伤害减半了！</span><br>" : "<span class=\"yellow\">你的装备使{$w_name}的攻击伤害减半了！</span><br>";
 
 		}else{
-			$log .= "装备没能发挥减半伤害的效果！<br>";
+			$log .= $active ? "{$w_name}的装备没能发挥减半伤害的效果！<br>" : "你的装备没能发挥减半伤害的效果！<br>";
 		}
 	}
 	return;
@@ -672,7 +713,7 @@ function getatkkey($w, $ah, $ab, $aa, $af, $at, $atkind, $is_wpg) {
 	global $ex_attack;
 	$atkcdt = '';
 	$eqpkey = $w . $ah . $ab . $aa . $af . $at . substr ( $atkind, 1, 1 );
-	foreach(Array('c','l','g','H','h') as $value){
+	foreach(Array('c','l','g','H','h','N','n') as $value){
 		if (strpos ( $eqpkey, $value ) !== false) {
 			$atkcdt .= '_'.$value;
 		}
@@ -766,64 +807,37 @@ function getdefkey($w, $ah, $ab, $aa, $af, $at, $atkind) {
 		}
 	}
 	if (strpos ( $eqpkey, 'A' ) !== false) {
-		$defcdt .= '_N_P_K_G_C_D_F';
+		$defcdt .= '_P_K_G_C_D_F';
 	} else {
-		foreach(Array('N','P','K','G','C','D','F') as $value){
+		foreach(Array('P','K','G','C','D','F') as $value){
 			if (strpos ( $eqpkey, $value ) !== false) {
 				$defcdt .= '_'.$value;
 			}
 		}
-//		if (strpos ( $eqpkey, 'N' ) !== false) {
-//			$defcdt .= '_N';
-//		}
-//		if (strpos ( $eqpkey, 'P' ) !== false) {
-//			$defcdt .= '_P';
-//		}
-//		if (strpos ( $eqpkey, 'K' ) !== false) {
-//			$defcdt .= '_K';
-//		}
-//		if (strpos ( $eqpkey, 'G' ) !== false) {
-//			$defcdt .= '_G';
-//		}
-//		if (strpos ( $eqpkey, 'C' ) !== false) {
-//			$defcdt .= '_C';
-//		}
-//		if (strpos ( $eqpkey, 'D' ) !== false) {
-//			$defcdt .= '_D';
-//		}
-//		if (strpos ( $eqpkey, 'F' ) !== false) {
-//			$defcdt .= '_F';
-//		}
 	}
 	foreach ($ex_dmg_def as $value) {
 		if (strpos ( $eqpkey, $value ) !== false || strpos ( $eqpkey, 'a' ) !== false) {
 			$defcdt .= '_'.$value;
 		}
 	}
-	/*if (strpos ( $eqpkey, 'q' ) !== false) {
-		$defcdt .= '_q';
-	}
-	if (strpos ( $eqpkey, 'U' ) !== false) {
-		$defcdt .= '_U';
-	}
-	if (strpos ( $eqpkey, 'I' ) !== false) {
-		$defcdt .= '_I';
-	}
-	if (strpos ( $eqpkey, 'I' ) !== false) {
-		$defcdt .= '_I';
-	}*/
 	return $defcdt;
 }
 
 function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 	if ($ky) {
-		global $log, $exdmgname, $exdmginf, $ex_attack;
+		global $log, $exdmgname, $exdmginf, $ex_attack,$specialrate;
 		global $ex_dmg_def, $ex_base_dmg,$ex_max_dmg, $ex_wep_dmg, $ex_skill_dmg, $ex_dmg_fluc, $ex_inf, $ex_inf_r, $ex_max_inf_r, $ex_skill_inf_r, $ex_inf_punish, $ex_good_wep, $ex_good_club;
 		$ex_final_dmg = 0;
 		$exinv = false;
-		if (strpos ( $dky, 'b' ) !== false){
-			$dice = rand ( 0, 999);
-			if ($dice < 1000) {//几率0
+		$ex_list = array();
+		foreach ( $ex_attack as $ex_dmg_sign ) {
+			if (strpos ( $ky, $ex_dmg_sign ) !== false){
+				$ex_list[] = $ex_dmg_sign;
+			}
+		}
+		if (strpos ( $dky, 'b' ) !== false && !empty($ex_list)){
+			$dice = rand ( 0, 99);
+			if ($dice < $specialrate['b']) {//几率4%
 				$ex_final_dmg = 1;$exnum = 0;
 				foreach ( $ex_attack as $ex_dmg_sign ) {
 					if (strpos ( $ky, $ex_dmg_sign ) !== false) {
@@ -837,79 +851,78 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 			}
 		}
 		if(!$exinv){
-			foreach ( $ex_attack as $ex_dmg_sign ) {
-				if (strpos ( $ky, $ex_dmg_sign ) !== false) {
-					$dmgnm = $exdmgname [$ex_dmg_sign];
-					$def = $ex_dmg_def [$ex_dmg_sign];
-					$bdmg = $ex_base_dmg [$ex_dmg_sign];
-					$mdmg = $ex_max_dmg [$ex_dmg_sign];
-					$wdmg = $ex_wep_dmg [$ex_dmg_sign];
-					$sdmg = $ex_skill_dmg [$ex_dmg_sign];
-					$fluc = $ex_dmg_fluc [$ex_dmg_sign];
-					if (in_array($ex_dmg_sign,array_keys($ex_inf))) {
-						$dmginf = $exdmginf [$ex_dmg_sign];
-						$ex_inf_sign = $ex_inf [$ex_dmg_sign];
-						$infr = $ex_inf_r [$ex_inf_sign];
-						$minfr = $ex_max_inf_r [$ex_inf_sign];
-						$sinfr = $ex_skill_inf_r [$ex_inf_sign];
-						$punish = $ex_inf_punish [$ex_inf_sign];
-						$e_htr = $ex_good_club [$ex_inf_sign] == $clb ? 20 : 0;
-					} else {
-						$ex_inf_sign = '';
-						$punish = 1;
-						$e_htr = 0;
-					}
-					$wk_dmg_p = $ex_good_wep [$ex_dmg_sign] == $wk ? 2 : 1;
-					$e_dmg = $bdmg + $we/$wdmg + $ws/$sdmg; 
-					if($mdmg>0){
-						//$e_dmg = $e_dmg > $mdmg ? round($wk_dmg_p*$mdmg*rand(100 - $fluc, 100 + $fluc)/100) : round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
-						$e_dmg = round($wk_dmg_p*$mdmg*($e_dmg/($e_dmg+$mdmg/2))*rand(100 - $fluc, 100 + $fluc)/100);
-					} else{
-						$e_dmg =  round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
-					}
-					//$e_dmg += round ( ($we / ($we + $wdmg) + $ws / ($ws + $sdmg)) * rand ( 100 - $fluc, 100 + $fluc ) / 200 * $bdmg * $wk_dmg_p );
-					$ex_def_dice = rand(0,99);
-					if (strpos ( $dky, $def ) === false || $ex_def_dice > 90) {
-						if(strpos ( $dky, $def ) !== false){
-							$log .= "属性防御装备没能发挥应有的作用！";
-						}
-						if (strpos ( $inf, $ex_dmg_sign ) !== false && $punish > 1) {
-							$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害倍增！";
-							$e_dmg *= $punish;
-						} elseif (strpos ( $inf, $ex_dmg_sign ) !== false && $punish < 1) {
-							$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害减少！";
-							$e_dmg *= $punish;
-						} else {
-							$e_htr += $infr + $ws * $sinfr;
-							$e_htr = $e_htr > $minfr ? $minfr : $e_htr;
-						}
-						$e_dmg = round($e_dmg);
-						$log .= "{$dmgnm}造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
-						if (!empty($ex_inf_sign) && (strpos ( $inf, $ex_inf_sign ) === false)) {
-							$dice = rand ( 0, 99 );
-							if ($dice < $e_htr) {
-								$inf .= $ex_inf_sign;
-								if ($sd == 0) {
-									global $w_combat_inf;
-									$w_combat_inf .= $ex_inf_sign;
-								}
-								$log .= "并造成{$nm}{$dmginf}了！<br>";
-								global $name,$w_name;
-								if($nm == '你'){
-									naddnews($now,'inf',$w_name,$name,$ex_inf_sign);
-								}else{
-									naddnews($now,'inf',$name,$w_name,$ex_inf_sign);
-								}	
-							}
-						}
-					} else {
-						$e_dmg = round ( $e_dmg / 2 );
-						$log .= "{$dmgnm}被防御效果抵消了！造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
-					}
-					
-					
-					$ex_final_dmg += $e_dmg;
+			foreach ( $ex_list as $ex_dmg_sign ) {
+				$dmgnm = $exdmgname [$ex_dmg_sign];
+				$def = $ex_dmg_def [$ex_dmg_sign];
+				$bdmg = $ex_base_dmg [$ex_dmg_sign];
+				$mdmg = $ex_max_dmg [$ex_dmg_sign];
+				$wdmg = $ex_wep_dmg [$ex_dmg_sign];
+				$sdmg = $ex_skill_dmg [$ex_dmg_sign];
+				$fluc = $ex_dmg_fluc [$ex_dmg_sign];
+				if (in_array($ex_dmg_sign,array_keys($ex_inf))) {
+					$dmginf = $exdmginf [$ex_inf[$ex_dmg_sign]];
+					$ex_inf_sign = $ex_inf [$ex_dmg_sign];
+					$infr = $ex_inf_r [$ex_inf_sign];
+					$minfr = $ex_max_inf_r [$ex_inf_sign];
+					$sinfr = $ex_skill_inf_r [$ex_inf_sign];
+					$punish = $ex_inf_punish [$ex_dmg_sign];
+					$e_htr = $ex_good_club [$ex_inf_sign] == $clb ? 20 : 0;
+				} else {
+					$ex_inf_sign = '';
+					$punish = 1;
+					$e_htr = 0;
 				}
+				$wk_dmg_p = $ex_good_wep [$ex_dmg_sign] == $wk ? 2 : 1;
+				$e_dmg = $bdmg + $we/$wdmg + $ws/$sdmg; 
+				if($mdmg>0){
+					//$e_dmg = $e_dmg > $mdmg ? round($wk_dmg_p*$mdmg*rand(100 - $fluc, 100 + $fluc)/100) : round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
+					$e_dmg = round($wk_dmg_p*$mdmg*($e_dmg/($e_dmg+$mdmg/2))*rand(100 - $fluc, 100 + $fluc)/100);
+				} else{
+					$e_dmg =  round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
+				}
+				//$e_dmg += round ( ($we / ($we + $wdmg) + $ws / ($ws + $sdmg)) * rand ( 100 - $fluc, 100 + $fluc ) / 200 * $bdmg * $wk_dmg_p );
+				$ex_def_dice = rand(0,99);
+				if (strpos ( $dky, $def ) === false || $ex_def_dice > 90) {
+					if(strpos ( $dky, $def ) !== false){
+						$log .= "属性防御装备没能发挥应有的作用！";
+					}
+					//var_dump( $punish);
+					if ($ex_inf_sign && strpos ( $inf, $ex_inf_sign ) !== false && $punish > 1) {
+						$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害倍增！";
+						$e_dmg *= $punish;
+					} elseif ($ex_inf_sign && strpos ( $inf, $ex_inf_sign ) !== false && $punish < 1) {
+						$log .= "由于{$nm}已经{$dmginf}，{$dmgnm}伤害减少！";
+						$e_dmg *= $punish;
+					} else {
+						$e_htr += $infr + $ws * $sinfr;
+						$e_htr = $e_htr > $minfr ? $minfr : $e_htr;
+					}
+					$e_dmg = round($e_dmg);
+					$log .= "{$dmgnm}造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
+					if (!empty($ex_inf_sign) && (strpos ( $inf, $ex_inf_sign ) === false)) {
+						$dice = rand ( 0, 99 );
+						if ($dice < $e_htr) {
+							$inf .= $ex_inf_sign;
+							if ($sd == 0) {
+								global $w_combat_inf;
+								$w_combat_inf .= $ex_inf_sign;
+							}
+							$log .= "并造成{$nm}{$dmginf}了！<br>";
+							global $name,$w_name;
+							if($nm == '你'){
+								naddnews($now,'inf',$w_name,$name,$ex_inf_sign);
+							}else{
+								naddnews($now,'inf',$name,$w_name,$ex_inf_sign);
+							}	
+						}
+					}
+				} else {
+					$e_dmg = round ( $e_dmg / 2 );
+					$log .= "{$dmgnm}被防御效果抵消了！造成了<span class=\"red\">{$e_dmg}</span>点额外伤害！<br>";
+				}
+				
+				
+				$ex_final_dmg += $e_dmg;
 			}
 		}
 		
@@ -1196,6 +1209,76 @@ function check_gender($nm_a, $nm_d, $gd_a, $gd_d, $a_ky) {
 	return $gd_dmg_p;
 }
 
+function npc_changewep($active = 0){
+	global $now,$log,$w_name,$w_type,$w_club,$w_wep, $w_wepk, $w_wepe, $w_weps, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5,$w_itm6, $w_itmk6, $w_itme6, $w_itms6, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5, $w_itmsk6;
+	global $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts;
+	global $wepk,$wepsk,$arbsk,$arask,$arhsk,$arfsk,$artsk,$artk,$rangeinfo,$ex_dmg_def;
+	if(!$w_name || !$w_type || $w_club != 98){return;}
+	
+	$dice = rand(0,99);
+	if($dice > 50){
+		$weplist = array();
+		$wepklist = Array($w_wepk);$weplist2 = array();
+		for($i=0;$i<=6;$i++){
+			if(${'w_itms'.$i} && ${'w_itme'.$i} && strpos(${'w_itmk'.$i},'W')===0){
+				$weplist[] = Array($i,${'w_itm'.$i},${'w_itmk'.$i},${'w_itme'.$i},${'w_itms'.$i},${'w_itmsk'.$i});
+				$wepklist[] = ${'w_itmk'.$i};
+			}
+		}
+		if(!empty($weplist)){
+			$wepklist = array_unique($wepklist);
+			$temp_def_key = getdefkey($wepsk,$arhsk,$arbsk,$arask,$arfsk,$artsk,$artk);
+			$wepkAI = $wepskAI = true;
+			if(strpos($temp_def_key,'_P_K_G_C_D_F')!==false || strpos($temp_def_key,'B')!==false){$wepkAI = false;}
+			if(count($wepklist)<=1){$wepkAI = false;}
+			if(strpos($temp_def_key,'_q_U_I_D_E')!==false || strpos($temp_def_key,'b')!==false){$wepskAI = false;}
+			
+			if($wepkAI){
+				if(!$wepk){$wepk_temp = 'WN';}else{$wepk_temp = $wepk;}
+				foreach($weplist as $val){
+					if($rangeinfo[substr($val[2],1,1)] >= $rangeinfo[substr($wepk_temp,1,1)] && strpos($temp_def_key,substr($val[2],1,1))===false){
+						$weplist2[] = $val;
+					}
+				}
+				if($weplist2){
+					$weplist = $weplist2;
+				}				
+			}
+			if($wepskAI && $weplist){
+				$minus = array();
+				foreach($weplist as $val){
+					foreach($ex_dmg_def as $key => $val2){
+						if(strpos($val[5],$key)!==false && strpos($temp_def_key,$val2)!==false){
+							$minus[] = $val;
+						}
+					}
+				}
+				//var_dump($minus);
+				if(count($minus) < count($weplist)){
+					$weplist = array_diff($weplist,$minus);
+				}				
+			}
+		}
+//		var_dump($wepkAI);echo '<br>';var_dump($wepskAI);echo '<br>';
+//		var_dump($weplist);
+//		if(!empty($weplist2)){
+//			$weplist = $weplist2;
+//		}
+		
+		if(!empty($weplist)){
+			$oldwep = $w_wep;
+			shuffle($weplist);
+			$chosen = $weplist[0];$c = $chosen[0];
+			//var_dump($chosen);
+			${'w_itm'.$c} = $w_wep;${'w_itmk'.$c} = $w_wepk;${'w_itme'.$c} = $w_wepe;${'w_itms'.$c} = $w_weps;${'w_itmsk'.$c} = $w_wepsk;
+			$w_wep = $chosen[1]; $w_wepk = $chosen[2]; $w_wepe = $chosen[3];$w_weps = $chosen[4];$w_wepsk = $chosen[5];
+			//list($c,$w_wep,$w_wepk,$w_wepe,$w_weps,$w_wepsk) = $chosen;
+			$log .= "<span class=\"yellow\">{$w_name}</span>将手中的<span class=\"yellow\">{$oldwep}</span>卸下，装备了<span class=\"yellow\">{$w_wep}</span>！<br>";
+		}
+	}
+	return;
+}
+
 function npc_chat($type,$nm, $mode) {
 	global $npccanchat,$npcchaton;
 	if ($npcchaton && in_array($type,$npccanchat)) {
@@ -1257,17 +1340,17 @@ function npc_chat($type,$nm, $mode) {
 function count_good_man_card($active){
 	$goodmancard = 0;
 	if($active){
-		global $itm0,$itmk0,$itms0,$itm1,$itmk1,$itms1,$itm2,$itmk2,$itms2,$itm3,$itmk3,$itms3,$itm4,$itmk4,$itms4,$itm5,$itmk5,$itms5;
+		global $itm0,$itmk0,$itms0,$itm1,$itmk1,$itms1,$itm2,$itmk2,$itms2,$itm3,$itmk3,$itms3,$itm4,$itmk4,$itms4,$itm5,$itmk5,$itms5,$itm6,$itmk6,$itms6;
 		
-		for($i=0;$i<=5;$i++){
+		for($i=0;$i<=6;$i++){
 			if(${'itms'.$i} && ${'itm'.$i} == '好人卡' && ${'itmk'.$i} == 'Y'){
 				$goodmancard += ${'itms'.$i};
 			}
 		}
 	}else{
-		global $w_itm0,$w_itmk0,$w_itms0,$w_itm1,$w_itmk1,$w_itms1,$w_itm2,$w_itmk2,$w_itms2,$w_itm3,$w_itmk3,$w_itms3,$w_itm4,$w_itmk4,$w_itms4,$w_itm5,$w_itmk5,$w_itms5;
+		global $w_itm0,$w_itmk0,$w_itms0,$w_itm1,$w_itmk1,$w_itms1,$w_itm2,$w_itmk2,$w_itms2,$w_itm3,$w_itmk3,$w_itms3,$w_itm4,$w_itmk4,$w_itms4,$w_itm5,$w_itmk5,$w_itms5,$w_itm6,$w_itmk6,$w_itms6;
 		
-		for($i=0;$i<=5;$i++){
+		for($i=0;$i<=6;$i++){
 			if(${'w_itms'.$i} && ${'w_itm'.$i} == '好人卡' && ${'w_itmk'.$i} == 'Y'){
 				$goodmancard += ${'w_itms'.$i};
 			}

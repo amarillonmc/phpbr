@@ -7,6 +7,20 @@ define('IN_ADMIN', TRUE);
 require GAME_ROOT.'./gamedata/admincfg.php';
 require GAME_ROOT.'./include/admin/admin.lang.php';
 
+$admin_cmd_list = Array(
+	'configmng' => 9,
+	'systemmng' => 7,
+	'gamecfgmng' => 7,
+	'gmlist' => 9,
+	'urlist' => 6,
+	'banlistmng' => 6,
+	'gamecheck' => 2,
+	'pcmng' => 5,
+	'npcmng' => 5,
+	'gameinfomng' => 5,
+	'antiAFKmng' => 4,
+);
+
 if(!$cuser||!$cpass) { gexit($_ERROR['no_login'],__file__,__line__); }
 $result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$cuser'");
 if(!$db->num_rows($result)) { gexit($_ERROR['login_check'],__file__,__line__); }
@@ -16,31 +30,30 @@ elseif(($udata['groupid'] <= 1)&&($cuser!==$gamefounder)) { gexit($_ERROR['no_ad
 
 if($cuser===$gamefounder){$mygroup=10;}
 else{$mygroup = $udata['groupid'];}
-include template('header');
-echo '<br>';
-if($mode == 'admin') {
-	include_once GAME_ROOT."./include/admin/{$command}.php";
-	echo '<br><br>操作完成。<a href="admin.php">返回游戏管理</a><br>';
-} elseif($mode) {
-	include_once GAME_ROOT."./include/admin/{$mode}.php";
-	echo '<br><br>操作完成。<a href="admin.php">返回游戏管理</a><br>';
-} else {
-	echo <<<EOT
-<form method="post" id="admin" name="admin" style="margin: 0px" onsubmit="admin.php">
-<input type="hidden" name="mode" value="admin">
-<input type="radio" name="command" id="configmng" value="configmng"><a onclick=sl('configmng'); href="javascript:void(0);" >系统环境设置</a><br>
-<input type="radio" name="command" id="systemmng" value="systemmng"><a onclick=sl('systemmng'); href="javascript:void(0);" >游戏环境配置</a><br>
-<input type="radio" name="command" id="gamecfgmng" value="gamecfgmng"><a onclick=sl('gamecfgmng'); href="javascript:void(0);" >游戏数据配置</a><br>
-<input type="radio" name="command" id="gamemng" value="gamemng"><a onclick=sl('gamemng'); href="javascript:void(0);" >当前游戏管理</a><br>
-<input type="radio" name="command" id="gmlist" value="gmlist"><a onclick=sl('gmlist'); href="javascript:void(0);" >GM管理</a><br>
-<input type="radio" name="command" id="urlist" value="urlist"><a onclick=sl('urlist'); href="javascript:void(0);" >用户管理</a><br>
-<input type="radio" name="command" id="banlistmng" value="banlistmng"><a onclick=sl('banlistmng'); href="javascript:void(0);" >屏蔽列表管理</a><br>
-<!--<input type="radio" name="command" id="checklog" value="checklog"><a onclick=sl('checklog'); href="javascript:void(0);" >查看操作纪录</a><br>-->
-<input type="submit" name="submit" value="提交">
-</form>
-EOT;
+
+$showdata = $cmd_info = false;
+if($mode == 'admin_menu' && in_array($command, array_keys($admin_cmd_list))) {//进入子菜单的指令
+	if($mygroup >= $admin_cmd_list[$command]){
+		include_once GAME_ROOT."./include/admin/{$command}.php";
+		$showdata = ob_get_contents();
+	}else{
+		$cmd_info = $_ERROR['no_power'];
+	}
+	
+} elseif(in_array($mode, array_keys($admin_cmd_list))) {//子菜单内指令
+	if($mygroup >= $admin_cmd_list[$mode]){
+		include_once GAME_ROOT."./include/admin/{$mode}.php";
+		$showdata = ob_get_contents();
+	}else{
+		$cmd_info = $_ERROR['no_power'];
+	}
+} elseif(!empty($mode)) {
+	$cmd_info = $_ERROR['wrong_adcmd'];
 }
-include template('footer');
+ob_clean();
+include template('admin');
+ob_end_flush();
+
 
 function adminlog($op,$an1='',$an2='',$an3=''){
 	global $now,$cuser;
@@ -53,6 +66,7 @@ function adminlog($op,$an1='',$an2='',$an3=''){
 }
 function getstart($start = 0,$mode = ''){
 	global $showlimit;
+	$start = (int)$start;
 	if($mode == 'up') {
 		$start -= $showlimit;
 		$start = $start <= 0 ? 0 : $start;
@@ -74,4 +88,14 @@ function setconfig($string) {
 	return $string;
 }
 
+function astrfilter($str) {
+	if(is_array($str)) {
+		foreach($str as $key => $val) {
+			$str[$key] = astrfilter($val);
+		}
+	} else {
+		$str = str_replace(Array('eval'),'',$str);//屏蔽会造成困扰的关键字;		
+	}
+	return $str;
+}
 ?>

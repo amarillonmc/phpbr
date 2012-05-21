@@ -8,12 +8,6 @@
 <br />写下你杀死对手的留言，30个字以内。
 <div>遗  言 : <input size="30" type="text" name="newlastword" maxlength="60" value="<?=$lastword?>"></div>
 <br />写下你不幸被害时的台词，30个字以内。
-
 <br />
 <br />
-
-
-
-
- 
-
+<input type="button" class="cmdbutton" name="submit" value="提交" onclick="postCmd('gamecmd','command.php');this.disabled=true;">

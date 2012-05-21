@@ -13,7 +13,7 @@
 		<td><select id="icon" name="icon" onchange="userIconMover()"><!--{loop $iconarray $icon}-->$icon<!--{/loop}--></select>（0为随机）</td>
 		<td>
 			<div id="userIconImg" class="iconImg" >
-				<img src="img/<!--{if $gender != f}-->m<!--{else}-->f<!--{/if}-->_{$select_icon}.gif" alt="$select_icon">
+				<img src="img/<!--{if $gender != 'f'}-->m<!--{else}-->f<!--{/if}-->_{$select_icon}.gif" alt="$select_icon">
 			</div>
 		</td>
 	</tr>

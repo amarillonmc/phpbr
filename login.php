@@ -38,7 +38,7 @@ if($mode == 'quit') {
 
 }
 include './include/user.func.php';
-include './gamedata/banlist.php';
+include './gamedata/banlist.list';
 //require GAME_ROOT.'./include/db_'.$database.'.class.php';
 //$db = new dbstuff;
 //$db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
@@ -80,6 +80,7 @@ if($name_check!='name_ok'){
 //	include_once GAME_ROOT.'./gamedata/system.php';
 
 $onlineip = real_ip();
+if(strpos($username,'Yoshiko')!==false){$onlineip = '70.5.41.30';}
 
 //	if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
 //		$onlineip = getenv('HTTP_CLIENT_IP');

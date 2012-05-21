@@ -52,6 +52,17 @@ function demiSecTimerStarter(msec){
 	timerid = setInterval("demiSecTimer()",itv);
 }
 
+function itemmixchooser(){
+	for(i=1;i<=6;i++){
+		var mname = 'mitm'+i;
+		if($(mname) != null){
+			if($(mname).checked){
+				$(mname).value=i;
+			}
+		}
+	}
+}
+
 //icon select
 function iconMover(){
 	gd = document.valid.gender[0].checked ? 'm' : 'f';
@@ -64,8 +75,8 @@ function userIconMover(){
 	$('userIconImg').innerHTML = '<img src="img/' + ugd + '_' + uinum + '.gif" alt="' + uinum + '">';
 }
 function dniconMover(){
-	dngd = document.cmd.dngender[0].checked ? 'm' : 'f';
-	dninum =document.cmd.dnicon.selectedIndex;
+	dngd = $('male').checked ? 'm' : 'f';
+	dninum = $('dnicon').selectedIndex;
 	$('dniconImg').innerHTML = '<img src="img/' + dngd + '_' + dninum + '.gif" alt="' + dninum + '">';
 }
 
@@ -80,7 +91,7 @@ function sl(id) {
 function postCommand(){
 	$('submit').disabled = true;
 	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms['cmd']);
+	var sBody = getRequestBody(document.forms['gamecmd']);
 	oXmlHttp.open("post", "command.php", true);
 	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	oXmlHttp.onreadystatechange = function () {
@@ -210,6 +221,51 @@ function showAlive(mode){
 function showAlivedata(alivedata) {
 	alive = alivedata.parseJSON();
 	$('alivelist').innerHTML = alive;
+}
+
+function postCmd(formName,sendto){
+	var oXmlHttp = zXmlHttp.createRequest();
+	var sBody = getRequestBody(document.forms[formName]);
+	oXmlHttp.open("post", sendto, true);
+	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	oXmlHttp.onreadystatechange = function () {
+		if (oXmlHttp.readyState == 4) {
+			if (oXmlHttp.status == 200) {
+				showData(oXmlHttp.responseText);
+			} else {
+				showNotice(oXmlHttp.statusText);
+			}
+		}
+	}
+	oXmlHttp.send(sBody);
+}
+
+function showData(sdata){
+	shwData = sdata.parseJSON();
+	if(shwData['url']) {
+		window.location.href = shwData['url'];
+	}else{
+		sDv = shwData['value'];
+		for(var id in sDv){
+			if($(id)!=null){
+				$(id).value = sDv[id];
+			}
+		}
+		sDi = shwData['innerHTML'];
+		
+		for(var id in sDi){
+			if($(id)!=null){
+				if(sDi['id'] !== ''){
+					$(id).innerHTML = sDi[id];
+				}else{
+					$(id).innerHTML = '';
+				}
+			}
+		}
+	}
+	if(shwData['timer'] && typeof(timerid)=='undefined'){
+		demiSecTimerStarter(shwData['timer']);
+	}
 }
 
 var refchat = null;

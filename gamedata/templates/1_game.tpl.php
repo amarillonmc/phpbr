@@ -1,25 +1,29 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); include template('header'); ?>
 <div id="notice"></div>
 <table border="0" cellspacing="10" cellpadding="0" align="center">
-<tr valign=top><td>
-<span id="main">
+<tr valign=top>
+<td>
+<div id="main">
 <? include template('profile'); ?>
-<span>
+</div>
 </td>
-<td rowspan="2">
-<table border="0" width="280" cellspacing="0" cellpadding="0" >
+<td valign="top" rowspan="2">
+<table border="0" width="300" height="560" cellspacing="0" cellpadding="0" >
 <tr>
-<td height="20" class="b1"><div class=nttx><span class="yellow" id="pls"><?=$plsinfo[$pls]?></span>【<span class="red">剩余：<span id="anum"><?=$alivenum?></span>人</span>】</div></td>
-</tr>
-<tr><td valign="top" class="b3" style="text-align: left">
-<div id="log" class=nttx>
-<?=$log?>
+<td height="20" class="b1">
+<div>
+<span class="yellow" id="pls"><?=$plsinfo[$pls]?></span>【<span class="red">剩余：<span id="anum"><?=$alivenum?></span>人</span>】
 </div>
-<div class=nttx>
-<form method="post" id="cmd" name="cmd" style="margin: 0px" >
-<? if($state >=1 && $state <= 3) { include template('rest'); } elseif($itms0) { include template('itemfind'); } else { include template('command'); } ?>
-<br /><br />
-<input type="button" id="submit" onClick="postCommand();return false;" value="提交">
+</td>
+</tr>
+<tr>
+<td valign="top" class="b3" height="540" style="text-align: left;overflow:auto;overflow-x:hidden;">
+<div id="log"><?=$log?></div>
+<div>
+<form method="post" id="gamecmd" name="gamecmd" style="margin: 0px" >
+<div id="cmd">
+<? if($hp <= 0) { include template('death'); } elseif($state >=1 && $state <= 3) { include template('rest'); } elseif($itms0) { include template('itemfind'); } else { include template('command'); } ?>
+</div>						
 </form>
 </div>
 </td>
@@ -27,39 +31,10 @@
 </table>
 </td>
 </tr>
-<tr><td>
-<table id="chat" border="0" width="640" cellspacing="0" cellpadding="0" background="img/chatting.gif" style="background-position:0px 80px;background-repeat:no-repeat;valign:top">
-<tr><td height="20px" width="635" class="b1"><div class=nttx>消息</div></td></tr>
-<tr><td height="140px" valign="top" class="b3" style="text-align: left" height="1px">
-<div id="chatlist" class="chatlist" >
-<? if(is_array($chatdata['msg'])) { foreach($chatdata['msg'] as $msg) { ?>
-<?=$msg?>
-<? } } ?>
-</div></td></tr>
-<tr><td class="b3" height="5"></td></tr>
-<tr><td class="b3" height="35">
-<div class=nttx>
-<form type="post" id="sendchat" name="sendchat" action="chat.php" onsubmit="return false;" >
-<input type="hidden" id="lastcid" name="lastcid" value="<?=$chatdata['lastcid']?>">
-<input type="hidden" id="team" name="team" value="<?=$teamID?>">
-<input type="hidden" id="sendmode" name="sendmode" value="ref">
-<span id="chattype">
-<select name="chattype" value="2">
-<option value="0" selected><?=$chatinfo['0']?>
-<? if($teamID) { ?>
-<option value="1" ><?=$chatinfo['1']?>
-<? } ?>
-</select>
-</span>
-<input type="text" id="chatmsg" name="chatmsg" maxlength="60" >
-<input type="button" id="send" onClick="document['sendchat']['sendmode'].value='send';chat('send',<?=$chatrefresh?>);return false;" value="发送">
-<input type="button" id="ref" onClick="document['sendchat']['sendmode'].value='ref';chat('ref',<?=$chatrefresh?>);return false;" value="刷新">
-</form>
-<script type="text/javascript">chat('ref',<?=$chatrefresh?>);</script>
-</div>
+<tr>
+<td>
+<? include template('chat'); ?>
 </td>
 </tr>
-</table>
-</td>
 </table>
 <? include template('footer'); ?>

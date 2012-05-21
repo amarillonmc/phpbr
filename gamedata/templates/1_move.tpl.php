@@ -1,5 +1,11 @@
 <? if(!defined('IN_GAME')) exit('Access Denied'); ?>
-<option value="main">■ 移动 ■<br /><option value="1">
+<option value="main">■ 移动 ■<br /><option value="0">
+<? if($pls == 0) { ?>
+<--现在位置-->
+<? } else { ?>
+无月之影(B-2)
+<? } ?>
+<br /><option value="1">
 <? if($pls == 1) { ?>
 <--现在位置-->
 <? } else { ?>
@@ -153,7 +159,7 @@ RF高校(H-3)
 <? if($pls == 26) { ?>
 <--现在位置-->
 <? } else { ?>
-键刃墓场(A-1)
+冰封墓场(A-1)
 <? } ?>
 <br /><option value="27">
 <? if($pls == 27) { ?>
@@ -172,5 +178,23 @@ FARGO前基地(E-1)
 <--现在位置-->
 <? } else { ?>
 风祭森林(F-5)
+<? } ?>
+<br /><option value="30">
+<? if($pls == 30) { ?>
+<--现在位置-->
+<? } else { ?>
+天使队移动格纳库(F-6)
+<? } ?>
+<br /><option value="31">
+<? if($pls == 31) { ?>
+<--现在位置-->
+<? } else { ?>
+和田町研究所(J-1)
+<? } ?>
+<br /><option value="32">
+<? if($pls == 32) { ?>
+<--现在位置-->
+<? } else { ?>
+SCP研究设施(J-2)
 <? } ?>
 <br />

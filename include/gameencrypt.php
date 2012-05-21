@@ -40,6 +40,7 @@ function game_encrypt($txt, $key) {
 *
 * @return	string		字串经过私有密匙解密后的结果
 */
+
 function game_decrypt($txt, $key) {
 
 	// $txt 的结果为加密后的字串经过 base64 解码，然后与私有密匙一起，

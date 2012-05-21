@@ -56,6 +56,8 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<span class=\"yellow\">【天气：{$wthinfo[$b]}】</span><br>\n";
 		} elseif($news == 'hack') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}启动了hack程序，全部禁区解除！</span><br>\n";
+		} elseif($news == 'hack2') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}启动了救济程序，全部禁区解除！</span><br>\n";
 		} elseif($news == 'combo') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">游戏进入连斗阶段！</span><br>\n";
 		} elseif($news == 'duel') {
@@ -127,6 +129,16 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，躲藏于<span class=\"red\">$plsinfo[$c]</span>的<span class=\"yellow\">$a</span><span class=\"red\">挂机时间过长</span>，被在外等待的愤怒的玩家们私刑处死！";
 			} elseif($news == 'death33'){
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因卷入特殊部队『天使』的实弹演习，被坠落的少女和机体“亲吻”而死";
+			} elseif($news == 'death34'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因摄入过量突变药剂，身体组织崩解而死！";
+			} elseif($news == 'death35'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因为敌意过剩，被虚拟意识救♀济！";
+			} elseif($news == 'death36'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因为敌意过剩，被虚拟意识腰★斩！";
+			} elseif($news == 'death37'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因为敌意过剩，被虚拟意识断★头！";
+			} elseif($news == 'death38'){
+				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因为敌意过剩，被虚拟意识救♀济！";
 			} else {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因<span class=\"red\">不明原因</span>死亡";
 			}
@@ -159,7 +171,31 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 		} elseif($news == 'wthchange') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了{$c}，天气变成了{$wthinfo[$b]}！</span><br>\n";
 		} elseif($news == 'syswthchg') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">东风谷 早苗使奇迹降临了！天气变成了{$wthinfo[$a]}！</span><br>\n";
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">奇迹和魔法都是存在的！当前天气变成了{$wthinfo[$a]}！</span><br>\n";
+		} elseif($news == 'sysaddarea') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">奇迹和魔法都是存在的！禁区提前增加了！</span><br>\n";
+		} elseif($news == 'syshackchg') {
+			if($a){$hackword = '全部禁区都被解除了';$class = 'lime';}
+			else{$hackword = '禁区恢复了未解除状态';$class = 'yellow';}
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"{$class}\">奇迹和魔法都是存在的！{$hackword}！</span><br>\n";
+		} elseif($news == 'sysgschg') {
+			if($a == 20){
+				$chgword = '当前游戏立即开始了！';
+				$class = 'lime';
+			}	elseif($a == 30){
+				$chgword = '当前游戏停止激活！';
+				$class = 'yellow';
+			}	elseif($a == 40){
+				$chgword = '当前游戏进入连斗阶段！';
+				$class = 'red';
+			}	elseif($a == 50){
+				$chgword = '当前游戏进入死斗阶段！';
+				$class = 'red';
+			}	else{
+				$chgword = '异常语句，请联系管理员！';
+				$class = 'red';
+			}
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"{$class}\">奇迹和魔法都是存在的！{$chgword}</span><br>\n";
 		} elseif($news == 'newwep') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了{$b}，改造了<span class=\"yellow\">$c</span>！</span><br>\n";
 		} elseif($news == 'newwep2') {
@@ -188,6 +224,23 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$b}名{$a}加入战斗！</span><br>\n";
 		} elseif($news == 'secphase') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了挑战者之证，让3名幻影执行官加入了战场！打倒他们去获得ID卡来解除游戏吧！</span><br>\n";
+		} elseif($news == 'thiphase') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}触发了对虚拟现实的救济！虚拟意识已经在■■■■活性化！</span><br>\n";
+		} elseif($news == 'dfphase') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}使用了黑色碎片，让1名未知存在加入了战场！打倒她去获得ID卡来解除游戏吧！</span><br>\n";
+		} elseif($news == 'dfsecphase') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}闯了大祸，打破了Dark Force的封印！</span><br>\n";
+		} elseif($news == 'evonpc') {
+			if($a == 'Dark Force幼体'){
+				$nword = "<span class=\"lime\">{$c}击杀了{$a}，却没料到这只是幻影……{$b}的封印已经被破坏了！</span>";
+			}elseif($a == '小莱卡'){
+				$nword = "<span class=\"lime\">{$c}击杀了{$a}，却发现这只是幻象……真正的{$b}受到惊动，方才加入战场！</span>";
+			}else{
+				$nword = "<span class=\"lime\">{$c}击杀了{$a}，却发现对方展现出了第二形态：{$b}！</span>";
+			}
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，$nword<br>\n";
+		} elseif($news == 'notworthit') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}做出了一个他自己可能会后悔很长一段时间的决定。</span><br>\n";
 		} elseif($news == 'present') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}打开了{$b}，获得了{$c}！</span><br>\n";
 		} else {

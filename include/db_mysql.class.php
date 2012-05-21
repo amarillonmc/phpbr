@@ -6,6 +6,10 @@ if (! defined ( 'IN_GAME' )) {
 
 class dbstuff {
 	var $querynum = 0;
+	var $selectnum = 0;
+	var $insertnum = 0;
+	var $updatenum = 0;
+	var $deletenum = 0;
 	
 	function connect($dbhost, $dbuser, $dbpw, $dbname = '', $pconnect = 0) {
 		if ($pconnect) {
@@ -53,18 +57,82 @@ class dbstuff {
 			$this->halt ( 'MySQL Query Error', $sql );
 		}
 		$this->querynum ++;
+		if(strpos($sql,'SELECT')===0){$this->selectnum ++;}
+		elseif(strpos($sql,'INSERT')===0){$this->insertnum ++;}
+		elseif(strpos($sql,'UPDATE')===0){$this->updatenum ++;}
+		elseif(strpos($sql,'DELETE')===0){$this->deletenum ++;}
 		return $query;
 	}
-//	SELECT语句变化比较多，就不设置方法了
-
-//	function select($dbname, $where = '', $fields = '*', $limit = '') {
-//		$query = "SELECT {$fields} FROM {$dbname} ";
+	
+	function queries ($queries) {
+	  foreach (preg_split ("/[;]+/", trim($queries)) as $query_split) {
+	  	$query = '';
+	  	foreach (preg_split ("/[\n]+/", trim($query_split)) as $query_row){
+	  		if (!empty($query_row) && substr($query_row,0,2) != '--' && substr($query_row,0,1) != '#') {
+	  			$query .= $query_row;
+				}
+	  	}
+	  	if(substr($query, 0, 12) == 'CREATE TABLE') {
+				$this->query($this->create_table($query));
+			} elseif (!empty($query)) {
+				$this->query($query);
+			}
+	  }
+	  return;
+	}
+	
+	function create_table($sql) {
+		global $dbcharset;
+		$type = strtoupper(preg_replace("/^\s*CREATE TABLE\s+.+\s+\(.+?\).*(ENGINE|TYPE)\s*=\s*([a-z]+?).*$/isU", "\\2", $sql));
+		$type = in_array($type, array('MYISAM', 'HEAP')) ? $type : 'MYISAM';
+		return preg_replace("/^\s*(CREATE TABLE\s+.+\s+\(.+?\)).*$/isU", "\\1", $sql).
+			(mysql_get_server_info() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=$dbcharset" : " TYPE=$type");
+	}
+	
+//	function Aselect($dbname, $where = Array(), $fields = Array(), $limit = '') {
+//		if (! empty ( $dbname )) {
+//			$dbname_string = mysql_real_escape_string($dbname);
+//		}else{
+//			return false;
+//		}
+//		
+//		if (! empty ( $fields )) {
+//			$fields_string = '';
+//			foreach($fields as $val){
+//				$val = mysql_real_escape_string($val);
+//				$fields_string .= "{$val},";
+//			}
+//			$fields_string = substr($fields_string,0,-1);
+//		}else{
+//			$fields_string = '*';
+//		}
+//		
 //		if (! empty ( $where )) {
-//			$query .= "WHERE {$where} ";
+//			$where_string = '';
+//			foreach($where as $val){
+//				if(is_array($val) && isset($val[0]) && isset($val[1]) && isset($val[2])){
+//					$val[0] = mysql_real_escape_string($val[0]);
+//					$val[1] = mysql_real_escape_string($val[1]);
+//					$val[2] = mysql_real_escape_string($val[2]);
+//					$where_string .= $val[0].$val[1]."'".$val[2]."' AND ";
+//				}				
+//			}
+//			if(!empty($where_string)){
+//				$where_string = 'WHERE '.substr($where_string,0,-5);
+//			}
+//		}else{
+//			$where_string = '';
 //		}
+//		
 //		if (! empty ( $limit )) {
-//			$query .= "LIMIT {$limit}";
+//			$limit_string = 'LIMIT '.mysql_real_escape_string($limit);
+//		}else{
+//			$limit_string = '';
 //		}
+//		
+//		$query = "SELECT {$fields_string} FROM {$dbname_string} {$where_string} {$limit_string}";
+//		
+//		//return $query;
 //		return $this->query ($query);
 //	}
 	
@@ -96,7 +164,37 @@ class dbstuff {
 		$this->query ($query);
 		return $query;
 	}
-
+	
+	function multi_update($dbname, $data, $confield, $singleqry = ''){
+		$fields = $range = Array();
+		foreach($data as $rval){
+			$con = $rval[$confield];
+			$range[] = "'$con'";
+			foreach($rval as $fkey => $fval){
+				if($fkey != $confield){
+					if(isset(${$fkey.'qry'})){
+						${$fkey.'qry'} .= "WHEN '$con' THEN '$fval' ";
+					}else{
+						$fields[] = $fkey;
+						${$fkey.'qry'} = "(CASE $confield WHEN '$con' THEN '$fval' ";
+					}
+				}				
+			}
+		}
+		$query = '';
+		foreach($fields as $val){
+			if(!empty(${$val.'qry'})){
+				${$val.'qry'} .= "END) ";
+				$query .= "$val = ${$val.'qry'},";
+			}
+		}
+		if(!empty($query)){
+			if($singleqry){$singleqry = ','.$singleqry;}
+			$query = "UPDATE {$dbname} SET ".substr($query,0,-1)."$singleqry WHERE $confield IN (".implode(',',$range).")";
+			$this->query ($query);
+		}
+		return $query;
+	}
 	
 /*	function select_fetch_array($dbname, $fields = '*', $where = '', $limit = '') { //返回二维数组
 		$query = "SELECT {$fields} FROM {$dbname} ";

@@ -15,7 +15,7 @@ if($command == 'info') {
 	init_profile();
 } elseif($command == 'news') {
 	include  GAME_ROOT.'./include/news.func.php';
-	$hnewsfile = GAME_ROOT."./gamedata/bak/{$gnum}_newsinfo.php";
+	$hnewsfile = GAME_ROOT."./gamedata/bak/{$gnum}_newsinfo.html";
 	if(file_exists($hnewsfile)){
 		$hnewsinfo = readover($hnewsfile);
 	}
@@ -23,7 +23,7 @@ if($command == 'info') {
 	if(!$start){
 		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners ORDER BY gid desc LIMIT $winlimit");
 	} else {
-		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners WHERE gid<=$start ORDER BY gid desc LIMIT $winlimit");
+		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners WHERE gid<='$start' ORDER BY gid desc LIMIT $winlimit");
 	}
 	while($wdata = $db->fetch_array($result)) {
 		$wdata['date'] = date("m/d/Y \<\b\\r\> H:i:s",$wdata['getime']);

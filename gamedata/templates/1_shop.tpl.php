@@ -15,3 +15,5 @@
 <? } else { ?>
 <input type="hidden" name="buynum" value="1">
 <? } ?>
+<br><br>
+<input type="button" class="cmdbutton" name="submit" value="提交" onclick="postCmd('gamecmd','command.php');this.disabled=true;">

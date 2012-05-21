@@ -11,7 +11,7 @@ function poison($itmn = 0) {
 	$poisone = & ${'itme'.$itmp};
 	$poisons = & ${'itms'.$itmp};
 	$poisonsk = & ${'itmsk'.$itmp};
-	if ( $itmn < 1 || $itmn > 5 ) {
+	if ( $itmn < 1 || $itmn > 6 ) {
 		$log .= '此道具不存在，请重新选择。';
 		$mode = 'command';
 		return;
@@ -60,56 +60,6 @@ function wthchange($itm,$itmsk){
 	naddnews ( $now, 'wthchange', $name, $weather, $itm );
 	$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br />";
 }
-
-//function elec(&$itm,&$itmk,&$itme,&$itms,&$itmsk) {
-//	global $log,$name,$now;
-//	if(strpos( $itmk,'EW' ) ===0){
-//		global $weather, $wthinfo, $name;
-//		if($itmsk==99){$weather = rand ( 0, 13 );}//随机全天气
-//		elseif($itmsk==98){$weather = rand ( 10, 13 );}//随机恶劣天气
-//		elseif($itmsk==97){$weather = rand ( 0, 9 );}//随机一般天气
-//		elseif($itmsk==96){$weather = rand ( 8, 9 );}//随机起雾天气
-//		elseif(!empty($itmsk) && is_numeric($itmsk)){
-//			if($itmsk >=0 && $itmsk < count($wthinfo)){
-//				$weather = $itmsk;
-//			}else{$weather = 0;}
-//		}
-//		else{$weather = 0;}
-//		include_once GAME_ROOT . './include/system.func.php';
-//		save_gameinfo ();
-//		naddnews ( $now, 'wthchange', $name, $weather, $itm );
-//		$log .= "你启动了{$itm}。<br />天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br />";
-//	} elseif (strpos($itmk,'EC') ===0){
-//		global $hack,$hack_obbs,$club,$alivenum,$deathnum,$hp,$state;
-//		$hack_dice = rand(0,99);
-//		if(($hack_dice < $hack_obbs)||(($club == 7)&&($hack_dice<95))) {
-//			$hack = 1;
-//			$log .= '入侵禁区控制系统成功了！全部禁区都被解除了！<br>';
-//			include_once GAME_ROOT.'./include/system.func.php';
-//			movehtm();
-//			naddnews($now,'hack',$name);
-//			save_gameinfo();
-//		} else {
-//			$log .= '可是，入侵禁区控制系统失败了……<br>';
-//		}
-//		
-//		$hack_dice2 = rand(0,99);
-//
-//		if($hack_dice2 < 5) {
-//			$log .= '由于你的不当操作，禁区系统防火墙锁定了你的电脑并远程引爆了它。幸好你本人的位置并没有被发现。<br>';
-//			$itm = $itmk = $itmsk = '';
-//			$itme = $itms = 0;
-//		} elseif($hack_dice2 < 8) {
-//			$itm = $itmk = $itmsk = '';
-//			$itme = $itms = 0;
-//			$log .= "<span class=\"evergreen\">“小心隔墙有耳哦。”</span>——林无月<br>";
-//			include_once GAME_ROOT.'./include/state.func.php';
-//			$log .= '你擅自入侵禁区控制系统，被控制系统远程消灭！<br>';
-//			death('hack');
-//		}
-//	}
-//	return;
-//}
 
 function hack($itmn = 0) {
 	global $log,$hack,$hack_obbs,$club,$now,$name,$alivenum,$deathnum,$hp,$state;
@@ -163,37 +113,6 @@ function hack($itmn = 0) {
 	return;
 }
 
-/*function radar($m = 0){
-	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$rinfo,$hack;
-	
-	if(!$mode) {
-		$log .= '雷达使用失败！<br>';
-		return;
-	}
-	for($i=0;$i<=count($plsinfo);$i++) {
-		if((array_search($i,$arealist) > $areanum) || $hack) {
-			if($i==$pls) {
-				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				$anum = $db->num_rows($result);
-				$rinfo[$i] ="<span class=\"red b\">$anum</span>";
-			} elseif($m == 2) {
-				$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				$anum = $db->num_rows($result);
-				$rinfo[$i] = $anum;
-			} else {
-				$rinfo[$i] = '??';
-			}
-		} else {
-			$rinfo[$i] = '<span class="red b">∵</span>';
-		}
-	}
-
-	$log .= '白色数字：该区域内的人数<br><span class="red b">红色数字</span>：自己所在区域的人数<br><span class="red b">∵</span>：禁区<br><br>';
-	$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
-	$main = 'radar';
-	return;
-}*/
-
 function newradar($m = 0){
 	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack,$gamestate;
 	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen,$typeinfo;
@@ -202,17 +121,19 @@ function newradar($m = 0){
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
-	$npctplist = Array(2,3,4,5,6,11);
+	$npctplist = Array(2,3,4,5,6,7,11);
 	$tdheight = 20;
 	$screenheight = count($plsinfo)*$tdheight;
 	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0");
 	while($cd = $db->fetch_array($result)) {
 		$chdata[] = $cd;
 	}
+	$radar = array();
 	foreach ($chdata as $data){
-		$radar[$data['pls']][$data['type']]+=1;
+		if(isset($radar[$data['pls']][$data['type']])){$radar[$data['pls']][$data['type']]+=1;}
+		else{$radar[$data['pls']][$data['type']]=1;}
 	}
-	$radarscreen = '<table height='.$screenheight.'px width=640px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
+	$radarscreen = '<table height='.$screenheight.'px width=720px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
 	$radarscreen .= "<tr>
 		<td class=b2 height={$tdheight}px width=120px><div class=nttx></div></td>
 		<td class=b2><div class=nttx>{$typeinfo[0]}</div></td>";
@@ -230,7 +151,10 @@ function newradar($m = 0){
 				foreach ($npctplist as $j){
 					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
 					//${'num'.$j} = $db->num_rows($result);
-					${'num'.$j} = $gamestate == 50 ? 0 : $radar[$i][$j];
+					if($gamestate == 50){${'num'.$j} = 0;}
+					else{
+						${'num'.$j} = isset($radar[$i][$j]) ? $radar[$i][$j] : 0;
+					}
 				}
 				if($num0){
 					$pnum[$i] ="<span class=\"yellow b\">$num0</span>";
@@ -248,11 +172,15 @@ function newradar($m = 0){
 			} elseif($m == 2) {
 				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
 				//$num0 = $db->num_rows($result);
-				$num0 = $radar[$i][0];
+				$num0 = isset($radar[$i][0]) ? $radar[$i][0] : 0;
 				foreach ($npctplist as $j){
 					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
 					//${'num'.$j} = $db->num_rows($result);
-					${'num'.$j} =  $gamestate == 50 ? 0 : $radar[$i][$j];
+					if($gamestate == 50){${'num'.$j} = 0;}
+					else{
+						${'num'.$j} = isset($radar[$i][$j]) ? $radar[$i][$j] : 0;
+					}
+					
 				}
 				if($num0){
 					$pnum[$i] =$num0;
@@ -288,7 +216,10 @@ function newradar($m = 0){
 	}
 	$radarscreen .= '</tbody></table>';
 	$log .= '白色数字：该区域内的人数<br><span class="yellow b">黄色数字</span>：自己所在区域的人数<br><span class="red b">×</span>：禁区<br><br>';
-	$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
+	include template('radarcmd');
+	$cmd = ob_get_contents();
+	ob_clean();
+	//$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
 	$main = 'radar';
 	return;
 }
@@ -410,7 +341,7 @@ function qianghua($itmn = 0) {
 	$baoshis = & ${'itms'.$itmp};
 	$baoshik = & ${'itmk'.$itmp};
 	$baoshisk = & ${'itmsk'.$itmp};	
-	if ( $itmn < 1 || $itmn > 5 ) {
+	if ( $itmn < 1 || $itmn > 6 ) {
 		$log .= '此道具不存在，请重新选择。';
 		$mode = 'command';
 		return;
@@ -421,45 +352,55 @@ function qianghua($itmn = 0) {
 	$itms = & ${'itms'.$itmn};
 	$itmk = & ${'itmk'.$itmn};
 	$itmsk = & ${'itmsk'.$itmn};
-	if(($baoshi != '『灵魂宝石』' || $baoshi != '『祝福宝石』') && (strpos ( $itmsk, 'Z' ) === false)) {
-		$log .= '道具选择错误，请重新选择。<br>';
+	if($baoshis <= 0 || ($baoshi != '『灵魂宝石』' && $baoshi != '『祝福宝石』')) {
+		$log .= '强化道具选择错误，请重新选择。<br>';
 		$mode = 'command';
 		return;
 	}
-	naddnews ( $now, 'newwep2', $name, $baoshi, $itm );
-	if(!preg_match("/\[\+[0-9]\]/",$itm,$zitmlv)){
-		$itm = "${'itm'.$itmn}[+1]";
-		$itme = round(${'itme'.$itmn} * 1.5);
+	if(!$itms || strpos ( $itmsk, 'Z' ) === false) {
+		$log .= '被强化道具选择错误，请重新选择。<br>';
+		$mode = 'command';
+		return;
+	}
+	$o_itm = $itm;
+	if(!preg_match("/\[\+[0-9]\]/",$itm)){
+		$itm = ${'itm'.$itmn}.'[+0]';
+//		$itme = round(${'itme'.$itmn} * 1.5);
 		$flag = true;
-		$zitmlv = $zitmlv[0];
+		$zitmlv = 0;
+//		var_dump($zitmlv);
 	}else{
-		$zitmlv = preg_replace("/\[\+([0-9])\]/","\\1",$zitmlv[0]);
+		//$zitmlv = preg_replace("/\[\+([0-9])\]/","\\1",$zitmlv[0]);
+		preg_match("/\[\+([0-9])\]/",$itm,$zitmlv);
+		//var_dump($zitmlv);
+		$zitmlv = $zitmlv[1];
 		//$dengji = substr(${'itm'.$itmn},strpos(${'itm'.$itmn},"[+")+2,strlen(${'itm'.$itmn}) - strpos(${'itm'.$itmn},"]")+1);//北京你自己看着办
     //$dengji = str_replace(']','',$dengji);
 		if($zitmlv >= 3 && $baoshi != '『灵魂宝石』'){
-		 $log .= '你所选的宝石只能强化装备到[+3]哦!DA☆ZE<br>';
-	   $mode = 'command';
-		 return;
+			$log .= '你所选的宝石只能强化装备到[+3]哦!DA☆ZE<br>';
+		  $mode = 'command';
+			return;
 		}else{
-		 if ($zitmlv >= 4){
-		 	$gailv = rand(1,$zitmlv-2);
-		 }elseif ($zitmlv >= 6){
-		  $gailv = rand(1,$zitmlv-1);
-		 }elseif ($zitmlv >= 10){
-		  $gailv = rand(1,$zitmlv);
-		 }else{
-		 	$gailv = 1;
-		 }
-		 if ($gailv == 1 ){
-		 	$flag = true;
-		 }	
+			if ($zitmlv >= 4){
+				$gailv = rand(1,$zitmlv-2);
+			}elseif ($zitmlv >= 6){
+				$gailv = rand(1,$zitmlv-1);
+			}elseif ($zitmlv >= 10){
+				$gailv = rand(1,$zitmlv);
+			}else{
+				$gailv = 1;
+			}
+			if ($gailv == 1 ){
+				$flag = true;
+			}else{$flag = false;}
 	  }	
   }	
+  naddnews ( $now, 'newwep2', $name, $baoshi, $o_itm );
 	if ($flag){
 	 $log .= "<span class=\"yellow\">『一道神圣的闪光照耀在你的眼睛上，当你恢复视力时，发现你的装备闪耀着彩虹般的光芒』</span><br>";
 	 $nzitmlv = $zitmlv +1;
-	 $itm = str_replace("[+{$zitmlv}]","[+".$nzitmlv."]",${'itm'.$itmn});
-	 $itme = round(${'itme'.$itmn} * (1.5 + 0.1 * $zitmlv));
+	 $itm = str_replace('[+'.$zitmlv.']','[+'.$nzitmlv.']',$itm);
+	 $itme = round($itme * (1.5 + 0.1 * $zitmlv));
 	}else{
 	 //$ran = rand(5,20);
 	 //$log .="<span class=\"yellow\">『一道神圣的闪光照耀在你的眼睛上，当你恢复视力时，发现你的装备变成了{$ran}块闪耀着彩虹光芒的碎片』</span><br>";

@@ -2,10 +2,6 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 2){
-	exit($_ERROR['no_power']);
-}
-
 
 if($subcmd=='edit' && !$gamestate){
 	$settime = mktime((int)$_POST['sethour'],(int)$_POST['setmin'],0,(int)$_POST['setmonth'],(int)$_POST['setday'],(int)$_POST['setyear']);

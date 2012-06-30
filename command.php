@@ -280,6 +280,8 @@ if($hp <= 0) {
 		if($db->num_rows($result)) { $kname = $db->result($result,0); }
 	}
 	ob_clean();
+	include_once GAME_ROOT.'./include/weibolog.func.php';
+	$weibolog = weibolog($log);
 	include template('death');
 	$gamedata['innerHTML']['cmd'] = ob_get_contents();
 	$mode = 'death';

@@ -6,4 +6,8 @@
 <br>
 <span class="dmg">你死了。</span>
 <br><br>
+<!--{if isset($weibolog)}-->
+<input type="button" value="我靠！怒电波之！" onclick="window.location.href='http://dianbo.me/index.php?app=home&mod=Widget&act=share&url=http%3A%2F%2Flg.dianbo.me%2F&title=%{$weibolog}%'">
+<!--{else}-->
 <input type="button" class="cmdbutton" value="我靠！" disabled>
+<!--{/if}-->

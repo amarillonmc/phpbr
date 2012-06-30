@@ -1055,11 +1055,11 @@ function itemuse($itmn) {
 			$rp = 0;
 			include_once GAME_ROOT . './include/system.func.php';
 			$log .= '在你唱出那单一的旋律的霎那，<br>整个虚拟世界起了翻天覆地的变化……<br>';
+			addnews ($now , 'thiphase', $name);
 			addnpc ( 4, 0,1);
 			include_once GAME_ROOT . './include/game/item2.func.php';
 			$log .= '世界响应着这旋律，产生了异变……<br>';
-			wthchange( $itm,$itmsk);
-			addnews ($now , 'thiphase', $name);
+			wthchange( $itm,$itmsk);			
 			$hack = 1;
 			$log .= '因为破灭之歌的作用，全部锁定被打破了！<br>';
 			//include_once GAME_ROOT.'./include/system.func.php';

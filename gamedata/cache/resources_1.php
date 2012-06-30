@@ -45,7 +45,7 @@ $clubinfo = Array(
 	98=>'换装迷宫',
 	99=>'第一形态'
 	);
-$wthinfo = Array('晴天','大晴','多云','小雨','暴雨','台风','雷雨','下雪','起雾','浓雾','<span class="yellow">瘴气</span>','<span class="red">龙卷风</span>','<span class="clan">暴风雪</span>','<span class="blue">冰雹</span>','<span class="linen">离子暴</span>','<span class="green">辐射尘</span>','<span class="purple">臭氧洞</span>');
+$wthinfo = Array('晴天','大晴','多云','小雨','暴雨','台风','雷雨','下雪','起雾','浓雾','<span class="yellow">瘴气</span>','<span class="red">龙卷风</span>','<span class="clan">暴风雪</span>','<span class="blue">冰雹</span>','<span class="linen">离子风暴</span>','<span class="green">辐射尘埃</span>','<span class="purple">臭氧空洞</span>');
 $sexinfo = Array(0=> '未定', 'm' => '男生', 'f' => '女生');
 $hpinfo = Array('并无大碍','伤痕累累','生命危险','已经死亡');
 $spinfo = Array('精力充沛','略有疲惫','精疲力尽','已经死亡');

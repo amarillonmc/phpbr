@@ -1,5 +1,5 @@
 <table align="center">
-	<!--{if $ustate == 'register'}-->
+	<!--{if CURSCRIPT == 'register'}-->
 		<tr>
 			<td>{lang username}</td>
 			<td><input type="text" name="username" size="15" maxlength="15" value=""></td>
@@ -15,7 +15,7 @@
 			<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
 			<td>{lang password_comment}</td>
 		</tr>
-	<!--{elseif $ustate == 'edit'}-->
+	<!--{elseif CURSCRIPT == 'user'}-->
 		<tr>
 			<td>{lang username}</td>
 			<td>$username</td>

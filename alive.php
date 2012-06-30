@@ -23,14 +23,14 @@ while($playerdata = $db->fetch_array($query)) {
 	$playerdata['iconImg'] = "{$playerdata['gd']}_{$playerdata['icon']}.gif";
 	$result = $db->query("SELECT motto FROM {$tablepre}users WHERE username = '".$playerdata['name']."'");
 	$playerdata['motto'] = $db->result($result, 0);
-	$playerdata['motto'] = rep_label($playerdata['motto']);
 	$alivedata[] = $playerdata;
 }
 if(!isset($alivemode)){
 	include template('alive');
 }else{
 	include template('alivelist');
-	$alivedata = ob_get_contents();
+	$alivedata['innerHTML']['alivelist'] = ob_get_contents();
+	if(isset($error)){$alivedata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($alivedata);
 	echo $jgamedata;

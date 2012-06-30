@@ -49,6 +49,9 @@ function parse_template($file, $templateid, $tpldir) {
 
 	$template = preg_replace("/\{$const_regexp\}/s", "<?=\\1?>", $template);
 	$template = preg_replace("/ \?\>[\n\r]*\<\? /s", " ", $template);
+	
+	$template = preg_replace("/\<\?/s", "<?php", $template);
+	$template = preg_replace("/\<\?php\=/s", "<?php echo ", $template);
 
 	if(!$fp = fopen($objfile, 'w')) {
 		gexit("Directory './gamedata/templates/' not found or have no access!");

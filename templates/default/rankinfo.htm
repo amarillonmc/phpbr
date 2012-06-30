@@ -1,26 +1,30 @@
 <TABLE border="0" cellspacing="0" cellpadding="0">
 	<TR height="20">
-		<TD class="b1"><DIV class=nttx>UID</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang name}</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang gender}</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang icon}</div></TD>
-		<TD class="b1" width="240"><DIV class=nttx>{lang motto}</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang credits}</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang honour}</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang validtimes}</div></TD>
-		<TD class="b1"><DIV class=nttx>{lang lastgame}</div></TD>
+		<TD class="b1"><span>排名</span></TD>
+		<TD class="b1"><span>UID</span></TD>
+		<TD class="b1"><span>{lang name}</span></TD>
+		<TD class="b1"><span>{lang gender}</span></TD>
+		<TD class="b1"><span>{lang icon}</span></TD>
+		<TD class="b1" style="maxwidth:120"><span>{lang motto}</span></TD>
+		<TD class="b1"><span>{lang credits}</span></TD>
+		<TD class="b1"><span>{lang validgames}</span></TD>
+		<TD class="b1"><span>{lang wingames}</span></TD>
+		<TD class="b1"><span>{lang winrate}</span></TD>
+		<TD class="b1"><span>{lang lastgame}</span></TD>
 	</TR>
 	<!--{loop $rankdata $urdata}-->
 	<TR height="20">
-		<TD class="b2"><DIV class=nttx>$urdata['uid']</div></TD>
-		<TD class="b3"><DIV class=nttx>$urdata['username']</div></TD>
-		<TD class="b3"><DIV class=nttx>$sexinfo[$urdata['gender']]</div></TD>
-		<TD class="b3"><DIV class=nttx><IMG src="img/$urdata['img']" width="140" height="80" border="0" align="absmiddle"></div></TD>
-		<TD class="b3"><DIV class=nttx>$urdata['motto']</div></TD>
-		<TD class="b3"><DIV class=nttx><span class="yellow">$urdata['credits']</span></div></TD>
-		<TD class="b3"><DIV class=nttx>$urdata['honour']</div></TD>
-		<TD class="b3"><DIV class=nttx>$urdata['validtimes']</div></TD>
-		<TD class="b3"><DIV class=nttx>$urdata['lastgame']</div></TD>
+		<TD class="b2"><span><!--{if $urdata['number']==1}--><a title="触手！"><span class="red">榜首</span></a><!--{elseif $urdata['number']<=10}--><span class="yellow">$urdata['number']</span><!--{else}-->$urdata['number']<!--{/if}--></span></TD>
+		<TD class="b3"><span>$urdata['uid']</span></TD>
+		<TD class="b3"><span>$urdata['username']</span></TD>
+		<TD class="b3"><span><!--{if $urdata['gender']}-->$sexinfo[$urdata['gender']]<!--{else}-->$sexinfo[0]<!--{/if}--></span></TD>
+		<TD class="b3"><span><IMG src="img/$urdata['img']" width="70" height="40" border="0" align="absmiddle"></span></TD>
+		<TD class="b3"><span>$urdata['motto']</span></TD>
+		<TD class="b3"><span><span class="yellow">$urdata['credits']</span></span></TD>
+		<TD class="b3"><span>$urdata['validgames']</span></TD>
+		<TD class="b3"><span>$urdata['wingames']</span></TD>
+		<TD class="b3"><span>$urdata['winrate']</span></TD>
+		<TD class="b3"><span>$urdata['lastgame']</span></TD>
 	</TR>
 	<!--{/loop}-->
 </TABLE>

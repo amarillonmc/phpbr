@@ -2,108 +2,138 @@
 if(!defined('IN_ADMIN')) {
 	exit('Access Denied');
 }
-if($mygroup < 2){
-	exit($_ERROR['no_power']);
-}
+//if($mygroup < 5){
+//	exit($_ERROR['no_power']);
+//}
 
-if($subcmd == 'infosync'){
-	if($mygroup < 2){exit($_ERROR['no_power']);}
-	//require_once GAME_ROOT.'./include/system.func.php';
-
-	$result = $db->query("SELECT pid FROM {$tablepre}players WHERE type=0");
-	$validnum = $db->num_rows($result);
+if($command == 'wthedit'){
+	$iweather = (int)$_POST['iweather'];
+	if($iweather == $weather){
+		$cmd_info = '当前天气已经为'.$wthinfo[$iweather].'，无需修改天气！';
+	}elseif(!isset($wthinfo[$iweather])){
+		$cmd_info = '天气数据错误，请重新输入！';
+	}else{
+		$cmd_info = '当前天气修改为：'.$wthinfo[$iweather];
+		$weather = $iweather;
+		save_gameinfo();
+		adminlog('wthedit',$iweather);
+		addnews($now,'syswthchg',$iweather);		
+	}
+}elseif($command == 'hackedit'){
+	$ihack = $_POST['ihack'] != 0 ? 1 : 0;
+	if($ihack == $hack){
+		$cmd_info = '当前禁区已经为该状态，无需修改！';
+	}else{
+		$cmd_info = '当前禁区状态修改为：'.($ihack ? '解除' : '未解除');
+		$hack = $ihack;
+		save_gameinfo();
+		adminlog('hackedit',$ihack);
+		addnews($now,'syshackchg',$ihack);		
+		include_once GAME_ROOT.'./include/system.func.php';
+		movehtm();
+	}
+}elseif(strpos($command, 'gsedit')===0){
+	$igamestate = explode('_',$command);
+	$igamestate = $igamestate[1];
 	
-	$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=0");
-	$alivenum = $db->num_rows($result);
-	
-	$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp<=0 OR state>=10");
-	$deathnum = $db->num_rows($result);
-	
-	save_gameinfo();
-	adminlog('infomng');
-	echo "状态更新：激活人数 {$validnum},生存人数 {$alivenum},死亡人数 {$deathnum}<br>";
-}elseif($subcmd == 'infoedit'){
-	if($mygroup < 8){exit($_ERROR['no_power']);}
-	$ednum=0;
-
-	foreach(Array('arealist','areanum','weather','hack') as $value){
-		if(isset(${'i'.$value}) && ${'i'.$value} != ${$value}){
-			${$value} = ${'i'.$value};
-			echo "$value 修改为 ${$value}<br>";
-			$ednum+=1;
+	if(!isset($gstate[$igamestate])){
+		$cmd_info = '游戏状态数据错误，请重新输入！';
+	}elseif($gamestate == $igamestate){
+		$cmd_info = '游戏当前已经处于此状态，请重新输入！';
+	}elseif($gamestate == 0 && $igamestate != 10){
+		$cmd_info = '游戏未准备，不可进入后期状态！';
+	}elseif($gamestate == 10 && $igamestate > 20){
+		$cmd_info = '游戏未开始，不可进入后期状态！';
+	}elseif($igamestate && $igamestate < $gamestate){
+		$cmd_info = '游戏已开始，状态不可回溯！';
+	}elseif($igamestate > 20){
+		$cmd_info = '当前游戏状态修改为：'.$gstate[$igamestate];
+		$gamestate = $igamestate;
+		save_gameinfo();
+		adminlog('gsedit',$igamestate);
+		addnews($now,'sysgschg',$igamestate);	
+	}elseif($igamestate == 20){
+		$cmd_info = '游戏立即开始！请访问任意游戏页面以刷新游戏状态。';
+		$starttime = $now;
+		save_gameinfo();
+		adminlog('gsedit',$igamestate);
+		addnews($now,'sysgschg',$igamestate);	
+	}elseif($igamestate == 10){
+		$cmd_info = '游戏立即进入准备状态！请访问任意游戏页面以刷新游戏状态。';
+		$starttime = $now + $startmin * 60;
+		save_gameinfo();
+		adminlog('gsedit',$igamestate);
+	}else{
+		$cmd_info = "第 $gamenum 局大逃杀紧急中止";
+		include_once GAME_ROOT.'./include/system.func.php';
+		gameover($now,'end6');
+		save_gameinfo();
+		adminlog('gameover');
+	}
+}elseif($command == 'sttimeedit'){
+	if($gamestate){
+		$cmd_info = "本局游戏尚未结束，不能设置时间。";
+	}else{
+		$settime = mktime((int)$_POST['sethour'],(int)$_POST['setmin'],0,(int)$_POST['setmonth'],(int)$_POST['setday'],(int)$_POST['setyear']);
+		if($settime <= $now){
+			$cmd_info = '开始时间不能早于当前时间。';
+		}else{
+			$starttime = $settime;
+			save_gameinfo();
+			$cmd_info = '游戏开始时间设置成功。';
 		}
 	}
-	save_gameinfo();
-	echo "做出了 $ednum 项修改<br>";
-	adminlog('infoedit');
-}elseif($subcmd == 'gameover'){
-	if($mygroup < 8){exit($_ERROR['no_power']);}
-	include_once GAME_ROOT.'./include/system.func.php';
-	gameover($now,6);
-	save_gameinfo();
-	echo "第 $gamenum 局大逃杀紧急中止<br>";
-	adminlog('gameover');
+}elseif($command == 'areaadd'){
+	if($gamestate <= 10){
+		$cmd_info = "本局游戏尚未开始，不能增加禁区。";
+	}elseif((!$areanum && $starttime + 30 > $now) || ($areanum && $areatime - $areahour*60 + 30 > $now)){
+		$cmd_info = "禁区到来后30秒内不能增加禁区。";
+	}else{
+		$areatime = $now;
+		save_gameinfo();
+		$areatime += $areahour * 60;
+		$cmd_info = '下一次禁区时间提前到来。请访问任意游戏页面以刷新游戏状态。';
+		addnews($now,'sysaddarea');	
+	}
 }
 
+if($starttime){
+	list($stsec,$stmin,$sthour,$stday,$stmonth,$styear,$stwday,$styday,$stisdst) = localtime($starttime);
+	$stmonth++;
+	$styear += 1900;
+}else{
+	list($stsec,$stmin,$sthour,$stday,$stmonth,$styear,$stwday,$styday,$stisdst) = localtime($now+3600);
+	$stmin = $startmin;
+	$stmonth++;
+	$styear += 1900;
+}
+
+$arealiststr = $nextarealiststr = '';
+$col = 0;
+$areaarr = array_slice($arealist,0,$areanum+1);
+foreach($areaarr as $val){
+	if($col == 4){
+		$arealiststr .= $plsinfo[$val].'<br>';
+		$col = 0;
+	}else{
+		$arealiststr .= $plsinfo[$val].' ';
+		$col ++;
+	}	
+}
+$col = 0;
+$nareaarr = array_slice($arealist,0,$areanum+$areaadd);
+foreach($nareaarr as $val){
+	if($col == 4){
+		$nextarealiststr .= $plsinfo[$val].'<br>';
+		$col = 0;
+	}else{
+		$nextarealiststr .= $plsinfo[$val].' ';
+		$col ++;
+	}	
+}
+list($arsec,$armin,$arhour,$arday,$armonth,$aryear,$arwday,$aryday,$arisdst) = localtime($areatime);
+$armonth++;
+$aryear += 1900;
+include template('admin_gameinfomng');
 ?>
-<form method="post" name="gameinfomng" onsubmit="admin.php">
-	<input type="hidden" name="mode" value="gamemng">
-	<input type="hidden" name="command" value="gameinfomng">
-	
-	<table class="admin">
-		<tr>
-			<td>游戏局数</td><td><?=$gamenum?></td>
-		</tr>
-		<tr>
-			<td>游戏状态</td><td>
-				<?php
-				if($gamestate == 0){echo '游戏结束';}
-				elseif($gamestate == 10){echo '即将开始';}
-				elseif($gamestate == 20){echo '开放激活';}
-				elseif($gamestate == 30){echo '停止激活';}
-				elseif($gamestate == 40){echo '连斗中';}
-				elseif($gamestate == 50){echo '死斗中';}
-				else{echo '参数错误';}
-				?>
-				<!--<input type="radio" name="igamestate" value="0" <? if ($gamestate == 0) {echo 'checked';}?> >游戏结束<br>
-				<input type="radio" name="igamestate" value="10" <? if ($gamestate == 10) {echo 'checked';}?> >即将开始<br>
-				<input type="radio" name="igamestate" value="20" <? if ($gamestate == 20) {echo 'checked';}?> >开放激活<br>
-				<input type="radio" name="igamestate" value="30" <? if ($gamestate == 30) {echo 'checked';}?> >停止激活<br>
-				<input type="radio" name="igamestate" value="40" <? if ($gamestate == 40) {echo 'checked';}?> >连斗中<br>
-				<input type="radio" name="igamestate" value="50" <? if ($gamestate == 50) {echo 'checked';}?> >死斗中-->
-			</td>
-		</tr>
-		<tr>
-			<td>游戏开始时间</td><td><? echo $starttime ? date("Y 年 m 月 d 日 H 时 i 分 s 秒",$starttime) : '未定义' ?></td>
-		</tr>
-		<tr>
-			<td>禁区列表</td><td>工事中</td>
-		</tr>
-		<tr>
-			<td>已有禁区数目</td><td><input size="10" type="text" name="iareanum" value="<?=$areanum?>" maxlength="10"></td>
-		</tr>
-		<tr>
-			<td>下次禁区时间</td><td>工事中<!--<input size="20" type="text" name="iareatime" value="<? echo date("Y-m-d-H-i-s",$areatime) ?>" maxlength="20">--></td>
-		</tr>
-		<tr>
-			<td>当前天气</td><td><input size="10" type="text" name="iweather" value="<?=$weather?>" maxlength="10"></td>
-		</tr>
-		<tr>
-			<td>禁区解除</td><td><input type="radio" name="ihack" value="1" <? if ($hack) {echo 'checked';}?> >是<br><input type="radio" name="ihack" value="0" <? if (!$hack) {echo 'checked';}?> >否</td>
-		</tr>
-		<tr>
-			<td>当前激活人数</td><td><?=$validnum?></td>
-		</tr>
-		<tr>
-			<td>当前生存人数</td><td><?=$alivenum?></td>
-		</tr>
-		<tr>
-			<td>当前死亡人数</td><td><?=$deathnum?></td>
-		</tr>
-	</table>
-	
-	<input type="radio" name="subcmd" id="infosync" value="infosync" checked><a onclick=sl('infosync'); href="javascript:void(0);" >游戏人数同步（用于修正游戏激活、存活、死亡人数错误的情况）</a><br>
-	<input type="radio" name="subcmd" id="infoedit" value="infoedit"><a onclick=sl('infoedit'); href="javascript:void(0);" >游戏状态修改</a><br>
-	<input type="radio" name="subcmd" id="gameover" value="gameover"><a onclick=sl('gameover'); href="javascript:void(0);" >终止当前游戏</a><br>
-	<input type="submit" value="提交">
-</form>
+

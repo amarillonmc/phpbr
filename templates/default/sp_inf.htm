@@ -1,33 +1,37 @@
-<input type="hidden" id="mode" name="mode" value="special">
-<input type="hidden" id="command" name="command" value="">
-<table style="width:500px">
-	<tr>
-		<td class="td1" style="height:20px">
-			<div>
-				想要做什么？
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="td2">
-			<div>
-				<div class="itmbtn" onclick="$('mode').value='command';$('command').value='menu';postCommand();">{lang back}</div>
-				<!--{if (strpos($pdata['inf'],'h') !== false || strpos($pdata['inf'],'b') !== false || strpos($pdata['inf'],'a') !== false || strpos($pdata['inf'],'f') !== false) && $pdata['club'] == 16}-->
-					<div class="itmbtn" onclick="$('command').value='infA';postCommand();">包扎全身伤口</div>
-				<!--{/if}-->
-				<!--{loop array('h','b','a','f') $p}-->
-					<!--{if strpos($pdata['inf'],$p) !== false}-->
-						<div class="itmbtn" onclick="$('command').value='inf$p';postCommand();">包扎{$infdata[$p]['short']}部伤口</div>
-					<!--{/if}-->
-				<!--{/loop}-->
-				<!--{if $pdata['club'] == 16}-->
-					<!--{loop array('p','u','i','e','w') $i}-->
-						<!--{if strpos($pdata['inf'],$i) !== false}-->
-							<div class="itmbtn" onclick="$('command').value='inf$i';postCommand();">治疗{$infdata[$i]['name']}状态</div>
-						<!--{/if}-->
-					<!--{/loop}-->
-				<!--{/if}-->
-			</div>
-		</td>
-	</tr>
-</table>
+想要做什么？<br>
+
+<input type="hidden" name="mode" value="special">
+<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl('menu'); href="javascript:void(0);" >返回</a><br><br>
+<!--{if (strpos($inf,'h') !== false || strpos($inf,'b') !== false || strpos($inf,'a') !== false || strpos($inf,'f') !== false) && $club == 16}-->
+<input type="radio" name="command" id="infA" value="infA"><a onclick=sl('infA'); href="javascript:void(0);" ><span class="red">包扎全身伤口</span></a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'b') !== false}-->
+<input type="radio" name="command" id="infb" value="infb"><a onclick=sl('infb'); href="javascript:void(0);" >包扎{$infinfo['b']}<span class="red">部</span>伤口</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'h') !== false}-->
+<input type="radio" name="command" id="infh" value="infh"><a onclick=sl('infh'); href="javascript:void(0);" >包扎{$infinfo['h']}<span class="red">部</span>伤口</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'a') !== false}-->
+<input type="radio" name="command" id="infa" value="infa"><a onclick=sl('infa'); href="javascript:void(0);" >包扎{$infinfo['a']}<span class="red">部</span>伤口</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'f') !== false}-->
+<input type="radio" name="command" id="inff" value="inff"><a onclick=sl('inff'); href="javascript:void(0);" >包扎{$infinfo['f']}<span class="red">部</span>伤口</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'p') !== false && $club == 16}-->
+<input type="radio" name="command" id="infp" value="infp"><a onclick=sl('infp'); href="javascript:void(0);" >治疗{$exdmginf['p']}状态</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'u') !== false && $club == 16}-->
+<input type="radio" name="command" id="infu" value="infu"><a onclick=sl('infu'); href="javascript:void(0);" >治疗{$exdmginf['u']}状态</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'i') !== false && $club == 16}-->
+<input type="radio" name="command" id="infi" value="infi"><a onclick=sl('infi'); href="javascript:void(0);" >治疗{$exdmginf['i']}状态</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'e') !== false && $club == 16}-->
+<input type="radio" name="command" id="infe" value="infe"><a onclick=sl('infe'); href="javascript:void(0);" >治疗{$exdmginf['e']}状态</a><br>
+<!--{/if}-->
+<!--{if strpos($inf,'w') !== false && $club == 16}-->
+<input type="radio" name="command" id="infw" value="infw"><a onclick=sl('infw'); href="javascript:void(0);" >治疗{$exdmginf['w']}状态</a><br>
+<!--{/if}-->
+
+ 
+

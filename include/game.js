@@ -1,17 +1,13 @@
-//document.onkeydown = hotkey();
-
 function hotkey(evt) 
 { 
 	if(document.activeElement.tagName != 'INPUT'){
 		evt = (evt) ? evt : ((window.event) ? window.event : '');
 		var ky = evt.keyCode ? evt.keyCode : evt.which;
-		if(ky==90 && !evt.ctrlKey && !evt.altKey && !evt.shiftKey){
+		if(!evt.ctrlKey && !evt.altKey && !evt.shiftKey){
+			if(ky==90){
+				$('submit').click();
+			}
 		}
-//		alert('!'); 
-//		if(ky==65) 
-//		{ 
-//			alert("Äã°´ÁËa¼ü°É"); 
-//		} 
 	}	
 }
 
@@ -56,10 +52,32 @@ function demiSecTimerStarter(msec){
 	timerid = setInterval("demiSecTimer()",itv);
 }
 
+function itemmixchooser(){
+	for(i=1;i<=6;i++){
+		var mname = 'mitm'+i;
+		if($(mname) != null){
+			if($(mname).checked){
+				$(mname).value=i;
+			}
+		}
+	}
+}
+
+//icon select
+//function iconMover(){
+//	gd = document.valid.gender[0].checked ? 'm' : 'f';
+//	inum = document.valid.icon.selectedIndex;
+//	$('iconImg').innerHTML = '<img src="img/' + gd + '_' + inum + '.gif" alt="' + inum + '">';
+//}
 function userIconMover(){
 	ugd = $('male').checked ? 'm' : 'f';
 	uinum = $('icon').selectedIndex;
 	$('userIconImg').innerHTML = '<img src="img/' + ugd + '_' + uinum + '.gif" alt="' + uinum + '">';
+}
+function dniconMover(){
+	dngd = $('male').checked ? 'm' : 'f';
+	dninum = $('dnicon').selectedIndex;
+	$('dniconImg').innerHTML = '<img src="img/' + dngd + '_' + dninum + '.gif" alt="' + dninum + '">';
 }
 
 function showNotice(sNotice) {
@@ -70,35 +88,165 @@ function sl(id) {
 	$(id).checked = true;
 }
 
+//function postCommand(){
+//	$('submit').disabled = true;
+//	var oXmlHttp = zXmlHttp.createRequest();
+//	var sBody = getRequestBody(document.forms['gamecmd']);
+//	oXmlHttp.open("post", "command.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				showGamedata(oXmlHttp.responseText);
+//				$('submit').disabled = false;
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send(sBody);
+//}
+//
+//function showGamedata(sGamedata){
+//	gamedata = sGamedata.parseJSON();
+//	if(gamedata['url']) {
+//		window.location.href = gamedata['url'];
+//	} else if(!gamedata['main']) {
+//		//window.location.href = 'index.php';
+//		$('notice').innerHTML = sGamedata;
+//	}
+//	//timer = 0;
+//	for(var id in gamedata) {
+//		if(id == 'toJSONString' || id == 'timer') {
+//			continue;
+//		} else if(gamedata[id]){
+//			if(id == 'team'){
+//				$('team').value = gamedata['team'];
+//			}else{
+//				$(id).innerHTML = gamedata[id];
+//			}
+//		} else{
+//			$(id).innerHTML = '';
+//		}
+//		
+//	}
+//	if(gamedata['timer'] && typeof(timerid)=='undefined'){
+//		demiSecTimerStarter(gamedata['timer']);
+//	}
+//}
+
+//function postRegCommand(){
+//	$('post').disabled = true;
+//	$('reset').disabled = true;
+//	var oXmlHttp = zXmlHttp.createRequest();
+//	var sBody = getRequestBody(document.forms['reg']);
+//	oXmlHttp.open("post", "register.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				$('post').disabled = false;
+//				$('reset').disabled = false;
+//				showRegdata(oXmlHttp.responseText);
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send(sBody);
+//}
+//
+//function showRegdata(sRegdata){
+//	regdata = sRegdata.parseJSON();
+//	for(var id in regdata) {
+//		if(id == 'toJSONString') {
+//			continue;
+//		} else if(regdata[id]){
+//			$(id).innerHTML = regdata[id];
+//		} else{
+//			$(id).innerHTML = '';
+//		}		
+//	}
+//}
+
+//function showNews(n){
+//	var oXmlHttp = zXmlHttp.createRequest();
+//
+//	oXmlHttp.open("post", "news.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				showNewsdata(oXmlHttp.responseText);
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send('newsmode=' + n);
+//}
+//
+//function showNewsdata(newsdata) {
+//	news = newsdata.parseJSON();
+//	if(news['msg']){
+//		newchat = '';
+//		for(var nid in news['msg']) {
+//			if(nid == 'toJSONString') {continue;}
+//			newchat += news['msg'][nid];
+//		}
+//		$('newsinfo').innerHTML = newchat;
+//	} else {
+//		$('newsinfo').innerHTML = news;
+//	}
+//}
+
+//function showAlive(mode){
+//	//window.location.href = 'alive.php?alivemode=' + mode;
+//	
+//	var oXmlHttp = zXmlHttp.createRequest();
+//	
+//	oXmlHttp.open("post", "alive.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				showAlivedata(oXmlHttp.responseText);
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send('alivemode=' + mode);
+//}
+//function showAlivedata(alivedata) {
+//	alive = alivedata.parseJSON();
+//	$('alivelist').innerHTML = alive;
+//}
+
 function postCmd(formName,sendto){
-	if($('submittable').value == 1){
-		$('submittable').value = 0;
-		$('notice').innerHTML = 'Posting...';
-		var oXmlHttp = zXmlHttp.createRequest();
-		var sBody = getRequestBody(document.forms[formName]);
-		oXmlHttp.open("post", sendto, true);
-		oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		oXmlHttp.onreadystatechange = function () {
-			if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					showData(oXmlHttp.responseText);
-					$('submittable').value = 1;
-					$('notice').innerHTML = '';
-				} else {
-					showNotice(oXmlHttp.statusText);
-				}
+	var oXmlHttp = zXmlHttp.createRequest();
+	var sBody = getRequestBody(document.forms[formName]);
+	oXmlHttp.open("post", sendto, true);
+	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	oXmlHttp.onreadystatechange = function () {
+		if (oXmlHttp.readyState == 4) {
+			if (oXmlHttp.status == 200) {
+				showData(oXmlHttp.responseText);
+			} else {
+				showNotice(oXmlHttp.statusText);
 			}
-		};
-		oXmlHttp.send(sBody);
-	}else{
-		$('notice').innerHTML = 'Duplicate submissions.';
+		}
 	}
+	oXmlHttp.send(sBody);
 }
 
 function showData(sdata){
 	shwData = sdata.parseJSON();
 	if(shwData['url']) {
 		window.location.href = shwData['url'];
+	}else if(!shwData['innerHTML']) {
+		$('error').innerHTML=sdata;
+			//window.location.href = 'index.php';
 	}else{
 		sDv = shwData['value'];
 		for(var id in sDv){
@@ -107,6 +255,7 @@ function showData(sdata){
 			}
 		}
 		sDi = shwData['innerHTML'];
+		
 		for(var id in sDi){
 			if($(id)!=null){
 				if(sDi['id'] !== ''){
@@ -120,183 +269,6 @@ function showData(sdata){
 	if(shwData['timer'] && typeof(timerid)=='undefined'){
 		demiSecTimerStarter(shwData['timer']);
 	}
-}
-
-function postCommand(){
-	if($('submittable').value == 1){
-		$('submittable').value = 0;
-		var oXmlHttp = zXmlHttp.createRequest();
-		var sBody = getRequestBody(document.forms['cmd']);
-		oXmlHttp.open("post", "command.php", true);
-		oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		oXmlHttp.onreadystatechange = function () {
-			if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					showGamedata(oXmlHttp.responseText);
-					$('submittable').value = 1;
-					$('notice').innerHTML = '';
-				} else {
-					showNotice(oXmlHttp.statusText);
-				}
-			}
-		};
-		oXmlHttp.send(sBody);
-	}else{
-		$('notice').innerHTML = 'Duplicate submissions.';
-	}
-}
-
-function showGamedata(sGamedata){
-	gamedata = sGamedata.parseJSON();
-	if(gamedata['url']) {
-		window.location.href = gamedata['url'];
-	} else if(!gamedata['main']) {
-		window.location.href = 'index.php';
-	}
-	//timer = 0;
-	for(var id in gamedata) {
-		
-		if(id == 'toJSONString' || id == 'timer') {
-			continue;
-		} else if($(id)!=null){
-			if(id == 'cteam' || id == 'cpls'){
-				$(id).value = gamedata[id];
-			} else if(gamedata[id]!==''){
-				$(id).innerHTML = gamedata[id];
-			} else{
-				$(id).innerHTML = '';
-			}
-		}		
-		
-	}
-	//if($('move')){alert($('move').innerHTML);}
-	if(gamedata['timer'] && typeof(timerid)=='undefined'){
-		demiSecTimerStarter(gamedata['timer']);
-	}
-}
-
-function postRegCommand(){
-	$('post').disabled = true;
-	$('reset').disabled = true;
-	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms['reg']);
-	oXmlHttp.open("post", "register.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				$('post').disabled = false;
-				$('reset').disabled = false;
-				showRegdata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send(sBody);
-}
-
-function showRegdata(sRegdata){
-	regdata = sRegdata.parseJSON();
-	for(var id in regdata) {
-		if(id == 'toJSONString') {
-			continue;
-		} else if(regdata[id]){
-			$(id).innerHTML = regdata[id];
-		} else{
-			$(id).innerHTML = '';
-		}		
-	}
-}
-
-function postUserCommand(){
-	$('post').disabled = true;
-	$('reset').disabled = true;
-	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms['userdata']);
-	oXmlHttp.open("post", "user.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				$('post').disabled = false;
-				$('reset').disabled = false;
-				showUserdata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send(sBody);
-}
-
-function showUserdata(sUserdata){
-	userdata = sUserdata.parseJSON();
-	for(var id in userdata) {
-		if(id == 'toJSONString') {
-			continue;
-		} else if(userdata[id]){
-			$(id).innerHTML = userdata[id];
-		} else{
-			$(id).innerHTML = '';
-		}		
-	}
-	$('opass').value = $('npass').value = $('rnpass').value = '';
-}
-
-
-function showNews(n){
-	var oXmlHttp = zXmlHttp.createRequest();
-
-	oXmlHttp.open("post", "news.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showNewsdata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send('newsmode=' + n);
-}
-
-function showNewsdata(newsdata) {
-	news = newsdata.parseJSON();
-	if(news['msg']){
-		newchat = '';
-		for(var nid in news['msg']) {
-			if(nid == 'toJSONString') {continue;}
-			newchat = news['msg'][nid] + newchat;
-		}
-		$('newsinfo').innerHTML = newchat;
-	} else {
-		$('newsinfo').innerHTML = news;
-	}
-}
-
-function showAlive(mode){
-	//window.location.href = 'alive.php?alivemode=' + mode;
-	
-	var oXmlHttp = zXmlHttp.createRequest();
-	
-	oXmlHttp.open("post", "alive.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showAlivedata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send('alivemode=' + mode);
-}
-function showAlivedata(alivedata) {
-	alive = alivedata.parseJSON();
-	$('alivelist').innerHTML = alive;
 }
 
 var refchat = null;
@@ -326,14 +298,13 @@ function chat(mode,reftime) {
 function showChatdata(jsonchat) {
 	chatdata = jsonchat.parseJSON();
 	if(chatdata['msg']) {
-		$('lastcid').value = chatdata['lastcid'];
-		var newchat = '';
-//		newchat = chatdata['msg'].join("");
+		$('lastcid').value=chatdata['lastcid'];
+		newchat = '';
 		for(var cid in chatdata['msg']) {
 			if(cid == 'toJSONString') {continue;}
-			newchat = chatdata['msg'][cid] + newchat;
+			newchat += chatdata['msg'][cid];
 		}
-		$('chatlist').innerHTML = newchat;
+		$('chatlist').innerHTML = newchat + $('chatlist').innerHTML;
 	}			
 }
 
@@ -354,22 +325,5 @@ function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
 	    sourceObj.innerHTML = openTip; 
 	   }
 	}
-}
-
-function imageAutoSizer(iid, wlmt, hlmt) {
-	var iw = $(iid).width;
-	var ih = $(iid).height;
-	if(iw>wlmt){
-		var sc = wlmt/iw;
-		iw *= sc;
-		ih *= sc;
-	}
-	if(ih>hlmt){
-		var sc = hlmt/ih;
-		iw *= sc;
-		ih *= sc;
-	}
-	$(iid).width = iw;
-	$(iid).height = ih;
 }
 

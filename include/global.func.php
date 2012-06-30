@@ -4,14 +4,54 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
+//----------------------------------------
+//              底层机制函数
+//----------------------------------------
+
+function gameerrorhandler($code, $msg, $file, $line){
+	global $errorinfo;
+	if(!$errorinfo){return;}
+	if($code == 2){$emessage = '<b style="color:#ff0">Warning</b> ';}
+	elseif($code == 4){$emessage = '<b style="color:#f00">Parse</b> ';}
+	elseif($code == 8){$emessage = '<b>Notice</b> ';}
+	elseif($code == 256){$emessage = '<b>User Error</b> ';}
+	elseif($code == 512){$emessage = '<b>User Warning</b> ';}
+	elseif($code == 1024){$emessage = '<b>User Notice</b> ';}
+	else{$emessage = '<b style="color:#f00>Fatal error</b> ';}
+	$emessage .= "($code): $msg in $file on line $line";
+	if(isset($GLOBALS['error'])){
+		$GLOBALS['error'] .= '<br>'.$emessage;
+	}else{
+		$GLOBALS['error'] = $emessage;
+	}
+	return true;
+}
+
+function gexit($message = '',$file = '', $line = 0) {
+	global $charset,$title,$extrahead,$allowcsscache,$errorinfo;
+	include template('error');
+	exit();
+}
+
+function output($content = '') {
+	//if(!$content){$content = ob_get_contents();}
+	//ob_end_clean();
+	//$GLOBALS['gzipcompress'] ? ob_start('ob_gzhandler') : ob_start();
+	//echo $content;
+	ob_end_flush();
+}
+
+//----------------------------------------
+//              输入输出函数
+//----------------------------------------
+
 function gstrfilter($str) {
-	global $magic_quotes_gpc;
 	if(is_array($str)) {
 		foreach($str as $key => $val) {
 			$str[$key] = gstrfilter($val);
 		}
 	} else {		
-		if($magic_quotes_gpc) {
+		if($GLOBALS['magic_quotes_gpc']) {
 			$str = stripslashes($str);
 		}
 		$str = str_replace("'","",$str);//屏蔽单引号'
@@ -20,7 +60,6 @@ function gstrfilter($str) {
 	}
 	return $str;
 }
-
 
 function language($file, $templateid = 0, $tpldir = '') {
 	$tpldir = $tpldir ? $tpldir : TPLDIR;
@@ -56,20 +95,6 @@ function template($file, $templateid = 0, $tpldir = '') {
 	return $objfile;
 }
 
-function gexit($message = '',$file = '', $line = 0) {
-	global $charset,$title,$extrahead,$allowcsscache,$errorinfo,$cuser,$cpass;
-	include template('error');
-	exit();
-}
-
-function output($content = '') {
-	//if(!$content){$content = ob_get_contents();}
-	//ob_end_clean();
-	//$GLOBALS['gzipcompress'] ? ob_start('ob_gzhandler') : ob_start();
-	//echo $content;
-	ob_end_flush();
-}
-
 function content($file = '') {
 	ob_clean();
 	include template($file);
@@ -86,7 +111,6 @@ function gsetcookie($var, $value, $life = 0, $prefix = 1) {
 		$cookiedomain, $_SERVER['SERVER_PORT'] == 443 ? 1 : 0);
 }
 
-
 function clearcookies() {
 	global $cookiepath, $cookiedomain, $game_uid, $game_user, $game_pw, $game_secques, $adminid, $groupid, $credits;
 	dsetcookie('auth', '', -86400 * 365);
@@ -98,19 +122,6 @@ function clearcookies() {
 function config($file = '', $cfg = 1) {
 	$cfgfile = file_exists(GAME_ROOT."./gamedata/cache/{$file}_{$cfg}.php") ? GAME_ROOT."./gamedata/cache/{$file}_{$cfg}.php" : GAME_ROOT."./gamedata/cache/{$file}_1.php";
 	return $cfgfile;
-}
-
-function player_save($data) {
-	global $db,$tablepre;
-	$pid = $data['pid'];
-	unset($data['pid']);
-	unset($data['name']);
-	unset($data['sNo']);
-	unset($data['type']);//防止影响索引
-	if(isset($data['mapprop'])){unset($data['mapprop']);}
-	if(isset($data['display'])){unset($data['display']);}
-	$db->array_update("{$tablepre}players",$data,"pid='$pid'");
-	return;
 }
 
 function dir_clear($dir) {
@@ -157,6 +168,7 @@ function writeover($filename,$data,$method="rb+",$iflock=1,$check=1,$chmod=1){
 		fclose($handle); 
 	}
 	$chmod && chmod($filename,0777);
+	return;
 }
 
 //打开文件，以数组形式返回
@@ -170,144 +182,86 @@ function openfile($filename){
 	return $filedb;
 }
 
-function naddnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
-	add_multi_news(array(array($t,$n,$a,$b,$c,$d,$e)));
+function compatible_json_encode($data){	//自动选择使用内置函数或者自定义函数，结合JSON.php可做到兼容低版本PHP
+	if(PHP_VERSION < '5.2.0'){
+		require_once GAME_ROOT.'./include/JSON.php';
+		$json = new Services_JSON();
+		$jdata = $json->encode($data);
+	} else{
+		$jdata = json_encode($data);
+	}
+	return $jdata;	
+}
+
+//function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 //	global $now,$db,$tablepre;
 //	$t = $t ? $t : $now;
 //	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
-//	touch($newsfile);
-//	if(is_array($a)){
-//		$a=implode('_',$a);
+//	$newsdata = readover($newsfile); //file_get_contents($newsfile);
+//	if(is_array($a)) {
+//		$news = "$t,$n,".implode('-',$a).",$b,$c,$d,\n";
+//	} elseif(isset($n)) {
+//		$news = "$t,$n,$a,$b,$c,$d,\n";
 //	}
-//	if(strpos($n,'death11') === 0  || strpos($n,'death32') === 0 || strpos($n,'death34') === 0) {//这几个死法还需要加入称号功能
+//	$newsdata = substr_replace($newsdata,$news,53,0);
+//	writeover($newsfile,$newsdata,'wb');
+//	
+//	if(strpos($n,'death11') === 0  || strpos($n,'death32') === 0) {
 //		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
-//		if($db->num_rows($result)){
-//			$e = $lastword = $db->result($result, 0);
-//		}else{
-//			$e = $lastword = 'addnews判断遗言出错，请检查';
-//		}		
+//		$lastword = $db->result($result, 0);
+//		//$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");
+//		//$pls = $db->result($result, 0);
 //		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$c','$lastword')");
 //	}	elseif(strpos($n,'death15') === 0 || strpos($n,'death16') === 0) {
 //		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
-//		$e = $lastword = $db->result($result, 0);
-//		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '0'");
-//		$place = $db->result($result, 0);
-//		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$place','$lastword')");
+//		$lastword = $db->result($result, 0);
+//		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '$b'");
+//		$pls = $db->result($result, 0);
+//		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$pls','$lastword')");
 //	}
-//	$db->query("INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ('$t','$n','$a','$b','$c','$d','$e')");
-//	
-	return;
-}
+//}
 
-function add_multi_news($news){
-	global $now,$db,$tablepre,$gamenum;
-	if(!is_array($news) || empty($news)){return;}
-	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
-	touch($newsfile);
-	$usersread = $playersread = false;
-	$chatqry = '';$newsqry = '';
-	foreach($news as $val){
-		$t = $val[0] ? $val[0] : $now;
-		if(is_array($val[2])){
-			$a=implode('_',$val[2]);
-		}else{
-			$a = $val[2];
-		}
-		$n = $val[1];
-		$b = isset($val[3]) ? $val[3] : '';
-		$c = isset($val[4]) ? $val[4] : '';
-		$d = isset($val[5]) ? $val[5] : '';
-		$e = isset($val[6]) ? $val[6] : '';
-		if(in_array(substr($n,5),array(11,15,16,32,34))){
-			if(!$usersread){
-				$lwlist = array();
-				$result = $db->query("SELECT username,lastword FROM {$tablepre}users WHERE lastgame = '$gamenum'");
-				while($udata = $db->fetch_array($result)){
-					$lwlist[$udata['username']] = $udata['lastword'];
-				}
-				$db->free_result($result);
-				$usersread = true;
-			}
-			$lastword = $lwlist[$a];
-			if(in_array(substr($n,5),array(15,16))){
-				if(!$playersread){
-					$plslist = array();
-					$result = $db->query("SELECT name,pls FROM {$tablepre}players WHERE name = '$a' AND (type = '0' OR type = '100')");
-					while($pldata = $db->fetch_array($result)){
-						$plslist[$pldata['name']] = $pldata['pls'];
-					}
-					$db->free_result($result);
-					$playersread = true;
-				}
-				$place = $plslist[$a];
-				$chatqry .= "('3','$t','$a','$place','$lastword'),";
-			}else{
-				$chatqry .= "('3','$t','$a','$c','$lastword'),";
-			}
-			$newsqry .= "('$t','$n','$a','$b','$c','$d','$lastword'),";
-		}else{
-			$newsqry .= "('$t','$n','$a','$b','$c','$d','$e'),";
-		}		
-	}
-	if(!empty($chatqry)){
-		$chatqry = "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ".substr($chatqry,0,-1);
-		$db->query($chatqry);
-	}
-	if(!empty($newsqry)){
-		$newsqry = "INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ".substr($newsqry,0,-1);
-		$db->query($newsqry);
-	}
-	return;
-}
+//----------------------------------------
+//              重要游戏函数
+//----------------------------------------
 
-function systemchat($chatmsg,$t = 0){
-	//multi_systemchat(array(array($chatmsg,$t)));
+function addnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
 	global $now,$db,$tablepre;
 	$t = $t ? $t : $now;
-	if($chatmsg){
-		$db->query("INSERT INTO {$tablepre}chat (type,`time`,msg) VALUES ('5','$t','$chatmsg')");
+	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
+	touch($newsfile);
+	if(is_array($a)){
+		$a=implode('_',$a);
 	}
-	return;
-}
-
-function multi_systemchat($chat){
-	global $now,$db,$tablepre;
-	if(!is_array($chat) || empty($chat)){return;}
-	$chatqry = '';
-	foreach($chat as $val){
-		if(!empty($val[0])){
-			$t = $val[1] ? $val[1] : $now;
-			$send = '';
-			$msg = $val[0];
-			$chatqry .= "('5','$t','$msg'),";
-		}		
+//	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
+//	$newsdata = readover($newsfile); //file_get_contents($newsfile);
+//	if(is_array($a)) {
+//		$news = "$t,$n,".implode('-',$a).",$b,$c,$d,\n";
+//	} elseif(isset($n)) {
+//		$news = "$t,$n,$a,$b,$c,$d,\n";
+//	}
+//	$newsdata = substr_replace($newsdata,$news,53,0);
+//	writeover($newsfile,$newsdata,'wb');
+	if(strpos($n,'death11') === 0  || strpos($n,'death32') === 0) {
+		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+		$e = $lastword = $db->result($result, 0);
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$c','$lastword')");
+	}	elseif(strpos($n,'death15') === 0 || strpos($n,'death16') === 0) {
+		$result = $db->query("SELECT lastword FROM {$tablepre}users WHERE username = '$a'");
+		$e = $lastword = $db->result($result, 0);
+		$result = $db->query("SELECT pls FROM {$tablepre}players WHERE name = '$a' AND type = '0'");
+		$place = $db->result($result, 0);
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$t','$a','$place','$lastword')");
 	}
-	if(!empty($chatqry)){
-		$chatqry = "INSERT INTO {$tablepre}chat (type,`time`,msg) VALUES ".substr($chatqry,0,-1);
-		$db->query($chatqry);
-	}
-	return;
-}
-
-function get_areawords($num = 0){//0表示显示全部地区，-1表示显示全部禁区，-2表示显示下回禁区，正数表示显示第几个到第几个地区。
-	global $hack,$areatime,$areahour,$areaadd,$areanum,$arealist,$mapdata;
-	$areawords = '';
-	$plsnum = count($arealist);
-	$showbase = 0;
-	$shownum = $plsnum;
-	if($num > 0 && $num <= $plsnum){$shownum = $num;}
-	elseif($num == -1){$shownum = $areanum +1;}
-	elseif($num == -2){
-		$showbase = $hack ? 0 : $areanum +1;
-		$shownum = $areanum + $areaadd + 1;
-	}
-	for($i = $showbase;$i < $shownum;$i++){
-		$areawords .= $areawords ? ','.$mapdata[$arealist[$i]]['name'] : $mapdata[$arealist[$i]]['name'];
-	}
-	return $areawords;
+	$db->query("INSERT INTO {$tablepre}newsinfo (`time`,`news`,`a`,`b`,`c`,`d`,`e`) VALUES ('$t','$n','$a','$b','$c','$d','$e')");
 }
 
 function logsave($pid,$time,$log = '',$type = 's'){
+//	$logfile = GAME_ROOT."./gamedata/log/$pid.log";
+//	$date = date("H:i:s",$time);
+//	$logdata = "{$date}，{$log}<br>\n";
+//	writeover($logfile,$logdata,'ab+');
+	
 	global $db,$tablepre;
 	$ldata['toid']=$pid;
 	$ldata['type']=$type;
@@ -318,32 +272,62 @@ function logsave($pid,$time,$log = '',$type = 's'){
 	return;	
 }
 
-function multi_logsave($lg){
+function load_gameinfo() {
 	global $now,$db,$tablepre;
-	if(!is_array($lg) || empty($lg)){return;}
-	$logqry = '';
-	foreach($lg as $val){
-		if(!empty($val[2])){
-			$pid = $val[0];
-			$time = $val[1] ? $val[1] : $now;
-			$log = $val[2];
-			$type = isset($val[3]) ? $val[3] : 's';
-			$logqry .= "('$pid','$time','$log','$type'),";
-		}		
-	}
-	if(!empty($logqry)){
-		$logqry = "INSERT INTO {$tablepre}log (toid,`time`,log,type) VALUES ".substr($logqry,0,-1);
-		$db->query($logqry);
-	}
-	return;	
+	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum;
+	$result = $db->query("SELECT * FROM {$tablepre}game");
+	$gameinfo = $db->fetch_array($result);
+	$gamenum = $gameinfo['gamenum'];
+	$gamestate = $gameinfo['gamestate'];
+	//$lastupdate = $gameinfo['lastupdate'];
+	$starttime = $gameinfo['starttime'];
+	$winmode = $gameinfo['winmode'];
+	$winner = $gameinfo['winner'];
+	$arealist = explode(',',$gameinfo['arealist']);
+	$areanum = $gameinfo['areanum'];
+	$areatime = $gameinfo['areatime'];
+	$areawarn = $gameinfo['areawarn'];
+	$validnum = $gameinfo['validnum'];
+	$alivenum = $gameinfo['alivenum'];
+	$deathnum = $gameinfo['deathnum'];
+	$afktime = $gameinfo['afktime'];
+	$optime = $gameinfo['optime'];
+	$weather = $gameinfo['weather'];
+	$hack = $gameinfo['hack'];
+	$combonum = $gameinfo['combonum'];
+	return;
 }
 
 function save_gameinfo() {
-	global $gamenum,$gamestate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$weather,$hack,$validnum,$alivenum,$deathnum,$bossdeath,$arealock;
+	global $now,$db,$tablepre;
+	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum;
 	if(!isset($gamenum)||!isset($gamestate)){return;}
 	if($alivenum < 0){$alivenum = 0;}
 	if($deathnum < 0){$deathnum = 0;}
-	$gameinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\$bossdeath = {$bossdeath};\n\$arealock = {$arealock};\n\n?>";
+	if(empty($afktime)){$afktime = $now;}
+	if(empty($optime)){$optime = $now;}
+	$gameinfo = Array();
+	$gameinfo['gamenum'] = $gamenum;
+	$gameinfo['gamestate'] = $gamestate;
+	//$gameinfo['lastupdate'] = $now;//注意此处
+	$gameinfo['starttime'] = $starttime;	
+	$gameinfo['winmode'] = $winmode;
+	$gameinfo['winner'] = $winner;
+	$gameinfo['arealist'] = implode(',',$arealist);
+	$gameinfo['areanum'] = $areanum;
+	$gameinfo['areatime'] = $areatime;
+	$gameinfo['areawarn'] = $areawarn;
+	$gameinfo['validnum'] = $validnum;
+	$gameinfo['alivenum'] = $alivenum;
+	$gameinfo['deathnum'] = $deathnum;
+	$gameinfo['afktime'] = $afktime;
+	$gameinfo['optime'] = $optime;
+	$gameinfo['weather'] = $weather;
+	$gameinfo['hack'] = $hack;
+	$gameinfo['combonum'] = $combonum;
+	$db->array_update("{$tablepre}game",$gameinfo,1);
+	/*
+	$gameinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\$afktime = {$afktime};\n\$optime = {$optime};\n\n?>";
 	$dir = GAME_ROOT.'./gamedata/';
 	if($fp = fopen("{$dir}gameinfo.php", 'w')) {
 		if(flock($fp,LOCK_EX)) {
@@ -354,15 +338,20 @@ function save_gameinfo() {
 		fclose($fp);
 	} else {
 		gexit('Can not write to cache files, please check directory ./gamedata/ .', __file__, __line__);
-	}
+	}*/
 	return;
 }
 
 
+
 function save_combatinfo(){
-	global $hdamage,$hplayer;//,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
+	global $hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode;
 	if(!$hdamage){$hdamage = 0;}
-	$combatinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$hdamage = {$hdamage};\n\$hplayer = '{$hplayer}';\n\n?>";
+	if(!$noisetime){$noisetime = 0;}
+	if(!$noisepls){$noisepls = 0;}
+	if(!$noiseid){$noiseid = 0;}
+	if(!$noiseid2){$noiseid2 = 0;}
+	$combatinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$hdamage = {$hdamage};\n\$hplayer = '{$hplayer}';\n\$noisetime = {$noisetime};\n\$noisepls = {$noisepls};\n\$noiseid = {$noiseid};\n\$noiseid2 = {$noiseid2};\n\$noisemode = '{$noisemode}';\n\n?>";
 	//$combatinfo = "{$hdamage},{$hplayer},{$noisetime},{$noisepls},{$noiseid},{$noiseid2},{$noisemode},\n";
 	$dir = GAME_ROOT.'./gamedata/';
 	if($fp = fopen("{$dir}combatinfo.php", 'w')) {
@@ -378,210 +367,69 @@ function save_combatinfo(){
 	return;
 }
 
-function get_noise($pid = -1, $limit = 0){
-	global $now,$db,$tablepre,$noiselimit,$mapdata,$noiseinfo,$noiselimit,$noisenum;
-	$noiselog = '';
-	if(!$limit){
-		$limit = $noisenum;
-	}
-	$nline = $now - $noiselimit;
-	$result = $db->query("SELECT * FROM {$tablepre}noise WHERE pid1 != '$pid' AND pid2 != '$pid' AND time >= '$nline' ORDER BY nid DESC LIMIT $limit");
-	while($ndata = $db->fetch_array($result)) {
-		$ntime = $ndata['time'];
-		$npls = $ndata['pls'];
-		$ntype = $ndata['type'];
-		$npid1 = $ndata['pid1'];
-		$npid2 = $ndata['pid2'];
-		if(($now-$ntime) < 60) {
-			$nsec = $now - $ntime;
-			$noiselog .= "<span class=\"yellow b\">{$nsec}秒前，{$mapdata[$npls]['name']}传来了{$noiseinfo[$ntype]}。</span><br>";
-		} else {
-			$nmin = floor(($now-$ntime)/60);
-			$nsec = ($now - $ntime) % 60;
-			$noiselog .= "<span class=\"yellow b\">{$nmin}分{$nsec}秒前，{$mapdata[$npls]['name']}传来了{$noiseinfo[$ntype]}。</span><br>";
-		}
-		
-	}
-	if(!$noiselog){
-		$noiselog = '没有听到任何异常响动。<br>';
-	}
-	return $noiselog;
-}
-
-function getchat($last,$cteam='',$cpls=-1,$limit=0) {
-	global $db,$tablepre,$chatlimit,$chatinfo,$mapdata;
+function getchat($last,$team='',$limit=0) {
+	global $db,$tablepre,$chatlimit,$chatinfo,$plsinfo;
 	$limit = $limit ? $limit : $chatlimit;
-	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid > '$last' ORDER BY time DESC,cid DESC LIMIT $limit");
-	
-	$chatdata = Array('lastcid' => $last, 'msg' => Array());
-	if(!$db->num_rows($result)){return $chatdata;}
+	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid>'$last' AND (type!='1' OR (type='1' AND recv='$team')) ORDER BY cid desc LIMIT $limit");
+	$chatdata = Array('lastcid' => $last, 'msg' => '');
+	if(!$db->num_rows($result)){$chatdata = array('lastcid' => $last, 'msg' => '');return $chatdata;}
 	
 	while($chat = $db->fetch_array($result)) {
-		if(!$chatdata['lastcid']){$chatdata['lastcid'] = $chat['cid'];}
+		//if(!$chatdata['lastcid']){$chatdata['lastcid'] = $chat['cid'];}
+		if($chatdata['lastcid'] < $chat['cid']){$chatdata['lastcid'] = $chat['cid'];}
 		$chat['msg'] = htmlspecialchars($chat['msg']);
-		$msg = '';
 		if($chat['type'] == '0') {
 			$msg = "【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'<br>';
 		} elseif($chat['type'] == '1') {
-			if(!empty($cteam) && $cteam == $chat['recv']){
-				$msg = "<span class=\"clan\">【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
-			}
-		} elseif($chat['type'] == '2') {
-			if($cpls >= 0 && $cpls == $chat['recv']){
-				$msg = "<span class=\"lime\">【{$chatinfo[$chat['type']]}】〖{$mapdata[$chat['recv']]['name']}〗{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
-			}
+			$msg = "<span class=\"clan\">【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		} elseif($chat['type'] == '3') {
 			if ($chat['msg']){
-				$msg = "<span class=\"red\">【{$chatinfo[$chat['type']]}】〖{$mapdata[$chat['recv']]['name']}〗{$chat['send']}：{$chat['msg']} ".date("\(H:i:s\)",$chat['time']).'</span><br>';
+				$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']}：{$chat['msg']} ".date("\(H:i:s\)",$chat['time']).'</span><br>';
 			} else {
-				$msg = "<span class=\"red\">【{$chatinfo[$chat['type']]}】〖{$mapdata[$chat['recv']]['name']}〗{$chat['send']} 什么都没说就死去了 ".date("\(H:i:s\)",$chat['time']).'</span><br>';
+				$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']} 什么都没说就死去了 ".date("\(H:i:s\)",$chat['time']).'</span><br>';
 			}
 		} elseif($chat['type'] == '4') {
 			$msg = "<span class=\"yellow\">【{$chatinfo[$chat['type']]}】{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		} elseif($chat['type'] == '5') {
 			$msg = "<span class=\"yellow\">【{$chatinfo[$chat['type']]}】{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		}
-		if(!empty($msg)){$chatdata['msg'][$chat['cid']] = $msg;}
+		$chatdata['msg'][$chat['cid']] = $msg;
 	}
 	return $chatdata;
 }
 
-function get_neighbor_map($pls) {
-	global $hack,$mapdata,$arealist,$areanum,$arealock;
-	$nmap = Array();
-	$forbidden = array_slice($arealist,0,$areanum+1);
-	foreach($mapdata[$pls]['moveto'] as $map){
-		if(($map != 30 && (!in_array($map,$forbidden) || $hack)) || ($map == 30 && !$arealock)){
-			$distance = pow(($mapdata[$pls]['mapx']-$mapdata[$map]['mapx']),2) + pow(($mapdata[$pls]['mapy']-$mapdata[$map]['mapy']),2);
-			if($distance <= 2){$movesp = 15;}
-			elseif($distance <=8){$movesp = 20;}
-			elseif($distance <=18){$movesp = 25;}
-			else{$movesp = 30;}
-			$nmap[$map] = $movesp;
+function systemputchat($time,$type,$msg = ''){
+	global $db,$tablepre,$now;
+	if(!$time){$time = $now;}
+	if($type == 'areaadd' || $type == 'areawarn'){
+		$alist = $msg;
+		$msg = '';
+		global $plsinfo;
+		foreach($alist as $ar) {
+			$msg .= "$plsinfo[$ar] ";
 		}
-	}
-	return $nmap;
-}
-
-//function old_get_mapweapon(){
-//	$t_s=getmicrotime();
-//	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$deathnum;
-//	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
-//	if(!$db->num_rows($result)){return;}
-//	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
-//	$adnws = array();
-////	$mwdata = array();
-////	while($md = $db->fetch_array($result)) {
-////		$mwdata[] = $md;
-////	}
-////	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time DESC");
-//	while($mwdata = $db->fetch_array($result)) {
-//		$mwtime = $mwdata['time'];
-//		$mwpls = $mwdata['pls'];
-//		$mwtype = $mwdata['type'];
-//		$mwlpid = $mwdata['lpid'];
-//		$mwlog = "{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！";
-//		systemchat($mwlog,$mwtime);
-//		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
-//		//naddnews($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
-//		$parray = Array();
-//		$result2 = $db->query("SELECT pid, name, type, hp, state FROM {$tablepre}players WHERE pls = '$mwpls' AND hp > 0 AND type = 0");
-//		while($pldata = $db->fetch_array($result2)) {
-//			extract($pldata,EXTR_REFS);
-//			$hp -= $mapweaponinfo[$mwtype]['dmg'];
-//			
-//			$plog = "你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！";
-//			logsave($pid,$mwtime,$plog);
-//			
-//			if($hp <= 0){
-//				$hp = 0; $state = $mapweaponinfo[$mwtype]['state'];
-//				$adnws[] = array($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
-//				//naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
-//				$deathnum++;
-//			}
-//			unset($pldata['name'],$pldata['type']);
-//			$parray[] = $pldata;
-////			$qry =
-////			"UPDATE {} SET hp = CASE";
-//		}
-//		save_gameinfo();
-//		$db->multi_update("{$tablepre}players", $parray, 'pid', " pls='$mwpls'", "lasteff = '$now'");
-//	}
-//	add_multi_news($adnws);
-//	$db->query("DELETE FROM {$tablepre}mapweapon WHERE time <= '$now'");
-//	$t_e = getmicrotime();
-//	putmicrotime($t_s,$t_e,'cmd_time','adv');
-//	return;
-//}
-
-function get_mapweapon(){
-//	$t_s=getmicrotime();
-	global $now,$db,$tablepre,$mapdata,$mapweaponinfo,$alivenum,$deathnum;
-	$qry = $hpcase = $statecase = $bidcase = $lasteffcase = '';
-	$adnws = $mwdata = $pldata = $plupdata = $chat = $lg = array();
-	$result = $db->query("SELECT * FROM {$tablepre}mapweapon WHERE time <= '$now' ORDER BY time");
-	if(!$db->num_rows($result)){return;}
-	while($md = $db->fetch_array($result)) {
-		$mwdata[] = $md;
-	}
-	$result = $db->query("SELECT pid, name, type, pls, hp, state FROM {$tablepre}players WHERE hp > 0 AND type = 0");
-	while($pl = $db->fetch_array($result)) {
-		$pldata[$pl['pls']][] = $pl;
-	}
-	foreach($mwdata as $mwval){
-		$mwtime = $mwval['time'];
-		$mwpls = $mwval['pls'];
-		$mwtype = $mwval['type'];
-		$mwlpid = $mwval['lpid'];
-		$chat[] = array("{$mapdata[$mwpls]['name']}遭到了{$mapweaponinfo[$mwtype]['name']}的打击！",$mwtime);
-		$adnws[] = array($mwtime, 'MAPWexpl', $mwpls, $mapweaponinfo[$mwtype]['dmgnm']);
-		if(isset($pldata[$mwpls])){
-			foreach($pldata[$mwpls] as & $plval){
-				if($plval['hp'] > 0){
-					$plval['hp'] -= $mapweaponinfo[$mwtype]['dmg'];
-					$lg[] = array($plval['pid'],$mwtime,"你遭到了{$mapweaponinfo[$mwtype]['dmgnm']}的攻击！受到<span class=\"red\">{$mapweaponinfo[$mwtype]['dmg']}</span>点伤害！");
-					if($plval['hp'] <= 0){
-						$plval['hp'] = 0; $plval['state'] = $mapweaponinfo[$mwtype]['state'];
-						$adnws[] = array($mwtime, 'death34', $plval['name'], $plval['type'], $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
-						//naddnews($mwtime, 'death34', $name, $type, $mwpls,$mapweaponinfo[$mwtype]['dmgnm']);
-						$alivenum--;
-						$deathnum++;
-						$plupdata[$plval['pid']] = $plval;
-					}
-				}				
-			}
+		if($type == 'areaadd'){
+			$msg = '增加禁区：'.$msg;
+		}elseif($type == 'areawarn'){
+			$msg = '警告，以下区域即将成为禁区：'.$msg;
 		}
+	}elseif($type == 'combo'){
+		$msg = '游戏进入连斗阶段！';
+	}elseif($type == 'comboupdate'){
+		$msg = '连斗死亡判断数修正为'.$msg.'人！';
+	}elseif($type == 'duel'){
+		$msg = '游戏进入死斗模式！';
+	}elseif($type == 'newgame'){
+		$msg = '游戏开始！';
+	}elseif($type == 'gameover'){
+		$msg = '游戏结束！';
 	}
-	save_gameinfo();
-	if(!empty($plupdata)){
-		$db->multi_update("{$tablepre}players", $plupdata, 'pid', "lasteff = '$now'");
-	}
-	//$db->multi_update("{$tablepre}players", $plupdata, 'pid', " hp > 0 AND type IN (0,100)", "lasteff = '$now'");
-	add_multi_news($adnws);
-	multi_systemchat($chat);
-	multi_logsave($lg);
-	$db->query("DELETE FROM {$tablepre}mapweapon WHERE time <= '$now'");
-	
-//	$t_e = getmicrotime();
-//	putmicrotime($t_s,$t_e,'cmd_time','adv');
-	return;	
-}
-
-function compatible_json_encode($data){	//自动选择使用内置函数或者自定义函数，结合JSON.php可做到兼容低版本PHP
-	if(PHP_VERSION < '5.2.0'){
-		require_once GAME_ROOT.'./include/JSON.php';
-		$json = new Services_JSON();
-		$jdata = $json->encode($data);
-	} else{
-		$jdata = json_encode($data);
-	}
-	return $jdata;	
+	$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,msg) VALUES ('5','$time','','$msg')");
+	return;
 }
 
 function getmicrotime(){
-	global $moveut,$moveutmin;
 	list($usec, $sec) = explode(" ",microtime());
-	$sec = $sec + $moveut * 3600 + $moveutmin;
 	return ((float)$usec + (float)$sec);
 }
 
@@ -589,27 +437,6 @@ function putmicrotime($t_s,$t_e,$file,$info)
 {
 	$mtime = ($t_e - $t_s)*1000;
 	writeover( $file.'.txt',"$info ；执行时间：$mtime 毫秒 \n",'ab');
-}
-
-function rep_label($str){
-	if(strpos($str,'[br]')!==false){
-		$str = str_replace('[br]','<br />',$str);
-	}
-	foreach(Array('b','i','u','strike') as $val){
-		if(preg_match("/\[$val\].+?\[\/$val\]/is",$str)){
-			$str = preg_replace("/\[$val\](.+?)\[\/$val\]/is","<$val>\\1</$val>",$str);
-		}
-	}
-	foreach(Array('red','yellow','green','lime','blue','aqua','purple') as $val){
-		if(preg_match("/\[$val\].+?\[\/$val\]/is",$str)){
-			$str = preg_replace("/\[$val\](.+?)\[\/$val\]/is","<font color=\"$val\">\\1</font>",$str);
-		}
-	}
-	
-	if(strpos($str,'[img]')!==false && strpos($str,'[/img]')!==false){
-		$str = preg_replace('/\[img\](.+?)\[\/img\]/is', '<div style="text-align:center"><img id="\\1" src="\\1" onload="imageAutoSizer(\'\\1\', 400, 500)"></div>', $str);
-	}
-	return $str;
 }
 
 ?>

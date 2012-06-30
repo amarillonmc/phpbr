@@ -3,38 +3,34 @@
 define('CURSCRIPT', 'winner');
 
 require './include/common.inc.php';
-require './include/display.func.php';
-
+if(!isset($command)){$command = 'ref';}
 if($command == 'info') {
 	$result = $db->query("SELECT * FROM {$tablepre}winners WHERE gid='$gnum' LIMIT 1");
 	$pdata = $db->fetch_array($result);
 	$pdata['gdate'] = floor($pdata['gtime']/3600).':'.floor($pdata['gtime']%3600/60).':'.($pdata['gtime']%60);
 	$pdata['gsdate'] = date("m/d/Y H:i:s",$pdata['gstime']);
 	$pdata['gedate'] = date("m/d/Y H:i:s",$pdata['getime']);
-	$pdata['type'] = 0;
-	$mode = 'winnerinfo';
 	extract($pdata);
 	include GAME_ROOT.'./include/game.func.php';
-	init_displaydata($pdata);
-	init_profile($pdata);
-	init_itemwords($pdata);
-	init_techniquewords($pdata);
+	init_playerdata();
+	init_profile();
 } elseif($command == 'news') {
 	include  GAME_ROOT.'./include/news.func.php';
-	$hnewsfile = GAME_ROOT."./gamedata/bak/{$gnum}_newsinfo.php";
+	$hnewsfile = GAME_ROOT."./gamedata/bak/{$gnum}_newsinfo.html";
 	if(file_exists($hnewsfile)){
 		$hnewsinfo = readover($hnewsfile);
 	}
 } else {
-	if(!$start){
-		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners ORDER BY gid desc LIMIT $winlimit");
+	if(!isset($start) || !$start){
+		$result = $db->query("SELECT gid,name,icon,gd,wep,wmode,getime,motto,hdp,hdmg,hkp,hkill FROM {$tablepre}winners ORDER BY gid desc LIMIT $winlimit");
 	} else {
-		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners WHERE gid<=$start ORDER BY gid desc LIMIT $winlimit");
+		$result = $db->query("SELECT gid,name,icon,gd,wep,wmode,getime,motto,hdp,hdmg,hkp,hkill FROM {$tablepre}winners WHERE gid<='$start' ORDER BY gid desc LIMIT $winlimit");
 	}
 	while($wdata = $db->fetch_array($result)) {
-		$wdata['date'] = date("m/d/Y \<\b\\r\> H:i:s",$wdata['getime']);
-		$wdata['motto'] = rep_label($wdata['motto']);
-		$winfo[] = $wdata;
+		$wdata['date'] = date("Y-m-d",$wdata['getime']);
+		$wdata['time'] = date("H:i:s",$wdata['getime']);
+		$wdata['iconImg'] = $wdata['gd'] == 'f' ? 'f_'.$wdata['icon'].'.gif' : 'm_'.$wdata['icon'].'.gif';
+		$winfo[$wdata['gid']] = $wdata;
 	}
 	$listnum = floor($gamenum/$winlimit);
 

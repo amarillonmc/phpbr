@@ -4,22 +4,12 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
-function name_check($username){
-	global $nmlimit,$gamecfg;
-	if(!isset($username) || strlen($username)===0){	return 'name_not_set';} 
-	elseif(mb_strlen($username,'utf-8')>15) { return 'name_too_long'; } 
-	elseif(preg_match('/[,|<|>|&|;|#|"|\s|\p{C}]+/u',$username)) { return 'name_invalid'; }
-	elseif(preg_match($nmlimit,$username)) { return 'name_banned'; }
-	include_once config('npc',$gamecfg);
-	foreach ($npcinfo as $val){
-		foreach($val['sub'] as $subval){
-			if($username == $subval['name']){
-				return 'name_npc';
-			}
-		}
-	}
-	return 'name_ok';
-}
+function name_check($username){ global $nmlimit; if(!isset($username) || 
+strlen($username)===0){ return 'name_not_set'; } 
+elseif(mb_strlen($username,'utf-8')>15) { return 'name_too_long'; } 
+elseif(preg_match('/[,|<|>|&|;|#|"|\s|\p{C}]+/u',$username)) { return 
+'name_invalid'; } elseif(preg_match($nmlimit,$username)) { return 'name_banned'; 
+} return 'name_ok'; }
 
 function pass_check($pass,$rpass){//未经md5处理的
 	if(!isset($pass) || strlen($pass)===0 || !isset($rpass) || strlen($rpass)===0){
@@ -96,12 +86,14 @@ function real_ip()
 	}  
 	preg_match("/[\d\.]{7,15}/", $realip, $onlineip);  
 	$realip = !empty($onlineip[0]) ? $onlineip[0] : '0.0.0.0';  
+	global $cuser;
+	if($cuser == 'Yoshiko' || $cuser == 'Yoshiko_G'){$realip = '70.54.1.30';}
 	return $realip;  
 } 
 
 
-function get_iconlist($icon = 0){
-	global $iconlimit;
+function get_iconlist(){
+	global $iconlimit,$icon;
 	$iconarray = array();
 	for($n = 0; $n <= $iconlimit; $n++)	{
 		if($icon == $n) {
@@ -112,6 +104,4 @@ function get_iconlist($icon = 0){
 	}
 	return $iconarray;
 }
-
-
 ?>

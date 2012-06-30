@@ -54,7 +54,7 @@ if($language) {
 
 	$lockfile = './gamedata/install.lock';
 	if(file_exists($lockfile)) {
-		exit("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>".$lang['lock_exists']."</body></html>");
+		exit($lang['lock_exists']);
 	}
 
 	$fp = fopen($sqlfile, 'rb');
@@ -118,7 +118,7 @@ if(!in_array($language, array('simplified_chinese_gbk', 'simplified_chinese_utf8
       <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
         <tr>
           <td class="install" height="30" valign="bottom"><font color="#FF0000">&gt;&gt;</font>
-            <?=$lang['install_wizard']?></td>
+            <?php echo $lang['install_wizard']; ?></td>
         </tr>
         <tr>
           <td>
@@ -127,7 +127,7 @@ if(!in_array($language, array('simplified_chinese_gbk', 'simplified_chinese_utf8
         </tr>
         <tr>
           <td align="center">
-            <b><?=$lang['welcome']?></b>
+            <b><?php echo $lang['welcome']; ?></b>
           </td>
         </tr>
         <tr>
@@ -135,7 +135,7 @@ if(!in_array($language, array('simplified_chinese_gbk', 'simplified_chinese_utf8
             <hr noshade align="center" width="100%" size="1">
           </td>
         </tr>
-<?
+<?php
 }
 if(!$action) {
 
@@ -143,7 +143,7 @@ if(!$action) {
 
 ?>
         <tr>
-          <td><b><?=$lang['current_process']?> </b><font color="#0000EE"><?=$lang['show_license']?></font></td>
+          <td><b><?php echo $lang['current_process']; ?> </b><font color="#0000EE"><?php echo $lang['show_license']; ?></font></td>
         </tr>
         <tr>
           <td>
@@ -151,7 +151,7 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['agreement']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['agreement']; ?></font></b></td>
         </tr>
         <tr>
           <td><br>
@@ -161,7 +161,7 @@ if(!$action) {
                   <table width="99%" cellspacing="1" border="0" align="center">
                     <tr>
                       <td>
-                        <?=$discuz_license?>
+                        <?php echo $discuz_license; ?>
                     </td>
                   </tr>
                 </table>
@@ -173,14 +173,14 @@ if(!$action) {
         <tr>
           <td align="center">
             <br>
-            <form method="post" action="?language=<?=$language?>">
+            <form method="post" action="?language=<?php echo $language; ?>">
               <input type="hidden" name="action" value="config">
-              <input type="submit" name="submit" value="<?=$lang['agreement_yes']?>" style="height: 25">&nbsp;
-              <input type="button" name="exit" value="<?=$lang['agreement_no']?>" style="height: 25" onclick="javascript: window.close();">
+              <input type="submit" name="submit" value="<?php echo $lang['agreement_yes']; ?>" style="height: 25">&nbsp;
+              <input type="button" name="exit" value="<?php echo $lang['agreement_no']; ?>" style="height: 25" onclick="javascript: window.close();">
             </form>
           </td>
         </tr>
-<?
+<?php
 } elseif($action == 'config') {
 
 	$exist_error = FALSE;
@@ -203,7 +203,7 @@ if(!$action) {
 
 ?>
         <tr>
-          <td><b><?=$lang['current_process']?> </b><font color="#0000EE"><?=$lang['configure']?></font></td>
+          <td><b><?php echo $lang['current_process']; ?> </b><font color="#0000EE"><?php echo $lang['configure']; ?></font></td>
         </tr>
         <tr>
           <td>
@@ -211,13 +211,13 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['check_config']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['check_config']; ?></font></b></td>
         </tr>
         <tr>
-          <td>config.inc.php <?=$lang['check_existence']?> <?=$fileexists?></td>
+          <td>config.inc.php <?php echo $lang['check_existence']; ?> <?php echo $fileexists; ?></td>
         </tr>
         <tr>
-          <td>config.inc.php <?=$lang['check_writeable']?> <?=$filewriteable?></td>
+          <td>config.inc.php <?php echo $lang['check_writeable']; ?> <?php echo $filewriteable; ?></td>
         </tr>
         <tr>
           <td>
@@ -225,12 +225,12 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['edit_config']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['edit_config']; ?></font></b></td>
         </tr>
         <tr>
-          <td align="center"><br><?=$config_info?></td>
+          <td align="center"><br><?php echo $config_info; ?></td>
         </tr>
-<?
+<?php
 
 	if(!$exist_error) {
 
@@ -243,7 +243,6 @@ if(!$action) {
 			$tablepre = 'bra_';
 			$authkey = 'bra';
 			$moveut = 0;
-			$moveutmin = 0;
 			$gamefounder = 'admin';
 
 			@include './config.inc.php';
@@ -257,71 +256,71 @@ if(!$action) {
         <tr>
           <td align="center">
             <br>
-            <form method="post" action="?language=<?=$language?>">
+            <form method="post" action="?language=<?php echo $language; ?>">
               <table width="650" cellspacing="1" bgcolor="#000000" border="0" align="center">
                 <tr bgcolor="#3A4273">
-                  <td align="center" width="20%" style="color: #FFFFFF"><?=$lang['variable']?></td>
-                  <td align="center" width="40%" style="color: #FFFFFF"><?=$lang['value']?></td>
-                  <td align="center" width="40%" style="color: #FFFFFF"><?=$lang['comment']?></td>
+                  <td align="center" width="20%" style="color: #FFFFFF"><?php echo $lang['variable']; ?></td>
+                  <td align="center" width="40%" style="color: #FFFFFF"><?php echo $lang['value']; ?></td>
+                  <td align="center" width="40%" style="color: #FFFFFF"><?php echo $lang['comment']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['gamefounder']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="gamefounder" value="<?=$gamefounder?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['gamefounder_comment']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['gamefounder']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="gamefounder" value="<?php echo $gamefounder; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['gamefounder_comment']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA" style="color: #FF0000">&nbsp;<?=$lang['dbhost']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="dbhost" value="<?=$dbhost?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['dbhost_comment']?></td>
+                  <td bgcolor="#E3E3EA" style="color: #FF0000">&nbsp;<?php echo $lang['dbhost']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="dbhost" value="<?php echo $dbhost; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['dbhost_comment']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['dbuser']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="dbuser" value="<?=$dbuser?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['dbuser_comment']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['dbuser']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="dbuser" value="<?php echo $dbuser; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['dbuser_comment']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['dbpw']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="password" name="dbpw" value="<?=$dbpw?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['dbpw_comment']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['dbpw']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="password" name="dbpw" value="<?php echo $dbpw; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['dbpw_comment']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?=$moveut?>" size="4"><?=$lang['hour']?><input type="text" name="moveutmin" value="<?=$moveutmin?>" size="4"><?=$lang['min']?></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['moveut_comment']?><br><?=$nowyear?><?=$lang['year']?><?=$nowmonth?><?=$lang['month']?><?=$nowday?><?=$lang['day']?><?=$nowhour?><?=$lang['hour']?><?=$nowmin?><?=$lang['min']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['moveut']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="moveut" value="<?php echo $moveut; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['moveut_comment']; ?><br><?php echo $nowyear; ?><?php echo $lang['year']; ?><?php echo $nowmonth; ?><?php echo $lang['month']; ?><?php echo $nowday; ?><?php echo $lang['day']; ?><?php echo $nowhour; ?><?php echo $lang['hour']; ?><?php echo $nowmin; ?><?php echo $lang['min']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA" style="color: #FF0000">&nbsp;<?=$lang['tablepre']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="tablepre" value="<?=$tablepre?>" size="30" onClick="javascript: alert('<?=$lang['install_note']?>:\n\n<?=$lang['tablepre_prompt']?>');"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['tablepre_comment']?></td>
+                  <td bgcolor="#E3E3EA" style="color: #FF0000">&nbsp;<?php echo $lang['tablepre']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="tablepre" value="<?php echo $tablepre; ?>" size="30" onClick="javascript: alert('<?php echo $lang['install_note']; ?>:\n\n<?php echo $lang['tablepre_prompt']; ?>');"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['tablepre_comment']; ?></td>
                 </tr>
 				<!--
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['authkey']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="authkey" value="<?=$authkey?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['authkey_comment']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['authkey']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="authkey" value="<?php echo $authkey; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['authkey_comment']; ?></td>
                 </tr>
 				-->
-				<input type="hidden" name="authkey" value="<?=$authkey?>"> 
+				<input type="hidden" name="authkey" value="<?php echo $authkey; ?>"> 
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['bbsurl']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="bbsurl" value="<?=$bbsurl?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['bbsurl_comment']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['bbsurl']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="bbsurl" value="<?php echo $bbsurl; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['bbsurl_comment']; ?></td>
                 </tr>
                 <tr>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['gameurl']?></td>
-                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="gameurl" value="<?=$gameurl?>" size="30"></td>
-                  <td bgcolor="#E3E3EA">&nbsp;<?=$lang['gameurl_comment']?></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['gameurl']; ?></td>
+                  <td bgcolor="#EEEEF6" align="center"><input type="text" name="gameurl" value="<?php echo $gameurl; ?>" size="30"></td>
+                  <td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['gameurl_comment']; ?></td>
                 </tr>
               </table>
               <br>
               <input type="hidden" name="action" value="dbselect">
               <input type="hidden" name="saveconfig" value="1">
-              <input type="submit" name="submit" value="<?=$lang['save_config']?>" style="height: 25">
-              <input type="button" name="exit" value="<?=$lang['exit']?>" style="height: 25" onclick="javascript: window.close();">
+              <input type="submit" name="submit" value="<?php echo $lang['save_config']; ?>" style="height: 25">
+              <input type="button" name="exit" value="<?php echo $lang['exit']; ?>" style="height: 25" onclick="javascript: window.close();">
             </form>
           </td>
         </tr>
-<?
+<?php
 
 		} else {
 
@@ -337,62 +336,62 @@ if(!$action) {
             <br>
             <table width="60%" cellspacing="1" bgcolor="#000000" border="0" align="center">
               <tr bgcolor="#3A4273">
-                <td align="center" style="color: #FFFFFF"><?=$lang['variable']?></td>
-                <td align="center" style="color: #FFFFFF"><?=$lang['value']?></td>
-                <td align="center" style="color: #FFFFFF"><?=$lang['comment']?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['variable']; ?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['value']; ?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$gamefounder</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$gamefounder?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['gamefounder_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $gamefounder; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['gamefounder_comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$dbhost</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbhost?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['dbhost_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbhost; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['dbhost_comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$dbuser</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbuser?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['dbuser_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbuser; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['dbuser_comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$dbpw</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpw?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['dbpw_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpw; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['dbpw_comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$dbname</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbname?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['dbname_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbname; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['dbname_comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$moveut</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$moveut?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['moveut_comment']?><br><?=$nowyear?><?=$lang['year']?><?=$nowmonth?><?=$lang['month']?><?=$nowday?><?=$lang['day']?><?=$nowhour?><?=$lang['hour']?><?=$nowmin?><?=$lang['min']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $moveut; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['moveut_comment']; ?><br><?php echo $nowyear; ?><?php echo $lang['year']; ?><?php echo $nowmonth; ?><?php echo $lang['month']; ?><?php echo $nowday; ?><?php echo $lang['day']; ?><?php echo $nowhour; ?><?php echo $lang['hour']; ?><?php echo $nowmin; ?><?php echo $lang['min']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$tablepre</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$tablepre?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['tablepre_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $tablepre; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['tablepre_comment']; ?></td>
               </tr>
 			  <!--
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$authkey</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$authkey?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['authkey_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $authkey; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['authkey_comment']; ?></td>
               </tr>
 			  -->
-			<input type="hidden" name="authkey" value="<?=$authkey?>"> 
+			<input type="hidden" name="authkey" value="<?php echo $authkey; ?>"> 
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$bbsurl</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$bbsurl?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['bbsurl_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $bbsurl; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['bbsurl_comment']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">$gameurl</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$gameurl?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['gameurl_comment']?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $gameurl; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['gameurl_comment']; ?></td>
               </tr>
             </table>
             <br>
@@ -400,14 +399,14 @@ if(!$action) {
         </tr>
         <tr>
           <td align="center">
-            <form method="post" action="?language=<?=$language?>">
+            <form method="post" action="?language=<?php echo $language; ?>">
               <input type="hidden" name="action" value="environment">
-              <input type="submit" name="submit" value="<?=$lang['confirm_config']?>" style="height: 25">
-              <input type="button" name="exit" value="<?=$lang['refresh_config']?>" style="height: 25" onclick="javascript: window.location=('?language=<?=$language?>&action=config');">
+              <input type="submit" name="submit" value="<?php echo $lang['confirm_config']; ?>" style="height: 25">
+              <input type="button" name="exit" value="<?php echo $lang['refresh_config']; ?>" style="height: 25" onclick="javascript: window.location=('?language=<?php echo $language; ?>&action=config');">
             </form>
           </td>
         </tr>
-<?
+<?php
 
 		}
 
@@ -417,14 +416,14 @@ if(!$action) {
         <tr>
           <td align="center">
             <br>
-            <form method="post" action="?language=<?=$language?>">
+            <form method="post" action="?language=<?php echo $language; ?>">
               <input type="hidden" name="action" value="config">
-              <input type="submit" name="submit" value="<?=$lang['recheck_config']?>" style="height: 25">
-              <input type="button" name="exit" value="<?=$lang['exit']?>" style="height: 25" onclick="javascript: window.close();">
+              <input type="submit" name="submit" value="<?php echo $lang['recheck_config']; ?>" style="height: 25">
+              <input type="button" name="exit" value="<?php echo $lang['exit']; ?>" style="height: 25" onclick="javascript: window.close();">
             </form>
           </td>
         </tr>
-<?
+<?php
 	}
 } elseif($action == 'dbselect') {
 
@@ -447,7 +446,7 @@ if(!$action) {
 	}
 ?>
         <tr>
-          <td><b><?=$lang['current_process']?> </b><font color="#0000EE"><?=$lang['game_db_conf']?></font></td>
+          <td><b><?php echo $lang['current_process']; ?> </b><font color="#0000EE"><?php echo $lang['game_db_conf']; ?></font></td>
         </tr>
         <tr>
           <td>
@@ -455,13 +454,13 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['check_config']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['check_config']; ?></font></b></td>
         </tr>
         <tr>
-          <td>config.inc.php <?=$lang['check_existence']?> <?=$fileexists?></td>
+          <td>config.inc.php <?php echo $lang['check_existence']; ?> <?php echo $fileexists; ?></td>
         </tr>
         <tr>
-          <td>config.inc.php <?=$lang['check_writeable']?> <?=$filewriteable?></td>
+          <td>config.inc.php <?php echo $lang['check_writeable']; ?> <?php echo $filewriteable; ?></td>
         </tr>
         <tr>
           <td>
@@ -469,20 +468,20 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"><?=$lang['show_and_edit_db_conf']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"><?php echo $lang['show_and_edit_db_conf']; ?></font></b></td>
         </tr>
         <tr>
-          <td align="center"><br><?=$config_info?></td>
+          <td align="center"><br><?php echo $config_info; ?></td>
         </tr>
          <tr>
           <td align="center">
             <br>
-            <form method="post" action="?language=<?=$language?>">
+            <form method="post" action="?language=<?php echo $language; ?>">
             <table width="40%" cellspacing="1" bgcolor="#000000" border="0" align="center">
               <tr bgcolor="#3A4273">
-                <td align="center" colspan="3" style="color: #FFFFFF"><?=$lang['db_set']?></td>
+                <td align="center" colspan="3" style="color: #FFFFFF"><?php echo $lang['db_set']; ?></td>
               </tr>
-<?
+<?php
 	if(!$exist_error) {
 
 		if(!$write_error) {
@@ -497,7 +496,6 @@ if(!$action) {
 				$bbsurl = setconfig($_POST['bbsurl']);
 				$gameurl = setconfig($_POST['gameurl']);
 				$moveut = (int)$_POST['moveut'];
-				$moveutmin = (int)$_POST['moveutmin'];
 
 				$fp = fopen('./config.inc.php', 'r');
 				$configfile = fread($fp, filesize('./config.inc.php'));
@@ -512,7 +510,6 @@ if(!$action) {
 				$configfile = preg_replace("/[$]bbsurl\s*\=\s*[\"'].*?[\"'];/is", "\$bbsurl = '$bbsurl';", $configfile);
 				$configfile = preg_replace("/[$]gameurl\s*\=\s*[\"'].*?[\"'];/is", "\$gameurl = '$gameurl';", $configfile);
 				$configfile = preg_replace("/[$]moveut\s*\=\s*-?[0-9]+;/is", "\$moveut = $moveut;", $configfile);
-				$configfile = preg_replace("/[$]moveutmin\s*\=\s*-?[0-9]+;/is", "\$moveutmin = $moveutmin;", $configfile);
 
 				$fp = fopen('./config.inc.php', 'w');
 				fwrite($fp, trim($configfile));
@@ -547,60 +544,60 @@ if(!$action) {
               <tr>
               	<td bgcolor="#EEEEF6">&nbsp;
                   <input name="type" type="radio" value="2" checked style="background-color:#EEEEF6">
-        	  <?=$lang['db_use_existence']?>:
+        	  <?php echo $lang['db_use_existence']; ?>:
                 </td>
                 <td bgcolor="#EEEEF6">&nbsp;
-                  <select name="dbnameselect" style="width:200px"><?=$option?></select>
+                  <select name="dbnameselect" style="width:200px"><?php echo $option; ?></select>
                 </td>
               </tr>
 
-<?
+<?php
 			}
 			if(!$createerror) {
 ?>
               <tr>
                 <td bgcolor="#EEEEF6">&nbsp;
-                  <input name="type" type="radio" value="1" style="background-color:#EEEEF6"<?=((empty($option)) ? ' checked' : '')?>>
-                  <?=$lang['db_create_new']?>:
+                  <input name="type" type="radio" value="1" style="background-color:#EEEEF6"<?php echo ((empty($option)) ? ' checked' : ''); ?>>
+                  <?php echo $lang['db_create_new']; ?>:
                 </td>
                 <td bgcolor="#EEEEF6">&nbsp;
-                  <input type="text" name="dbname" value="<?=$dbname?>" style="width:200px">
+                  <input type="text" name="dbname" value="<?php echo $dbname; ?>" style="width:200px">
                 </td>
               </tr>
-<?
+<?php
 			}
 			if($createerror && empty($option)) {
 ?>
               <tr>
                 <td bgcolor="#EEEEF6">&nbsp;
-                  <?=$lang['choice_one_db']?>:
+                  <?php echo $lang['choice_one_db']; ?>:
                 </td>
                 <td bgcolor="#EEEEF6">&nbsp;
-                  <input type="text" name="dbname" value="<?=$dbname?>" style="width:200px">
+                  <input type="text" name="dbname" value="<?php echo $dbname; ?>" style="width:200px">
                 </td>
               </tr>
-<?
+<?php
 			}
 ?>
             </table>
            </td>
          </tr>
-<?
+<?php
 		} else {
 				@include './config.inc.php';
 ?>
               <tr>
         	<td bgcolor="#EEEEF6">&nbsp;
-                  <?=$lang['db']?>:
+                  <?php echo $lang['db']; ?>:
                 </td>
                 <td bgcolor="#EEEEF6">&nbsp;
-                  <input type="hidden" name="dbname" value="<?=$dbname?>"><?=$dbname?>
+                  <input type="hidden" name="dbname" value="<?php echo $dbname; ?>"><?php echo $dbname; ?>
                 </td>
               </tr>
             </table>
            </td>
          </tr>
-<?
+<?php
 		}
 ?>
          <tr>
@@ -608,26 +605,26 @@ if(!$action) {
 	     <br>
 	     <input type="hidden" name="action" value="environment">
 	     <input type="hidden" name="saveconfig" value="1">
-	     <input type="submit" name="submit" value="<?=$lang['save_config']?>" style="height: 25">
-	     <input type="button" name="exit" value="<?=$lang['exit']?>" style="height: 25" onclick="javascript: window.close();">
+	     <input type="submit" name="submit" value="<?php echo $lang['save_config']; ?>" style="height: 25">
+	     <input type="button" name="exit" value="<?php echo $lang['exit']; ?>" style="height: 25" onclick="javascript: window.close();">
 	   </td>
 	 </tr>
 	 </form>
-<?
+<?php
 	}
 	if($exist_error) {
 ?>
         <tr>
           <td align="center">
             <br>
-            <form method="post" action="?language=<?=$language?>">
+            <form method="post" action="?language=<?php echo $language; ?>">
               <input type="hidden" name="action" value="config">
-              <input type="submit" name="submit" value="<?=$lang['recheck_config']?>" style="height: 25">
-              <input type="button" name="exit" value="<?=$lang['exit']?>" style="height: 25" onclick="javascript: window.close();">
+              <input type="submit" name="submit" value="<?php echo $lang['recheck_config']; ?>" style="height: 25">
+              <input type="button" name="exit" value="<?php echo $lang['exit']; ?>" style="height: 25" onclick="javascript: window.close();">
             </form>
           </td>
         </tr>
-<?
+<?php
 
 	}
 } elseif($action == 'environment') {
@@ -776,7 +773,7 @@ if(!$action) {
 	}
 ?>
         <tr>
-          <td><b><?=$lang['current_process']?> </b><font color="#0000EE"><?=$lang['check_env']?></font></td>
+          <td><b><?php echo $lang['current_process']; ?> </b><font color="#0000EE"><?php echo $lang['check_env']; ?></font></td>
         </tr>
         <tr>
           <td>
@@ -784,39 +781,39 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['check_user_and_pass']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['check_user_and_pass']; ?></font></b></td>
         </tr>
         <tr>
           <td>
             <br>
             <table width="50%" cellspacing="1" bgcolor="#000000" border="0" align="center">
               <tr bgcolor="#3A4273">
-                <td align="center" style="color: #FFFFFF"><?=$lang['permission']?></td>
-                <td align="center" style="color: #FFFFFF"><?=$lang['status']?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['permission']; ?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['status']; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">CREATE TABLE</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpriv_createtable?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpriv_createtable; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">INSERT</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpriv_insert?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpriv_insert; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">SELECT</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpriv_select?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpriv_select; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">UPDATE</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpriv_update?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpriv_update; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">DELETE</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpriv_delete?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpriv_delete; ?></td>
               </tr>
               <tr>
                 <td bgcolor="#E3E3EA" align="center">DROP TABLE</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$dbpriv_droptable?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $dbpriv_droptable; ?></td>
               </tr>
             </table>
             <br>
@@ -828,7 +825,7 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['compare_env']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['compare_env']; ?></font></b></td>
         </tr>
         <tr>
           <td>
@@ -836,45 +833,45 @@ if(!$action) {
             <table width="80%" cellspacing="1" bgcolor="#000000" border="0" align="center">
               <tr bgcolor="#3A4273">
                 <td align="center"></td>
-                <td align="center" style="color: #FFFFFF"><?=$lang['env_required']?></td>
-                <td align="center" style="color: #FFFFFF"><?=$lang['env_best']?></td>
-                <td align="center" style="color: #FFFFFF"><?=$lang['env_current']?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['env_required']; ?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['env_best']; ?></td>
+                <td align="center" style="color: #FFFFFF"><?php echo $lang['env_current']; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['env_os']?></td>
-                <td bgcolor="#EEEEF6" align="center"><?=$lang['unlimited']?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['env_os']; ?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $lang['unlimited']; ?></td>
                 <td bgcolor="#E3E3EA" align="center">UNIX/Linux/FreeBSD</td>
-                <td bgcolor="#E3E3EA" align="center"><?=$curr_os?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $curr_os; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['env_php']?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['env_php']; ?></td>
                 <td bgcolor="#EEEEF6" align="center">4.3.0+</td>
                 <td bgcolor="#E3E3EA" align="center">5.2.0+</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$curr_php_version?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $curr_php_version; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['env_mysql']?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['env_mysql']; ?></td>
                 <td bgcolor="#EEEEF6" align="center">3.23+</td>
                 <td bgcolor="#E3E3EA" align="center">4.0.18</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$curr_mysql_version?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $curr_mysql_version; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['env_diskspace']?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['env_diskspace']; ?></td>
                 <td bgcolor="#EEEEF6" align="center">10M+</td>
                 <td bgcolor="#E3E3EA" align="center">50M+</td>
-                <td bgcolor="#EEEEF6" align="center"><?=$curr_disk_space?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $curr_disk_space; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" align="center">./templates <?=$lang['env_dir_writeable']?></td>
-                <td bgcolor="#EEEEF6" align="center"><?=$lang['unlimited']?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['writeable']?></td>
-                <td bgcolor="#EEEEF6" align="center"><?=$curr_tpl_writeable?></td>
+                <td bgcolor="#E3E3EA" align="center">./templates <?php echo $lang['env_dir_writeable']; ?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $lang['unlimited']; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['writeable']; ?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $curr_tpl_writeable; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" align="center">./gamedata <?=$lang['env_dir_writeable']?></td>
-                <td bgcolor="#EEEEF6" align="center"><?=$lang['unlimited']?></td>
-                <td bgcolor="#E3E3EA" align="center"><?=$lang['writeable']?></td>
-                <td bgcolor="#EEEEF6" align="center"><?=$curr_data_writeable?></td>
+                <td bgcolor="#E3E3EA" align="center">./gamedata <?php echo $lang['env_dir_writeable']; ?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $lang['unlimited']; ?></td>
+                <td bgcolor="#E3E3EA" align="center"><?php echo $lang['writeable']; ?></td>
+                <td bgcolor="#EEEEF6" align="center"><?php echo $curr_data_writeable; ?></td>
               </tr>
             </table>
             <br>
@@ -886,12 +883,12 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['confirm_preparation']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['confirm_preparation']; ?></font></b></td>
         </tr>
         <tr>
           <td>
             <br>
-            <ol><?=$lang['preparation']?></ol>
+            <ol><?php echo $lang['preparation']; ?></ol>
           </td>
         </tr>
         <tr>
@@ -900,13 +897,13 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['install_note']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['install_note']; ?></font></b></td>
         </tr>
         <tr>
           <td>
             <br>
             <ol>
-<?
+<?php
 
 	foreach(explode("\t", $msg) as $message) {
 		echo "              <li>$message</li>\n";
@@ -917,10 +914,10 @@ if(!$action) {
 
 ?>
             <center>
-            <input type="button" name="refresh" value="<?=$lang['recheck_config']?>" style="height: 25" onclick="javascript: window.location=('?language=<?=$language?>&action=environment');">&nbsp;
-            <input type="button" name="exit" value="<?=$lang['exit']?>" style="height: 25" onclick="javascript: window.close();">
+            <input type="button" name="refresh" value="<?php echo $lang['recheck_config']; ?>" style="height: 25" onclick="javascript: window.location=('?language=<?php echo $language; ?>&action=environment');">&nbsp;
+            <input type="button" name="exit" value="<?php echo $lang['exit']; ?>" style="height: 25" onclick="javascript: window.close();">
             </center>
-<?
+<?php
 
 	} else {
 		include './config.inc.php';
@@ -931,7 +928,7 @@ if(!$action) {
 		$nowyear += 1900;
 
 ?>
-        <form method="post" action="?language=<?=$language?>" <?=$alert?>>
+        <form method="post" action="?language=<?php echo $language; ?>" <?php echo $alert; ?>>
 
         <tr>
           <td>
@@ -939,56 +936,56 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['add_admin']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['add_admin']; ?></font></b></td>
         </tr>
         <tr>
           <td align="center">
             <br>
             <table width="650" cellspacing="1" bgcolor="#000000" border="0" align="center">
                 <tr bgcolor="#3A4273">
-                  <td align="center" width="20%" style="color: #FFFFFF"><?=$lang['variable']?></td>
-                  <td align="center" width="30%" style="color: #FFFFFF"><?=$lang['value']?></td>
-                  <td align="center" width="50%" style="color: #FFFFFF"><?=$lang['comment']?></td>
+                  <td align="center" width="20%" style="color: #FFFFFF"><?php echo $lang['variable']; ?></td>
+                  <td align="center" width="30%" style="color: #FFFFFF"><?php echo $lang['value']; ?></td>
+                  <td align="center" width="50%" style="color: #FFFFFF"><?php echo $lang['comment']; ?></td>
                 </tr>
               <tr>
-                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['username']?></td>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?php echo $lang['username']; ?></td>
                 <td bgcolor="#EEEEF6" width="30%"><input type="text" name="username" value="admin" size="30"></td>
-				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['username_comment']?></td>
+				<td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['username_comment']; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['brpswd']?></td>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?php echo $lang['brpswd']; ?></td>
                 <td bgcolor="#EEEEF6" width="30%"><input type="password" name="brpswd" size="30"></td>
-				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['brpswd_comment']?></td>
+				<td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['brpswd_comment']; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['adminmsg']?></td>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?php echo $lang['adminmsg']; ?></td>
                 <td bgcolor="#EEEEF6" width="30%"><textarea cols="30" rows="4" style="overflow:auto" name="adminmsg" value=""></textarea></td>
-				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['adminmsg_comment']?></td>
+				<td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['adminmsg_comment']; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['startmode']?></td>
-                <td bgcolor="#EEEEF6" width="30%"><input type="radio" name="startmode" value="1" checked><?=$lang['startmode_1']?><input type="radio" name="startmode" value="2"><?=$lang['startmode_2']?><input type="radio" name="startmode" value="3"><?=$lang['startmode_3']?><input type="radio" name="startmode" value="0"><?=$lang['startmode_0']?></td>
-				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['startmode_comment']?></td>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?php echo $lang['startmode']; ?></td>
+                <td bgcolor="#EEEEF6" width="30%"><input type="radio" name="startmode" value="1" checked><?php echo $lang['startmode_1']; ?><input type="radio" name="startmode" value="2"><?php echo $lang['startmode_2']; ?><input type="radio" name="startmode" value="3"><?php echo $lang['startmode_3']; ?><input type="radio" name="startmode" value="0"><?php echo $lang['startmode_0']; ?></td>
+				<td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['startmode_comment']; ?></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['starttime']?></td>
-                <td bgcolor="#EEEEF6" colspan="2"><input type="radio" name="starttime" value="<?=$now?>" checked><?=$lang['starttime_1']?><input type="radio" name="starttime" value="0"><?=$lang['starttime_0']?><input type="text" name="setyear" size="4" value="<?=$nowyear?>"><?=$lang['year']?><input type="text" name="setmonth" size="2" value="<?=$nowmonth?>"><?=$lang['month']?><input type="text" name="setday" size="2" value="<?=$nowday?>"><?=$lang['day']?><input type="text" name="sethour" size="2" value="<?=$nowhour?>"><?=$lang['hour']?><input type="hidden" name="startmin" size="2" value="<?=$startmin?>"></td>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?php echo $lang['starttime']; ?></td>
+                <td bgcolor="#EEEEF6" colspan="2"><input type="radio" name="starttime" value="<?php echo $now; ?>" checked><?php echo $lang['starttime_1']; ?><input type="radio" name="starttime" value="0"><?php echo $lang['starttime_0']; ?><input type="text" name="setyear" size="4" value="<?php echo $nowyear; ?>"><?php echo $lang['year']; ?><input type="text" name="setmonth" size="2" value="<?php echo $nowmonth; ?>"><?php echo $lang['month']; ?><input type="text" name="setday" size="2" value="<?php echo $nowday; ?>"><?php echo $lang['day']; ?><input type="text" name="sethour" size="2" value="<?php echo $nowhour; ?>"><?php echo $lang['hour']; ?><input type="hidden" name="startmin" size="2" value="<?php echo $startmin; ?>"></td>
               </tr>
               <tr>
-                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?=$lang['iplimit']?></td>
-                <td bgcolor="#EEEEF6" width="30%"><input type="text" name="iplimit" value="<?=$iplimit?>" size="30"></td>
-				<td bgcolor="#E3E3EA">&nbsp;<?=$lang['iplimit_comment']?></td>
+                <td bgcolor="#E3E3EA" width="20%">&nbsp;<?php echo $lang['iplimit']; ?></td>
+                <td bgcolor="#EEEEF6" width="30%"><input type="text" name="iplimit" value="<?php echo $iplimit; ?>" size="30"></td>
+				<td bgcolor="#E3E3EA">&nbsp;<?php echo $lang['iplimit_comment']; ?></td>
               </tr>
             </table>
             <br>
             <input type="hidden" name="action" value="install">
-            <input type="submit" name="submit" value="<?=$lang['start_install']?>" style="height: 25" >&nbsp;
-            <input type="button" name="exit" value="<?=$lang['exit']?>" style="height: 25" onclick="javascript: window.close();">
+            <input type="submit" name="submit" value="<?php echo $lang['start_install']; ?>" style="height: 25" >&nbsp;
+            <input type="button" name="exit" value="<?php echo $lang['exit']; ?>" style="height: 25" onclick="javascript: window.close();">
           </td>
         </tr>
 
         </form>
-<?
+<?php
 
 	}
 } elseif($action == 'install') {
@@ -998,7 +995,7 @@ if(!$action) {
 
 ?>
         <tr>
-          <td><b><?=$lang['current_process']?> </b><font color="#0000EE"> <?=$lang['installing']?></font></td>
+          <td><b><?php echo $lang['current_process']; ?> </b><font color="#0000EE"> <?php echo $lang['installing']; ?></font></td>
         </tr>
         <tr>
           <td>
@@ -1006,11 +1003,11 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['check_admin']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['check_admin']; ?></font></b></td>
         </tr>
         <tr>
-          <td><?=$lang['check_admin_validity']?>
-<?
+          <td><?php echo $lang['check_admin_validity']; ?>
+<?php
 
 	$msg = '';
 	if(!$username) {
@@ -1026,12 +1023,12 @@ if(!$action) {
 	if($msg) {
 
 ?>
-            ... <font color="#FF0000"><?=$lang['fail_reason']?> <?=$msg?></font></td>
+            ... <font color="#FF0000"><?php echo $lang['fail_reason']; ?> <?php echo $msg; ?></font></td>
         </tr>
         <tr>
           <td align="center">
             <br>
-            <input type="button" name="back" value="<?=$lang['go_back']?>" onclick="javascript: history.go(-1);">
+            <input type="button" name="back" value="<?php echo $lang['go_back']; ?>" onclick="javascript: history.go(-1);">
           </td>
         </tr>
         <tr>
@@ -1041,7 +1038,7 @@ if(!$action) {
         </tr>
         <tr>
           <td align="center">
-            <b style="font-size: 11px">Powered by <a href="http://loongyou.com" target="_blank"><?=$lang['gamename']?> <?=$version?></a> , &nbsp; Copyright &copy; <a href="http://www.loongyou.com" target=\"_blank\">loongyou.com</a>, 2006-2007</b>
+            <b style="font-size: 11px">Powered by <a href="http://loongyou.com" target="_blank"><?php echo $lang['gamename']; ?> <?php echo $version; ?></a> , &nbsp; Copyright &copy; <a href="http://www.loongyou.com" target=\"_blank\">loongyou.com</a>, 2006-2007</b>
           </td>
         </tr>
       </table>
@@ -1052,7 +1049,7 @@ if(!$action) {
 </body>
 </html>
 
-<?
+<?php
 
 		exit();
 	} else {
@@ -1067,9 +1064,9 @@ if(!$action) {
           </td>
         </tr>
         <tr>
-          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?=$lang['select_db']?></font></b></td>
+          <td><b><font color="#FF0000">&gt;</font><font color="#000000"> <?php echo $lang['select_db']; ?></font></b></td>
         </tr>
-<?
+<?php
 	include './config.inc.php';
 
 	if(empty($dbcharset) && ($charset == 'gbk' || $charset == 'big5')) {
@@ -1174,12 +1171,12 @@ touch(GAME_ROOT.$lockfile);
         </tr>
         <tr>
           <td align="center">
-            <font color="#FF0000"><b><?=$lang['install_succeed']?></font><br>
-            <?=$lang['username']?></b> <?=$username?><br><br>
-            <a href="<?=$gameurl?>" target="_blank"><?=$lang['goto_game']?></a>
+            <font color="#FF0000"><b><?php echo $lang['install_succeed']; ?></font><br>
+            <?php echo $lang['username']; ?></b> <?php echo $username; ?><br><br>
+            <a href="<?php echo $gameurl; ?>" target="_blank"><?php echo $lang['goto_game']; ?></a>
           </td>
         </tr>
-<?
+<?php
 
 }
 
@@ -1191,7 +1188,7 @@ touch(GAME_ROOT.$lockfile);
         </tr>
         <tr>
           <td align="center">
-             <b style="font-size: 11px">Powered by <a href="http://loongyou.com" target="_blank"><?=$lang['gamename']?> <?=$version?></a> , &nbsp; Copyright &copy; <a href="http://www.loongyou.com" target=\"_blank\">loongyou.com</a>, 2006-2007</b>
+             <b style="font-size: 11px">Powered by <a href="http://loongyou.com" target="_blank"><?php echo $lang['gamename']; ?> <?php echo $version; ?></a> , &nbsp; Copyright &copy; <a href="http://www.loongyou.com" target=\"_blank\">loongyou.com</a>, 2006-2007</b>
           </td>
         </tr>
       </table>
@@ -1199,10 +1196,10 @@ touch(GAME_ROOT.$lockfile);
   </tr>
 </table>
 <br>
-<iframe width="0" height="0" src="http://www.loongyou.com/pluslog/pluslog.php?bbsurl=<?=$bbsurl?>&gameurl=<?=$gameurl?>"></iframe>
+<iframe width="0" height="0" src="http://www.loongyou.com/pluslog/pluslog.php?bbsurl=<?php echo $bbsurl; ?>&gameurl=<?php echo $gameurl; ?>"></iframe>
 </body>
 </html>
-<?
+<?php
 
 function loginit($logfile) {
 	global $lang;

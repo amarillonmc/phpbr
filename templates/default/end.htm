@@ -1,23 +1,16 @@
 {template header}
 
 <!--{if $hp <= 0}-->
-	<BR>
-	<div class="subtitle">$dtitle[$state]</div>
-	<BR>
-	<IMG src="img/$iconImg" width="140" height="80" border="0"
-		align="middle" style="filter: Xray()">
-	<BR>
-	<p><span class="yellow b">$motto</span></p>
-	
-	<p><!--{if $dinfo[$state]}-->$dinfo[$state]<!--{else}-->你莫名地死了。这应该是BUG，请通知管理员。<!--{/if}--></p>
-	<p>死亡时间：$dtime<br>
-	凶手：<!--{if $kname && $state>=20}-->$kname<!--{else}-->无<!--{/if}--><br>
-	</p>
-	<!--{if $state == 33}--><p><img src="img/gradius.jpg" align="middle" /></p><!--{/if}-->
-	<p><span class="evergreen2">祝下次游戏好运！</span></p>
-
-<!--{elseif $gamestate === 0}-->
-	<!--{if $winmode == 2}-->
+	<div class="subtitle">$stateinfo[$state]</div>
+	<div><IMG src="img/$iconImg" width="140" height="80" border="0"align="middle" style="filter: Xray()"></div>
+	<div class="yellow b">$motto</div>
+	<div><!--{if $dinfo[$state]}-->$dinfo[$state]<!--{else}-->你莫名地死了。这应该是BUG，请通知管理员。<!--{/if}--></div>
+	<div>死亡时间：$dtime</div>
+	<!--{if !empty($kname) && $state>=10}--><div>凶手：$kname</div><!--{/if}-->
+	<!--{if $state == 33}--><div><img src="img/gradius.jpg" align="middle" /></div><!--{/if}-->
+	<div class="evergreen2">祝下次游戏好运！</div>
+<!--{elseif $gamestate == 0}-->
+	<!--{if $winmode == 2 && $state == 5}-->
 	<div class="subtitle">游戏结束</div>
 	<BR>
 	<p>噗通。<BR>
@@ -25,10 +18,9 @@
 	血从他身上那可怖的伤口里，像喷泉一样涌出来。<BR>
 	我和他双目对视，看着他眼中的生命之火迅速熄灭。<BR>
 	又一个，死了。</p>
-	<p><span class="yellow">“恭喜你成为优胜者。”</span><BR>
-	<span class="lime">“知道了么？不要跟本妖怪打赌谁赢谁输。”</span><BR>
-	<span class="clan">“吹你的吧，你只是这次运气好而已。”</span><BR>
-	这些声音……是首席执行官们！他们的声音为什么会直接出现在我的脑海里？<BR>
+	<p><span class="yellow">“所以你看到了么，客户，现在这里的情况还很安全。”</span><BR>
+	<span class="clan">“MISSION COMPLETE，Retreat。”</span><BR>
+	这些声音……是开局时见到的那两位红杀成员们！她们的声音为什么会直接出现在我的脑海里？<BR>
 	<span class="yellow">“请稍等片刻，马上就放你出去。好好等着吧。”</span></p>
 	<p>是嘛……我活下来了啊，最后我终于活下来了啊！哈哈，啊哈哈哈……<BR>
 	我呆滞地笑着，抬头望向苍天。<BR>
@@ -65,7 +57,7 @@
 	这里大概就是现实世界了吧。<BR>
 	膝盖上有张纸条。拾起一看，只有一行小字：<BR>
 	<span class="evergreen">“待会见记者。不要做你不该做的事。林无月”</span><BR>
-	林无月……首席执行官的头目吗……<BR>
+	林无月……那两个佣兵刺客的雇主吗……<BR>
 	这难看而冷酷的词句让我刚刚放下的心再度悬了起来。<BR>
 	就算逃到现实中，也还是没法摆脱这种梦魇吗？</p>
 	<p>突然，车门打开了。让人睁不开眼的闪光灯的浪潮中，无数话筒伸了过来。<BR>
@@ -81,7 +73,7 @@
 	趁警察和记者正推搡着，男子想要把我重新拽回车里去。</p>
 	<p>冲击？失忆？……<BR>
 	难道……<BR>
-	在我昏睡的时候，首席执行官们……<BR>
+	在我昏睡的时候，那力量……<BR>
 	把一切都篡改了吗？</p>
 	<p>不过，不论如何，这是在现实世界。<BR>
 	这不是大逃杀的野蛮国度，而是有法律的文明世界。<BR>
@@ -97,7 +89,7 @@
 	<p>支撑着我胜出的，是对那渺茫的希望的追求。<BR>
 	我要逃出这个虚拟的魔窟，<BR>
 	我要把实情告诉每一个人，<BR>
-	我要让那些不可理喻的首席执行官，<BR>
+	我要让那些不可理喻的幕后力量，<BR>
 	那些以净化网络的名义，践踏我们的生命的狂人们，<BR>
 	受到他们应有的制裁！</p>
 	<p>为了这样做，就只能……<BR>
@@ -107,8 +99,7 @@
 	然而，这就是，我的信念。<BR>
 	我要用自己的这双手，<BR>
 	这双沾满人类鲜血的手，<BR>
-	亲手撕开御坂 美琴、坂持 金发，还有风见 幽香——<BR>
-	他们虚伪的面皮！</p>
+	亲手撕开他们虚伪的面皮！</p>
 	<p>所以，被我杀害的网友们啊……<BR>
 	被我杀害的技术帝们啊……<BR>
 	所有被我杀害的，那一个一个鲜活的生命们啊……<BR>
@@ -136,20 +127,19 @@
 	参加会展的仪器都已经搬空，偌大的会场里，只有大屏幕还在显示着新闻。<BR>
 	“……警方对前段日子的动漫祭特大恶性杀人事件的调查已经告一段落，现在让我们来回顾一下事件的始末……”<BR>
 	会场里仅有的一名黑衣男子，似乎对这爆炸性的新闻丝毫不感兴趣，自顾自地打着手机。<BR>
-	“你们没出事吧？”<BR>
-	<span class="lime">“按那个林无月的指示，一点事都没有哦。”</span>女子的声音。<BR>
-	<span class="yellow">“林董事长确实高瞻远瞩。”</span>男人的声音。<BR>
-	“那当然，这就是她的行事风格。不放任何一个人回到虚拟世界……”男子笑道，随后压低了声音，“这次的行动十分顺利。那么，下次还继续么？”<BR>
-	<span class="clan">“是的。我们的计划还未完成呢。”</span><BR>
-	“那么，就让我好好期待吧。”<BR>
-	男子挂上了手机，低语道：“就让我看看，你的执行官们能做到什么地步吧，林无月……”</p>
+	“你们两个人对赏金还满意么？”<BR>
+	<span class="lime">“酬金已经收到……您出手可真大方”</span>女子的声音。<BR>
+	“哼哼，就算被时空特使注意到了也没用吧……”男子笑道，随后压低了声音，“这次的行动十分顺利。那么，下次也请你们多多关照了。”<BR>
+	<span class="clan">“哎呀呀，终于能自由说话了真好，总是指令啥的闷死了……”</span>另外一个轻快的声音。<BR>
+	“不知道么蓝凝，那个也是萌属性的一种……总之现在不是插科打诨的时候，改日继续联系。”<BR>
+	男子挂上了手机，嘴边抹出一个微笑：“做的很不错啊，你们……”</p>
 	
-	<!--{elseif $winmode == 3 && $pdata['story'] == 100}-->
+	<!--{elseif $winmode == 3 && $state == 6}-->
 	<div class="subtitle">游戏紧急中止</div>
 	<BR>
 	<p>“哈……哈……”我疲惫地呼吸着。<br>
-	三名首席执行官，之前在开幕仪式上口出狂言的家伙们，如今都面朝下静静地躺在血泊之中。<br>
-	如他们所说，他们很强。但是，仍然不敌我的攻击而倒下了。<br>
+	三名幻影执行官，之前在开幕仪式上口出狂言的家伙们，如今都面朝下静静地躺在血泊之中。<br>
+	如以前的生存者们传说的那样，他们很强。但是，仍然不敌我的攻击而倒下了。<br>
 	他们原本威武的制服已经被我的攻击撕碎，同他们三人的身躯一样千疮百孔。<br>
 	这样的身躯，绝然不会再有生还的希望。<br>
 	“这是报应，恶魔们。”我朝尸体的方向恶狠狠地啐了一口。<br>
@@ -237,16 +227,16 @@
 	<p>……<BR>
 	……<BR>
 	……</p>
-	<p>“对不起，董事长阁下。我们没能阻止这批玩家的暴动。”<br>
+	<p>“对不起，董事长阁下。我们没能阻止这批玩家。”<br>
+	<p>“MISSION……任务失败。”<br>
 	不知何时，不知何地，不知何人，正诚恳地道歉着。<br>
 	<span class="evergreen">“也许那就是咱要找的人吧？拥有能改变整个网络的力量的人……”</span>一个女子的声音，从虚空中传来。<br>
-	<span class="yellow">“但是，那个人并没有服从于我们的命令，而是向我们挑战了。”</span><br>
-	<span class="evergreen">“你们的力量，还不够。咱，很失望呢。”</span><br>
-	<span class="clan">“确实……是这样……”</span>女子的声音。<br>
-	<span class="yellow">“非常抱歉，董事长阁下。”</span>男子的声音。<br>
-	<span class="lime">“你居然会失望呢……还挺让人在意的啊。”</span>女子的声音。<br>
-	<span class="evergreen">“不达目的，决不罢休。那么，下一次，要使用‘那个’。”</span>女子的语气很坚决，<span class="evergreen">“咱，希望你们一雪耻辱。”</span><br>
-	“感激不尽。我们会让您满意的，<span class="evergreen">Genetic Altered
+	<span class="yellow">“要不是时空特使来搅局……”</span><br>
+	<span class="evergreen">“时空特使卷入了这次事件么，那还真是意料之外……算了，你们没有什么过错。毕竟对手是他。”</span><br>
+	<span class="clan">“那个人看起来很强的样子……”</span>另外一个女子的声音。<br>
+	<span class="yellow">“嗯，我也只能和他打成平手，要不是他中途撤了……”</span>红杀将军卸下了自己的盔甲。<br>
+	<span class="evergreen">“所以说了不怪你们。”</span>神秘的女子发出了一声叹息，<span class="evergreen">“如果他要来搅局的话那就随他去吧。他是做不出什么翻天动地的事情的。”</span><br>
+	“了解，<span class="evergreen">Genetic Altered
 	No.3 alter，林无月</span>阁下。”</p>
 	
 	
@@ -275,19 +265,19 @@
 	<p>……<BR>
 	……<BR>
 	……</p>
-	<p>“对不起，董事长阁下。我们没能阻止这批玩家的暴动。”<br>
+	<p>“对不起，董事长阁下。我们没能阻止这批玩家。”<br>
+	<p>“MISSION……任务失败。”<br>
 	不知何时，不知何地，不知何人，正诚恳地道歉着。<br>
 	<span class="evergreen">“也许那就是咱要找的人吧？拥有能改变整个网络的力量的人……”</span>一个女子的声音，从虚空中传来。<br>
-	<span class="yellow">“但是，那个人并没有服从于我们的命令，而是向我们挑战了。”</span><br>
-	<span class="evergreen">“你们的力量，还不够。咱，很失望呢。”</span><br>
-	<span class="clan">“确实……是这样……”</span>女子的声音。<br>
-	<span class="yellow">“非常抱歉，董事长阁下。”</span>男子的声音。<br>
-	<span class="lime">“你居然会失望呢……还挺让人在意的啊。”</span>女子的声音。<br>
-	<span class="evergreen">“不达目的，决不罢休。那么，下一次，要使用‘那个’。”</span>女子的语气很坚决，<span class="evergreen">“咱，希望你们一雪耻辱。”</span><br>
-	“感激不尽。我们会让您满意的，<span class="evergreen">Genetic Altered
+	<span class="yellow">“要不是时空特使来搅局……”</span><br>
+	<span class="evergreen">“时空特使卷入了这次事件么，那还真是意料之外……算了，你们没有什么过错。毕竟对手是他。”</span><br>
+	<span class="clan">“那个人看起来很强的样子……”</span>另外一个女子的声音。<br>
+	<span class="yellow">“嗯，我也只能和他打成平手，要不是他中途撤了……”</span>红杀将军卸下了自己的盔甲。<br>
+	<span class="evergreen">“所以说了不怪你们。”</span>神秘的女子发出了一声叹息，<span class="evergreen">“如果他要来搅局的话那就随他去吧。他是做不出什么翻天动地的事情的。”</span><br>
+	“了解，<span class="evergreen">Genetic Altered
 	No.3 alter，林无月</span>阁下。”</p>
 	
-	<!--{elseif $winmode == 5 && $pdata['story'] == 100}-->
+	<!--{elseif $winmode == 5 && $state == 6}-->
 	<div class="subtitle">核弹引爆</div>
 	<BR>
 	<p>手中的按钮装置发出刺耳的“哔哔”声。<BR>
@@ -315,7 +305,7 @@
 	<span class="evergreen">“哼，看来也许下次还得我亲自出马。”</span>不满的女声，<BR>
 	<span class="evergreen">“不过，电子病毒核弹这样的东西，竟然会被安插到那里。看来我们需要重新审视内部的暗流了呢。”</span><BR>
 	“实在抱歉，董事长。这次的事情由我们负全责。”<BR>
-	<span class="evergreen">“咱不在的时候竟然有人敢做这种事……”女声沉吟许久，“莫非是他……？”</span></p>
+	<span class="evergreen">“咱不在的时候竟然有人敢做这种事……”女声沉吟许久，“果然是他……？”</span></p>
 	
 	
 	<!--{elseif $winmode == 5}-->
@@ -340,104 +330,21 @@
 	<span class="evergreen">“哼，看来也许下次还得我亲自出马。”</span>不满的女声，<BR>
 	<span class="evergreen">“不过，电子病毒核弹这样的东西，竟然会被安插到那里。看来我们需要重新审视内部的暗流了呢。”</span><BR>
 	“实在抱歉，董事长。这次的事情由我们负全责。”<BR>
-	<span class="evergreen">“咱不在的时候竟然有人敢做这种事……”女声沉吟许久，“莫非是他……？”</span></p>
+	<span class="evergreen">“咱不在的时候竟然有人敢做这种事……”女声沉吟许久，“果然是他……？”</span></p>
 	<!--{elseif $winmode == 6}-->
 	<div class="subtitle">游戏被GM中止</div>
 	<BR>
 	<p>本局游戏被GM中止，请返回游戏首页。</p>
-	<!--{elseif $winmode == 7 && $pdata['story'] == 100}-->
-	<div class="subtitle">圣杯战争</div>
-	<BR>
-	<p>“这...这是什么地方....？“我疑惑着，并感觉有点不可思议。<BR>
-	明明刚才还在和大家厮杀着，但是，现在我却突然来到了这个虚无的空间。<BR>
-	“恩？圣杯就是这玩意么？”我看着眼前发着耀眼白光的物体。<BR><BR>
-	
-	<span class="evergreen">“恭喜你呢，<span class="yellow">{$sexinfo[$gd]}{$sNo}号，{$name}</span>。”</span><BR>
-	一名女子的声音突然响起，我看了看四周，最后发现是圣杯中传来的。<BR><BR>
-	
-	“谁！？”我拿起武器，对准了圣杯。<BR><BR>
-	
-	<span class="evergreen">“这么快就忘记咱了啊，咱是林无月哟。”</span>轻柔的女声继续说着，但是这完全没有给我带来一点喜悦反而是愤怒与恶心。<BR>
-	<span class="evergreen">“即使你获得了圣杯，但是这个虚拟世界还是在咱的掌控之下哦。”</span><BR>
-	<span class="evergreen">“也就是说呢，抹杀你和这个圣杯，也是完全可以的哦。”</span><BR>
-	<span class="evergreen">“但是，你的表演很成功呢。”</span><BR>
-	<span class="evergreen">“看在你让咱开心一阵的份上，咱就给你一次许愿的机会。”</span><BR>
-	<span class="evergreen">“当然，别妄图许那种不可能的愿望，咱可不是傻瓜哟。”</span><BR>
-	随着声音的消失，圣杯开始暗淡下来。<BR>
-	我知道，我应该去许愿了。<BR><BR>
-	
-	应该许什么愿望？我思考着。<BR>
-	“让所有参赛者离开这个世界？不行，这显然不可能让那个女人答应。”<BR>
-	“那么，取消这个杀人的游戏？”我拍了拍自己的脸，”这怎么可能！连我自己都知道明显不可能的事情，迷糊了么...”<BR>
-	可恶....这种“愿望"....限制性也太多了.....<BR>
-	而且...如果我们之间的互杀只算是表演的话....<BR>
-	啊啊啊啊啊啊......我跪倒在地：“可恶！可恶！”我疯狂的用拳头砸着虚无的地面，我们的生命，难道仅仅只是别人眼中的表演与笑料？<BR>
-	明明是她这种所谓的“净化网络风气”的活动，最后却成了她口中的“表演”……<BR>
-	这样...怎么可以容忍....<BR>
-	怎么可以容忍！<BR>
-	我站直身子，低下头，用前额的刘海轻轻遮住那双愤怒的眼睛。<BR><BR>
-	
-	让我停止疯狂的举动的，不止是前几个小时与网友们互相战斗带来的劳累与伤痛。<BR>
-	更是那前所未有的仇恨。<BR>
-	对，仇恨。<BR>
-	“向那个女人复仇！”我握紧拳头咬着嘴唇..直到流出鲜红的血液...<BR>
-	那么...我必须计划好...<BR>
-	在面对那个女人所操控的整个世界前...计划好...<BR><BR>
-	……<BR>
-	……<BR>
-	……<BR>
-	……<BR>
-	
-	
-	再次看向圣杯，我已经完全计划好了。<BR>
-	一个人回到现实世界，没有意义，这样的杀戮还会继续进行下去。<BR>
-	取消这个游戏，更是没有可能。<BR>
-	那么只有利用这个圣杯，去推翻那个女人的黑暗掌控！<BR>
-	我会成功的！<BR>
-	只要击败她！<BR>
-	击败她！<BR>
-	击败她！<BR>
-	哪怕是我的实力不足以击败她，那么再下一次我会变得更强！<BR>
-	直到能够战胜她！<BR>
-	直到我真正的破坏这个世界！<BR>
-	……<BR><BR>
-	
-	我握紧拳头，开始大步走向圣杯，并使出全身的力气嘶吼着：“我决定了！我的愿望是：让游戏重新开始！所有人都全部重来！“<BR>
-	同时我心中也在叫喊着：这一次，不会再有人死去了，我会带着网友们战胜你的，林无月！”<BR>
-	……<BR>
-	……<BR>
-	……<BR><BR>
-	
-	<span class="evergreen">“呵呵，你以为会这么简单么？”</span>虚空中传来林无月微不可闻的声音。<BR>
-	<span class="evergreen">“如果真要那么简单的话，为什么前几届胜利者都没有这么做呢？”</span><BR>
-	“董事长阁下确实高瞻远瞩。”一名从来没听过声音的男子用恭敬的语气回答着，“将所有人的记忆删除，然后重新开始游戏……，完全没有违背他所说的愿望。”<BR>
-	<span class="evergreen">“你来负责操作这个愿望吧，做的好一点。”</span>林无月用懒散的语气说着，<span class="evergreen">“咱还有事情要办，下一局就交给你了。”</span><BR>
-	"是，董事长阁下。”<BR><BR>
-	
-	男子从虚空中闪现出身形，低语道：<br><span class="yellow">“迟早有一天，你会栽在这些你所看不起的人手上，林无月……”<br>“那么，那枚破局的核弹也已经悄悄安防好了，就看你能不能做到了，{$sexinfo[$gd]}{$sNo}号，{$name} ……”</span></p>
-	<!--{elseif $winmode == 7}-->
-	<div class="subtitle">圣杯战争</div>
-	<BR>
-	<p>白光突然涌现，让刚刚还在厮杀的众人，停下了手中挥舞的屠刀。<BR>
-	怎么了？是整点禁区了么？有人疑惑着。<BR>
-	这时脑内传来一名男子的声音。<BR>
-	“咳咳，抱歉了各位，你们的杀戮要终止了。”<BR>
-	“你们的同伴许愿让这个游戏重新开始，所有人都会复活重来！“<BR>
-	……<BR>
-	”这样的愿望有意义么，还不如让所有幸存的网游脱离游戏呢”一名不知情的技术帝大声的说着。<BR>
-	而更多的人，则是低下头看着自己手中的武器，默默的想念着，那些倒下的网友们。<BR>
-	“这一次，我不会再犯同样的错误了........“虽然不是同一个人，但是几乎所有的幸存者们都在心底中默念着。<BR>
-	……<BR>
-	白光覆盖。<BR>
-	一瞬间所有人都失去了意识。</p>
+	<!--{else}-->
+	不明错误，请返回游戏首页！
 	<!--{/if}-->
 <!--{else}-->
-	不明错误，请返回游戏首页！
+不明错误，请返回游戏首页！
 <!--{/if}-->
 
-<br>
-<form method="post" name="backindex" action="index.php"><input
-	type="submit" name="enter" value="{lang backindex}"></form>
+<form method="post" name="backindex" action="index.php">
+	<input type="submit" name="enter" value="{lang backindex}">
+</form>
 
 
 {template footer}

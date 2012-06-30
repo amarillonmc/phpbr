@@ -7,18 +7,19 @@
 	<span id="notice"></span><br />
 	<span id="info" class="yellow"></span>
 </p>
+<center>
 	<form method="post" action="user.php" name="userdata">
 		<input type="hidden" name="mode" value="edit">
 		<span class ="yellow">{lang basicdata}</span>
 		{template userbasicdata}<br />
 		<span class ="yellow">{lang advanceddata}</span>
 		{template usergdicon}<br />
-		{template usercredits}<br />
 		{template userwords}<br />
 		<div id="postdata">
-			<input type="button" id="post" onClick="postUserCommand();return false;" value="{lang submit}">
+			<input type="submit" id="post" onClick="postCmd('userdata','user.php');return false;" value="{lang submit}">
 			<input type="reset" id="reset" name="reset" value="{lang reset}">
 		</div>
 	</form>
+</center>
 	<br />
-{template footer}
+{template footer} 

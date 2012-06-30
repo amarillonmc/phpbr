@@ -6,6 +6,10 @@ if (! defined ( 'IN_GAME' )) {
 
 class dbstuff {
 	var $querynum = 0;
+	var $selectnum = 0;
+	var $insertnum = 0;
+	var $updatenum = 0;
+	var $deletenum = 0;
 	
 	function connect($dbhost, $dbuser, $dbpw, $dbname = '', $pconnect = 0) {
 		if ($pconnect) {
@@ -53,6 +57,10 @@ class dbstuff {
 			$this->halt ( 'MySQL Query Error', $sql );
 		}
 		$this->querynum ++;
+		if(strpos($sql,'SELECT')===0){$this->selectnum ++;}
+		elseif(strpos($sql,'INSERT')===0){$this->insertnum ++;}
+		elseif(strpos($sql,'UPDATE')===0){$this->updatenum ++;}
+		elseif(strpos($sql,'DELETE')===0){$this->deletenum ++;}
 		return $query;
 	}
 	
@@ -81,16 +89,50 @@ class dbstuff {
 			(mysql_get_server_info() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=$dbcharset" : " TYPE=$type");
 	}
 	
-//	SELECT语句变化比较多，就不设置方法了
-
-//	function select($dbname, $where = '', $fields = '*', $limit = '') {
-//		$query = "SELECT {$fields} FROM {$dbname} ";
+//	function Aselect($dbname, $where = Array(), $fields = Array(), $limit = '') {
+//		if (! empty ( $dbname )) {
+//			$dbname_string = mysql_real_escape_string($dbname);
+//		}else{
+//			return false;
+//		}
+//		
+//		if (! empty ( $fields )) {
+//			$fields_string = '';
+//			foreach($fields as $val){
+//				$val = mysql_real_escape_string($val);
+//				$fields_string .= "{$val},";
+//			}
+//			$fields_string = substr($fields_string,0,-1);
+//		}else{
+//			$fields_string = '*';
+//		}
+//		
 //		if (! empty ( $where )) {
-//			$query .= "WHERE {$where} ";
+//			$where_string = '';
+//			foreach($where as $val){
+//				if(is_array($val) && isset($val[0]) && isset($val[1]) && isset($val[2])){
+//					$val[0] = mysql_real_escape_string($val[0]);
+//					$val[1] = mysql_real_escape_string($val[1]);
+//					$val[2] = mysql_real_escape_string($val[2]);
+//					$where_string .= $val[0].$val[1]."'".$val[2]."' AND ";
+//				}				
+//			}
+//			if(!empty($where_string)){
+//				$where_string = 'WHERE '.substr($where_string,0,-5);
+//			}
+//		}else{
+//			$where_string = '';
 //		}
+//		
 //		if (! empty ( $limit )) {
-//			$query .= "LIMIT {$limit}";
+//			$limit_string = 'LIMIT '.mysql_real_escape_string($limit);
+//		}else{
+//			$limit_string = '';
 //		}
+//		
+//		$query = "SELECT {$fields_string} FROM {$dbname_string} {$where_string} {$limit_string}";
+//		
+//		//return $query;
 //		return $this->query ($query);
 //	}
 	

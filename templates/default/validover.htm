@@ -1,93 +1,60 @@
 {template header}
 
-<p align="center">“{$cuser}，对吧？正在为您创建虚拟身份……<br>
-“创建完成！您可以凭这个身份参加我们的特别活动了。
-<br>
-“会场入口就在前面。动漫祭的开幕仪式就要开始了，请您尽快入场。”<br><br></p>
+
 
 
 <div class="subtitle" >{lang validover}</div>
-<!--<p><img border="0" src="img/story_0.jpg" style="align:center"></p>-->
+<p><img border="0" src="img/story_0.gif" style="align:center"></p>
 <table border="0" cellspacing="0" align="center">
   <tbody>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang name}</div></td>
-		<td class="b3"><DIV class=nttx>$cuser</div></td>
-		<td rowspan="3" colspan="2" class="b3"><DIV class=nttx><img src="./img/{$pl['gd']}_{$pl['icon']}.gif" border="0" /></div></td>
+		<td class="b1"><span>{lang name}</span></td>
+		<td class="b3"><span>$cuser</span></td>
+		<td rowspan="3" colspan="2" class="b3"><span><img src="./img/{$gd}_{$icon}.gif" border="0" /></span></td>
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang sNo}</div></td>
-		<td class="b3"><DIV class=nttx>{$sexinfo[$pl['gd']]}{$pl['sNo']}号</div></td>
+		<td class="b1"><span>{lang sNo}</span></td>
+		<td class="b3"><span>{$sexinfo[$gd]}{$sNo}号</span></td>
 		
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang club}</div></td>
-		<td class="b3"><DIV class=nttx>$clubinfo[$pl['club']]</div></td>
+		<td class="b1"><span>{lang club}</span></td>
+		<td class="b3"><span>$clubinfo[$club]</span></td>
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang hp}</div></td>
-		<td class="b3"><DIV class=nttx>$pl['hp'] / $pl['mhp']</div></td>
-		<td class="b1"><DIV class=nttx>{lang sp}</div></td>
-		<td class="b3"><DIV class=nttx>$pl['sp'] / $pl['msp']</div></td>
+		<td class="b1"><span>{lang hp}</span></td>
+		<td class="b3"><span>$hp / $mhp</span></td>
+		<td class="b1"><span>{lang sp}</span></td>
+		<td class="b3"><span>$sp / $msp</span></td>
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang att}</div></td>
-		<td class="b3"><DIV class=nttx>$pl['att']</div></td>
-		<td class="b1"><DIV class=nttx>{lang def}</div></td>
-		<td class="b3"><DIV class=nttx>$pl['def']</div></td>
+		<td class="b1"><span>{lang att}</span></td>
+		<td class="b3"><span>$att</span></td>
+		<td class="b1"><span>{lang def}</span></td>
+		<td class="b3"><span>$def</span></td>
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang wep}</div></td>
-		<td class="b3" colspan="3"><DIV class=nttx>$pl['wep']</div></td>
+		<td class="b1"><span>{lang wep}</span></td>
+		<td class="b3" colspan="3"><span>$wep</span></td>
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang startpack}1</div></td>
-		<td class="b3" colspan="3"><DIV class=nttx>$pl['itm3']</div></td>
+		<td class="b1"><span>{lang startpack}1</span></td>
+		<td class="b3" colspan="3"><span>$itm[3]</span></td>
 	</tr>
 	<tr>
-		<td class="b1"><DIV class=nttx>{lang startpack}2</div></td>
-		<td class="b3" colspan="3"><DIV class=nttx>$pl['itm4']</div></td>
+		<td class="b1"><span>{lang startpack}2</span></td>
+		<td class="b3" colspan="3"><span>$itm[4]</span></td>
 	</tr>
-	<!--{if $companysystem}-->
-	<tr></tr>
-	<tr>
-		<td class="b1"><DIV class=nttx>{lang company}</div></td>
-		<td class="b3"><DIV class=nttx>{$cp['name']}</div></td>
-		<td rowspan="3" colspan="2" class="b3"><DIV class=nttx><img src="./img/n_{$cp['icon']}.gif" border="0" /></div></td>
-	</tr>
-	<tr>
-		<td class="b1"><DIV class=nttx>{lang sNo}</div></td>
-		<td class="b3"><DIV class=nttx>{$sexinfo[$cp['gd']]}</div></td>
-		
-	</tr>
-	<tr>
-		<td class="b1"><DIV class=nttx>{lang club}</div></td>
-		<td class="b3"><DIV class=nttx>$clubinfo[$cp['club']]</div></td>
-	</tr>
-	<tr>
-		<td class="b1"><DIV class=nttx>{lang hp}</div></td>
-		<td class="b3"><DIV class=nttx>$cp['hp'] / $cp['mhp']</div></td>
-		<td class="b1"><DIV class=nttx>{lang sp}</div></td>
-		<td class="b3"><DIV class=nttx>$cp['sp'] / $cp['msp']</div></td>
-	</tr>
-	<tr>
-		<td class="b1"><DIV class=nttx>{lang att}</div></td>
-		<td class="b3"><DIV class=nttx>$cp['att']</div></td>
-		<td class="b1"><DIV class=nttx>{lang def}</div></td>
-		<td class="b3"><DIV class=nttx>$cp['def']</div></td>
-	</tr>
-	<tr>
-		<td class="b1"><DIV class=nttx>{lang wep}</div></td>
-		<td class="b3" colspan="3"><DIV class=nttx>$cp['wep']</div></td>
-	</tr>
-	<!--{/if}-->
   </tbody>
 </table>
-
+<p align="center">“{$cuser}，对吧？正在为您创建虚拟身份……<br>
+“创建完成！您可以凭这个身份参加我们的特别活动了。
+<br>
+“会场入口就在前面。动漫祭的开幕仪式就要开始了，请您尽快入场。”<br><br>
 
 <form method="post"  action="valid.php" style="margin: 0px">
 <input type="hidden" name="mode" value="notice">
 <input type="submit" name="enter" value="{lang enternotice}">
 </form>
-
+</p>
 {template footer}

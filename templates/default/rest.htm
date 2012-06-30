@@ -1,19 +1,5 @@
+$restinfo[$state] 中。。。<br>
 <input type="hidden" id="mode" name="mode" value="rest">
-<input type="hidden" id="command" name="command" value="">
-<table style="width:500px">
-	<tr>
-		<td class="td1" style="height:25px">
-			<div>
-				你正在{$restinfo[$pdata['state']]}中……
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="td2">
-			<div>
-				<div class="cmdbtn" onclick="$('command').value='rest';postCommand();">$restinfo[$pdata['state']]</div>
-				<div class="cmdbtn" onclick="$('command').value='back';postCommand();">{lang back}</div>
-			</div>
-		</td>
-	</tr>
-</table>
+<input type="hidden" id="command" name="command" value="rest">
+<input type="button" class="cmdbutton" name="rest" value="$restinfo[$state]" onclick="postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" name="back" value="返回" onclick="$('command').value='back';postCmd('gamecmd','command.php');this.disabled=true;">

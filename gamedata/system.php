@@ -9,13 +9,13 @@ $isLogin = 1;
 //是否缓存css文件。0=不缓存，1=缓存
 $allowcsscache = 1;
 //游戏版本
-$gameversion = '2.99SP2a3';
+$gameversion = 'GE597';
 //站长留言
-$systemmsg = '<h1>官方0服</h1>感谢Acg_Xilin和Majia255提供服务器空间。<br>1服：<a href = "http://nmforce.net/lg2/"> http://nmforce.net/lg2/</a><br>2服：<a href="http://ug3g.com/lg/">http://ug3g.com/lg/</a><br>0服：<a href="dts.acfun.tv">dts.acfun.tv</a><br>';
+//$systemmsg = '';
 //游戏开始方式 0=后台手动开始，1=每天固定时间开始，2=上局结束后，间隔固定小时后的整点开始，3=上局结束后，间隔固定分钟开始
-$startmode = 3;
+$startmode = 0;
 //游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔小时，>0，如果$startmode = 3，表示间隔分钟，>0
-$starthour = 3;
+$starthour = 0;
 //游戏开始的分钟数，范围1~59
 $startmin = 1;
 //游戏所用配置文件
@@ -36,6 +36,8 @@ $ranklimit = 20;
 $winlimit = 50;
 //枪声间隔时间(秒)
 $noiselimit = 300;
+//失焦冻结时间，单位分钟
+//$lostfocusmin = 10;
 
 //游戏内聊天信息显示条数
 $chatlimit = 50;

@@ -53,12 +53,14 @@ if(!isset($cmd)){
 	}
 	if($ustate == 'check'){
 		$gamedata['innerHTML']['postreg'] = '<input type="button" name="back" value="返回游戏首页" onclick="window.location.href=\'index.php\'">';
+		if(isset($error)){$gamedata['innerHTML']['error'] = $error;}
 		ob_clean();
 		$jgamedata = compatible_json_encode($gamedata);
 		echo $jgamedata;
 		ob_end_flush();
 	}else{
 		ob_clean();
+		if(isset($error)){$gamedata['innerHTML']['error'] = $error;}
 		$jgamedata = compatible_json_encode($gamedata);
 		echo $jgamedata;
 		ob_end_flush();

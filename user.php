@@ -18,7 +18,7 @@ if(!isset($mode)){
 }
 
 if($mode == 'edit') {
-	$gamedata=Array('info' => '');
+	$gamedata=Array();$gamedata['innerHTML']['info'] = '';
 	if($opass && $npass && $rnpass){
 		$pass_right = true;
 		$pass_check = pass_check($npass,$rnpass);
@@ -51,7 +51,9 @@ if($mode == 'edit') {
 	}else{
 		$gamedata['innerHTML']['info'] .= $_INFO['data_failure'];
 	}
+	
 	$gamedata['value']['opass'] = $gamedata['value']['npass'] = $gamedata['value']['rnpass'] = '';
+	if(isset($error)){$gamedata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($gamedata);
 	echo $jgamedata;

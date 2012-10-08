@@ -78,7 +78,7 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 		$pls = $db->result($result, 0);*/
 		$db->query ( "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')" );
 	}
-	naddnews ( $now, 'death' . $state, $name, $type, $kname, $annex, $lastword );
+	addnews ( $now, 'death' . $state, $name, $type, $kname, $annex, $lastword );
 	//$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);
 	$alivenum --;
 	$deathnum ++;
@@ -142,7 +142,7 @@ function kill($death, $dname, $dtype = 0, $dpid = 0, $annex = '') {
 		
 		$db->query ( "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')" );
 	}
-	naddnews ( $now, 'death' . $w_state, $dname, $dtype, $name, $annex, $lastword );
+	addnews ( $now, 'death' . $w_state, $dname, $dtype, $name, $annex, $lastword );
 	$db->query ( "UPDATE {$tablepre}players SET hp='0',endtime='$now',bid='$pid',state='$w_state' WHERE pid=$dpid" );
 	return $killmsg;
 }

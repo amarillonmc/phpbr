@@ -1,7 +1,6 @@
 <?php
 
 define('CURSCRIPT', 'game');
-
 require './include/common.inc.php';
 require GAME_ROOT.'./include/game.func.php';
 
@@ -31,7 +30,7 @@ if($pdata['pass'] != $cpass) {
 
 
 
-if($gamestate === 0) {
+if($gamestate == 0) {
 	header("Location: end.php");exit();
 }
 
@@ -68,6 +67,7 @@ if($hp > 0){//判断冷却时间是否过去
 		$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
 	}
 }
+//var_dump($itm3);
 if($hp <= 0){
 	$dtime = date("Y年m月d日H时i分s秒",$endtime);
 	$kname='';
@@ -83,7 +83,24 @@ if($hp <= 0){
 } else {
 	$mode = 'command';
 }
-if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<script type=\"text/javascript\">demiSecTimerStarter($rmcdtime);</script><br>";}
+
+$cmd = $main = '';
+if((strpos($action,'corpse')===0 || strpos($action,'pacorpse')===0) && $gamestate<40){
+	$cid = strpos($action,'corpse')===0 ? str_replace('corpse','',$action) : str_replace('pacorpse','',$action);
+	if($cid){
+		$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$cid' AND hp=0");
+		if($db->num_rows($result)>0){
+			$edata = $db->fetch_array($result);
+			include_once GAME_ROOT.'./include/game/battle.func.php';
+			findcorpse($edata);
+			extract($edata,EXTR_PREFIX_ALL,'w');
+			init_battle(1);
+			$main = 'battle';
+		}
+	}	
+}
+if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\">0.0</span>秒<script type=\"text/javascript\">demiSecTimerStarter($rmcdtime);</script><br>";}
+
 include template('game');
 
 ?>

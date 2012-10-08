@@ -8,7 +8,7 @@ global $gamecfg;
 include_once config('combatcfg',$gamecfg);
 
 /*
-$poseinfo = Array('通常','攻击姿态','防守姿态','探索姿态','隐藏姿态','治疗姿态');
+$poseinfo = Array('通常','作战姿态','','探物姿态','偷袭姿态','治疗姿态');
 $tacinfo = Array('通常','','重视防御','重视反击','重视躲避',);
 
 */
@@ -17,9 +17,10 @@ $tacinfo = Array('通常','','重视防御','重视反击','重视躲避',);
 function get_find_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf = ''){
 	$_FIND = Array
 		(
-		'weather' => array(10,20,0,-2,-3,-7,-10,-5,10,0,0,-7,-5,-30),
+		'weather' => array(10,20,0,-2,-3,-10,-7,5,-10,-20,0,-7,-5,-30,-5,-20,0),
+		//'weather' => array(10,20,0,-2,-3,-7,-10,-5,10,0,0,-7,-5,-30),
 		'pls' => array(10,0,0,10,-10,10,0,10,-10,0,10,0,0,-10,0,-10,-10,-10,0,10,0,10),
-		'pose' => array(0,0,0,20,-10,-20),
+		'pose' => array(0,0,0,25,-10,-25),
 		'tactic' => array(),
 		);
 	$find_r = 0;
@@ -37,8 +38,10 @@ function get_hide_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf =
 		(
 		'weather' => array(),
 		'pls' => array(),
-		'pose' => array(),
-		'tactic' => array(0,-5,5,0,20,-10),
+		'pose' => array(0,-25,0,-10,10,-25),
+		//'tactic' => array(),
+		//'pose' => array(),
+		'tactic' => array(0,0,0,-15,15),
 		);
 	$hide_r = 0;
 	$hide_r += $_HIDE['tactic'][$tactic];
@@ -49,9 +52,10 @@ function get_active_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 	global $active_obbs,$inf_active_p;
 	$_ACTIVE = Array
 		(
-		'weather' => array(20,10,0,-3,-5,-5,-7,10,-10,-10,-10,-5,0,-5),
+		'weather' => array(10,20,0,-5,-10,-20,-15,0,-7,-10,-10,-5,0,-5,-20,-5,0),
+		//'weather' => array(20,10,0,-3,-5,-5,-7,10,-10,-10,-10,-5,0,-5),
 		'pls' => array(),
-		'pose' => array(0,0,-10,10,20,-20),
+		'pose' => array(0,0,0,0,25,-25),
 		'tactic' => array(),
 		);
 	$active_r = $active_obbs;
@@ -97,10 +101,10 @@ function get_attack_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 	global $inf_att_p;
 	$_ATTACK = Array
 		(
-		'weather' => array(20,20,0,-20,-5,-7,-7,-10,0,5,20,-7,-20,-5),
+		'weather' => array(10,10,0,-5,-10,-20,-15,0,0,7,20,-7,-20,-5,-10,-10,-10),
 		'pls' => array(0,0,0,0,0,0,10,0,0,-10,0,0,0,0,-10,0,0,0,10,0,0,0),
-		'pose' => array(0,50,-30,-15,-30,-50),
-		'tactic' => array(0,20,-20,10,-10,-30),
+		'pose' => array(0,50,0,-25,25,-50),
+		'tactic' => array(0,20,-25,25,-50),
 		);
 
 	$attack = 100;
@@ -122,10 +126,10 @@ function get_defend_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 	global $inf_def_p;
 	$_DEFEND = Array
 		(
-		'weather' => array(30,10,0,-3,-3,-5,-10,-15,-20,-30,-50,-5,-20,-3),
+		'weather' => array(10,30,0,0,-3,-15,-10,0,-20,-30,-50,-5,-20,-3,-20,5,-30),
 		'pls' => array(0,-10,10,0,0,0,0,0,0,0,0,-10,10,0,0,0,0,0,0,0,10,0),
-		'pose' => array(0,-20,50,-20,-10,-30),
-		'tactic' => array(0,-20,30,-20,15,-5),
+		'pose' => array(0,25,0,-25,-50,-50),
+		'tactic' => array(0,-20,50,-25,0),
 		);
 
 	$defend = 100;

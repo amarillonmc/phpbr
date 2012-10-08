@@ -8,10 +8,10 @@ function combat($active = 1, $wep_kind = '') {
 	global $log, $mode, $main, $cmd, $battle_title, $db, $tablepre, $pls, $message, $now, $w_log, $nosta, $hdamage, $hplayer;
 	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
-	global $w_pid, $w_name, $w_pass, $w_type, $w_endtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
+	global $edata, $w_pid, $w_name, $w_pass, $w_type, $w_endtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5,$w_itm6, $w_itmk6, $w_itme6, $w_itms6, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5, $w_itmsk6;
 	global $infinfo, $w_combat_inf;
-	global $rp,$w_rp;
+	global $rp,$w_rp,$action,$w_action;
 	
 	$battle_title = '战斗发生';
 	
@@ -32,21 +32,22 @@ function combat($active = 1, $wep_kind = '') {
 	if ($active) {
 		if ($wep_kind == 'back') {
 			$log .= "你逃跑了。";
-			$bid = 0;
+			$action = '';
 			$mode = 'command';
 			return;
 		}
-		if($bid==0){
+		$enemyid = $active ? str_replace('enemy','',$action) : $bid;
+		if(!$enemyid || strpos($action,'enemy')===false){
 			$log .= "<span class=\"yellow\">你没有遇到敌人，或已经离开战场！</span><br>";
-			$bid = 0;
+			$action = '';
 			$mode = 'command';
 			return;
 		}
 		
-		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$bid'" );
+		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$enemyid'" );
 		if (! $db->num_rows ( $result )) {
 			$log .= "对方不存在！<br>";
-			$bid = 0;
+			$action = '';
 			$mode = 'command';
 			return;
 		}
@@ -55,17 +56,18 @@ function combat($active = 1, $wep_kind = '') {
 		
 		if ($edata ['pls'] != $pls) {
 			$log .= "<span class=\"yellow\">" . $edata ['name'] . "</span>已经离开了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
-			$bid = 0;
+			$action = '';
 			$mode = 'command';
 			return;
 		} elseif ($edata ['hp'] <= 0) {
 			global $corpseprotect,$gamestate;
 			$log .= "<span class=\"red\">" . $edata ['name'] . "</span>已经死亡，不能被攻击。<br>";
 			if($edata['endtime'] < $now -$corpseprotect && $gamestate < 40){
+				$action = 'corpse'.$edata['pid'];
 				include_once GAME_ROOT . './include/game/battle.func.php';
 				findcorpse ( $edata );
 			}
-			$bid = 0;
+			//$action = '';
 			return;
 		}
 		
@@ -166,6 +168,7 @@ function combat($active = 1, $wep_kind = '') {
 			$log .= "<span class=\"red\">你逃跑了！</span><br>";
 		}
 	}
+	if($hp == 0 && !$w_action){$w_action = 'pacorpse'.$pid;}
 	w_save ( $w_pid );
 	$att_dmg = $att_dmg ? $att_dmg : 0;
 	$def_dmg = $def_dmg ? $def_dmg : 0;
@@ -188,6 +191,7 @@ function combat($active = 1, $wep_kind = '') {
 		}
 		if($hp == 0){
 			$w_log .= "<span class=\"yellow\">$name</span><span class=\"red\">被你杀死了！</span><br>";
+			
 		}
 		
 		logsave ( $w_pid, $now, $w_log ,'b');
@@ -220,6 +224,7 @@ function combat($active = 1, $wep_kind = '') {
 		include_once GAME_ROOT . './include/game/battle.func.php';
 		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pid'" );
 		$cdata = $db->fetch_array ( $result );
+		$action = 'corpse'.$edata['pid'];
 		findcorpse ( $cdata );
 		return;
 	} else {
@@ -229,7 +234,7 @@ function combat($active = 1, $wep_kind = '') {
 			$npcdata = evonpc ($w_type,$w_name);
 			$log .= '<span class="yellow">'.$w_name.'却没死去，反而爆发出真正的实力！</span><br>';
 			if($npcdata){
-				naddnews($now , 'evonpc',$w_name, $npcdata['name'], $name);
+				addnews($now , 'evonpc',$w_name, $npcdata['name'], $name);
 				foreach($npcdata as $key => $val){
 					${'w_'.$key} = $val;
 				}
@@ -241,7 +246,8 @@ function combat($active = 1, $wep_kind = '') {
 		//$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
 		$cmd = ob_get_contents();
 		ob_clean();
-		$bid = $hp <= 0 ? $bid : 0;
+		//$bid = $hp <= 0 ? $bid : 0;
+		$action = '';
 		return;
 	}
 }
@@ -618,7 +624,7 @@ function checkdmg($p1, $p2, $d) {
 		$words = '';
 	}
 	if ($words) {
-		naddnews ( 0, 'damage', $words );
+		addnews ( 0, 'damage', $words );
 	}
 	return;
 }
@@ -910,9 +916,9 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 							$log .= "并造成{$nm}{$dmginf}了！<br>";
 							global $name,$w_name;
 							if($nm == '你'){
-								naddnews($now,'inf',$w_name,$name,$ex_inf_sign);
+								addnews($now,'inf',$w_name,$name,$ex_inf_sign);
 							}else{
-								naddnews($now,'inf',$name,$w_name,$ex_inf_sign);
+								addnews($now,'inf',$name,$w_name,$ex_inf_sign);
 							}	
 						}
 					}
@@ -1122,9 +1128,9 @@ function get_inf($nm, $ht, $wp_kind) {
 					$log .= "{$nm}的<span class=\"red\">$infinfo[$inf_att]</span>部受伤了！<br>";
 //					global $name,$w_name;
 //					if($nm == '你'){
-//						naddnews($now,'inf',$w_name,$name,$inf_att);
+//						addnews($now,'inf',$w_name,$name,$inf_att);
 //					}else{
-//						naddnews($now,'inf',$name,$w_name,$inf_att);
+//						addnews($now,'inf',$name,$w_name,$inf_att);
 //					}					
 				}
 			}
@@ -1292,45 +1298,54 @@ function npc_chat($type,$nm, $mode) {
 		switch ($mode) {
 			case 'attack' :
 				if (empty ( $w_itmsk0 )) {
-					$npcwords .= "{$npcchat[$type][$nm][0]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][0]}";
 					$w_itmsk0 = '1';
 				} elseif ($w_hp > ($w_mhp / 2)) {
 					$dice = rand ( 1, 2 );
-					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}";
 				} else {
 					$dice = rand ( 3, 4 );
-					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}";
 				}
 				break;
 			case 'defend' :
 				if (empty ( $w_itmsk0 )) {
-					$npcwords .= "{$npcchat[$type][$nm][0]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][0]}";
 					$w_itmsk0 = '1';
 				} elseif ($w_hp > ($w_mhp / 2)) {
 					$dice = rand ( 5, 6 );
-					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}";
 				} else {
 					$dice = rand ( 7, 8 );
-					$npcwords .= "{$npcchat[$type][$nm][$dice]}<br>";
+					$npcwords .= "{$npcchat[$type][$nm][$dice]}";
 				}
 				break;
 			case 'death' :
-				$npcwords .= "{$npcchat[$type][$nm][9]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][9]}";
 				break;
 			case 'escape' :
-				$npcwords .= "{$npcchat[$type][$nm][10]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][10]}";
 				break;
 			case 'cannot' :
-				$npcwords .= "{$npcchat[$type][$nm][11]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][11]}";
 				break;
 			case 'critical' :
-				$npcwords .= "{$npcchat[$type][$nm][12]}<br>";
+				$npcwords .= "{$npcchat[$type][$nm][12]}";
 				break;
 			case 'kill' :
-				$npcwords .= "{$nm}对你说道：{$npcchat[$type][$nm][13]}<br>";
+				$npcwords .= "{$nm}对你说道：{$npcchat[$type][$nm][13]}";
 				break;
 		}
-		$npcwords .= '</span>';
+		$npcwords .= '</span><br>';
+		return $npcwords;
+	} elseif ($mode == 'death') {
+		global $lwinfo;
+		if (is_array ( $lwinfo [$type] )) {
+			$lastword = $lwinfo [$type] [$nm];
+		} else {
+			$lastword = $lwinfo [$type];
+		}
+		$npcwords = "<span class=\"yellow\">“{$lastword}”</span><br>";
 		return $npcwords;
 	} else {
 		return;

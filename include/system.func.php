@@ -5,7 +5,7 @@ if(!defined('IN_GAME')) {
 }
 
 function rs_game($mode = 0) {
-	global $db,$tablepre,$gamecfg,$now,$gamestate,$plsinfo,$typeinfo,$areanum,$areaadd,$afktime,$antiAFKertime;
+	global $db,$tablepre,$gamecfg,$now,$gamestate,$plsinfo,$typeinfo,$areanum,$areaadd,$afktime,$combonum,$deathlimit;
 //	$stime=getmicrotime();
 	$dir = GAME_ROOT.'./gamedata/';
 	$sqldir = GAME_ROOT.'./gamedata/sql/';
@@ -38,7 +38,11 @@ function rs_game($mode = 0) {
 		
 		//修改反挂机间隔
 		$afktime = $starttime;
+		//重设连斗判断死亡数
+		$combonum = $deathlimit;
 		save_gameinfo();
+		
+		
 		
 	}
 	if ($mode & 2) {
@@ -68,14 +72,15 @@ function rs_game($mode = 0) {
 		//echo " - NPC初始化 - ";
 		$db->query("DELETE FROM {$tablepre}players WHERE type>0 ");
 		include_once config('npc',$gamecfg);
-		$typenum = sizeof($typeinfo);
+		//$typenum = sizeof($typeinfo);
 		$plsnum = sizeof($plsinfo);
 		$npcqry = '';
 		
-		for($i = 1; $i < $typenum; $i++) {
-			if(isset($npcinfo[$i])) {
-				for($j = 1; $j <= $npcinfo[$i]['num']; $j++) {
-					$npc = array_merge($npcinit,$npcinfo[$i]);
+		//for($i = 1; $i < $typenum; $i++) {
+		foreach ($npcinfo as $i => $npcs){
+			if(!empty($npcs)) {
+				for($j = 1; $j <= $npcs['num']; $j++) {
+					$npc = array_merge($npcinit,$npcs);
 					//$npc = $npcinfo[$i];
 					$npc['type'] = $i;
 					$npc['endtime'] = $now;
@@ -96,7 +101,7 @@ function rs_game($mode = 0) {
 					$npc = array_merge($npc,$npc['sub'][$sub]);
 					$npc['hp'] = $npc['mhp'];
 					$npc['sp'] = $npc['msp'];
-					$npc['exp'] = round(($npc['lvl']*$GLOBALS['baseexp'])+(($npc['lvl']+1)*$GLOBALS['baseexp']));
+					$npc['exp'] = round(2*$npc['lvl']*$GLOBALS['baseexp']);
 					$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
 					if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
 					if($npc['pls'] == 99){$npc['pls'] = rand(1,$plsnum-1);}
@@ -139,7 +144,7 @@ function rs_game($mode = 0) {
 					for($j = $inum; $j>0; $j--) {
 						if($imap == 99) {
 							$rmap = rand(1,$plsnum-1);
-							if($ikind == 'TO'){
+							if(strpos($ikind ,'TO')===0){
 								$tqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$rmap'),";
 							}else{
 								$iqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$rmap'),";
@@ -147,7 +152,7 @@ function rs_game($mode = 0) {
 							//$iqry[$rmap] .= "('$iname', '$ikind','$ieff','$ista','$iskind'),";
 							//$db->query("INSERT INTO {$tablepre}{$rmap}mapitem (itm,itmk,itme,itms,itmsk) VALUES ('$iname', '$ikind','$ieff','$ista','$iskind')");
 						}else{
-							if($ikind == 'TO'){
+							if(strpos($ikind ,'TO')===0){
 								$tqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$imap'),";
 							}else{
 								$iqry .= "('$iname', '$ikind','$ieff','$ista','$iskind','$imap'),";
@@ -269,7 +274,8 @@ function add_once_area($atime) {
 			$areanum = $plsnum;
 			$weather = rand(0,9);
 			//addnews($atime,'addarea',$areaaddlist,$weather);
-			naddnews($atime, 'addarea',$areaaddlist,$weather);
+			addnews($atime, 'addarea',$areaaddlist,$weather);
+			systemputchat($atime,'areaadd',$areaaddlist);
 			$query = $db->query("SELECT * FROM {$tablepre}players WHERE type=0 AND hp>0");
 			while($sub = $db->fetch_array($query)) {
 				$pid = $sub['pid'];
@@ -279,7 +285,7 @@ function add_once_area($atime) {
 				$bid = 0;
 				$endtime = $atime;
 				$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', endtime='$endtime' WHERE pid=$pid");
-				naddnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
+				addnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
 			}
 			$db->free_result($query);
 			$alivenum = 0;
@@ -295,7 +301,8 @@ function add_once_area($atime) {
 			$areanum += $areaadd;
 			movehtm();
 			//addnews($atime,'addarea',$areaaddlist,$weather);
-			naddnews($atime, 'addarea',$areaaddlist,$weather);
+			addnews($atime, 'addarea',$areaaddlist,$weather);
+			systemputchat($atime,'areaadd',$areaaddlist);
 			$str_arealist = implode(',',array_slice($arealist,0,$areanum+1));
 			$query = $db->query("SELECT * FROM {$tablepre}players WHERE pls IN ($str_arealist) AND hp>0");
 			while($sub = $db->fetch_array($query)) {
@@ -308,7 +315,7 @@ function add_once_area($atime) {
 					$bid = 0;
 					$endtime = $atime;
 					$db->query("UPDATE {$tablepre}players SET hp='$hp', bid='$bid', state='$state', endtime='$endtime' WHERE pid=$pid");
-					naddnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
+					addnews($endtime,"death$state",$sub['name'],$sub['type'],$deathpls);
 					$deathnum++;
 					} else {
 					$pls = $arealist[rand($areanum+1,$plsnum)];
@@ -338,6 +345,13 @@ function add_once_area($atime) {
 	}
 }
 
+function areawarn(){
+	global $now,$arealist,$areanum,$areaadd,$areawarn;
+	$areaaddlist = array_slice($arealist,$areanum+1,$areaadd);
+	$areawarn = 1;
+	systemputchat($now,'areawarn',$areaaddlist);
+	return;
+}
 
 function duel($time = 0,$keyitm = ''){
 	global $now,$gamestate,$name;
@@ -349,8 +363,9 @@ function duel($time = 0,$keyitm = ''){
 		$time = $time == 0 ? $now : $time;
 		$gamestate = 50;
 		save_gameinfo();
-		naddnews($time,'duelkey',$name,$keyitm);
-		naddnews($time,'duel');
+		addnews($time,'duelkey',$name,$keyitm);
+		addnews($time,'duel');
+		systemputchat($time,'duel');
 		return 50;
 	}
 	
@@ -398,7 +413,11 @@ function gameover($time = 0, $mode = '', $winname = '') {
 		$gstime = $starttime;
 		$getime = $time;
 		$gtime = $time - $starttime;
-		$db->query("INSERT INTO {$tablepre}winners (gid,wmode,vnum,gtime,gstime,getime,hdmg,hdp) VALUES ('$gamenum','$winmode','$validnum','$gtime','$gstime','$getime','$hdamage','$hplayer')");
+		$result = $db->query("SELECT name,killnum FROM {$tablepre}players WHERE type=0 order by killnum desc, lvl desc limit 1");
+		$hk = $db->fetch_array($result);
+		$hkill = $hk['killnum'];
+		$hkp = $hk['name'];
+		$db->query("INSERT INTO {$tablepre}winners (gid,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp) VALUES ('$gamenum','$winmode','$validnum','$gtime','$gstime','$getime','$hdamage','$hplayer','$hkill','$hkp')");
 	} else {//最后幸存、锁定解除、核爆全灭，需要记录优胜者资料
 		$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$winner' AND type=0");
 		$pdata = $db->fetch_array($result);
@@ -415,7 +434,7 @@ function gameover($time = 0, $mode = '', $winname = '') {
 		$pdata['getime'] = $time;
 		$pdata['hdmg'] = $hdamage;
 		$pdata['hdp'] = $hplayer;
-		$db->query("INSERT INTO {$tablepre}winners (gid,name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,motto,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('".$gamenum."','".$pdata['name']."','".$pdata['pass']."','".$pdata['type']."','".$pdata['endtime']."','".$pdata['gd']."','".$pdata['sNo']."','".$pdata['icon']."','".$pdata['club']."','".$pdata['hp']."','".$pdata['mhp']."','".$pdata['sp']."','".$pdata['msp']."','".$pdata['att']."','".$pdata['def']."','".$pdata['pls']."','".$pdata['lvl']."','".$pdata['exp']."','".$pdata['money']."','".$pdata['bid']."','".$pdata['inf']."','".$pdata['rage']."','".$pdata['pose']."','".$pdata['tactic']."','".$pdata['killnum']."','".$pdata['death']."','".$pdata['wp']."','".$pdata['wk']."','".$pdata['wg']."','".$pdata['wc']."','".$pdata['wd']."','".$pdata['wf']."','".$pdata['teamID']."','".$pdata['teamPass']."','".$pdata['wep']."','".$pdata['wepk']."','".$pdata['wepe']."','".$pdata['weps']."','".$pdata['arb']."','".$pdata['arbk']."','".$pdata['arbe']."','".$pdata['arbs']."','".$pdata['arh']."','".$pdata['arhk']."','".$pdata['arhe']."','".$pdata['arhs']."','".$pdata['ara']."','".$pdata['arak']."','".$pdata['arae']."','".$pdata['aras']."','".$pdata['arf']."','".$pdata['arfk']."','".$pdata['arfe']."','".$pdata['arfs']."','".$pdata['art']."','".$pdata['artk']."','".$pdata['arte']."','".$pdata['arts']."','".$pdata['itm0']."','".$pdata['itmk0']."','".$pdata['itme0']."','".$pdata['itms0']."','".$pdata['itm1']."','".$pdata['itmk1']."','".$pdata['itme1']."','".$pdata['itms1']."','".$pdata['itm2']."','".$pdata['itmk2']."','".$pdata['itme2']."','".$pdata['itms2']."','".$pdata['itm3']."','".$pdata['itmk3']."','".$pdata['itme3']."','".$pdata['itms3']."','".$pdata['itm4']."','".$pdata['itmk4']."','".$pdata['itme4']."','".$pdata['itms4']."','".$pdata['itm5']."','".$pdata['itmk5']."','".$pdata['itme5']."','".$pdata['itms5']."','".$pdata['itm6']."','".$pdata['itmk6']."','".$pdata['itme6']."','".$pdata['itms6']."','".$pdata['motto']."','".$pdata['wmode']."','".$pdata['vnum']."','".$pdata['gtime']."','".$pdata['gstime']."','".$pdata['getime']."','".$pdata['hdmg']."','".$pdata['hdp']."','".$pdata['hkill']."','".$pdata['hkp']."','".$pdata['wepsk']."','".$pdata['arbsk']."','".$pdata['arhsk']."','".$pdata['arask']."','".$pdata['arfsk']."','".$pdata['artsk']."','".$pdata['itmsk0']."','".$pdata['itmsk1']."','".$pdata['itmsk2']."','".$pdata['itmsk3']."','".$pdata['itmsk4']."','".$pdata['itmsk5']."','".$pdata['itmsk6']."')");
+		$db->query("INSERT INTO {$tablepre}winners (gid,name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,motto,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('".$gamenum."','".$pdata['name']."','".$pdata['pass']."','".$pdata['type']."','".$pdata['endtime']."','".$pdata['gd']."','".$pdata['sNo']."','".$pdata['icon']."','".$pdata['club']."','".$pdata['hp']."','".$pdata['mhp']."','".$pdata['sp']."','".$pdata['msp']."','".$pdata['att']."','".$pdata['def']."','".$pdata['pls']."','".$pdata['lvl']."','".$pdata['exp']."','".$pdata['money']."','".$pdata['bid']."','".$pdata['inf']."','".$pdata['rage']."','".$pdata['pose']."','".$pdata['tactic']."','".$pdata['killnum']."','".$pdata['state']."','".$pdata['wp']."','".$pdata['wk']."','".$pdata['wg']."','".$pdata['wc']."','".$pdata['wd']."','".$pdata['wf']."','".$pdata['teamID']."','".$pdata['teamPass']."','".$pdata['wep']."','".$pdata['wepk']."','".$pdata['wepe']."','".$pdata['weps']."','".$pdata['arb']."','".$pdata['arbk']."','".$pdata['arbe']."','".$pdata['arbs']."','".$pdata['arh']."','".$pdata['arhk']."','".$pdata['arhe']."','".$pdata['arhs']."','".$pdata['ara']."','".$pdata['arak']."','".$pdata['arae']."','".$pdata['aras']."','".$pdata['arf']."','".$pdata['arfk']."','".$pdata['arfe']."','".$pdata['arfs']."','".$pdata['art']."','".$pdata['artk']."','".$pdata['arte']."','".$pdata['arts']."','".$pdata['itm0']."','".$pdata['itmk0']."','".$pdata['itme0']."','".$pdata['itms0']."','".$pdata['itm1']."','".$pdata['itmk1']."','".$pdata['itme1']."','".$pdata['itms1']."','".$pdata['itm2']."','".$pdata['itmk2']."','".$pdata['itme2']."','".$pdata['itms2']."','".$pdata['itm3']."','".$pdata['itmk3']."','".$pdata['itme3']."','".$pdata['itms3']."','".$pdata['itm4']."','".$pdata['itmk4']."','".$pdata['itme4']."','".$pdata['itms4']."','".$pdata['itm5']."','".$pdata['itmk5']."','".$pdata['itme5']."','".$pdata['itms5']."','".$pdata['itm6']."','".$pdata['itmk6']."','".$pdata['itme6']."','".$pdata['itms6']."','".$pdata['motto']."','".$pdata['wmode']."','".$pdata['vnum']."','".$pdata['gtime']."','".$pdata['gstime']."','".$pdata['getime']."','".$pdata['hdmg']."','".$pdata['hdp']."','".$pdata['hkill']."','".$pdata['hkp']."','".$pdata['wepsk']."','".$pdata['arbsk']."','".$pdata['arhsk']."','".$pdata['arask']."','".$pdata['arfsk']."','".$pdata['artsk']."','".$pdata['itmsk0']."','".$pdata['itmsk1']."','".$pdata['itmsk2']."','".$pdata['itmsk3']."','".$pdata['itmsk4']."','".$pdata['itmsk5']."','".$pdata['itmsk6']."')");
 	}
 	rs_sttime();//重置游戏开始时间和当前游戏状态
 	$gamestate = 0;
@@ -423,9 +442,10 @@ function gameover($time = 0, $mode = '', $winname = '') {
 	//echo '**游戏结束**';
 	//$gamestate = 0;
 	//addnews($time, "end$winmode" , $winner);
-	naddnews($time, "end$winmode",$winner);
+	addnews($time, "end$winmode",$winner);
 	//addnews($time, 'gameover',$gamenum);
-	naddnews($time, 'gameover' ,$gamenum);
+	addnews($time, 'gameover' ,$gamenum);
+	systemputchat($time,'gameover');
 	include_once './include/news.func.php';
 	$newsinfo = nparse_news(0,65535);
 	writeover(GAME_ROOT."./gamedata/bak/{$gamenum}_newsinfo.html",$newsinfo,'wb+');
@@ -537,19 +557,19 @@ function addnpc($type,$sub,$num,$time = 0) {
 			$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['state']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['itm6']."','".$npc['itmk6']."','".$npc['itme6']."','".$npc['itms6']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."','".$npc['itmsk6']."')");
 			$newsname=$typeinfo[$type].' '.$npc['name'];
 			//$npcwordlist[] = $typeinfo[$type].' '.$npc['name'];
-			naddnews($now, 'addnpc', $newsname);
+			addnews($now, 'addnpc', $newsname);
 		}
 	}
 	if($num > $npc['num']){
 	//if($num > 1){
 		$newsname=$typeinfo[$type];
-		naddnews($time, 'addnpcs', $newsname,$i);
+		addnews($time, 'addnpcs', $newsname,$i);
 	}else{
 //		for($i=0;$i< $num;$i++){
-//			naddnews($time, 'addnpc', $npcwordlist[$i]);
+//			addnews($time, 'addnpc', $npcwordlist[$i]);
 //		}
 		//$newsname=$typeinfo[$type].' '.$npc['name'];
-		//naddnews($time, 'addnpc', $newsname);
+		//addnews($time, 'addnpc', $newsname);
 	}
 	
 	return $sub;
@@ -565,7 +585,8 @@ function evonpc($type,$name){
 	$result = $db->query("SELECT * FROM {$tablepre}players WHERE type = '$type' AND name = '$name'");
 	$num = $db->num_rows($result);
 	if(!$num){return false;}	
-	$npc=$enpcinfo[$type];
+	if(!isset($enpcinfo[$type][$name])){return false;}
+	$npc=$enpcinfo[$type][$name];
 	$npc['hp'] = $npc['mhp'];
 	$npc['sp'] = $npc['msp'];
 	$npc['exp'] = round(($npc['lvl']*2+1)*$GLOBALS['baseexp']);
@@ -600,7 +621,7 @@ function antiAFK($timelimit = 0){
 	foreach($afkerlist as $kid => $kcontent){
 		$db->query("UPDATE {$tablepre}players SET hp='0',state='32' WHERE pid='$kid' AND type='0' AND hp>'0' AND state<'10'");
 		if($db->affected_rows()){
-			naddnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
+			addnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
 			$alivenum--;
 			$deathnum++;			
 		}

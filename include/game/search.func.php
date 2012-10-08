@@ -5,7 +5,7 @@ if(!defined('IN_GAME')) {
 }
 
 function move($moveto = 99) {
-	global $lvl,$log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
+	global $lvl,$log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$def,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
 	
 
 	$plsnum = sizeof($plsinfo);
@@ -45,23 +45,66 @@ function move($moveto = 99) {
 	}
 
 	$sp -= $movesp;
-	if($weather == 11) {
+	$moved = false;
+	if($weather == 11) {//龙卷风
 		if($hack){$pls = rand(0,sizeof($plsinfo)-1);}
 		else {$pls = rand($areanum+1,sizeof($plsinfo)-1);}
 		$log = ($log . "龙卷风把你吹到了<span class=\"yellow\">$plsinfo[$pls]</span>！<br>");
-	} elseif($weather == 13) {
-		$damage = round($mhp/8) + rand(0,20);
+		$moved = true;
+	} elseif($weather == 13) {//冰雹
+		$damage = round($mhp/12) + rand(0,20);
 		$hp -= $damage;
 		$log .= "被<span class=\"blue\">冰雹</span>击中，生命减少了<span class=\"red\">$damage</span>点！<br>";
 		if($hp <= 0 ) {
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('hsmove');
 			return;
-		} else {
-			$pls = $moveto;
-			$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
+//		} else {
+//			$pls = $moveto;
+//			$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 		}
-	} else {
+	} elseif($weather == 14){//离子暴
+		$dice = rand(0,9);
+		if($dice ==0 && strpos($inf,'e')===false){
+			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"yellow\">身体麻痹</span>了！<br>";
+			$inf = str_replace('e','',$inf);
+			$inf .= 'e';
+		}elseif($dice ==1 && strpos($inf,'w')===false){
+			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"grey\">混乱</span>了！<br>";
+			$inf = str_replace('w','',$inf);
+			$inf .= 'w';
+		}else{
+			$log .= "空气中充斥着狂暴的电磁波……<br>";
+		}
+	} elseif($weather == 15){//辐射尘
+		$dice = rand(0,9);
+		if($dice == 0){
+			$mhpdown = rand(4,8);
+			if($mhp > $mhpdown){
+				$log .= "空气中弥漫着的<span class=\"green\">放射性尘埃</span>导致你的生命上限减少了<span class=\"red\">{$mhpdown}</span>点！<br>";
+				$mhp -= $mhpdown;
+				if($hp > $mhp){$hp = $mhp;}
+			}
+		}else{
+			$log .= "空气中弥漫着放射性尘埃……<br>";
+		}
+	} elseif($weather == 16){//臭氧洞
+		$dice = rand(0,9);
+		if($dice == 0){
+			$defdown = rand(3,6);
+			if($def > $defdown){
+				$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你的防御力减少了<span class=\"red\">{$defdown}</span>点！<br>";
+				$def -= $defdown;
+			}
+		}elseif($dice ==1 && strpos($inf,'u')===false){
+			$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你<span class=\"red\">烧伤</span>了！<br>";
+			$inf = str_replace('u','',$inf);
+			$inf .= 'u';
+		}else{
+			$log .= "高强度的紫外线灼烧着大地……<br>";
+		}
+	} 
+	if(!$moved) {
 		$pls = $moveto;
 		$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 	}
@@ -120,7 +163,7 @@ function move($moveto = 99) {
 }
 
 function search(){
-	global $lvl,$log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp,$mhp,$inf;
+	global $lvl,$log,$pls,$arealist,$areanum,$hack,$plsinfo,$club,$sp,$gamestate,$pose,$weather,$hp,$mhp,$def,$inf;
 	
 	
 	if(array_search($pls,$arealist) <= $areanum && !$hack){
@@ -153,7 +196,7 @@ function search(){
 	}
 
 	if($weather == 13) {
-		$damage = round($mhp/8) + rand(0,20);
+		$damage = round($mhp/12) + rand(0,20);
 		$hp -= $damage;
 		$log .= "被<span class=\"blue\">冰雹</span>击中，生命减少<span class=\"red\">$damage</span>点！<br>";
 		if($hp <= 0 ) {
@@ -161,7 +204,47 @@ function search(){
 			death('hsmove');
 			return;
 		}
-	}
+	} elseif($weather == 14){//离子暴
+		$dice = rand(0,9);
+		if($dice ==0 && strpos($inf,'e')===false){
+			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"yellow\">身体麻痹</span>了！<br>";
+			$inf = str_replace('e','',$inf);
+			$inf .= 'e';
+		}elseif($dice ==1 && strpos($inf,'w')===false){
+			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"grey\">混乱</span>了！<br>";
+			$inf = str_replace('w','',$inf);
+			$inf .= 'w';
+		}else{
+			$log .= "空气中充斥着狂暴的电磁波……<br>";
+		}
+	} elseif($weather == 15){//辐射尘
+		$dice = rand(0,9);
+		if($dice == 0){
+			$mhpdown = rand(4,8);
+			if($mhp > $mhpdown){
+				$log .= "空气中弥漫着的<span class=\"green\">放射性尘埃</span>导致你的生命上限减少了<span class=\"red\">{$mhpdown}</span>点！<br>";
+				$mhp -= $mhpdown;
+				if($hp > $mhp){$hp = $mhp;}
+			}
+		}else{
+			$log .= "空气中弥漫着放射性尘埃……<br>";
+		}
+	} elseif($weather == 16){//臭氧洞
+		$dice = rand(0,9);
+		if($dice == 0){
+			$defdown = rand(3,6);
+			if($def > $defdown){
+				$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你的防御力减少了<span class=\"red\">{$defdown}</span>点！<br>";
+				$def -= $defdown;
+			}
+		}elseif($dice ==1 && strpos($inf,'u')===false){
+			$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你<span class=\"red\">烧伤</span>了！<br>";
+			$inf = str_replace('u','',$inf);
+			$inf .= 'u';
+		}else{
+			$log .= "高强度的紫外线灼烧着大地……<br>";
+		}
+	} 
 	
 	$sp -= $schsp;
 	$log .= "消耗<span class=\"yellow\">{$schsp}</span>点体力，你搜索着周围的一切。。。<br>";
@@ -218,7 +301,7 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect;
+	global $now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect,$action;
 	$event_dice = rand(0,99);
 	if($event_dice < $event_obbs){
 		include_once GAME_ROOT.'./include/game/event.func.php';
@@ -345,6 +428,7 @@ function discover($schmode = 0) {
 					if($enemy_dice < ($find_obbs - $hide_r)) {
 						if($teamID&&(!$fog)&&($gamestate<40)&&($teamID == $edata['teamID'])){
 							$bid = $edata['pid'];
+							$action = 'team'.$edata['pid'];
 							include_once GAME_ROOT.'./include/game/battle.func.php';
 							findteam($edata);
 							return;
@@ -353,6 +437,7 @@ function discover($schmode = 0) {
 							$bid = $edata['pid'];
 							$active_dice = rand(0,99);
 							if($active_dice <  $active_r) {
+								$action = 'enemy'.$edata['pid'];
 								include_once GAME_ROOT.'./include/game/battle.func.php';
 								findenemy($edata);
 								return;
@@ -372,6 +457,7 @@ function discover($schmode = 0) {
 						if($gamestate <40 && $edata['endtime'] < $now - $corpseprotect && (($edata['weps'] && $edata['wepe'])||($edata['arbs'] && $edata['arbe'])||$edata['arhs']||$edata['aras']||$edata['arfs']||$edata['arts']||$edata['itms0']||$edata['itms1']||$edata['itms2']||$edata['itms3']||$edata['itms4']||$edata['itms5']||$edata['money'])){
 							
 							$bid = $edata['pid'];
+							$action = 'corpse'.$edata['pid'];
 							include_once GAME_ROOT.'./include/game/battle.func.php';
 							findcorpse($edata);
 							return;

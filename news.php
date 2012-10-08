@@ -21,7 +21,8 @@ if(!isset($newsmode)){$newsmode = '';}
 if($newsmode == 'last') {
 	
 	include template('lastnews');
-	$newsdata = ob_get_contents();
+	$newsdata['innerHTML']['newsinfo'] = ob_get_contents();
+	if(isset($error)){$newsdata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
 //	$json = new Services_JSON();
@@ -35,7 +36,8 @@ if($newsmode == 'last') {
 		writeover($newshtm,$newsinfo);
 	}
 	include template('newsinfo');
-	$newsdata = ob_get_contents();
+	$newsdata['innerHTML']['newsinfo'] = ob_get_contents();
+	if(isset($error)){$newsdata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
 	//$json = new Services_JSON();
@@ -44,7 +46,13 @@ if($newsmode == 'last') {
 	ob_end_flush();	
 
 } elseif($newsmode == 'chat') {
-	$newsdata = getchat(0,'',$chatinnews);
+	$newsdata['innerHTML']['newsinfo'] = '';
+	$chats = getchat(0,'',$chatinnews);
+	$chatmsg = $chats['msg'];
+	foreach($chatmsg as $val){
+		$newsdata['innerHTML']['newsinfo'] .= $val;
+	}	
+	if(isset($error)){$newsdata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($newsdata);
 //	$json = new Services_JSON();

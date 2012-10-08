@@ -15,9 +15,12 @@
 <!--{if $hack}--><span class="evergreen">（禁区已解除）</span><!--{/if}-->
 {template areainfo}
 <br><br>
-<button onClick="showNews('last');return false;">显示最新的{$newslimit}条消息</button>
-<button onClick="showNews('all');return false;">显示全部消息</button>
-<button onClick="showNews('chat');return false;">显示最新聊天纪录</button>
+<form method="post" name="news" onSubmit="return false;">
+	<input type="hidden" id="newsmode" name="newsmode" value="last">
+	<button onClick="$('newsmode').value='last';postCmd('news','news.php');">显示最新的{$newslimit}条消息</button>
+	<button onClick="$('newsmode').value='all';postCmd('news','news.php');">显示全部消息</button>
+	<button onClick="$('newsmode').value='chat';postCmd('news','news.php');">显示最新聊天纪录</button>
+</form>
 
 
 <div id="newsinfo">

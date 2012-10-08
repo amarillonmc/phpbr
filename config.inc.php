@@ -6,13 +6,13 @@
 	$dbhost = 'localhost';			// database server
 						// 数据库服务器
 
-	$dbuser = 'user';			// database username
+	$dbuser = 'root';			// database username
 						// 数据库用户名
 
-	$dbpw = 'pass';			// database password
+	$dbpw = '';			// database password
 						// 数据库密?
 
-	$dbname = 'dts';			// database name
+	$dbname = 'acdts290';			// database name
 						// 数据库名
 
 	$dbreport = 1;				// send db error report? 1=yes
@@ -40,13 +40,13 @@
 	$pconnect = true;				// persistent database connection, 0=off, 1=on
 						// 数据库持久连?false=关闭, true=打开
 
-	$gamefounder = 'founder';			// super administrator's UID
+	$gamefounder = 'admin';			// super administrator's UID
 						// 游戏创始?UID, 可以支持多个创始人，之间使用 ??分隔?
 						// 如果不设置游戏创始人，则管理员之间可以相互编辑，具体权力差别请见游戏使用文档
 
 	$postinterval = 1;   //用户提交命令的间隔时间，单位?
 
-	$moveut = 0; //set the difference of server time and client time 
+	$moveut = 8; //set the difference of server time and client time 
 			//如果本地时间跟服务器时间有时差，在此处更?
 			
 	$moveutmin = 0; //set the difference of server time and client time, by minutes
@@ -58,7 +58,7 @@
 	$tablepre = 'acbra2_';   			// 表名前缀, 同一数据库安装多个游戏请修改此处
 						// table prefix, modify this when you are installingmore than 1 Discuz! in the same database.
 		
-	$authkey = 'key';		//game encrypt key ,the same of plus key
+	$authkey = 'bra';		//game encrypt key ,the same of plus key
 						//游戏加密密钥，要与插件密钥相?
 
 // [EN] !ATTENTION! Preservation or debugging for developing
@@ -79,19 +79,19 @@
 	$tplrefresh = 1;			// auto check validation of templates, 0=off, 1=on
 						// 模板自动刷新开?0=关闭, 1=打开, 在不修改页面的情况下可以关闭
 
-	$bbsurl = '';    //the bbs url for the game plus
+	$bbsurl = 'http://www.acfun.tv/';    //the bbs url for the game plus
 									//安装游戏插件的论坛地址
 
-	$gameurl = '';    // the url of game program files,for the full-window mode
+	$gameurl = 'http://dts.acfun.tv/';    // the url of game program files,for the full-window mode
 									//游戏程序地址，用于全屏模?
 
-	$homepage = 'http://www.76573.org/';      // game homepage
+	$homepage = 'http://www.amarilloviridian.com/';      // game homepage
 									//官方网站地址
 
 	$title = 'ACFUN 大 逃 杀';     //game title
 							//游戏标题 
 
-	$errorinfo = 0;				//是否开启错误信息提示，1为开启，0为关闭。开启会泄漏游戏安装路径
+	$errorinfo = 1;				//是否开启错误信息提示，1为开启，0为关闭。开启会泄漏游戏安装路径
 
 
 // ============================================================================

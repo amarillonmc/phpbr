@@ -29,7 +29,8 @@ if(!isset($alivemode)){
 	include template('alive');
 }else{
 	include template('alivelist');
-	$alivedata = ob_get_contents();
+	$alivedata['innerHTML']['alivelist'] = ob_get_contents();
+	if(isset($error)){$alivedata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($alivedata);
 	echo $jgamedata;

@@ -77,7 +77,7 @@ function trap(){
 			$hp -= $damage;
 		
 			if($playerflag){
-				naddnews($now,'trap',$name,$trname,$itm0);
+				addnews($now,'trap',$name,$trname,$itm0);
 			}
 			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 			if($goodmancard){
@@ -105,7 +105,7 @@ function trap(){
 			}
 		}else{
 			if($playerflag){
-				naddnews($now,'trapdef',$name,$trname,$itm0);
+				addnews($now,'trapdef',$name,$trname,$itm0);
 				if(!$selflag){
 					$w_log = "<span class=\"yellow\">{$name}触发了你设置的陷阱{$itm0}，但是没有受到任何伤害！</span><br>";
 					logsave ( $itmsk0, $now, $w_log ,'b');
@@ -119,7 +119,7 @@ function trap(){
 		return;
 	} else {
 		if($playerflag && !$selflag){
-			naddnews($now,'trapmiss',$name,$trname,$itm0);
+			addnews($now,'trapmiss',$name,$trname,$itm0);
 			$w_log = "<span class=\"yellow\">{$name}回避了你设置的陷阱{$itm0}！</span><br>";
 			logsave ( $itmsk0, $now, $w_log ,'b');
 		}
@@ -170,7 +170,7 @@ function itemget() {
 	global $log,$nosta,$mode,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$cmd;
 	$log .= "获得了物品<span class=\"yellow\">$itm0</span>。<br>";
 	
-	if(preg_match('/^(WC|WD|WF|Y|C|TN|GB|M|V)/',$itmk0) && $itms0 !== $nosta){
+	if(preg_match('/^(WC|WD|WF|Y|B|C|TN|GB|M|V)/',$itmk0) && $itms0 !== $nosta){
 		global $wep,$wepk,$wepe,$weps,$wepsk;
 		if($wep == $itm0 && $wepk == $itmk0 && $wepe == $itme0 && $wepsk == $itmsk0){
 			$weps += $itms0;
@@ -386,7 +386,7 @@ function itemmerge($itn1,$itn2){
 	}
 
 	if(($it1 == $it2)&&($ite1 == $ite2)) {
-		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|WF|Y|C|TN|GB|V|M)/',$itk1)) {
+		if(($itk1==$itk2)&&($itsk1==$itsk2)&&preg_match('/^(WC|WD|WF|Y|B|C|TN|GB|V|M)/',$itk1)) {
 			$its2 += $its1;
 			$it1 = $itk1 = $itsk1 = '';
 			$ite1 = $its1 = 0;
@@ -456,13 +456,23 @@ function itemmix($mlist) {
 			return;
 		}
 		$mitm = ${'itm'.$val};
-		foreach(Array('/^锋利的/','/^电气/','/^毒性/','/-改$/') as $value){
+		foreach(Array('/锋利的/','/电气/','/毒性/','/-改$/') as $value){
 			$mitm = preg_replace($value,'',$mitm);
 		}
+//		$psfix = Array('/^锋利的/','/^电气/','/^毒性/','/-改$/');
+//		$psfixnum = count($psfix);
+//		for($i=0;$i < $psfixnum;$i++){
+//			foreach($psfix as $value){
+//				$mitm = preg_replace($value,'',$mitm);
+//			}
+//		}		
 		$mixitem[] = $mitm;
 	}
 	
+	//var_dump($mixitem);
+	//var_dump($itm3);
 	include_once config('mixitem',$gamecfg);
+	//var_dump ($mixinfo['test']);
 	$mixflag = false;
 	foreach($mixinfo as $minfo) {
 		if(!array_diff($mixitem,$minfo['stuff']) && !array_diff($minfo['stuff'],$mixitem) && count($mixitem) == count($minfo['stuff'])){ 
@@ -489,13 +499,15 @@ function itemmix($mlist) {
 
 		list($itm0,$itmk0,$itme0,$itms0,$itmsk0) = $minfo['result'];
 		$log .= "<span class=\"yellow\">$itmstr</span>合成了<span class=\"yellow\">{$minfo['result'][0]}</span><br>";
-		naddnews($now,'itemmix',$name,$itm0);
+		//var_dump($minfo['result'][0]);
+		addnews($now,'itemmix',$name,$itm0);
 		//if($club == 5) { $wd += 2; }
 		//else { $wd+=1; }
 		$wd+=1;
 		if((strpos($itmk0,'WD') === 0)&&($club == 5)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*1.5); }
 		elseif((strpos($itmk0,'H') === 0)&&($club == 16)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*2); }
-		elseif(($itm0 == '移动PC' || $itm0 == '广域生命探测器') && ($club == 7)){ $itme0 *= 3; }
+		elseif(($itmk0 == 'EE' || $itmk0 == 'ER') && ($club == 7)){ $itme0 *= 5; }
+		//elseif(($itm0 == '移动PC' || $itm0 == '广域生命探测器') && ($club == 7)){ $itme0 *= 3; }
 		itemget();
 	}
 	return;
@@ -516,13 +528,69 @@ function itemreduce($item){ //只限合成使用！！
 	}
 
 	if(!$itms) { return; }
-	if(preg_match('/^(Y|C|X|TN|GB|H|P|V|M)/',$itmk)){$itms--;}
+	if(preg_match('/^(Y|B|C|X|TN|GB|H|P|V|M)/',$itmk)){$itms--;}
 	else{$itms=0;}
 	if($itms <= 0) {
 		$itms = 0;
 		$log .= "<span class=\"red\">$itm</span>用光了。<br>";
 		$itm = $itmk = $itmsk = '';
 		$itme = $itms = 0;
+	}
+	return;
+}
+
+function itemmove($from,$to){
+	global $log;
+	if(!$from || !is_numeric($from) || !$to || !is_numeric($to) || $from < 1 || $to < 1 || $from > 6 || $to > 6){
+		$log .= '错误的包裹位置参数。<br>';
+		return;
+	}	elseif($from == $to){
+		$log .= '同一物品无法互换。<br>';
+		return;
+	}
+	global ${'itm'.$from},${'itmk'.$from},${'itme'.$from},${'itms'.$from},${'itmsk'.$from},${'itm'.$to},${'itmk'.$to},${'itme'.$to},${'itms'.$to},${'itmsk'.$to};
+	$f = & ${'itm'.$from};
+	$fk = & ${'itmk'.$from};
+	$fe = & ${'itme'.$from};
+	$fs = & ${'itms'.$from};
+	$fsk = & ${'itmsk'.$from};
+	$t = & ${'itm'.$to};
+	$tk = & ${'itmk'.$to};
+	$te = & ${'itme'.$to};
+	$ts = & ${'itms'.$to};
+	$tsk = & ${'itmsk'.$to};
+	if(!$fs){
+		$log .= '错误的道具参数。<br>';
+		return;
+	}
+	if(!$ts){
+		$log .= "将<span class=\"yellow\">{$f}</span>移动到了<span class=\"yellow\">包裹{$to}</span>。<br>";
+		$t = $f;
+		$tk = $fk;
+		$te = $fe;
+		$ts = $fs;
+		$tsk = $fsk;
+		$f = $fk = $fsk = '';
+		$fe = $fs = 0;
+		
+	}else {
+		$log .= "将<span class=\"yellow\">{$f}</span>与<span class=\"yellow\">{$t}</span>互换了位置。<br>";
+		$temp = $t;
+		$tempk = $tk;
+		$tempe = $te;
+		$temps = $ts;
+		$tempsk = $tsk;
+		$t = $f;
+		$tk = $fk;
+		$te = $fe;
+		$ts = $fs;
+		$tsk = $fsk;
+		$f = $temp;
+		$fk = $tempk;
+		$fe = $tempe;
+		$fs = $temps;
+		$fsk = $tempsk;
+		
 	}
 	return;
 }
@@ -565,7 +633,7 @@ function itembuy($item,$shop,$bnum=1) {
 		$log .= '你的钱不够，不能购买此物品！<br><br>';
 		$mode = 'command';
 		return;
-	} elseif(!preg_match('/^(WC|WD|WF|Y|C|TN|GB|H|V|M)/',$iteminfo['itmk'])&&$bnum>1) {
+	} elseif(!preg_match('/^(WC|WD|WF|Y|B|C|TN|GB|H|V|M)/',$iteminfo['itmk'])&&$bnum>1) {
 		$log .= '此物品一次只能购买一个。<br><br>';
 		$mode = 'command';
 		return;
@@ -590,7 +658,7 @@ function itembuy($item,$shop,$bnum=1) {
 	$money -= $price*$bnum;
 //	$itemlist[$item] = "$num,$price,$iname,$ikind,$ieff,$ista,$isk,\n";
 //	writeover($file,implode('',$itemlist));
-	naddnews($now,'itembuy',$name,$iteminfo['item']);
+	addnews($now,'itembuy',$name,$iteminfo['item']);
 	$log .= "购买成功。";
 	$itm0 = $iteminfo['item'];
 	$itmk0 = $iteminfo['itmk'];
@@ -608,18 +676,19 @@ function itembuy($item,$shop,$bnum=1) {
 
 function getcorpse($item){
 	global $db,$tablepre,$log,$mode;
-	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$money,$pls,$bid;
-	if($bid==0){
+	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$money,$pls,$action;
+	$corpseid = strpos($action,'corpse')===0 ? str_replace('corpse','',$action) : str_replace('pacorpse','',$action);
+	if(!$corpseid || strpos($action,'corpse')===false){
 		$log .= '<span class="yellow">你没有遇到尸体，或已经离开现场！</span><br>';
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	}
 
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$bid'");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$corpseid'");
 	if(!$db->num_rows($result)){
 		$log .= '对方不存在！<br>';
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	}
@@ -628,12 +697,12 @@ function getcorpse($item){
 	
 	if($edata['hp']>0) {
 		$log .= '对方尚未死亡！<br>';
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	} elseif($edata['pls'] != $pls) {
 		$log .= '对方跟你不在同一个地图！<br>';
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	}
@@ -667,23 +736,23 @@ function getcorpse($item){
 		$money += $edata['money'];
 		$log .= '获得了金钱 <span class="yellow">'.$edata['money'].'</span>。<br>';
 		$edata['money'] = 0;
-		w_save2($edata);
-		$bid = 0;
+		player_save($edata);
+		$action = '';
 		$mode = 'command';
 		return;
 	} else {
-		$bid = 0;
+		$action = '';
 		return;
 	}
 
-	w_save2($edata);
+	player_save($edata);
 
 	if(!$itms0||!$itmk0||$itmk0=='WN'||$itmk0=='DN') {
 		$log .= '该物品不存在！';
 	} else {
 		itemget();
 	}
-	$bid = 0;
+	$action = '';
 	$mode = 'command';
 	return;
 }

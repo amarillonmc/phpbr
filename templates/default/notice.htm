@@ -133,9 +133,9 @@ ACFUN 大 逃 杀</span>
 	“祝你们好运，你们的实力我可是很感兴趣呢。”
 </p>
 
-<form method="post"  action="game.php" style="margin: 0px">
-<input type="hidden" name="mode" value="main">
-<input type="submit" name="enter" value="{lang enterbattlefield}">
+<form method="post" action="valid.php">
+	<input type="hidden" name="mode" value="tutorial">
+	<input type="button" value="{lang enterbattlefield}" onclick="window.location.href='game.php'">
 </form>
 
 {template footer}

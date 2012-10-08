@@ -34,7 +34,7 @@ function kill_all_AFKer($timelimit=1){
 		if($db->affected_rows()){
 			adminlog('killafker',$kid);
 			$cmd_info .= '角色 '.$kcontent['name'].' 被杀死。<br>';
-			naddnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
+			addnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
 			$alivenum--;
 			$deathnum++;
 			

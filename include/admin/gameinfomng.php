@@ -17,7 +17,7 @@ if($command == 'wthedit'){
 		$weather = $iweather;
 		save_gameinfo();
 		adminlog('wthedit',$iweather);
-		naddnews($now,'syswthchg',$iweather);		
+		addnews($now,'syswthchg',$iweather);		
 	}
 }elseif($command == 'hackedit'){
 	$ihack = $_POST['ihack'] != 0 ? 1 : 0;
@@ -28,7 +28,7 @@ if($command == 'wthedit'){
 		$hack = $ihack;
 		save_gameinfo();
 		adminlog('hackedit',$ihack);
-		naddnews($now,'syshackchg',$ihack);		
+		addnews($now,'syshackchg',$ihack);		
 		include_once GAME_ROOT.'./include/system.func.php';
 		movehtm();
 	}
@@ -51,13 +51,13 @@ if($command == 'wthedit'){
 		$gamestate = $igamestate;
 		save_gameinfo();
 		adminlog('gsedit',$igamestate);
-		naddnews($now,'sysgschg',$igamestate);	
+		addnews($now,'sysgschg',$igamestate);	
 	}elseif($igamestate == 20){
 		$cmd_info = '游戏立即开始！请访问任意游戏页面以刷新游戏状态。';
 		$starttime = $now;
 		save_gameinfo();
 		adminlog('gsedit',$igamestate);
-		naddnews($now,'sysgschg',$igamestate);	
+		addnews($now,'sysgschg',$igamestate);	
 	}elseif($igamestate == 10){
 		$cmd_info = '游戏立即进入准备状态！请访问任意游戏页面以刷新游戏状态。';
 		$starttime = $now + $startmin * 60;
@@ -93,7 +93,7 @@ if($command == 'wthedit'){
 		save_gameinfo();
 		$areatime += $areahour * 60;
 		$cmd_info = '下一次禁区时间提前到来。请访问任意游戏页面以刷新游戏状态。';
-		naddnews($now,'sysaddarea');	
+		addnews($now,'sysaddarea');	
 	}
 }
 

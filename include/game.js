@@ -64,11 +64,11 @@ function itemmixchooser(){
 }
 
 //icon select
-function iconMover(){
-	gd = document.valid.gender[0].checked ? 'm' : 'f';
-	inum = document.valid.icon.selectedIndex;
-	$('iconImg').innerHTML = '<img src="img/' + gd + '_' + inum + '.gif" alt="' + inum + '">';
-}
+//function iconMover(){
+//	gd = document.valid.gender[0].checked ? 'm' : 'f';
+//	inum = document.valid.icon.selectedIndex;
+//	$('iconImg').innerHTML = '<img src="img/' + gd + '_' + inum + '.gif" alt="' + inum + '">';
+//}
 function userIconMover(){
 	ugd = $('male').checked ? 'm' : 'f';
 	uinum = $('icon').selectedIndex;
@@ -88,140 +88,140 @@ function sl(id) {
 	$(id).checked = true;
 }
 
-function postCommand(){
-	$('submit').disabled = true;
-	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms['gamecmd']);
-	oXmlHttp.open("post", "command.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showGamedata(oXmlHttp.responseText);
-				$('submit').disabled = false;
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send(sBody);
-}
+//function postCommand(){
+//	$('submit').disabled = true;
+//	var oXmlHttp = zXmlHttp.createRequest();
+//	var sBody = getRequestBody(document.forms['gamecmd']);
+//	oXmlHttp.open("post", "command.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				showGamedata(oXmlHttp.responseText);
+//				$('submit').disabled = false;
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send(sBody);
+//}
+//
+//function showGamedata(sGamedata){
+//	gamedata = sGamedata.parseJSON();
+//	if(gamedata['url']) {
+//		window.location.href = gamedata['url'];
+//	} else if(!gamedata['main']) {
+//		//window.location.href = 'index.php';
+//		$('notice').innerHTML = sGamedata;
+//	}
+//	//timer = 0;
+//	for(var id in gamedata) {
+//		if(id == 'toJSONString' || id == 'timer') {
+//			continue;
+//		} else if(gamedata[id]){
+//			if(id == 'team'){
+//				$('team').value = gamedata['team'];
+//			}else{
+//				$(id).innerHTML = gamedata[id];
+//			}
+//		} else{
+//			$(id).innerHTML = '';
+//		}
+//		
+//	}
+//	if(gamedata['timer'] && typeof(timerid)=='undefined'){
+//		demiSecTimerStarter(gamedata['timer']);
+//	}
+//}
 
-function showGamedata(sGamedata){
-	gamedata = sGamedata.parseJSON();
-	if(gamedata['url']) {
-		window.location.href = gamedata['url'];
-	} else if(!gamedata['main']) {
-		//window.location.href = 'index.php';
-		$('notice').innerHTML = sGamedata;
-	}
-	//timer = 0;
-	for(var id in gamedata) {
-		if(id == 'toJSONString' || id == 'timer') {
-			continue;
-		} else if(gamedata[id]){
-			if(id == 'team'){
-				$('team').value = gamedata['team'];
-			}else{
-				$(id).innerHTML = gamedata[id];
-			}
-		} else{
-			$(id).innerHTML = '';
-		}
-		
-	}
-	if(gamedata['timer'] && typeof(timerid)=='undefined'){
-		demiSecTimerStarter(gamedata['timer']);
-	}
-}
+//function postRegCommand(){
+//	$('post').disabled = true;
+//	$('reset').disabled = true;
+//	var oXmlHttp = zXmlHttp.createRequest();
+//	var sBody = getRequestBody(document.forms['reg']);
+//	oXmlHttp.open("post", "register.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				$('post').disabled = false;
+//				$('reset').disabled = false;
+//				showRegdata(oXmlHttp.responseText);
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send(sBody);
+//}
+//
+//function showRegdata(sRegdata){
+//	regdata = sRegdata.parseJSON();
+//	for(var id in regdata) {
+//		if(id == 'toJSONString') {
+//			continue;
+//		} else if(regdata[id]){
+//			$(id).innerHTML = regdata[id];
+//		} else{
+//			$(id).innerHTML = '';
+//		}		
+//	}
+//}
 
-function postRegCommand(){
-	$('post').disabled = true;
-	$('reset').disabled = true;
-	var oXmlHttp = zXmlHttp.createRequest();
-	var sBody = getRequestBody(document.forms['reg']);
-	oXmlHttp.open("post", "register.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				$('post').disabled = false;
-				$('reset').disabled = false;
-				showRegdata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send(sBody);
-}
+//function showNews(n){
+//	var oXmlHttp = zXmlHttp.createRequest();
+//
+//	oXmlHttp.open("post", "news.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				showNewsdata(oXmlHttp.responseText);
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send('newsmode=' + n);
+//}
+//
+//function showNewsdata(newsdata) {
+//	news = newsdata.parseJSON();
+//	if(news['msg']){
+//		newchat = '';
+//		for(var nid in news['msg']) {
+//			if(nid == 'toJSONString') {continue;}
+//			newchat += news['msg'][nid];
+//		}
+//		$('newsinfo').innerHTML = newchat;
+//	} else {
+//		$('newsinfo').innerHTML = news;
+//	}
+//}
 
-function showRegdata(sRegdata){
-	regdata = sRegdata.parseJSON();
-	for(var id in regdata) {
-		if(id == 'toJSONString') {
-			continue;
-		} else if(regdata[id]){
-			$(id).innerHTML = regdata[id];
-		} else{
-			$(id).innerHTML = '';
-		}		
-	}
-}
-
-function showNews(n){
-	var oXmlHttp = zXmlHttp.createRequest();
-
-	oXmlHttp.open("post", "news.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showNewsdata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send('newsmode=' + n);
-}
-
-function showNewsdata(newsdata) {
-	news = newsdata.parseJSON();
-	if(news['msg']){
-		newchat = '';
-		for(var nid in news['msg']) {
-			if(nid == 'toJSONString') {continue;}
-			newchat += news['msg'][nid];
-		}
-		$('newsinfo').innerHTML = newchat;
-	} else {
-		$('newsinfo').innerHTML = news;
-	}
-}
-
-function showAlive(mode){
-	//window.location.href = 'alive.php?alivemode=' + mode;
-	
-	var oXmlHttp = zXmlHttp.createRequest();
-	
-	oXmlHttp.open("post", "alive.php", true);
-	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-			if (oXmlHttp.status == 200) {
-				showAlivedata(oXmlHttp.responseText);
-			} else {
-				showNotice(oXmlHttp.statusText);
-			}
-		}
-	};
-	oXmlHttp.send('alivemode=' + mode);
-}
-function showAlivedata(alivedata) {
-	alive = alivedata.parseJSON();
-	$('alivelist').innerHTML = alive;
-}
+//function showAlive(mode){
+//	//window.location.href = 'alive.php?alivemode=' + mode;
+//	
+//	var oXmlHttp = zXmlHttp.createRequest();
+//	
+//	oXmlHttp.open("post", "alive.php", true);
+//	oXmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//	oXmlHttp.onreadystatechange = function () {
+//		if (oXmlHttp.readyState == 4) {
+//			if (oXmlHttp.status == 200) {
+//				showAlivedata(oXmlHttp.responseText);
+//			} else {
+//				showNotice(oXmlHttp.statusText);
+//			}
+//		}
+//	};
+//	oXmlHttp.send('alivemode=' + mode);
+//}
+//function showAlivedata(alivedata) {
+//	alive = alivedata.parseJSON();
+//	$('alivelist').innerHTML = alive;
+//}
 
 function postCmd(formName,sendto){
 	var oXmlHttp = zXmlHttp.createRequest();
@@ -244,6 +244,9 @@ function showData(sdata){
 	shwData = sdata.parseJSON();
 	if(shwData['url']) {
 		window.location.href = shwData['url'];
+	}else if(!shwData['innerHTML']) {
+		$('error').innerHTML=sdata;
+			//window.location.href = 'index.php';
 	}else{
 		sDv = shwData['value'];
 		for(var id in sDv){

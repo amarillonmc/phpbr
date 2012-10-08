@@ -7,12 +7,14 @@ DROP TABLE IF EXISTS bra_game;
 CREATE TABLE bra_game (
   gamenum mediumint(8) unsigned NOT NULL default 0,
   gamestate tinyint unsigned NOT NULL default 0,
+  lastupdate int(10) unsigned NOT NULL default 0,
   starttime int(10) unsigned NOT NULL default 0,
   winmode tinyint unsigned NOT NULL default 0,
   winner char(15) NOT NULL default '',
   arealist varchar(255) NOT NULL default '',
   areanum tinyint unsigned NOT NULL default 0,
   areatime int(10) unsigned NOT NULL default 0,
+  areawarn tinyint unsigned NOT NULL default 0,
   validnum smallint unsigned NOT NULL default 0,
   alivenum smallint unsigned NOT NULL default 0,
   deathnum smallint unsigned NOT NULL default 0,
@@ -20,6 +22,7 @@ CREATE TABLE bra_game (
   optime int(10) unsigned NOT NULL default 0,
   weather tinyint unsigned NOT NULL default 0,
   hack tinyint(1) unsigned NOT NULL default 0,
+  combonum smallint unsigned NOT NULL default 0,
 
   PRIMARY KEY  (gamenum)
 
@@ -29,7 +32,7 @@ CREATE TABLE bra_game (
 -- 插入初始数据 `bra_game`
 --
 
-INSERT INTO bra_game (gamenum) VALUES (1);
+INSERT INTO bra_game (gamenum) VALUES (0);
 
 --
 -- 表的结构 `bra_users`

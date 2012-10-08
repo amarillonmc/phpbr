@@ -3,6 +3,7 @@
 define('CURSCRIPT', 'winner');
 
 require './include/common.inc.php';
+if(!isset($command)){$command = 'ref';}
 if($command == 'info') {
 	$result = $db->query("SELECT * FROM {$tablepre}winners WHERE gid='$gnum' LIMIT 1");
 	$pdata = $db->fetch_array($result);
@@ -20,14 +21,16 @@ if($command == 'info') {
 		$hnewsinfo = readover($hnewsfile);
 	}
 } else {
-	if(!$start){
-		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners ORDER BY gid desc LIMIT $winlimit");
+	if(!isset($start) || !$start){
+		$result = $db->query("SELECT gid,name,icon,gd,wep,wmode,getime,motto,hdp,hdmg,hkp,hkill FROM {$tablepre}winners ORDER BY gid desc LIMIT $winlimit");
 	} else {
-		$result = $db->query("SELECT gid,name,wep,wmode,getime,motto FROM {$tablepre}winners WHERE gid<='$start' ORDER BY gid desc LIMIT $winlimit");
+		$result = $db->query("SELECT gid,name,icon,gd,wep,wmode,getime,motto,hdp,hdmg,hkp,hkill FROM {$tablepre}winners WHERE gid<='$start' ORDER BY gid desc LIMIT $winlimit");
 	}
 	while($wdata = $db->fetch_array($result)) {
-		$wdata['date'] = date("m/d/Y \<\b\\r\> H:i:s",$wdata['getime']);
-		$winfo[] = $wdata;
+		$wdata['date'] = date("Y-m-d",$wdata['getime']);
+		$wdata['time'] = date("H:i:s",$wdata['getime']);
+		$wdata['iconImg'] = $wdata['gd'] == 'f' ? 'f_'.$wdata['icon'].'.gif' : 'm_'.$wdata['icon'].'.gif';
+		$winfo[$wdata['gid']] = $wdata;
 	}
 	$listnum = floor($gamenum/$winlimit);
 

@@ -28,7 +28,7 @@ if($command == 'kill' || $command == 'live' || $command == 'del') {
 						$pcdata[$i]['state'] = 15;
 						$deathnum ++;$alivenum--;
 						adminlog('killpc',$pcdata[$i]['name']);
-						naddnews($now,'death15',$pcdata[$i]['name']);
+						addnews($now,'death15',$pcdata[$i]['name']);
 					}else{
 						$gfaillist[] = $pcdata[$i]['name'];
 					}					
@@ -39,7 +39,7 @@ if($command == 'kill' || $command == 'live' || $command == 'del') {
 						$pcdata[$i]['state'] = 0;
 						$deathnum --;$alivenum++;
 						adminlog('livepc',$pcdata[$i]['name']);
-						naddnews($now,'alive',$pcdata[$i]['name']);
+						addnews($now,'alive',$pcdata[$i]['name']);
 					}else{
 						$gfaillist[] = $pcdata[$i]['name'];
 					}					
@@ -51,11 +51,11 @@ if($command == 'kill' || $command == 'live' || $command == 'del') {
 						$pcdata[$i]['state'] = 16;
 						$deathnum --;$alivenum++;
 						adminlog('delpc',$pcdata[$i]['name']);
-						naddnews($now,'death16',$pcdata[$i]['name']);
+						addnews($now,'death16',$pcdata[$i]['name']);
 					}else{
 						$operlist2[${'pc_'.$i}] = $pcdata[$i]['name'];
 						adminlog('delcp',$pcdata[$i]['name']);
-						naddnews($now,'delcp',$pcdata[$i]['name']);
+						addnews($now,'delcp',$pcdata[$i]['name']);
 					}
 				}
 			}else{
@@ -126,7 +126,7 @@ if($command == 'kill' || $command == 'live' || $command == 'del') {
 		$cmd_info = "无法修改角色 $name";
 	} else {
 		adminlog('editpc',$name);
-		naddnews($now,'editpc',$name);
+		addnews($now,'editpc',$name);
 		$cmd_info = "角色 $name 的属性被修改了";
 	}
 	$pcdata = dbsearch($start,$checkmode,$checkinfo);

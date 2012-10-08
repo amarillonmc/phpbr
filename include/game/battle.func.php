@@ -7,14 +7,8 @@ if(!defined('IN_GAME')) {
 
 
 function findenemy(&$w_pdata) {
-	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$wf,$nosta,$weps,$bid;
+	global $log,$mode,$main,$cmd,$battle_title,$attinfo,$skillinfo,$wepk,$wp,$wk,$wg,$wc,$wd,$wf,$nosta,$weps;
 	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
-	
-	if($w_pdata['pid'] !== $bid){
-		$log .= "<span class=\"yellow\">敌人数据出错。</span><br>";
-		$mode = 'command';
-		return;
-	}
 	
 	$battle_title = '发现敌人';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
@@ -45,17 +39,12 @@ function findenemy(&$w_pdata) {
 }
 
 function findteam(&$w_pdata){
-	global $log,$mode,$main,$cmd,$battle_title,$bid,$gamestate;
+	global $log,$mode,$main,$cmd,$battle_title,$gamestate;
 	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_sp,$w_msp,$w_rage,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
-	
-	if($w_pdata['pid'] !== $bid){
-		$log .= "<span class=\"yellow\">队友数据出错。</span><br>";
-		$mode = 'command';
-		return;
-	}
+
 	if($gamestate>=40){
 		$log .= '<span class="yellow">连斗阶段所有队伍取消！</span><br>';
-		$bid = 0;
+		
 		$mode = 'command';
 		return;
 	}
@@ -64,7 +53,7 @@ function findteam(&$w_pdata){
 	init_battle(1);
 	
 	$log .= "你发现了队友<span class=\"yellow\">$w_name</span>！<br>";
-	for($i = 1;$i < 6; $i++){
+	for($i = 1;$i <= 6; $i++){
 		global ${'itm'.$i},${'itme'.$i},${'itms'.$i};
 	}
 	include template('findteam');
@@ -85,19 +74,13 @@ function findteam(&$w_pdata){
 }
 
 function findcorpse(&$w_pdata){
-	global $log,$mode,$main,$battle_title,$cmd,$bid,$iteminfo,$itemspkinfo;
+	global $log,$mode,$main,$battle_title,$cmd,$iteminfo,$itemspkinfo;
 	global $w_type,$w_name,$w_gd,$w_sNo,$w_icon,$w_hp,$w_mhp,$w_wep,$w_wepk,$w_wepe,$w_lvl,$w_pose,$w_tactic,$w_inf;//,$itmsk0;
 	
-	if($w_pdata['pid'] !== $bid){
-		$log .= "<span class=\"yellow\">尸体数据出错。</span><br>";
-		$mode = 'command';
-		return;
-	}
 	$battle_title = '发现尸体';
 	extract($w_pdata,EXTR_PREFIX_ALL,'w');
 	init_battle(1);
 		
-	//$bid = $w_pid;
 	$main = 'battle';
 	$log .= '你发现了<span class="red">'.$w_name.'</span>的尸体！<br>';
 	foreach (Array('w_wepk','w_arbk','w_arhk','w_arak','w_arfk','w_artk','w_itmk0','w_itmk1','w_itmk2','w_itmk3','w_itmk4','w_itmk5','w_itmk6') as $w_k_value) {
@@ -131,23 +114,24 @@ function findcorpse(&$w_pdata){
 
 
 function senditem(){
-	global $db,$tablepre,$log,$mode,$main,$command,$cmd,$battle_title,$pls,$plsinfo,$message,$now,$name,$w_log,$bid,$teamID,$gamestate;
-	if($bid==0){
+	global $db,$tablepre,$log,$mode,$main,$command,$cmd,$battle_title,$pls,$plsinfo,$message,$now,$name,$w_log,$teamID,$gamestate,$action;
+	$mateid = str_replace('team','',$action);
+	if(!$mateid || strpos($action,'team')===false){
 		$log .= '<span class="yellow">你没有遇到队友，或已经离开现场！</span><br>';
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	}
 	if($gamestate>=40){
 		$log .= '<span class="yellow">连斗阶段无法赠送物品！</span><br>';
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	}
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$bid'");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$mateid'");
 	if(!$db->num_rows($result)){
 		$log .= "对方不存在！<br>";
-		$bid = 0;
+		$action = '';
 		$mode = 'command';
 		return;
 	}
@@ -156,17 +140,17 @@ function senditem(){
 	if($edata['pls'] != $pls) {
 		$log .= '<span class="yellow">'.$edata['name'].'</span>已经离开了<span class="yellow">'.$plsinfo[$pls].'</span>。<br>';
 		$mode = 'command';
-		$bid = 0;
+		$action = '';
 		return;
 	} elseif($edata['hp'] <= 0) {
 		$log .= '<span class="yellow">'.$edata['name'].'</span>已经死亡，不能接受物品。<br>';
 		$mode = 'command';
-		$bid = 0;
+		$action = '';
 		return;
 	} elseif(!$teamID || $edata['teamID']!=$teamID){
 		$log .= '<span class="yellow">'.$edata['name'].'</span>并非你的队友，不能接受物品。<br>';
 		$mode = 'command';
-		$bid = 0;
+		$action = '';
 		return;
 	}
 
@@ -186,7 +170,7 @@ function senditem(){
 		global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
 		if (!${'itms'.$itmn}) {
 			$log .= '此道具不存在！';
-			$bid = 0;
+			$action = '';
 			$mode = 'command';
 			return;
 		}
@@ -210,17 +194,17 @@ function senditem(){
 				$log .= "你将<span class=\"yellow\">${'w_itm'.$i}</span>送给了<span class=\"yellow\">$w_name</span>。<br>";
 				$w_log = "<span class=\"yellow\">$name</span>将<span class=\"yellow\">${'w_itm'.$i}</span>送给了你。";
 				if(!$w_type){logsave($w_pid,$now,$w_log,'t');}
-				naddnews($now,'senditem',$name,$w_name,$itm);
+				addnews($now,'senditem',$name,$w_name,$itm);
 				w_save($w_pid);
 				$itm = $itmk = $itmsk = '';
 				$itme = $itms = 0;
-				$bid = 0;
+				$action = '';
 				return;
 			}
 		}
 		$log .= "<span class=\"yellow\">$w_name</span> 的包裹已经满了，不能赠送物品。<br>";
 	}
-	$bid = 0;
+	$action = '';
 	$mode = 'command';
 	return;
 }

@@ -96,7 +96,7 @@ function adtsk(){
 		$position = 0;
 		foreach(Array(1,2,3,4,5,6) as $imn){
 			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
-			if(strpos(${'itm'.$imn},'电池')!==false && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+			if(strpos(${'itmk'.$imn},'B')===0 && ${'itme'.$imn} > 0 ){
 				$position = $imn;
 				break;
 			}
@@ -111,11 +111,13 @@ function adtsk(){
 				$mode = 'command';
 				return;
 			}
-			$wep = '电气'.$wep;
-			$wepsk .= 'e';
-			$log .= "<span class=\"yellow\">用电池改造了{$wep}，{$wep}增加了电击属性！</span><br />";
+			
+			
 			${'itms'.$position}-=1;
 			$itm = ${'itm'.$position};
+			$log .= "<span class=\"yellow\">用{$itm}改造了{$wep}，{$wep}增加了电击属性！</span><br />";
+			$wep = '电气'.$wep;
+			$wepsk .= 'e';
 			if(${'itms'.$position} == 0){
 				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
 				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';

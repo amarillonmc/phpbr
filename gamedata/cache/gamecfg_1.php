@@ -5,6 +5,8 @@
 $areahour = 30;
 //每次间隔增加的禁区数量
 $areaadd = 4;
+//聊天记录里的禁区提示时间，单位秒
+$areawarntime = 60;
 //玩家激活结束时的增加禁区的回数，相当于已经进行的小时数/间隔时间，〉0
 $arealimit = 2;
 //是否自动逃避禁区 0=只有重视躲避自动躲避，1=所有玩家自动躲避，适合新手较多，不了解禁区机制
@@ -17,7 +19,7 @@ $npcchaton = 1;
 //有台词的NPC
 $npccanchat = Array(1,5,6,7,9,10,12,13);
 //反挂机系统间隔时间，单位分钟
-$antiAFKertime = 10;
+$antiAFKertime = 100;
 //尸体保护时间，单位秒
 $corpseprotect = 10;
 //是否启动冷却时间，0为不启动，1为启动；
@@ -31,12 +33,19 @@ $searchcoldtime=900;
 //使用物品的冷却时间，单位微秒
 $itemusecoldtime=500;
 
+//胜率榜最小参赛次数
+$winratemingames = 10;
+
 //本局游戏人数限制
 $validlimit = 300;
 //连斗时的人数限制
 $combolimit = 50;
-//连斗时的死亡人数限制
-$deathlimit = 221;
+//连斗最小死亡人数限制a
+$deathlimit = 160;
+//连斗激活系数分母b
+$deathdeno = 20;
+//连斗激活系数分子c。如果设参与人数为d，则实际连斗判定死亡数是a+ceil(d/b)*c
+$deathnume = 20;
  
 // 等级提升基本经验值 
 $baseexp = 9;
@@ -94,6 +103,7 @@ $inf_move_hp = Array('p'=> 0.0625, 'u'=> 0.0625);
 $inf_search_hp = Array('p'=> 0.03125, 'u'=> 0.03125);
 //hack基础成功率
 $hack_obbs = 40;
-
+//电子设备充电上限，包括电脑和雷达
+$elec_cap = 5;
 
 ?>

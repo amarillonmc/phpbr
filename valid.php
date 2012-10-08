@@ -25,7 +25,7 @@ if($mode == 'enter') {
 		if($db->num_rows($result) > $iplimit) { gexit($_ERROR['ip_limit'],__file__,__line__); }
 	}	
 
-	//$ip = real_ip();
+	$ip = real_ip();
 	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon', motto='$motto', killmsg='$killmsg', lastword='$lastword' WHERE username='".$udata['username']."'" );
 	if($validnum >= $validlimit) {
 		gexit($_ERROR['player_limit'],__file__, __line__);
@@ -129,13 +129,13 @@ if($mode == 'enter') {
 //			$itm[5] = '这样的装备没问题么的靴子'; $itmk[5] = 'DF'; $itme[5] = 1800; $itms[5] = 100; $itmsk[5] = 'I';
 //		break;
 //	}
-	if ($name == 'Amarillo_NMC' || $name == '某四面') {
+	if ($name == 'Amarillo_NMC') {
 		$msp += 500;$mhp += 500;$hp += 500;$sp += 500;
 		$att += 200;$def += 200;
 		$exp += 3000;$money = 20000;$rage = 255;$pose = 1;$tactic = 3;
 		$itm[1] = '死者苏生'; $itmk[1] = 'HB'; $itme[1] = 2000; $itms[1] = 400; $itmsk[1] = '';
-		$itm[2] = '移动PC'; $itmk[2] = 'Y'; $itme[2] = 50; $itms[2] = 1;
-		$itm[3] = '超光速快子雷达'; $itmk[3] = 'R'; $itme[3] = 32; $itms[3] = 1;$itmsk[3] = 2;
+		$itm[2] = '移动PC'; $itmk[2] = 'EE'; $itme[2] = 50; $itms[2] = 1;
+		$itm[3] = '超光速快子雷达'; $itmk[3] = 'ER'; $itme[3] = 32; $itms[3] = 1;$itmsk[3] = 2;
 		$itm[4] = '凸眼鱼'; $itmk[4] = 'Y'; $itme[4] = 1; $itms[4] = 30;$itmsk[4] = '';
 		$itm[5] = '楠叶特制营养剂'; $itmk[5] = 'ME'; $itme[5] = 50; $itms[5] = 12;
 		$itm[6] = '测试道具'; $itmk[6] = 'ME'; $itme[6] = 50; $itms[6] = 12;
@@ -189,9 +189,9 @@ if($mode == 'enter') {
 	$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('$name','$pass','$type','$endtime','$gd','$sNo','$icon','$club','$hp','$mhp','$sp','$msp','$att','$def','$pls','$lvl','$exp','$money','$bid','$inf','$rage','$pose','$tactic','$state','$killnum','$wp','$wk','$wg','$wc','$wd','$wf','$teamID','$teamPass','$wep','$wepk','$wepe','$weps','$arb','$arbk','$arbe','$arbs','$arh','$arhk','$arhe','$arhs','$ara','$arak','$arae','$aras','$arf','$arfk','$arfe','$arfs','$art','$artk','$arte','$arts','$itm[0]','$itmk[0]','$itme[0]','$itms[0]','$itm[1]','$itmk[1]','$itme[1]','$itms[1]','$itm[2]','$itmk[2]','$itme[2]','$itms[2]','$itm[3]','$itmk[3]','$itme[3]','$itms[3]','$itm[4]','$itmk[4]','$itme[4]','$itms[4]','$itm[5]','$itmk[5]','$itme[5]','$itms[5]','$itm[6]','$itmk[6]','$itme[6]','$itms[6]','$wepsk','$arbsk','$arhsk','$arask','$arfsk','$artsk','$itmsk[0]','$itmsk[1]','$itmsk[2]','$itmsk[3]','$itmsk[4]','$itmsk[5]','$itmsk[6]')");
 	$db->query("UPDATE {$tablepre}users SET lastgame='$gamenum' WHERE username='$name'");
 	if($udata['groupid'] >= 6 || $cuser == $gamefounder){
-		naddnews($now,'newgm',$name,"{$sexinfo[$gd]}{$sNo}号",$ip);
+		addnews($now,'newgm',$name,"{$sexinfo[$gd]}{$sNo}号",$ip);
 	}else{
-		naddnews($now,'newpc',$name,"{$sexinfo[$gd]}{$sNo}号",$ip);
+		addnews($now,'newpc',$name,"{$sexinfo[$gd]}{$sNo}号",$ip);
 	}
 	
 	if($validnum >= $validlimit && $gamestate == 20){
@@ -204,7 +204,10 @@ if($mode == 'enter') {
 	include template('validover');
 } elseif($mode == 'notice') {
 	include template('notice');
-
+} elseif($mode == 'tutorial') {
+	if(!isset($tmode)){$tmode = 0;}
+	$nexttmode = $tmode +1;
+	include template('tutorial');
 } else {
 	extract($udata);
 	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name = '$cuser' AND type = 0");

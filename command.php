@@ -30,7 +30,7 @@ if($pdata['pass'] != $cpass) {
 }
 
 //判断游戏状态和玩家状态，如果符合条件则忽略指令
-if($gamestate === 0) {
+if($gamestate == 0) {
 	$gamedata['url'] = 'end.php';
 	ob_clean();
 	$jgamedata = compatible_json_encode($gamedata);
@@ -40,8 +40,8 @@ if($gamestate === 0) {
 }
 
 //初始化各变量
-extract($pdata);
-$log = '';
+extract($pdata,EXTR_REFS);
+$log = $cmd = $main = '';
 $gamedata = array();
 init_playerdata();
 
@@ -52,7 +52,7 @@ while($logtemp = $db->fetch_array($result)){
 }
 $db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
 
-
+//var_dump($_POST);
 if($hp > 0){
 	//显示枪声信息
 	if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {
@@ -79,11 +79,12 @@ if($hp > 0){
 	}else{
 		
 		//进入指令判断
-		if($mode !== 'combat' && $mode !== 'corpse' && $mode !== 'senditem'){
-			$bid = 0;
+		if($mode !== 'combat' && $mode !== 'corpse' && strpos($action,'pacorpse')===false && $mode !== 'senditem'){
+			$action = '';
 		}
 		if($command == 'menu') {
 			$mode = 'command';
+			$action = '';
 		} elseif($mode == 'command') {
 			if($command == 'move') {
 				include_once GAME_ROOT.'./include/game/search.func.php';
@@ -141,6 +142,8 @@ if($hp > 0){
 			} elseif($command == 'itemmerge') {
 				if($merge2 == 'n'){itemadd();}
 				else{itemmerge($merge1,$merge2);}
+			} elseif($command == 'itemmove') {
+				itemmove($from,$to);
 			} elseif(strpos($command,'drop') === 0) {
 				$drop_item = substr($command,4);
 				itemdrop($drop_item);
@@ -226,6 +229,21 @@ if($hp > 0){
 			$mode = 'command';
 		}
 		
+		if(strpos($action,'pacorpse')===0 && $gamestate < 40){
+//			if($state == 1 || $state == 2 || $state ==3){
+//				$state = 0;
+//			}
+			$cid = str_replace('pacorpse','',$action);
+			if($cid){
+				$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid='$cid' AND hp=0");
+				if($db->num_rows($result)>0){
+					$edata = $db->fetch_array($result);
+					include_once GAME_ROOT.'./include/game/battle.func.php';
+					findcorpse($edata);					
+				}	
+			}	
+		}
+				
 		//指令执行完毕，更新冷却时间
 		if($coldtimeon && isset($cmdcdtime)){
 			$nowmtime = floor(getmicrotime()*1000);
@@ -236,7 +254,10 @@ if($hp > 0){
 			//set_pstate($psdata);
 			$rmcdtime = $cmdcdtime;
 		}
-		$db->query("UPDATE {$tablepre}players SET endtime='$now',cdsec='$cdsec',cdmsec='$cdmsec',cdtime='$cdtime',club='$club',hp='$hp',mhp='$mhp',sp='$sp',msp='$msp',att='$att',def='$def',pls='$pls',lvl='$lvl',exp='$exp',money='$money',rp='$rp',bid='$bid',inf='$inf',rage='$rage',pose='$pose',tactic='$tactic',state='$state',killnum='$killnum',wp='$wp',wk='$wk',wg='$wg',wc='$wc',wd='$wd',wf='$wf',teamID='$teamID',teamPass='$teamPass',wep='$wep',wepk='$wepk',wepe='$wepe',weps='$weps',wepsk='$wepsk',arb='$arb',arbk='$arbk',arbe='$arbe',arbs='$arbs',arbsk='$arbsk',arh='$arh',arhk='$arhk',arhe='$arhe',arhs='$arhs',arhsk='$arhsk',ara='$ara',arak='$arak',arae='$arae',aras='$aras',arask='$arask',arf='$arf',arfk='$arfk',arfe='$arfe',arfs='$arfs',arfsk='$arfsk',art='$art',artk='$artk',arte='$arte',arts='$arts',artsk='$artsk',itm0='$itm0',itmk0='$itmk0',itme0='$itme0',itms0='$itms0',itmsk0='$itmsk0',itm1='$itm1',itmk1='$itmk1',itme1='$itme1',itms1='$itms1',itmsk1='$itmsk1',itm2='$itm2',itmk2='$itmk2',itme2='$itme2',itms2='$itms2',itmsk2='$itmsk2',itm3='$itm3',itmk3='$itmk3',itme3='$itme3',itms3='$itms3',itmsk3='$itmsk3',itm4='$itm4',itmk4='$itmk4',itme4='$itme4',itms4='$itms4',itmsk4='$itmsk4',itm5='$itm5',itmk5='$itmk5',itme5='$itme5',itms5='$itms5',itmsk5='$itmsk5',itm6='$itm6',itmk6='$itmk6',itme6='$itme6',itms6='$itms6',itmsk6='$itmsk6' where pid='$pid'");
+		$endtime = $now;
+		//var_dump($pdata['action']);
+		player_save($pdata);
+		//$db->query("UPDATE {$tablepre}players SET endtime='$now',cdsec='$cdsec',cdmsec='$cdmsec',cdtime='$cdtime',club='$club',hp='$hp',mhp='$mhp',sp='$sp',msp='$msp',att='$att',def='$def',pls='$pls',lvl='$lvl',exp='$exp',money='$money',rp='$rp',bid='$bid',inf='$inf',rage='$rage',pose='$pose',tactic='$tactic',state='$state',killnum='$killnum',wp='$wp',wk='$wk',wg='$wg',wc='$wc',wd='$wd',wf='$wf',teamID='$teamID',teamPass='$teamPass',wep='$wep',wepk='$wepk',wepe='$wepe',weps='$weps',wepsk='$wepsk',arb='$arb',arbk='$arbk',arbe='$arbe',arbs='$arbs',arbsk='$arbsk',arh='$arh',arhk='$arhk',arhe='$arhe',arhs='$arhs',arhsk='$arhsk',ara='$ara',arak='$arak',arae='$arae',aras='$aras',arask='$arask',arf='$arf',arfk='$arfk',arfe='$arfe',arfs='$arfs',arfsk='$arfsk',art='$art',artk='$artk',arte='$arte',arts='$arts',artsk='$artsk',itm0='$itm0',itmk0='$itmk0',itme0='$itme0',itms0='$itms0',itmsk0='$itmsk0',itm1='$itm1',itmk1='$itmk1',itme1='$itme1',itms1='$itms1',itmsk1='$itmsk1',itm2='$itm2',itmk2='$itmk2',itme2='$itme2',itms2='$itms2',itmsk2='$itmsk2',itm3='$itm3',itmk3='$itmk3',itme3='$itme3',itms3='$itms3',itmsk3='$itmsk3',itm4='$itm4',itmk4='$itmk4',itme4='$itme4',itms4='$itms4',itmsk4='$itmsk4',itm5='$itm5',itmk5='$itmk5',itme5='$itme5',itms5='$itms5',itmsk5='$itmsk5',itm6='$itm6',itmk6='$itmk6',itme6='$itme6',itms6='$itms6',itmsk6='$itmsk6' where pid='$pid'");
 	}
 	
 	//显示指令执行结果
@@ -245,7 +266,7 @@ if($hp > 0){
 		$gamedata['timer'] = $rmcdtime;
 	}
 	if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){
-		$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\"></span>秒<br>";
+		$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\">0.0</span>秒<br>";
 	}
 	
 }
@@ -262,6 +283,12 @@ if($hp <= 0) {
 	include template('death');
 	$gamedata['innerHTML']['cmd'] = ob_get_contents();
 	$mode = 'death';
+} elseif($cmd){	
+	$gamedata['innerHTML']['cmd'] = $cmd;
+} elseif($itms0){
+	ob_clean();
+	include template('itemfind');
+	$gamedata['innerHTML']['cmd'] = ob_get_contents();
 } elseif($state == 1 || $state == 2 || $state ==3) {
 	ob_clean();
 	include template('rest');
@@ -276,12 +303,13 @@ if($hp <= 0) {
 	$gamedata['innerHTML']['cmd'] = ob_get_contents();
 	//$gamedata['cmd'] .= '<br><br><input type="button" id="submit" onClick="postCommand();return false;" value="提交">';
 } else {
-	$gamedata['innerHTML']['cmd'] = $cmd;
+	$log .= '游戏流程故障，请联系管理员<br>';
+	//$gamedata['innerHTML']['cmd'] = $cmd;
 	//$gamedata['cmd'] .= '<br><br><input type="button" id="submit" onClick="postCommand();return false;" value="提交">';
 }
 
 
-if($url){$gamedata['url'] = $url;}
+if(isset($url)){$gamedata['url'] = $url;}
 $gamedata['innerHTML']['pls'] = $plsinfo[$pls];
 $gamedata['innerHTML']['anum'] = $alivenum;
 
@@ -289,6 +317,7 @@ ob_clean();
 $main ? include template($main) : include template('profile');
 $gamedata['innerHTML']['main'] = ob_get_contents();
 $gamedata['innerHTML']['log'] = $log;
+if(isset($error)){$gamedata['innerHTML']['error'] = $error;}
 $gamedata['value']['teamID'] = $teamID;
 if($teamID){
 	$gamedata['innerHTML']['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";

@@ -67,6 +67,10 @@ $language = array
 	'quit' => '账号退出',
 	'errormsg' => '出现错误',
 	
+	'tutorial' => '游戏教程',
+	'enterturorial' => '观看游戏教程',
+	'nexttutorial' => '下一篇教程',
+	
 	'name' => '姓名',
 	'gender' => '性别',
 	'icon' => '头像',
@@ -107,6 +111,8 @@ $language = array
 	'wc' => '投',
 	'wd' => '爆',
 	'wf' => '灵',
+	'ss' => '歌魂',
+	'karma' => '罪业',
 	'newsnotice' => '<span class="evergreen">“各位仍在努力奋战，咱很欣慰。<br />以下是到现在为止的游戏状况。<br />请各位再接再厉。”</span>',
 	'useitem' => '>>使用',
 	'end' => '游戏结束！',

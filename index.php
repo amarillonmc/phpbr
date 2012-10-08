@@ -15,6 +15,7 @@ if($gamestate > 10) {
 	}
 }
 $adminmsg = file_get_contents('./gamedata/adminmsg.htm') ;
+$systemmsg = file_get_contents('./gamedata/systemmsg.htm') ;
 include template('index');
 
 ?>

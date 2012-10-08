@@ -45,20 +45,26 @@ function poison($itmn = 0) {
 
 function wthchange($itm,$itmsk){
 	global $now,$log,$weather, $wthinfo, $name;
-	if($itmsk==99){$weather = rand ( 0, 13 );}//随机全天气
-	elseif($itmsk==98){$weather = rand ( 10, 13 );}//随机恶劣天气
-	elseif($itmsk==97){$weather = rand ( 0, 9 );}//随机一般天气
-	elseif($itmsk==96){$weather = rand ( 8, 9 );}//随机起雾天气
-	elseif(!empty($itmsk) && is_numeric($itmsk)){
-		if($itmsk >=0 && $itmsk < count($wthinfo)){
-			$weather = $itmsk;
-		}else{$weather = 0;}
+	if($weather >= 14 && $weather <= 16){
+		addnews ( $now, 'wthfail', $name, $weather, $itm );
+		$log .= "你使用了{$itm}。<br /><span class=\"red\">但是恶劣的天气并未发生任何变化！</span><br />";
+	}else{
+		if($itmsk==99){$weather = rand ( 0, 13 );}//随机全天气
+		elseif($itmsk==98){$weather = rand ( 10, 13 );}//随机恶劣天气
+		elseif($itmsk==97){$weather = rand ( 0, 9 );}//随机一般天气
+		elseif($itmsk==96){$weather = rand ( 8, 9 );}//随机起雾天气
+		elseif(!empty($itmsk) && is_numeric($itmsk)){
+			if($itmsk >=0 && $itmsk < count($wthinfo)){
+				$weather = $itmsk;
+			}else{$weather = 0;}
+		}
+		else{$weather = 0;}
+		include_once GAME_ROOT . './include/system.func.php';
+		save_gameinfo ();
+		addnews ( $now, 'wthchange', $name, $weather, $itm );
+		$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red\">$wthinfo[$weather]</span>！<br />";
 	}
-	else{$weather = 0;}
-	include_once GAME_ROOT . './include/system.func.php';
-	save_gameinfo ();
-	naddnews ( $now, 'wthchange', $name, $weather, $itm );
-	$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red b\">$wthinfo[$weather]</span>！<br />";
+	return;
 }
 
 function hack($itmn = 0) {
@@ -89,12 +95,23 @@ function hack($itmn = 0) {
 		$log .= '入侵禁区控制系统成功了！全部禁区都被解除了！<br>';
 		include_once GAME_ROOT.'./include/system.func.php';
 		movehtm();
-		naddnews($now,'hack',$name);
+		addnews($now,'hack',$name);
 		save_gameinfo();
 	} else {
 		$log .= '可是，入侵禁区控制系统失败了……<br>';
 	}
-	$itme--;
+	if($club == 7){
+		$e_dice = rand(0,1);
+		if($e_dice == 1){
+			$itme--;
+			$log .= "消耗了<span class=\"yellow\">$itm</span>的电力。<br>";
+		}else{
+			$log .= "由于操作迅速，<span class=\"yellow\">$itm</span>的电力没有消耗。<br>";
+		}
+	}else{
+		$itme--;
+		$log .= "消耗了<span class=\"yellow\">$itm</span>的电力。<br>";
+	}
 	
 	$hack_dice2 = rand(0,99);
 
@@ -115,13 +132,21 @@ function hack($itmn = 0) {
 
 function newradar($m = 0){
 	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack,$gamestate;
-	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen,$typeinfo;
+	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen,$typeinfo,$weather;
 	
 	if(!$mode) {
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
-	$npctplist = Array(2,3,4,5,6,7,11);
+	//echo $weather;
+	if($weather == 14){
+		$dice = rand(0,1);
+		if($dice == 1){
+			$log .= '由于<span class="linen">离子风暴</span>造成了电磁干扰，探测仪器完全显示不出信息……<br>';
+			return;
+		}
+	}
+	$npctplist = Array(90,2,5,6,7,11,14);
 	$tdheight = 20;
 	$screenheight = count($plsinfo)*$tdheight;
 	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0");
@@ -395,7 +420,7 @@ function qianghua($itmn = 0) {
 			}else{$flag = false;}
 	  }	
   }	
-  naddnews ( $now, 'newwep2', $name, $baoshi, $o_itm );
+  addnews ( $now, 'newwep2', $name, $baoshi, $o_itm );
 	if ($flag){
 	 $log .= "<span class=\"yellow\">『一道神圣的闪光照耀在你的眼睛上，当你恢复视力时，发现你的装备闪耀着彩虹般的光芒』</span><br>";
 	 $nzitmlv = $zitmlv +1;

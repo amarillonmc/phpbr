@@ -4,6 +4,7 @@ if(!defined('IN_ADMIN')) {
 }
 
 $adminmsg = file_get_contents('./gamedata/adminmsg.htm') ;
+$systemmsg = file_get_contents('./gamedata/systemmsg.htm') ;
 
 if($command == 'edit') {
 	$ednum = 0;
@@ -54,11 +55,14 @@ if($command == 'edit') {
 		if(in_array('adminmsg',array_keys($edlist))){
 			file_put_contents('./gamedata/adminmsg.htm',$adminmsg);
 		}
+		if(in_array('systemmsg',array_keys($edlist))){
+			file_put_contents('./gamedata/systemmsg.htm',$systemmsg);
+		}
 		//$adminlog = '';
 		//$gamecfg_file = config('gamecfg',$gamecfg);
 		$systemfile = file_get_contents('./gamedata/system.php');
 		foreach($edlist as $key => $val){
-			if($key != 'adminmsg'){
+			if($key != 'adminmsg' && $key != 'systemmsg'){
 				if($edfmt[$key] == 'int' || $edfmt[$key] == 'b'){
 					$systemfile = preg_replace("/[$]{$key}\s*\=\s*-?[0-9]+;/is", "\${$key} = ${$key};", $systemfile);
 				}else{

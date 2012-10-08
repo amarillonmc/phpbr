@@ -14,7 +14,7 @@
 					<td width="120" class="b3"><span>Lv. $lvl</span></td>
 					<td width="60" class="b2"><span><!--{if $wp >= 100}-->{lang wp}{lang skill}<!--{else}--><span class="grey">{lang wp}{lang skill}</span><!--{/if}--></span></td>
 					<td width="80" class="b3"><span>$wp</span></td>
-					<td rowspan="8" width="215" height="160" class="b3">
+					<td rowspan="9" width="215" height="160" class="b3">
 						<div>
 							<table border="0" width=215px height=160px cellspacing="0" cellpadding="0" style="position:relative">
 								<tr height=160px>
@@ -135,6 +135,15 @@
 					<td class="b3"><span><span class="<!--{if $hp <= $mhp*0.2}-->red<!--{elseif $hp <= $mhp*0.5}-->yellow<!--{else}-->clan<!--{/if}-->">$hp / $mhp</span></span></td>
 					<td class="b2"><span>{lang killnum}</span></td>
 					<td class="b3"><span>$killnum</span></td>
+				</tr>
+				<tr>
+					<td class="b2">■■：</td>
+					<td class="b3">
+						■■■应■回■■■。</td>
+					<td class="b2"><span>{lang ss}</span></td>
+					<td class="b3"><span class="<!--{if $ss <= $mss*0.2}-->red<!--{elseif $ss <= $mss*0.5}-->yellow<!--{else}-->clan<!--{/if}-->">$ss / $mss</span></td>
+					<td class="b2"><span>{lang karma}</span></td>
+					<td class="b3"><span>$karma</span></td>
 				</tr>
 			</table>
 		</td>

@@ -4,39 +4,46 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
-//function gaddslashes($string, $force = 0) {//充其量是给数组加反斜杠的函数
-//	if(!$GLOBALS['magic_quotes_gpc'] || $force) {
-//		if(is_array($string)) {
-//			foreach($string as $key => $val) {
-//				$string[$key] = gaddslashes($val, $force);
-//			}
-//		} else {
-//			$string = addslashes($string);
-//			$string = htmlspecialchars($string,ENT_NOQUOTES);
-//		}
-//	}
-//	return $string;
-//}
+//----------------------------------------
+//              底层机制函数
+//----------------------------------------
 
-//function gkillquotes($string) {
-//	if(is_array($string)) {
-//		foreach($string as $key => $val) {
-//			$string[$key] = gkillquotes($val);
-//		}
-//	} else {
-//		if(!$GLOBALS['magic_quotes_gpc']) {
-//			foreach(Array('\'','"','&','#','<','>','\\',';',',') as $value){
-//				$string = str_replace($value,'',$string);
-//			}
-//
-//		}else{
-//			foreach(Array('\\\'','\\"','&','#','<','>','\\\\',';',',') as $value){
-//				$string = str_replace($value,'',$string);
-//			}
-//		}
-//	}
-//	return $string;
-//}
+function gameerrorhandler($code, $msg, $file, $line){
+	global $errorinfo;
+	if(!$errorinfo){return;}
+	if($code == 2){$emessage = '<b style="color:#ff0">Warning</b> ';}
+	elseif($code == 4){$emessage = '<b style="color:#f00">Parse</b> ';}
+	elseif($code == 8){$emessage = '<b>Notice</b> ';}
+	elseif($code == 256){$emessage = '<b>User Error</b> ';}
+	elseif($code == 512){$emessage = '<b>User Warning</b> ';}
+	elseif($code == 1024){$emessage = '<b>User Notice</b> ';}
+	else{$emessage = '<b style="color:#f00>Fatal error</b> ';}
+	$emessage .= "($code): $msg in $file on line $line";
+	if(isset($GLOBALS['error'])){
+		$GLOBALS['error'] .= '<br>'.$emessage;
+	}else{
+		$GLOBALS['error'] = $emessage;
+	}
+	return true;
+}
+
+function gexit($message = '',$file = '', $line = 0) {
+	global $charset,$title,$extrahead,$allowcsscache,$errorinfo;
+	include template('error');
+	exit();
+}
+
+function output($content = '') {
+	//if(!$content){$content = ob_get_contents();}
+	//ob_end_clean();
+	//$GLOBALS['gzipcompress'] ? ob_start('ob_gzhandler') : ob_start();
+	//echo $content;
+	ob_end_flush();
+}
+
+//----------------------------------------
+//              输入输出函数
+//----------------------------------------
 
 function gstrfilter($str) {
 	if(is_array($str)) {
@@ -86,20 +93,6 @@ function template($file, $templateid = 0, $tpldir = '') {
 		}
 	}
 	return $objfile;
-}
-
-function gexit($message = '',$file = '', $line = 0) {
-	global $charset,$title,$extrahead,$allowcsscache,$errorinfo;
-	include template('error');
-	exit();
-}
-
-function output($content = '') {
-	//if(!$content){$content = ob_get_contents();}
-	//ob_end_clean();
-	//$GLOBALS['gzipcompress'] ? ob_start('ob_gzhandler') : ob_start();
-	//echo $content;
-	ob_end_flush();
 }
 
 function content($file = '') {
@@ -189,6 +182,17 @@ function openfile($filename){
 	return $filedb;
 }
 
+function compatible_json_encode($data){	//自动选择使用内置函数或者自定义函数，结合JSON.php可做到兼容低版本PHP
+	if(PHP_VERSION < '5.2.0'){
+		require_once GAME_ROOT.'./include/JSON.php';
+		$json = new Services_JSON();
+		$jdata = $json->encode($data);
+	} else{
+		$jdata = json_encode($data);
+	}
+	return $jdata;	
+}
+
 //function addnews($t = '', $n = '', $a = '',$b = '', $c = '', $d = '') {
 //	global $now,$db,$tablepre;
 //	$t = $t ? $t : $now;
@@ -217,7 +221,11 @@ function openfile($filename){
 //	}
 //}
 
-function naddnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
+//----------------------------------------
+//              重要游戏函数
+//----------------------------------------
+
+function addnews($t = 0, $n = '',$a='',$b='',$c = '', $d = '', $e = '') {
 	global $now,$db,$tablepre;
 	$t = $t ? $t : $now;
 	$newsfile = GAME_ROOT.'./gamedata/newsinfo.php';
@@ -266,17 +274,19 @@ function logsave($pid,$time,$log = '',$type = 's'){
 
 function load_gameinfo() {
 	global $now,$db,$tablepre;
-	global $gamenum,$gamestate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$weather,$hack,$validnum,$alivenum,$deathnum,$afktime,$optime;
+	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum;
 	$result = $db->query("SELECT * FROM {$tablepre}game");
 	$gameinfo = $db->fetch_array($result);
 	$gamenum = $gameinfo['gamenum'];
 	$gamestate = $gameinfo['gamestate'];
+	//$lastupdate = $gameinfo['lastupdate'];
 	$starttime = $gameinfo['starttime'];
 	$winmode = $gameinfo['winmode'];
 	$winner = $gameinfo['winner'];
 	$arealist = explode(',',$gameinfo['arealist']);
 	$areanum = $gameinfo['areanum'];
 	$areatime = $gameinfo['areatime'];
+	$areawarn = $gameinfo['areawarn'];
 	$validnum = $gameinfo['validnum'];
 	$alivenum = $gameinfo['alivenum'];
 	$deathnum = $gameinfo['deathnum'];
@@ -284,12 +294,13 @@ function load_gameinfo() {
 	$optime = $gameinfo['optime'];
 	$weather = $gameinfo['weather'];
 	$hack = $gameinfo['hack'];
+	$combonum = $gameinfo['combonum'];
 	return;
 }
 
 function save_gameinfo() {
 	global $now,$db,$tablepre;
-	global $gamenum,$gamestate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$weather,$hack,$validnum,$alivenum,$deathnum,$afktime,$optime;
+	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum;
 	if(!isset($gamenum)||!isset($gamestate)){return;}
 	if($alivenum < 0){$alivenum = 0;}
 	if($deathnum < 0){$deathnum = 0;}
@@ -298,12 +309,14 @@ function save_gameinfo() {
 	$gameinfo = Array();
 	$gameinfo['gamenum'] = $gamenum;
 	$gameinfo['gamestate'] = $gamestate;
-	$gameinfo['starttime'] = $starttime;
+	//$gameinfo['lastupdate'] = $now;//注意此处
+	$gameinfo['starttime'] = $starttime;	
 	$gameinfo['winmode'] = $winmode;
 	$gameinfo['winner'] = $winner;
 	$gameinfo['arealist'] = implode(',',$arealist);
 	$gameinfo['areanum'] = $areanum;
 	$gameinfo['areatime'] = $areatime;
+	$gameinfo['areawarn'] = $areawarn;
 	$gameinfo['validnum'] = $validnum;
 	$gameinfo['alivenum'] = $alivenum;
 	$gameinfo['deathnum'] = $deathnum;
@@ -311,6 +324,7 @@ function save_gameinfo() {
 	$gameinfo['optime'] = $optime;
 	$gameinfo['weather'] = $weather;
 	$gameinfo['hack'] = $hack;
+	$gameinfo['combonum'] = $combonum;
 	$db->array_update("{$tablepre}game",$gameinfo,1);
 	/*
 	$gameinfo = "<?php\n\nif(!defined('IN_GAME')){exit('Access Denied');}\n\n\$gamenum = {$gamenum};\n\$gamestate = {$gamestate};\n\$starttime = {$starttime};\n\$winmode = {$winmode};\n\$winner = '{$winner}';\n\$arealist = array(".implode(',',$arealist).");\n\$areanum = {$areanum};\n\$areatime = {$areatime};\n\$weather = {$weather};\n\$hack = {$hack};\n\$validnum = {$validnum};\n\$alivenum = {$alivenum};\n\$deathnum = {$deathnum};\n\$afktime = {$afktime};\n\$optime = {$optime};\n\n?>";
@@ -357,11 +371,12 @@ function getchat($last,$team='',$limit=0) {
 	global $db,$tablepre,$chatlimit,$chatinfo,$plsinfo;
 	$limit = $limit ? $limit : $chatlimit;
 	$result = $db->query("SELECT * FROM {$tablepre}chat WHERE cid>'$last' AND (type!='1' OR (type='1' AND recv='$team')) ORDER BY cid desc LIMIT $limit");
-
+	$chatdata = Array('lastcid' => $last, 'msg' => '');
 	if(!$db->num_rows($result)){$chatdata = array('lastcid' => $last, 'msg' => '');return $chatdata;}
 	
 	while($chat = $db->fetch_array($result)) {
-		if(!$chatdata['lastcid']){$chatdata['lastcid'] = $chat['cid'];}
+		//if(!$chatdata['lastcid']){$chatdata['lastcid'] = $chat['cid'];}
+		if($chatdata['lastcid'] < $chat['cid']){$chatdata['lastcid'] = $chat['cid'];}
 		$chat['msg'] = htmlspecialchars($chat['msg']);
 		if($chat['type'] == '0') {
 			$msg = "【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'<br>';
@@ -374,22 +389,43 @@ function getchat($last,$team='',$limit=0) {
 				$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']} 什么都没说就死去了 ".date("\(H:i:s\)",$chat['time']).'</span><br>';
 			}
 		} elseif($chat['type'] == '4') {
-			$msg = "<span class=\"yellow\">【{$chatinfo[$chat['type']]}】：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
+			$msg = "<span class=\"yellow\">【{$chatinfo[$chat['type']]}】{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
+		} elseif($chat['type'] == '5') {
+			$msg = "<span class=\"yellow\">【{$chatinfo[$chat['type']]}】{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		}
 		$chatdata['msg'][$chat['cid']] = $msg;
 	}
 	return $chatdata;
 }
 
-function compatible_json_encode($data){	//自动选择使用内置函数或者自定义函数，结合JSON.php可做到兼容低版本PHP
-	if(PHP_VERSION < '5.2.0'){
-		require_once GAME_ROOT.'./include/JSON.php';
-		$json = new Services_JSON();
-		$jdata = $json->encode($data);
-	} else{
-		$jdata = json_encode($data);
+function systemputchat($time,$type,$msg = ''){
+	global $db,$tablepre,$now;
+	if(!$time){$time = $now;}
+	if($type == 'areaadd' || $type == 'areawarn'){
+		$alist = $msg;
+		$msg = '';
+		global $plsinfo;
+		foreach($alist as $ar) {
+			$msg .= "$plsinfo[$ar] ";
+		}
+		if($type == 'areaadd'){
+			$msg = '增加禁区：'.$msg;
+		}elseif($type == 'areawarn'){
+			$msg = '警告，以下区域即将成为禁区：'.$msg;
+		}
+	}elseif($type == 'combo'){
+		$msg = '游戏进入连斗阶段！';
+	}elseif($type == 'comboupdate'){
+		$msg = '连斗死亡判断数修正为'.$msg.'人！';
+	}elseif($type == 'duel'){
+		$msg = '游戏进入死斗模式！';
+	}elseif($type == 'newgame'){
+		$msg = '游戏开始！';
+	}elseif($type == 'gameover'){
+		$msg = '游戏结束！';
 	}
-	return $jdata;	
+	$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,msg) VALUES ('5','$time','','$msg')");
+	return;
 }
 
 function getmicrotime(){

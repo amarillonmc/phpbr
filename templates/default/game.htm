@@ -4,7 +4,11 @@
 	<tr valign=top>
 		<td>
 			<div id="main">
-				{template profile}
+				<!--{if $main=='battle'}-->
+					{template battle}
+				<!--{else}-->
+					{template profile}
+				<!--{/if}-->
 			</div>
 		</td>
 		<td valign="top" rowspan="2">
@@ -28,6 +32,8 @@
 									{template rest}
 									<!--{elseif $itms0}-->
 									{template itemfind}
+									<!--{elseif $cmd}-->
+									$cmd
 									<!--{else}-->
 									{template command}
 									<!--{/if}-->

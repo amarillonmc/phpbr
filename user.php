@@ -44,15 +44,41 @@ if($mode == 'edit') {
 		$passqry = '';
 		$gamedata['innerHTML']['info'] .= $_INFO['pass_failure'].'<br />';
 	}
-	
-	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon',{$passqry}motto='$motto',  killmsg='$killmsg', lastword='$lastword' WHERE username='$cuser'");
+	$credits = $udata['credits'];$credits2 = $udata['credits2'];
+	if($exchg12||$exchg21){
+		//if(!is_numeric($exchg12)||$exchg12<0){$gamedata['innerHTML']['info'] .= $_INFO['credits_failure'];}
+		if(!is_numeric($exchg12)||!is_numeric($exchg21)||$exchg12<0||$exchg21<0){$gamedata['innerHTML']['info'] .= $_INFO['credits_failure'];}
+		elseif($exchg12 && $exchg21){$gamedata['innerHTML']['info'] .= $_INFO['credits_conflicts'];}
+		else{
+			if($exchg12){
+				$exchg12 = ceil($exchg12);
+				if($exchg12>$udata['credits']){$gamedata['innerHTML']['info'] .= $_INFO['credits_failure2'];}
+				elseif($exchg12 % 100){$gamedata['innerHTML']['info'] .= $_INFO['credits_failure3'];}
+				elseif($exchg12 > $credits/5){$gamedata['innerHTML']['info'] .= '不允许一次转换超过20%的积分！';}
+				else{
+					$credits -= $exchg12;
+					$credits2 += $exchg12/100;
+					$gamedata['innerHTML']['info'] .= $_INFO['credits_success'];
+				}
+			}elseif($exchg21){
+				$exchg21 = ceil($exchg21);
+				if($exchg21 > $credits2){$gamedata['innerHTML']['info'] .= $_INFO['credits_failure2'];}
+				else{
+					$credits2 -= $exchg21;
+					$credits += $exchg21*75;
+					$gamedata['innerHTML']['info'] .= $_INFO['credits_success'];
+				}
+			}
+		}
+	}
+	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon',{$passqry}motto='$motto',  killmsg='$killmsg', lastword='$lastword', credits='$credits', credits2='$credits2' WHERE username='$cuser'");
 	if($db->affected_rows()){
 		$gamedata['innerHTML']['info'] .= $_INFO['data_success'];
 	}else{
 		$gamedata['innerHTML']['info'] .= $_INFO['data_failure'];
 	}
-	
-	$gamedata['value']['opass'] = $gamedata['value']['npass'] = $gamedata['value']['rnpass'] = '';
+	$gamedata['innerHTML']['credits'] = $credits;$gamedata['innerHTML']['credits2'] = $credits2;
+	$gamedata['value']['opass'] = $gamedata['value']['npass'] = $gamedata['value']['rnpass'] = '';$gamedata['value']['exchg12'] = $gamedata['value']['exchg21'] = 0;
 	if(isset($error)){$gamedata['innerHTML']['error'] = $error;}
 	ob_clean();
 	$jgamedata = compatible_json_encode($gamedata);

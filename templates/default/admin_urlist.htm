@@ -25,7 +25,8 @@
 			<th>权限</th>
 			<th>最新游戏</th>
 			<th>ip</th>
-			<th>分数</th>
+			<th>分数1</th>
+			<th>分数2</th>
 			<th>性别</th>
 			<th>头像</th>
 			<th>社团</th>
@@ -44,7 +45,8 @@
 			<td>{$urgroup[$ur['groupid']]}</td>
 			<td>第{$ur['lastgame']}局</td>
 			<td>{$ur['ip']}</td>
-			<td>{$ur['credits']}</td>
+			<td><input type="text" name="credits_$n" size="6" maxlength="10" value="$ur['credits']" disabled="true"></td>
+			<td><input type="text" name="credits2_$n" size="6" maxlength="10" value="$ur['credits2']" disabled="true"></td>
 			<td>
 				<select name="gender_$n" disabled="true">
 					<option value="0" <!--{if $ur['gender']==0}-->selected<!--{/if}-->>$ursex['0']
@@ -67,7 +69,8 @@
 			<td>{$urgroup[$ur['groupid']]}</td>
 			<td>第{$ur['lastgame']}局</td>
 			<td>{$ur['ip']}</td>
-			<td>{$ur['credits']}</td>
+			<td><input type="text" name="credits_$n" size="6" maxlength="10" value="$ur['credits']"></td>
+			<td><input type="text" name="credits2_$n" size="6" maxlength="10" value="$ur['credits2']"></td>
 			<td>
 				<select name="gender_$n">
 					<option value="0" <!--{if $ur['gender']==0}-->selected<!--{/if}-->>$ursex['0']

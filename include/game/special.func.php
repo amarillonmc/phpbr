@@ -92,6 +92,11 @@ function adtsk(){
 		$mode = 'command';
 		return;
 	}
+	if (strpos($wepsk,'j')!==false){
+				$log.='多重武器不能改造。<br>';
+				$mode='command';
+				return;
+			}
 	if($club == 7){//电脑社，电气改造
 		$position = 0;
 		foreach(Array(1,2,3,4,5,6) as $imn){
@@ -149,9 +154,9 @@ function adtsk(){
 				$mode = 'command';
 				return;
 			}
-			$wep = '毒性'.$wep;
 			$wepsk .= 'p';
 			$log .= "<span class=\"yellow\">用毒药为{$wep}淬毒了，{$wep}增加了带毒属性！</span><br />";
+			$wep = '毒性'.$wep;
 			${'itms'.$position}-=1;
 			$itm = ${'itm'.$position};
 			if(${'itms'.$position} == 0){
@@ -172,12 +177,42 @@ function adtsk(){
 		return;
 	}
 }
-
+function syncro($sb){
+	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$name;
+	list($n,$k,$e,$s,$sk,$r)=explode('_',$sb);
+	$itm0=$n;$itmk0=$k;$itme0=$e;$itms0=$s;$itmsk0=$sk;
+	if ($r>0) {addnews($now,'syncmix',$name,$itm0);}
+	else {addnews($now,'overmix',$name,$itm0);}
+	include_once GAME_ROOT.'./include/game/itemmain.func.php';
+	itemget();
+	return;
+}
+function weaponswap(){
+	global $log,$mode,$club,$wep,$wepk,$wepe,$weps,$wepsk,$gamecfg;
+	if (strpos($wepsk,'j')===false){
+		$log.='你的武器不能变换。<br>';
+		$mode = 'command';
+		return;
+		}
+	$oldw=$wep;
+	$file = config('wepchange',$gamecfg);
+	$wlist = openfile($file);
+	$wnum = count($wlist)-1;
+	for ($i=0;$i<=$wnum;$i++){
+		list($on,$nn,$nk,$ne,$ns,$nsk) = explode(',',$wlist[$i]);
+		if ($wep==$on){
+			$wep=$nn;$wepk=$nk;$wepe=$ne;$weps=$ns;$wepsk=$nsk;
+			$log.="<span class=\"yellow\">{$oldw}</span>变换成了<span class=\"yellow\">{$wep}</span>。<br>";
+			return;
+		}
+	}
+	$log.="<span class=\"yellow\">{$oldw}</span>由于改造或其他原因不能变换。<br>";
+}
 function chginf($infpos){
 	global $log,$mode,$inf,$inf_sp,$inf_sp_2,$sp,$infinfo,$exdmginf,$club;
 	$normalinf = Array('h','b','a','f');
 	if(!$infpos){$mode = 'command';return;}
-	if($infpos == 'A'){  //包扎全身伤口
+	if($infpos == 'A'){  
 		if($club == 16){
 			$spdown = 0;
 			foreach($normalinf as $value){

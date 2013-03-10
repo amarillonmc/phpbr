@@ -14,6 +14,7 @@ CREATE TABLE bra_players (
   icon tinyint unsigned NOT NULL default '0',
   club tinyint unsigned NOT NULL default '0',
   endtime int(10) unsigned NOT NULL default '0',
+  cmdnum int unsigned NOT NULL default '0',
   cdsec int(10) unsigned NOT NULL default '0',
   cdmsec smallint(3) unsigned NOT NULL default '0',
   cdtime mediumint unsigned NOT NULL default '0',

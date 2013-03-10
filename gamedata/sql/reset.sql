@@ -8,11 +8,12 @@ CREATE TABLE bra_log (
   lid mediumint unsigned NOT NULL auto_increment,
   toid smallint unsigned NOT NULL default '0',
   type char(1) NOT NULL default '',
+  prcsd tinyint(1) unsigned NOT NULL default 0,
  `time` int(10) unsigned NOT NULL default '0',
- `log` text NOT NULL default '',
+ `log` varchar(255) NOT NULL default '',
 
   PRIMARY KEY  (lid)
-) ENGINE=MyISAM;
+) ENGINE=HEAP;
 
 --
 -- 表的结构 `bra_chat`
@@ -84,4 +85,22 @@ CREATE TABLE bra_newsinfo (
  `e` varchar(255) NOT NULL default '',
 
   PRIMARY KEY  (nid)
+) ENGINE=MyISAM;
+
+--
+-- 表的结构 `bra_gambling`
+-- 储存赌局的信息
+--
+
+DROP TABLE IF EXISTS bra_gambling;
+CREATE TABLE bra_gambling (
+  gid smallint unsigned NOT NULL auto_increment,
+  uid mediumint(8) unsigned NOT NULL default '0',
+  uname char(15) NOT NULL default '',
+  bid smallint unsigned NOT NULL default '0',
+  bname char(15) NOT NULL default '',
+  wager int unsigned NOT NULL default '0',
+  odds decimal(8,4) unsigned NOT NULL default '0',
+
+  PRIMARY KEY  (gid)
 ) ENGINE=MyISAM;

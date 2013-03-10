@@ -241,7 +241,7 @@ function makeclub() {
 	elseif($dice < 90)	{$club = 12;$wp = $wk = $wg = $wc = $wd = $wf = 50;}//全熟练50
 	elseif($dice < 95)	{$club = 13;$mhp = $mhp + 200;$hp = $mhp;}//生命上限提高200
 	elseif($dice < 100)	{$club = 14;$att = $att + 200;$def = $def + 200;}//攻防+100
-	elseif($dice <= 105) {$club = 16;}//回复量增加
+	elseif($dice <= 105) {$club = 18;}//回复量增加
 	else				{$club = makeclub();}
 	return $club;
 }

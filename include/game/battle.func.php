@@ -22,7 +22,8 @@ function findenemy(&$w_pdata) {
 
 	$w1 = substr($wepk,1,1);
 	$w2 = substr($wepk,2,1);
-	if(($w1 == 'G')&&($weps==$nosta)){ $w1 = 'P'; }
+	if (($w2=='0')||($w2=='1')) {$w2='';}
+	if((($w1 == 'G')||($w1=='J'))&&($weps==$nosta)){ $w1 = 'P'; }
 //	$cmd .= '<input type="radio" name="command" id="'.$w1.'" value="'.$w1.'" checked><a onclick=sl("'.$w1.'"); href="javascript:void(0);">'."$attinfo[$w1] (${$skillinfo[$w1]})".'</a><br>';
 //	if($w2) {
 //		$cmd .= '<input type="radio" name="command" id="'.$w2.'" value="'.$w2.'"><a onclick=sl("'.$w2.'"); href="javascript:void(0);">'."$attinfo[$w2] (${$skillinfo[$w2]})".'</a><br>';

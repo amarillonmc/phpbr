@@ -161,7 +161,7 @@ function writeover($filename,$data,$method="rb+",$iflock=1,$check=1,$chmod=1){
 			fwrite($handle,$data);
 			if($method=="rb+") ftruncate($handle,strlen($data));
 			fclose($handle); 
-		} else {exit ('Write file error.');}
+		} else {var_dump($filename);exit ('Write file error.');}
 	} else {
 		fwrite($handle,$data);
 		if($method=="rb+") ftruncate($handle,strlen($data));
@@ -265,6 +265,7 @@ function logsave($pid,$time,$log = '',$type = 's'){
 	global $db,$tablepre;
 	$ldata['toid']=$pid;
 	$ldata['type']=$type;
+	$ldata['prcsd']=0;
 	$ldata['time']=$time;
 	$ldata['log']=$log;
 	//$db->query("INSERT INTO {$tablepre}log (toid,type,`time`,log) VALUES ('$pid','$type','$time','$log')");
@@ -274,7 +275,7 @@ function logsave($pid,$time,$log = '',$type = 's'){
 
 function load_gameinfo() {
 	global $now,$db,$tablepre;
-	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum;
+	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum,$gamevars;
 	$result = $db->query("SELECT * FROM {$tablepre}game");
 	$gameinfo = $db->fetch_array($result);
 	$gamenum = $gameinfo['gamenum'];
@@ -294,13 +295,14 @@ function load_gameinfo() {
 	$optime = $gameinfo['optime'];
 	$weather = $gameinfo['weather'];
 	$hack = $gameinfo['hack'];
+	$gamevars = $gameinfo['gamevars'];
 	$combonum = $gameinfo['combonum'];
 	return;
 }
 
 function save_gameinfo() {
 	global $now,$db,$tablepre;
-	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum;
+	global $gamenum,$gamestate,$lastupdate,$starttime,$winmode,$winner,$arealist,$areanum,$areatime,$areawarn,$validnum,$alivenum,$deathnum,$afktime,$optime,$weather,$hack,$combonum,$gamevars;
 	if(!isset($gamenum)||!isset($gamestate)){return;}
 	if($alivenum < 0){$alivenum = 0;}
 	if($deathnum < 0){$deathnum = 0;}
@@ -323,6 +325,7 @@ function save_gameinfo() {
 	$gameinfo['afktime'] = $afktime;
 	$gameinfo['optime'] = $optime;
 	$gameinfo['weather'] = $weather;
+	$gameinfo['gamevars'] = $gamevars;
 	$gameinfo['hack'] = $hack;
 	$gameinfo['combonum'] = $combonum;
 	$db->array_update("{$tablepre}game",$gameinfo,1);
@@ -382,6 +385,8 @@ function getchat($last,$team='',$limit=0) {
 			$msg = "【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'<br>';
 		} elseif($chat['type'] == '1') {
 			$msg = "<span class=\"clan\">【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
+		} elseif($chat['type'] == '2') {
+			$msg = "<span class=\"lime\">【{$chatinfo[$chat['type']]}】{$chat['send']}：{$chat['msg']}".date("\(H:i:s\)",$chat['time']).'</span><br>';
 		} elseif($chat['type'] == '3') {
 			if ($chat['msg']){
 				$msg = "<span class=\"red\">【{$plsinfo[$chat['recv']]}】{$chat['send']}：{$chat['msg']} ".date("\(H:i:s\)",$chat['time']).'</span><br>';
@@ -396,6 +401,52 @@ function getchat($last,$team='',$limit=0) {
 		$chatdata['msg'][$chat['cid']] = $msg;
 	}
 	return $chatdata;
+}
+
+function storyputchat($time,$type){
+	global $db,$tablepre,$now,$syschatinfo,$gamestate,$rdown,$bdown,$ldown,$kdown;
+	if(!$time){$time = $now;}
+	if($type == 'areawarn'){
+		if($gamestate == 20){
+			$type = 'areawarn20';
+		}else{
+			$type = 'areawarn40';
+		}
+	}elseif($type == 'areaadd'){
+		if($gamestate == 20){
+			$type = 'areaadd20';
+		}else{
+			$type = 'areaadd40';
+		}
+	}
+	$msgs = Array();
+	$chat = $syschatinfo[$type];
+	$list = Array('r' => 0, 'b' => 0, 'l' => 0, 'k'=> 0);
+	if($rdown){$list['r'] = 1;}
+	if($bdown){$list['b'] = 1;}	
+	if($ldown){$list['l'] = 1;}
+	if($kdown){$list['k'] = 1;}
+	foreach($chat as $val){
+		$judge = $val[0];
+		$flag = true;
+		for($i=0;$i < strlen($judge);$i+=2){
+			$judge0 = substr($judge,$i,1);
+			$judge1 = substr($judge,$i+1,1);
+			if($list[$judge0] != $judge1){
+				$flag = false;
+				break;
+			}
+		}
+		if($flag){$msgs[] = $val;}
+	}
+	if(!empty($msgs)){
+		shuffle($msgs);
+		$msgs = $msgs[0];
+		$send = $msgs[1];
+		$msg = $msgs[2];
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,msg) VALUES ('2','$time','$send','$msg')");
+	}		
+	return;
 }
 
 function systemputchat($time,$type,$msg = ''){

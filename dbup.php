@@ -39,13 +39,10 @@ require config('resources',$gamecfg);
 require config('gamecfg',$gamecfg);
 
 //include GAME_ROOT.'./gamedata/gameinfo.php';
-//$q = "ALTER TABLE {$tablepre}game ADD lastupdate int(10) unsigned NOT NULL default '0' AFTER gamestate";
-//echo $q.'<br>';
-//echo $db->query($q);
-$r = "ALTER TABLE {$tablepre}players ADD ss smallint(5) unsigned NOT NULL default '0' AFTER msp";
-echo $r.'<br>';
-echo $db->query($r);
-$s = "ALTER TABLE {$tablepre}players ADD mss smallint(5) unsigned NOT NULL default '0' AFTER ss";
-echo $r.'<br>';
-echo $db->query($r);
+$q = "ALTER TABLE {$tablepre}winners ADD killnum2 smallint unsigned NOT NULL default 0 AFTER killnum";
+echo $q.'<br>';
+echo $db->query($q);
+$q = "ALTER TABLE {$tablepre}users ADD credits2 mediumint NOT NULL default 0 AFTER credits";
+echo $q.'<br>';
+echo $db->query($q);
 ?>

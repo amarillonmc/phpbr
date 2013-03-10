@@ -255,7 +255,6 @@ function showData(sdata){
 			}
 		}
 		sDi = shwData['innerHTML'];
-		
 		for(var id in sDi){
 			if($(id)!=null){
 				if(sDi['id'] !== ''){
@@ -263,6 +262,13 @@ function showData(sdata){
 				}else{
 					$(id).innerHTML = '';
 				}
+			}
+		}
+		sDd = shwData['display'];
+		for(var id in sDd){
+			if($(id)!=null){
+				
+				$(id).style.display = sDd[id];
 			}
 		}
 	}
@@ -327,3 +333,4 @@ function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
 	}
 }
 
+//1

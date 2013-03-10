@@ -24,7 +24,9 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 		$state = 25;
 	} elseif ($death == 'F') {
 		$state = 29;
-	} elseif ($death == 'poison') {
+	} elseif ($death == 'J') {
+		$state = 23;
+	}elseif ($death == 'poison') {
 		$state = 26;
 	} elseif ($death == 'trap') {
 		$state = 27;
@@ -102,6 +104,8 @@ function kill($death, $dname, $dtype = 0, $dpid = 0, $annex = '') {
 	} elseif ($death == 'K') {
 		$w_state = 22;
 	} elseif ($death == 'G') {
+		$w_state = 23;
+	} elseif ($death == 'J') {
 		$w_state = 23;
 	} elseif ($death == 'C') {
 		$w_state = 24;

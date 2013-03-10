@@ -48,7 +48,7 @@ function move($moveto = 99) {
 	$moved = false;
 	if($weather == 11) {//龙卷风
 		if($hack){$pls = rand(0,sizeof($plsinfo)-1);}
-		else {$pls = rand($areanum+1,sizeof($plsinfo)-1);}
+		else {$pls = rand($areanum+1,sizeof($plsinfo)-1);$pls=$arealist[$pls];}
 		$log = ($log . "龙卷风把你吹到了<span class=\"yellow\">$plsinfo[$pls]</span>！<br>");
 		$moved = true;
 	} elseif($weather == 13) {//冰雹
@@ -301,9 +301,9 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect,$action;
+	global $art,$pls,$now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect,$action;
 	$event_dice = rand(0,99);
-	if($event_dice < $event_obbs){
+	if(($event_dice < $event_obbs)||(($art!="Untainted Glory")&&($pls==34)&&($gamestate != 50))){
 		include_once GAME_ROOT.'./include/game/event.func.php';
 		event();
 		$mode = 'command';
@@ -433,7 +433,7 @@ function discover($schmode = 0) {
 							findteam($edata);
 							return;
 						} else {
-							$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf);
+							$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf,$edata['pose']);
 							$bid = $edata['pid'];
 							$active_dice = rand(0,99);
 							if($active_dice <  $active_r) {

@@ -10,7 +10,6 @@ function event(){
 
 	$dice1 = rand(0,5);
 	$dice2 = rand(20,40);//原为rand(5,10)
-	
 	if($pls == 0) { //无月之影
 	} elseif($pls == 1) { //端点
 	} elseif($pls == 2) { //现RF高校
@@ -229,8 +228,17 @@ function event(){
 	} elseif($pls == 32) { //SCP实验室
 	} elseif($pls == 33) { //雏菊之丘
 		global $gamestate;
-		$dice=rand(0,10);
-		if ($dice < 3){
+		$dice=rand(0,200);
+		if ($dice==8){
+			global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
+			$log = ($log . "少女向你扔来一个东西。<BR>");
+			$itm0='黑色发卡';
+			$itmk0='Y';
+			$itme0=1;
+			$itms0=1;
+			include_once GAME_ROOT . './include/game/itemmain.func.php';
+			itemget();
+		}elseif ($dice < 60){
 			if ($rp < 40){
 				$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
 				$rp = $rp + rand(10,25);
@@ -272,7 +280,7 @@ function event(){
 				death_kagari(3);
 				//$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
 			}
-		}elseif ($dice < 6){
+		}elseif ($dice < 120){
 			if ($rp < 40){
 				$log = ($log . "少女抬头看了你一眼，貌似对你的举动很感兴趣的样子。<BR>");
 				$rp = $rp + rand(50,100);
@@ -301,7 +309,7 @@ function event(){
 				death_kagari(3);
 				//$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
 			}		
-		}elseif ($dice < 9){
+		}elseif ($dice < 180){
 			if ($rp < 40){
 				$log = ($log . "少女抬头开始注意你的一举一动。<BR>");
 				$rp = $rp + rand(200,400);
@@ -391,7 +399,18 @@ function event(){
 			}		
 		}
 		//echo $rp;
-	} else {
+	}elseif ($pls==34){//英灵殿
+		global $art,$plsinfo,$gamestate;
+		if (($art!='Untainted Glory')&&($gamestate != 50)){
+			$rpls=34;
+			while ($rpls==34){
+				if($hack){$rpls = rand(0,sizeof($plsinfo)-1);}
+				else {$rpls = rand($areanum+1,sizeof($plsinfo)-1);}
+			} 
+			$pls=$rpls;
+			$log.="殿堂的深处传来一个声音：<span class=\"evergreen\">“你还没有进入这里的资格”。</span><br>一股未知的力量包围了你，当你反应过来的时候，发现自己正身处<span class=\"yellow\">{$plsinfo[$rpls]}</span>。<br>";
+		}
+	}	else {
 	}
 
 	if($hp<=0 && $state < 10){

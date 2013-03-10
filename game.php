@@ -43,13 +43,16 @@ $log = '';
 $chatdata = getchat(0,$teamID);
 
 //读取玩家互动信息
-$result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
-
+$result = $db->query("SELECT lid,time,log FROM {$tablepre}log WHERE toid = '$pid' AND prcsd = 0 ORDER BY time,lid");
+$llist = '';
 while($logtemp = $db->fetch_array($result)){
 	$log .= date("H:i:s",$logtemp['time']).'，'.$logtemp['log'].'<br />';
+	$llist .= $logtemp['lid'].',';
 }
-$db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
-
+if(!empty($llist)){
+	$llist = '('.substr($llist,0,-1).')';
+	$db->query("UPDATE {$tablepre}log SET prcsd=1 WHERE toid = '$pid' AND lid IN $llist");
+}
 if($hp > 0){//判断冷却时间是否过去
 	//显示枪声信息
 	if(($now <= $noisetime+$noiselimit)&&$noisemode&&($noiseid!=$pid)&&($noiseid2!=$pid)) {

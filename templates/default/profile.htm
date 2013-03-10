@@ -106,7 +106,7 @@
 						<span>
 							<select id="pose" name="pose" onchange="$('mode').value='special';$('command').value=$('pose').value;postCmd('gamecmd','command.php');return false;" <!--{if CURSCRIPT != 'game' || $mode != 'command'}-->disabled<!--{/if}-->>
 								<!--{loop $poseinfo $key $value}-->
-									<!--{if $value}-->
+									<!--{if ($value)&&($value!='强袭姿态')}-->
 									<option value="pose$key"<!--{if $pose == $key}-->selected<!--{/if}-->>$value
 									<!--{/if}-->
 								<!--{/loop}-->
@@ -139,7 +139,7 @@
 				<tr>
 					<td class="b2">■■：</td>
 					<td class="b3">
-						■■■应■回■■■。</td>
+						■■■■■■■■■</td>
 					<td class="b2"><span>{lang ss}</span></td>
 					<td class="b3"><span class="<!--{if $ss <= $mss*0.2}-->red<!--{elseif $ss <= $mss*0.5}-->yellow<!--{else}-->clan<!--{/if}-->">$ss / $mss</span></td>
 					<td class="b2"><span>{lang karma}</span></td>

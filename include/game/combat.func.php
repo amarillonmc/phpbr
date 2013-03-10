@@ -6,7 +6,7 @@ if (! defined ( 'IN_GAME' )) {
 
 function combat($active = 1, $wep_kind = '') {
 	global $log, $mode, $main, $cmd, $battle_title, $db, $tablepre, $pls, $message, $now, $w_log, $nosta, $hdamage, $hplayer;
-	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp;
+	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp,$mhp;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
 	global $edata, $w_pid, $w_name, $w_pass, $w_type, $w_endtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5,$w_itm6, $w_itmk6, $w_itme6, $w_itms6, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5, $w_itmsk6;
@@ -18,7 +18,7 @@ function combat($active = 1, $wep_kind = '') {
 	if (! $wep_kind) {
 		$w1 = substr ( $wepk, 1, 1 );
 		$w2 = substr ( $wepk, 2, 1 );
-		if (($w1 == 'G') && ($weps == $nosta)) {
+		if ((($w1 == 'G')||($w1=='J')) && ($weps == $nosta)) {
 			$wep_kind = $w2 ? $w2 : 'P';
 		} else {
 			$wep_kind = $w1;
@@ -96,7 +96,7 @@ function combat($active = 1, $wep_kind = '') {
 			global $rangeinfo;
 			$w_w1 = substr ( $w_wepk, 1, 1 );
 			$w_w2 = substr ( $w_wepk, 2, 1 );
-			if (($w_w1 == 'G') && ($w_weps == $nosta)) {
+			if ((($w_w1 == 'G')||($w_w1=='J')) && ($w_weps == $nosta)) {
 				$w_wep_kind = $w_w2 ? $w_w2 : 'P';
 			} else {
 				$w_wep_kind = $w_w1;
@@ -142,7 +142,7 @@ function combat($active = 1, $wep_kind = '') {
 		
 		$w_w1 = substr ( $w_wepk, 1, 1 );
 		$w_w2 = substr ( $w_wepk, 2, 1 );
-		if (($w_w1 == 'G') && ($w_weps == $nosta)) {
+		if ((($w_w1 == 'G')||($w_w1=='J')) && ($w_weps == $nosta)) {
 			$w_wep_kind = $w_w2 ? $w_w2 : 'P';
 		} else {
 			$w_wep_kind = $w_w1;
@@ -212,7 +212,7 @@ function combat($active = 1, $wep_kind = '') {
 	if ($w_hp <= 0 && ($w_type == 0 || $w_club != 99)) {
 		$w_bid = $pid;
 		$w_hp = 0;
-		$killnum ++;
+		if ($w_type==0){$killnum ++;};
 		
 		include_once GAME_ROOT . './include/state.func.php';
 		$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
@@ -254,29 +254,25 @@ function combat($active = 1, $wep_kind = '') {
 
 function attack($wep_kind = 'N', $active = 0) {
 	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate,$specialrate;
-	global $name, $lvl, $gd, $pid, $pls, $hp, $sp, $rage, $exp, $club, $att, $inf, $message;
+	global $name, $lvl, $gd, $pid, $pls, $hp, $sp, $rage, $exp, $club, $att, $inf, $message,$w_mhp;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
-	global $w_arbe, $w_arbsk, $w_arhe, $w_arae, $w_arfe;
+	global $w_arbe, $w_arbsk, $w_arhe, $w_arae, $w_arfe,$w_wepk;
 	global $artk, $arhsk, $arbsk, $arask, $arfsk, $artsk;
 	global $w_hp, $w_rage, $w_lvl, $w_pid, $w_gd, $w_name, $w_type, $w_inf, $w_def;
 	global $w_wepsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_artk;
+	global $wp,$wk,$wc,$wg,$wd,$wf;
 	
 	//npc_changewep();
 	$is_wpg = false;
-	if ((strpos ( $wepk, 'G' ) == 1) && ($weps == $nosta)) {
-		if (($wep_kind == 'G') || ($wep_kind == 'P')) {
+	$watt=-1;
+	if (((strpos ( $wepk, 'G' ) == 1)||(strpos($wepk,'J')==1)) && ($weps == $nosta)) {
+		if (($wep_kind == 'G') || ($wep_kind == 'P')||($wep_kind=='J')) {
 			$wep_kind = 'P';
 			$is_wpg = true;
 			$watt = round ( $wepe / 5 );
 		} else {
 			$watt = $wepe;
 		}
-	} elseif ($wep_kind == 'N') {
-		global $wp;
-		$watt =  round ($wp*2/3);
-		
-	} else {
-		$watt = $wepe * 2;
 	}
 	
 	$log .= "使用{$wep}<span class=\"yellow\">$attinfo[$wep_kind]</span>{$w_name}！<br>";
@@ -284,7 +280,19 @@ function attack($wep_kind = 'N', $active = 0) {
 	$att_key = getatkkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk, $is_wpg );
 	$w_def_key = getdefkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk );
 	global ${$skillinfo [$wep_kind]};
-	$wep_skill = & ${$skillinfo [$wep_kind]};
+	$add_skill = & ${$skillinfo [$wep_kind]};
+	if ($club==18){
+		$wep_skill=round(${$skillinfo [$wep_kind]}*0.7+($wp+$wk+$wc+$wg+$wd+$wf)*0.3);
+	}else{
+		$wep_skill=${$skillinfo [$wep_kind]};
+	}
+	if ($watt==-1){
+		if ($wep_kind == 'N') {
+			$watt =  round ($wep_skill*2/3);	
+		} else {
+			$watt = $wepe * 2;
+		}
+	}
 	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $club, $inf );
 	
 	$damage_p = get_damage_p ( $rage, $att_key, 0, '你' , $club, $message);
@@ -308,11 +316,21 @@ function attack($wep_kind = 'N', $active = 0) {
 			if ($wep_kind == 'F') {
 				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
 			}
+			if ($wep_kind == 'J') {
+				$adddamage=$w_mhp/3;
+				if ($adddamage>20000) {$adddamage=10000;}
+				$damage += round($wepe*2/3+$adddamage);
+				//$log.="你大爷我".$adddamage;
+			}
 			checkarb ( $damage, $wep_kind, $att_key, $w_def_key ,1);
 			$damage *= $damage_p;
 			
 			$damage = $damage > 1 ? round ( $damage ) : 1;
 			$damage *= $gender_dmg_p;
+		}
+		if ($w_wepk=='WJ'){
+			$log.="<span class=\"red\">由于{$w_name}手中的武器过于笨重，受到的伤害大增！真是大快人心啊！</span><br>";
+			$damage+=round($damage*0.5);
 		}
 		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
@@ -361,9 +379,9 @@ function attack($wep_kind = 'N', $active = 0) {
 	
 	addnoise ( $wep_kind, $wepsk, $now, $pls, $pid, $w_pid, $wep_kind );
 	if($club == 10){
-		$wep_skill +=2;
+		$add_skill +=2;
 	}else{
-		$wep_skill +=1;
+		$add_skill +=1;
 	}
 	return $damage;
 }
@@ -372,31 +390,45 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	global $now, $nosta, $log, $infobbs, $infinfo, $attinfo, $skillinfo,  $wepimprate,$specialrate;
 	global $w_name, $w_lvl, $w_gd, $w_pid, $pls, $w_hp, $w_sp, $w_rage, $w_exp, $w_club, $w_att, $w_inf;
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk;
-	global $arbe, $arbsk, $arhe, $arae, $arfe;
+	global $arbe, $arbsk, $arhe, $arae, $arfe,$wepk;
 	global $w_artk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk;
 	global $hp, $rage, $lvl, $pid, $gd, $name, $inf, $att, $def;
 	global $wepsk, $arhsk, $arask, $arfsk, $artsk, $artk;
-	global $w_type, $w_sNo, $w_killnum;
+	global $w_type, $w_sNo, $w_killnum,$mhp;
+	global $w_wp,$w_wk,$w_wc,$w_wg,$w_wf,$w_wd;
 	
 	//npc_changewep();
+	$watt=-1;
 	$w_wep_temp = $w_wep;
 	$is_wpg = false;
-	if ((strpos ( $w_wepk, 'G' ) == 1) && ($w_wep_kind == 'P')) {
+	if (((strpos ( $w_wepk, 'G' ) == 1)||(strpos($w_wepk,'J')==1)) && ($w_wep_kind == 'P')) {
 		$watt = round ( $w_wepe / 5 );
 		$is_wpg = true;
-	} elseif ($w_wep_kind == 'N') {
-		global $w_wp;
-		$watt =  round ($w_wp*2/3);
-	} else {
-		$watt = $w_wepe * 2;
-	}
+	} 
 	
 	$log .= "{$w_name}使用{$w_wep}<span class=\"yellow\">$attinfo[$w_wep_kind]</span>你！<br>";
 	
 	$w_att_key = getatkkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk, $is_wpg );
 	$def_key = getdefkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk );
 	global ${'w_' . $skillinfo [$w_wep_kind]};
-	$w_wep_skill = & ${'w_' . $skillinfo [$w_wep_kind]};
+	$w_add_skill = & ${'w_' . $skillinfo [$w_wep_kind]};
+	if ($w_club==18){
+		$w_wep_skill=round(${'w_' .$skillinfo [$w_wep_kind]}*0.5+($w_wp+$w_wk+$w_wc+$w_wg+$w_wd+$w_wf)*0.5);
+	}else{
+		$w_wep_skill=${'w_' .$skillinfo [$w_wep_kind]};
+	}
+	
+	if ($watt==-1){
+	if ($w_wep_kind == 'N') {
+		global $w_wp;
+		$watt =  round ($w_wep_skill*2/3);
+	} else {
+		$watt = $w_wepe * 2;
+	}
+	}
+	
+
+	
 	$hitrate = get_hitrate ( $w_wep_kind, $w_wep_skill, $w_club, $w_inf );
 	$damage_p = get_damage_p ( $w_rage, $w_att_key, $w_type, $w_name , $w_club);
 	$hit_time = get_hit_time ( $w_att_key, $w_wep_skill, $hitrate, $w_wep_kind, $w_weps, $infobbs [$w_wep_kind], $wepimprate [$w_wep_kind], $is_wpg );
@@ -421,13 +453,22 @@ function defend($w_wep_kind = 'N', $active = 0) {
 			if ($w_wep_kind == 'F') {
 				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
 			}
+			if ($w_wep_kind == 'J') {
+				$adddamage=$mhp/3;
+				if ($adddamage>20000) {$adddamage=10000;}
+				$damage +=round($w_wepe*2/3);
+				//$log.="你大爷我";
+			}
 			checkarb ( $damage, $w_wep_kind, $w_att_key, $def_key );
 			$damage *= $damage_p;
 			
 			$damage = $damage > 1 ? round ( $damage ) : 1;
 			$damage *= $gender_dmg_p;
 		}
-		
+		if ($wepk=='WJ'){
+			$log.="<span class=\"red\">由于你手中的武器过于笨重，受到的伤害大增！真是大快人心啊！</span><br>";
+			$damage+=round($damage*0.5);
+		}
 		if ($hit_time [1] > 1) {
 			$d_temp = $damage;
 			if ($hit_time [1] == 2) {
@@ -485,9 +526,9 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	addnoise ( $w_wep_kind, $w_wepsk, $now, $pls, $w_pid, $pid, $w_wep_kind );
 	
 	if($w_club == 10){
-		$w_wep_skill +=2;
+		$w_add_skill +=2;
 	}else{
-		$w_wep_skill +=1;
+		$w_add_skill +=1;
 	}
 	
 	return $damage;
@@ -677,11 +718,11 @@ function checkarb(&$dmg, $w, $aky, $dky, $active = 0) {
 
 function checkdmgdef($dmg, $aky, $dky, $active) {
 	global $log, $name, $w_name;
-	if (strpos ( $aky, 'h' ) !== false){
-		if($active){$nm = '你';}
-		else{$nm = $w_name;}
-		$flag = 1;
-	}elseif (strpos ( $dky, 'h' ) !== false){
+	//if (strpos ( $aky, 'h' ) !== false){
+	//	if($active){$nm = '你';}
+	//	else{$nm = $w_name;}
+	//	$flag = 1;
+	if (strpos ( $dky, 'h' ) !== false){
 		if($active){$nm = $w_name;}
 		else{$nm = '你';}
 		$flag = 1;
@@ -813,12 +854,15 @@ function getdefkey($w, $ah, $ab, $aa, $af, $at, $atkind) {
 		}
 	}
 	if (strpos ( $eqpkey, 'A' ) !== false) {
-		$defcdt .= '_P_K_G_C_D_F';
+		$defcdt .= '_P_K_G_C_D_F_J';
 	} else {
 		foreach(Array('P','K','G','C','D','F') as $value){
 			if (strpos ( $eqpkey, $value ) !== false) {
 				$defcdt .= '_'.$value;
 			}
+		}
+		if (strpos($eqpkey,'G')!== false){
+			$defcdt.='_J';
 		}
 	}
 	foreach ($ex_dmg_def as $value) {
@@ -880,7 +924,7 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 				}
 				$wk_dmg_p = $ex_good_wep [$ex_dmg_sign] == $wk ? 2 : 1;
 				$e_dmg = $bdmg + $we/$wdmg + $ws/$sdmg; 
-				if($mdmg>0){
+				if(($mdmg>0)&&($wk!='H')){
 					//$e_dmg = $e_dmg > $mdmg ? round($wk_dmg_p*$mdmg*rand(100 - $fluc, 100 + $fluc)/100) : round($wk_dmg_p*$e_dmg*rand(100 - $fluc, 100 + $fluc)/100);
 					$e_dmg = round($wk_dmg_p*$mdmg*($e_dmg/($e_dmg+$mdmg/2))*rand(100 - $fluc, 100 + $fluc)/100);
 				} else{
@@ -1074,7 +1118,7 @@ function check_GCDF_wep($nm, $ht, &$wp, $wp_kind, &$wk, &$we, &$ws, &$wsk) {
 			$we = 0;
 			$ws = $nosta;
 		}
-	} elseif (($wp_kind == 'G') && ($ws != $nosta)) {
+	} elseif ((($wp_kind == 'G')||($wp_kind == 'J')) && ($ws != $nosta)) {
 		$ws -= $ht;
 		if ($nm == '你') {
 			$log .= "{$nm}的{$wp}的弹药数减少了{$ht}。<br>";
@@ -1198,6 +1242,16 @@ function addnoise($wp_kind, $wsk, $ntime, $npls, $nid1, $nid2, $nmode) {
 		$noisemode = 'D';
 		save_combatinfo ();
 	}
+	if (strlen($wp_kind)>=3){
+		global $noisetime, $noisepls, $noiseid, $noiseid2, $noisemode,$wep;
+		$noisetime = $ntime;
+		$noisepls = $npls;
+		$noiseid = $nid1;
+		$noiseid2 = $nid2;
+		$noisemode = $wp_kind;
+		save_combatinfo ();
+	}
+	
 	return;
 }
 

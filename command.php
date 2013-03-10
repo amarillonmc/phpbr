@@ -46,11 +46,16 @@ $gamedata = array();
 init_playerdata();
 
 //读取玩家互动信息
-$result = $db->query("SELECT time,log FROM {$tablepre}log WHERE toid = '$pid' ORDER BY time,lid");
+$result = $db->query("SELECT lid,time,log FROM {$tablepre}log WHERE toid = '$pid' AND prcsd = 0 ORDER BY time,lid");
+$llist = '';
 while($logtemp = $db->fetch_array($result)){
 	$log .= date("H:i:s",$logtemp['time']).'，'.$logtemp['log'].'<br />';
+	$llist .= $logtemp['lid'].',';
 }
-$db->query("DELETE FROM {$tablepre}log WHERE toid = '$pid'");
+if(!empty($llist)){
+	$llist = '('.substr($llist,0,-1).')';
+	$db->query("UPDATE {$tablepre}log SET prcsd=1 WHERE toid = '$pid' AND lid IN $llist");
+}
 
 //var_dump($_POST);
 if($hp > 0){
@@ -73,11 +78,10 @@ if($hp > 0){
 		$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
 	}
 	
-	if($coldtimeon && $rmcdtime > 0 && (strpos($command,'move')===0 || strpos($command,'search')===0 || strpos($command,'itm')===0)){
+	if($coldtimeon && $rmcdtime > 0 && (strpos($command,'move')===0 || strpos($command,'search')===0 || strpos($command,'itm')===0 || strpos($sp_cmd,'sp_weapon')===0 || strpos($command,'song')===0)){
 		$log .= '<span class="yellow">冷却时间尚未结束！</span><br>';
 		$mode = 'command';
 	}else{
-		
 		//进入指令判断
 		if($mode !== 'combat' && $mode !== 'corpse' && strpos($action,'pacorpse')===false && $mode !== 'senditem'){
 			$action = '';
@@ -108,7 +112,16 @@ if($hp > 0){
 				}
 			} elseif($command == 'itemmain') {
 				$mode = $itemcmd;
-			} elseif($command == 'special') {
+			} elseif($command == 'song') {
+				$sname=trim(trim($art,'【'),'】');
+				include_once GAME_ROOT.'./include/game/song.inc.php';
+				//$log.=$sname;
+				sing($sname);
+			}elseif($command == 'sync') {
+				include_once GAME_ROOT.'./include/game/special.func.php';
+				syncro($sp_cmd);
+				$mode='command';
+			}elseif($command == 'special') {
 				if($sp_cmd == 'sp_word'){
 					include_once GAME_ROOT.'./include/game/special.func.php';
 					getword();
@@ -117,6 +130,13 @@ if($hp > 0){
 					include_once GAME_ROOT.'./include/game/special.func.php';
 					adtsk();
 					$mode = 'command';
+				}elseif($sp_cmd == 'sp_weapon'){
+					include_once GAME_ROOT.'./include/game/special.func.php';
+					weaponswap();
+					$mode = 'command';
+					if($coldtimeon){$cmdcdtime=$weaponswapcoldtime;}
+				}elseif($sp_cmd == 'oneonone'){
+					$mode='oneonone';
 				}else{
 					$mode = $sp_cmd;
 				}
@@ -193,12 +213,12 @@ if($hp > 0){
 		} elseif($mode == 'rest') {
 			include_once GAME_ROOT.'./include/state.func.php';
 			rest($command);
-		} elseif($mode == 'chgpassword') {
-			include_once GAME_ROOT.'./include/game/special.func.php';
-			chgpassword($oldpswd,$newpswd,$newpswd2);
-		} elseif($mode == 'chgword') {
-			include_once GAME_ROOT.'./include/game/special.func.php';
-			chgword($newmotto,$newlastword,$newkillmsg);
+//		} elseif($mode == 'chgpassword') {
+//			include_once GAME_ROOT.'./include/game/special.func.php';
+//			chgpassword($oldpswd,$newpswd,$newpswd2);
+//		} elseif($mode == 'chgword') {
+//			include_once GAME_ROOT.'./include/game/special.func.php';
+//			chgword($newmotto,$newlastword,$newkillmsg);
 		} elseif($mode == 'corpse') {
 			include_once GAME_ROOT.'./include/game/itemmain.func.php';
 			getcorpse($command);
@@ -225,6 +245,14 @@ if($hp > 0){
 				$log .= '嗯，暂时还不想杀人。<br>你合上了■DeathNote■。<br>';
 				$mode = 'command';
 			}
+		}elseif($mode == 'oneonone') {
+			if($dnname){
+						include_once GAME_ROOT.'./include/game/special.func.php';
+						oneonone($dnname,$name);
+					} else {
+						$log .= '约战取消。<br>';
+						$mode = 'command';
+					}
 		} else {
 			$mode = 'command';
 		}
@@ -255,6 +283,7 @@ if($hp > 0){
 			$rmcdtime = $cmdcdtime;
 		}
 		$endtime = $now;
+		$cmdnum ++;
 		//var_dump($pdata['action']);
 		player_save($pdata);
 		//$db->query("UPDATE {$tablepre}players SET endtime='$now',cdsec='$cdsec',cdmsec='$cdmsec',cdtime='$cdtime',club='$club',hp='$hp',mhp='$mhp',sp='$sp',msp='$msp',att='$att',def='$def',pls='$pls',lvl='$lvl',exp='$exp',money='$money',rp='$rp',bid='$bid',inf='$inf',rage='$rage',pose='$pose',tactic='$tactic',state='$state',killnum='$killnum',wp='$wp',wk='$wk',wg='$wg',wc='$wc',wd='$wd',wf='$wf',teamID='$teamID',teamPass='$teamPass',wep='$wep',wepk='$wepk',wepe='$wepe',weps='$weps',wepsk='$wepsk',arb='$arb',arbk='$arbk',arbe='$arbe',arbs='$arbs',arbsk='$arbsk',arh='$arh',arhk='$arhk',arhe='$arhe',arhs='$arhs',arhsk='$arhsk',ara='$ara',arak='$arak',arae='$arae',aras='$aras',arask='$arask',arf='$arf',arfk='$arfk',arfe='$arfe',arfs='$arfs',arfsk='$arfsk',art='$art',artk='$artk',arte='$arte',arts='$arts',artsk='$artsk',itm0='$itm0',itmk0='$itmk0',itme0='$itme0',itms0='$itms0',itmsk0='$itmsk0',itm1='$itm1',itmk1='$itmk1',itme1='$itme1',itms1='$itms1',itmsk1='$itmsk1',itm2='$itm2',itmk2='$itmk2',itme2='$itme2',itms2='$itms2',itmsk2='$itmsk2',itm3='$itm3',itmk3='$itmk3',itme3='$itme3',itms3='$itms3',itmsk3='$itmsk3',itm4='$itm4',itmk4='$itmk4',itme4='$itme4',itms4='$itms4',itmsk4='$itmsk4',itm5='$itm5',itmk5='$itmk5',itme5='$itme5',itms5='$itms5',itmsk5='$itmsk5',itm6='$itm6',itmk6='$itmk6',itme6='$itme6',itms6='$itms6',itmsk6='$itmsk6' where pid='$pid'");

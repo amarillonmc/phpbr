@@ -48,7 +48,7 @@ function get_hide_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf =
 	return $hide_r;
 }
 //先攻几率修正，越大越容易先攻                                                            
-function get_active_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf = ''){
+function get_active_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf = '',$wpose = 0){
 	global $active_obbs,$inf_active_p;
 	$_ACTIVE = Array
 		(
@@ -58,9 +58,14 @@ function get_active_r($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 		'pose' => array(0,0,0,0,25,-25),
 		'tactic' => array(),
 		);
+	$_DACTIVE= Array
+		(
+		'pose' => array(0,0,50,0,0,0),
+		);
 	$active_r = $active_obbs;
 	$active_r += $_ACTIVE['weather'][$weather];
 	$active_r += $_ACTIVE['pose'][$pose];
+	$active_r -= $_DACTIVE['pose'][$wpose];
 	foreach ($inf_active_p as $inf_ky => $value) {
 		if(strpos($inf, $inf_ky)!==false){$active_r *= $value;}
 	}	

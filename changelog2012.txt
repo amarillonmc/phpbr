@@ -1,3 +1,16 @@
+2012-10-25
+修正歌唱系统显示的小问题{command.htm;}
+修正了玩家可以进入强袭姿态的BUG{command.php;}
+
+2012-6-21
+现在只有特定的死亡方式才能看到凶手：{death.htm;end.htm;}
+
+2012-6-19
+破灭之诗现在将导致极端恶劣天气的出现；{mixitem_1.php;item.func.php;item2.func.php;resources_1.php;}
+
+2012-6-17
+（电波服限定）添加了死亡时将游戏记录发送到电波微博的功能；{command.php;death.htm;weibolog.func.php;}
+
 2012-6-15
 修正了反击死捡尸体时候选择“返回”无效的BUG{command.php;}
 添加了移动包裹道具位置的功能{command.php; itemmain.func.php; itemmove.htm;command.htm;}

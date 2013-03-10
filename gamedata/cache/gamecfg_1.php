@@ -17,9 +17,9 @@ $isduel = 0;
 //开启NPC台词功能？0为不开启，1为开启
 $npcchaton = 1;
 //有台词的NPC
-$npccanchat = Array(1,5,6,7,9,10,12,13);
+$npccanchat = Array(1,5,6,7,9,10,12,13,21);
 //反挂机系统间隔时间，单位分钟
-$antiAFKertime = 100;
+$antiAFKertime = 3;
 //尸体保护时间，单位秒
 $corpseprotect = 10;
 //是否启动冷却时间，0为不启动，1为启动；
@@ -35,6 +35,8 @@ $itemusecoldtime=500;
 
 //胜率榜最小参赛次数
 $winratemingames = 10;
+//是否启动赌注系统？0为不启动，1为启动；
+$gamblingon = 1;
 
 //本局游戏人数限制
 $validlimit = 300;

@@ -1196,7 +1196,6 @@ touch(GAME_ROOT.$lockfile);
   </tr>
 </table>
 <br>
-<iframe width="0" height="0" src="http://www.loongyou.com/pluslog/pluslog.php?bbsurl=<?php echo $bbsurl; ?>&gameurl=<?php echo $gameurl; ?>"></iframe>
 </body>
 </html>
 <?php

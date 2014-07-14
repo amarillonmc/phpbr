@@ -3,7 +3,7 @@
 		<td>
 			<table border="0" width="720" cellspacing="0" cellpadding="0"  valign="middle">
 				<tr>
-					<td width="210" colspan="3" class="b1"><span>$name</span></td>
+					<td width="210" colspan="3" class="b1"><span>{$nick} {$name}</span></td>
 					<td width="100" colspan="1" class="b1"><span>{$sexinfo[$gd]}{$sNo}号</span></td>
 					<td width="95" colspan="2" class="b1"><span>{lang weather}:$wthinfo[$weather]</span></td>
 					<td width="215" colspan="1" class="b1"><span>{lang gamedate}<!--{if $gamestate == 40 }--><span class="yellow">{lang combo}</span><!--{/if}--><!--{if $gamestate == 50 }--><span class="red">{lang duel}</span><!--{/if}--></span></td>
@@ -68,7 +68,17 @@
 				</tr>
 				<tr>
 					<td class="b2"><span>{lang club}</span></td>
-					<td class="b3"><span>$clubinfo[$club]</span></td>
+					<td class="b3"><span>
+					<!--{if $club!=0}-->
+						$clubinfo[$club]
+					<!--{else}-->
+						<select id="clubsel" name="clubsel" onchange="$('mode').value='special';$('command').value=$('clubsel').value;postCmd('gamecmd','command.php');return false;" <!--{if CURSCRIPT != 'game' || $mode != 'command'}-->disabled<!--{/if}-->>
+							<!--{loop $clubavl $key $value}-->
+								<option value="clubsel$key"<!--{if $club == $key}-->selected<!--{/if}-->>$clubinfo[$value]
+							<!--{/loop}-->
+						</select>
+					<!--{/if}-->
+					</span></td>
 					<td class="b2"><span><!--{if $wc >= 100}-->{lang wc}{lang skill}<!--{else}--><span class="grey">{lang wc}{lang skill}</span><!--{/if}--></span></td>
 					<td class="b3"><span>$wc</span></td>
 				</tr>
@@ -133,17 +143,17 @@
 					</td>
 					<td class="b2"><span>{lang hp}</span></td>
 					<td class="b3"><span><span class="<!--{if $hp <= $mhp*0.2}-->red<!--{elseif $hp <= $mhp*0.5}-->yellow<!--{else}-->clan<!--{/if}-->">$hp / $mhp</span></span></td>
-					<td class="b2"><span>{lang killnum}</span></td>
-					<td class="b3"><span>$killnum</span></td>
+					<td class="b2"><span>{lang skillpoint}</span></td>
+					<td class="b3"><!--{if $skillpoint > 0}--><span class="lime">$skillpoint</span><!--{else}--><span>$skillpoint</span><!--{/if}--></td>
 				</tr>
 				<tr>
 					<td class="b2">■■：</td>
 					<td class="b3">
-						■■■■■■■■■</td>
+						■■■应■回■■■。</td>
 					<td class="b2"><span>{lang ss}</span></td>
 					<td class="b3"><span class="<!--{if $ss <= $mss*0.2}-->red<!--{elseif $ss <= $mss*0.5}-->yellow<!--{else}-->clan<!--{/if}-->">$ss / $mss</span></td>
-					<td class="b2"><span>{lang karma}</span></td>
-					<td class="b3"><span>$karma</span></td>
+					<td class="b2"><span>{lang killnum}</span></td>
+					<td class="b3"><span>$killnum</span></td>
 				</tr>
 			</table>
 		</td>

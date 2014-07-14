@@ -94,7 +94,7 @@ function astrfilter($str) {
 			$str[$key] = astrfilter($val);
 		}
 	} else {
-		$str = str_replace(Array('eval'),'',$str);//屏蔽会造成困扰的关键字;		
+		$str = str_replace(Array('eval',';',"'"),'',$str);//屏蔽会造成困扰的关键字;		
 	}
 	return $str;
 }

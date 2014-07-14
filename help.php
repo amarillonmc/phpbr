@@ -5,10 +5,24 @@ define('CURSCRIPT', 'help');
 require './include/common.inc.php';
 
 $mixfile = config('mixitem',$gamecfg);
+$shopfile = config('shopitem',$gamecfg);
+$mapitemfile = config('mapitem',$gamecfg);
+$synfile = config('synitem',$gamecfg);
+$ovlfile = config('overlay',$gamecfg);
+$presentfile = config('present',$gamecfg);
+$boxfile = config('box',$gamecfg);
 include_once $mixfile;
 $writefile = GAME_ROOT.TPLDIR.'/mixhelp.htm';
 
-if(filemtime($mixfile) > filemtime($writefile)){
+include_once config('npc',$gamecfg);
+for ($i=0; $i<=20; $i++) $p[$i]=$i;
+for ($i=1; $i<=6; $i++) $itemlst[$i]=$i;
+$ty1[1]=6; $ty1[2]=5; $ty1[3]=1; $ty1[4]=9; $ty1[5]=88;
+$ty2[1]=11;
+$ty3[1]=2; $ty3[2]=90;
+$ty4[1]=14;
+
+if(filemtime($mixfile) > filemtime($writefile) || filemtime($shopfile) > filemtime($writefile) || filemtime($mapitemfile) > filemtime($writefile) || filemtime($synfile) > filemtime($writefile) || filemtime($ovlfile) > filemtime($writefile) || filemtime($presentfile) > filemtime($writefile) || filemtime($boxfile) > filemtime($writefile)){
 	$mixitem = array();
 	foreach($mixinfo as $mix){
 		if($mix['class'] !== 'hidden'){
@@ -72,24 +86,27 @@ if(filemtime($mixfile) > filemtime($writefile)){
 			if(!isset($val['stuff'][2])){$val['stuff'][2] = '-';}
 			if(!isset($val['stuff'][3])){$val['stuff'][3] = '-';}
 			if(!isset($val['stuff'][4])){$val['stuff'][4] = '-';}
-			$mixhelpinfo .= 
-			"<tr>
-				<td class=\"b3\" height=20px><span>{$val['stuff'][0]}</span></td>
-				<td class=\"b3\"><span>{$val['stuff'][1]}</span></td>
-				<td class=\"b3\"><span>{$val['stuff'][2]}</span></td>
-				<td class=\"b3\"><span>{$val['stuff'][3]}</span></td>
-				<td class=\"b3\"><span>{$val['stuff'][4]}</span></td>
-				<td class=\"b3\">→</td>
-				<td class=\"b3\"><span>{$val['result'][0]}</span></td>
-				<td class=\"b3\"><span>{$val['result'][1]}/{$val['result'][2]}/{$val['result'][3]}{$itmskword}</span></td>
-			</tr>
-			";
+			$mixhelpinfo .= "<tr>";
+			for ($i=0; $i<=4; $i++)
+			{
+				$mixhelpinfo .= "<td class=\"b3\" ";
+				if ($i==0)  $mixhelpinfo .= "height=20px ";
+				include_once GAME_ROOT.'./include/game/itemplace.func.php';
+				if ($val['stuff'][$i]!='-') $mixhelpinfo .= "title=\"".get_item_place($val['stuff'][$i])."\" ";
+				$mixhelpinfo .= "><span>{$val['stuff'][$i]}</span></td>";
+			}
+			$mixhelpinfo .= "<td class=\"b3\">→</td>
+					<td class=\"b3\" title=\"{$val['result'][1]}/{$val['result'][2]}/{$val['result'][3]}{$itmskword}\"><span>{$val['result'][0]}</span></td>
+					<td class=\"b3\"><span>{$val['result'][1]}/{$val['result'][2]}/{$val['result'][3]}{$itmskword}</span></td>
+				</tr>
+				";
 		}
 		$mixhelpinfo .= "</table>\n";
 	}
 	
 	writeover($writefile,$mixhelpinfo);
 }
+
 $extrahead = <<<EOT
 <STYLE type=text/css>
 BODY {
@@ -127,7 +144,6 @@ DIV.FAQ DD {
 
 </STYLE>
 EOT;
-
 
 include template('help');
 

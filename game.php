@@ -104,6 +104,13 @@ if((strpos($action,'corpse')===0 || strpos($action,'pacorpse')===0) && $gamestat
 }
 if($hp > 0 && $coldtimeon && $showcoldtimer && $rmcdtime){$log .= "行动冷却时间：<span id=\"timer\" class=\"yellow\">0.0</span>秒<script type=\"text/javascript\">demiSecTimerStarter($rmcdtime);</script><br>";}
 
+if ($club==0)
+{
+	include_once GAME_ROOT.'./include/game/clubslct.func.php';
+	getclub($name,$c1,$c2,$c3);
+	$clubavl[0]=0; $clubavl[1]=$c1; $clubavl[2]=$c2; $clubavl[3]=$c3;
+}
+	
 include template('game');
 
 ?>

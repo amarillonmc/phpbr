@@ -84,6 +84,64 @@ function chgpassword($oldpswd,$newpswd,$newpswd2){
 		return;
 	}
 }
+function oneonone($sb,$sf){
+	global $db,$gold,$mode,$now,$tablepre,$log,$name,$art,$arte,$artk,$arts,$artsk;
+	$mode = 'command';
+	if($sb == $sf){
+		$log .= "不能自我约战。<br>";
+		return;
+	}
+	if(($artk=='XX')||($artk=='XY')){
+		$log .= "不能重复约战。<br>";
+		return;
+	}
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$sb' AND type = 0");
+	$edata = $db->fetch_array($result);
+	$a1=$edata['art'];
+	$a2=$edata['artk'];
+	$a3=$edata['pid'];
+	$a4=$edata['hp'];
+	if (!$a3){
+		$log .= "该ID不存在！<br>";
+		return;
+	}
+	if (!$a4){
+		$log .= "不能和死人约战。<br>";
+		return;
+	}
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$sf' AND type = 0");
+	$edata = $db->fetch_array($result);
+	$a1=$edata['money'];
+	if ($a1<1500){
+		$log .= "需要携带1500G才能约战。<br>";
+		return;
+	}
+	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$sb'");
+	$edata = $db->fetch_array($result);
+	$a1=$edata['ip'];
+	$result = $db->query("SELECT * FROM {$tablepre}users WHERE username='$sf'");
+	$edata = $db->fetch_array($result);
+	$a2=$edata['ip'];
+	if($a1 == $a2){
+		//$log .= "不能自我约战。<br>";
+		//return;
+	}
+	if(preg_match('/[,|<|>|&|;|#|"|\s|\p{C}]+/u',$sb)) { $log.='请不要尝试注入……';return; }
+	$art=$sb;$artk='XY';$arte=1;$arts=1;$artsk='';
+	$taunt=$sf.'喊道：“'.$sb.'，来，战♂个♂痛♂快！”';
+	$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,msg) VALUES ('4','$now','$name','$taunt')");
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$sb' AND type = 0");
+	$edata = $db->fetch_array($result);
+	$a1=$edata['art'];
+	$a2=$edata['artk'];
+	if (($a1==$sf)&&($a2=='XY')){
+		$artk='XX';
+		$db->query ( "UPDATE {$tablepre}players SET artk='XX' WHERE `name` ='$sb' AND type=0 ");
+		$taunt='约战成立！';
+		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,msg) VALUES ('4','$now','$name','$taunt')");
+	}
+	return;
+}
 
 function adtsk(){
 	global $log,$mode,$club,$wep,$wepk,$wepe,$weps,$wepsk;
@@ -177,12 +235,94 @@ function adtsk(){
 		return;
 	}
 }
+
+function trap_adtsk($which){
+	global $log,$mode,$club,${'itm'.$which},${'itmk'.$which},${'itme'.$which},${'itms'.$which};
+	if(strpos(${'itmk'.$which},'T')!==0){
+		$log .= '<span class="red">这个物品不是陷阱，无法改造！</span><br />';
+		$mode = 'command';
+		return;
+	}
+	if(${'itmk'.$which}=='TOc' || ${'itmk'.$which}=='TNc'){
+		$log .= '<span class="red">奇迹陷阱不允许改造！</span><br />';
+		$mode = 'command';
+		return;
+	}
+	if($club == 7){//电脑社，电气改造
+		if (strpos(${'itm'.$which},'电气')!==false){
+			$log .= '<span class="red">陷阱已经带有电击属性，不用改造！</span><br />';
+			$mode='command';
+			return;
+		}
+		$position = 0;
+		foreach(Array(1,2,3,4,5,6) as $imn){
+			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			if(strpos(${'itmk'.$imn},'B')===0 && ${'itme'.$imn} > 0 ){
+				$position = $imn;
+				break;
+			}
+		}
+		if($position){
+			${'itms'.$position}-=1;
+			$itm = ${'itm'.$position}; $citm=${'itm'.$which};
+			$log .= "<span class=\"yellow\">用{$itm}改造了{$citm}，{$citm}增加了电击属性！</span><br />";
+			${'itm'.$which} = '电气'.${'itm'.$which};
+			if(${'itms'.$position} == 0){
+				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itme'.$position} =${'itms'.$position} =0;				
+			}
+			$mode = 'command';
+			return;
+		}else{
+			$log .= '<span class="red">你没有电池，无法改造陷阱！</span><br />';
+			$mode = 'command';
+			return;
+		}
+	}elseif($club == 8){//带毒改造
+		if (strpos(${'itm'.$which},'毒性')!==false){
+			$log .= '<span class="red">陷阱已经带毒，不用改造！</span><br />';
+			$mode='command';
+			return;
+		}
+		$position = 0;
+		foreach(Array(1,2,3,4,5,6) as $imn){
+			global ${'itm'.$imn},${'itmk'.$imn},${'itme'.$imn},${'itms'.$imn},${'itmsk'.$imn};
+			if(${'itm'.$imn} == '毒药' && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+				$position = $imn;
+				break;
+			}
+		}
+		if($position){
+			${'itms'.$position}-=1;
+			$itm = ${'itm'.$position}; $citm=${'itm'.$which};
+			$log .= "<span class=\"yellow\">用{$itm}改造了{$citm}，{$citm}增加了带毒属性！</span><br />";
+			${'itm'.$which} = '毒性'.${'itm'.$which};
+			if(${'itms'.$position} == 0){
+				$log .= "<span class=\"red\">$itm</span>用光了。<br />";
+				${'itm'.$position} = ${'itmk'.$position} = ${'itmsk'.$position} = '';
+				${'itme'.$position} =${'itms'.$position} =0;				
+			}
+			$mode = 'command';
+			return;
+		}else{
+			$log .= '<span class="red">你没有毒药，无法给武器淬毒！</span><br />';
+			$mode = 'command';
+			return;
+		}
+	}else{
+		$log .= '<span class="red">你不懂得如何改造陷阱！</span><br />';
+		$mode = 'command';
+		return;
+	}
+}
+
 function syncro($sb){
-	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$name;
+	global $itm0,$itmk0,$itme0,$itms0,$itmsk0,$name,$nick;
 	list($n,$k,$e,$s,$sk,$r)=explode('_',$sb);
 	$itm0=$n;$itmk0=$k;$itme0=$e;$itms0=$s;$itmsk0=$sk;
-	if ($r>0) {addnews($now,'syncmix',$name,$itm0);}
-	else {addnews($now,'overmix',$name,$itm0);}
+	if ($r>0) {addnews($now,'syncmix',$nick.' '.$name,$itm0);}
+	else {addnews($now,'overmix',$nick.' '.$name,$itm0);}
 	include_once GAME_ROOT.'./include/game/itemmain.func.php';
 	itemget();
 	return;
@@ -311,6 +451,23 @@ function chkpoison($itmn){
 	} else {
 		$log .= '<span class="yellow">'.$itm.'是安全的。</span>';
 	}
+	$mode = 'command';
+	return;
+}
+
+function press_bomb(){
+	global $log,$mode,$club,$wp,$wk,$wg,$wc,$wd,$wf,$mhp,$hp,$msp,$sp,$att,$def,$rage,$lvl;
+	if($club != 99){
+		$log .= '你的称号不能使用该技能。';
+		$mode = 'command';
+		return;
+	}
+
+	$club=17;
+	$wp=ceil($wp*1.2); $wk=ceil($wk*1.2); $wg=ceil($wg*1.2); $wc=ceil($wc*1.2); $wd=ceil($wd*1.2); $wf=ceil($wf*1.2);
+	$mhp=ceil($mhp*1.15); $hp=ceil($hp*1.15); $msp=ceil($msp*1.15); $sp=ceil($sp*1.15); 
+	$att=ceil($att*1.2); $def=ceil($def*1.2); $rage+=$lvl*10; 
+	$log.="你按下了X按钮，你突然感觉到一股力量贯通全身！"; 
 	$mode = 'command';
 	return;
 }

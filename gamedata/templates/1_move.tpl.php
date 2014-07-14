@@ -65,17 +65,47 @@ RF高校(H-3)
 <?php } else { ?>
 对天使用作战本部(D-8)
 <?php } ?>
+<br /><option value="12">
+<?php if($pls == 12) { ?>
+<--现在位置-->
+<?php } else { ?>
+夏之镇(F-9)
+<?php } ?>
+<br /><option value="13">
+<?php if($pls == 13) { ?>
+<--现在位置-->
+<?php } else { ?>
+三体星(H-4)
+<?php } ?>
 <br /><option value="14">
 <?php if($pls == 14) { ?>
 <--现在位置-->
 <?php } else { ?>
 光坂高校(H-8)
 <?php } ?>
+<br /><option value="15">
+<?php if($pls == 15) { ?>
+<--现在位置-->
+<?php } else { ?>
+守矢神社(G-1)
+<?php } ?>
 <br /><option value="16">
 <?php if($pls == 16) { ?>
 <--现在位置-->
 <?php } else { ?>
 常磐森林(I-2)
+<?php } ?>
+<br /><option value="17">
+<?php if($pls == 17) { ?>
+<--现在位置-->
+<?php } else { ?>
+常磐台中学(A-5)
+<?php } ?>
+<br /><option value="18">
+<?php if($pls == 18) { ?>
+<--现在位置-->
+<?php } else { ?>
+秋之镇(G-4)
 <?php } ?>
 <br /><option value="19">
 <?php if($pls == 19) { ?>
@@ -94,6 +124,12 @@ RF高校(H-3)
 <--现在位置-->
 <?php } else { ?>
 圣Gradius学园(F-7)
+<?php } ?>
+<br /><option value="22">
+<?php if($pls == 22) { ?>
+<--现在位置-->
+<?php } else { ?>
+初始之树(J-6)
 <?php } ?>
 <br /><option value="23">
 <?php if($pls == 23) { ?>
@@ -117,7 +153,13 @@ RF高校(H-3)
 <?php if($pls == 26) { ?>
 <--现在位置-->
 <?php } else { ?>
-冰封墓场(A-1)
+键刃墓场(A-1)
+<?php } ?>
+<br /><option value="27">
+<?php if($pls == 27) { ?>
+<--现在位置-->
+<?php } else { ?>
+花菱商厦(F-8)
 <?php } ?>
 <br /><option value="28">
 <?php if($pls == 28) { ?>
@@ -136,6 +178,12 @@ FARGO前基地(E-1)
 <--现在位置-->
 <?php } else { ?>
 天使队移动格纳库(F-6)
+<?php } ?>
+<br /><option value="31">
+<?php if($pls == 31) { ?>
+<--现在位置-->
+<?php } else { ?>
+和田町研究所(J-1)
 <?php } ?>
 <br /><option value="32">
 <?php if($pls == 32) { ?>

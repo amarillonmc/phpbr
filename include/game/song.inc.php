@@ -1,10 +1,11 @@
  <?php
  //require_once './include/common.inc.php';
  function sing($sn){
-	global $log,$msg,$now,$pls,$name,$plsinfo,$ss,$mss,$noiseinfo,$arte;
+	global $log,$msg,$now,$pls,$name,$nick,$plsinfo,$ss,$mss,$noiseinfo,$arte;
 	global $db,$tablepre;
 	global $att,$def;
 	global $wep,$wepk,$weps,$wepes,$wepsk;
+	global $rp;
 	
 	//$log.=$sn.'_'.$now.'_'.$pls.'_'.$name."<br>";
 	$r=$arte;
@@ -30,7 +31,7 @@
 		$db->query ( "UPDATE {$tablepre}players SET def=def+30 WHERE `pls` ={$pls} AND hp>0 AND type=0 ");
 		$def+=30;
 		addnoise($sn,'__',$now,$pls,0,0,$sn);
-		addnews($now,'song',$name,$plsinfo[$pls],$noiseinfo[$sn]);
+		addnews($now,'song',$nick.' '.$name,$plsinfo[$pls],$noiseinfo[$sn]);
 		return;
 		
 	}elseif ($sn=="Crow Song"){
@@ -46,7 +47,7 @@
 		$db->query ("UPDATE {$tablepre}players SET att=att+30 WHERE `pls`={$pls} AND hp>0 AND type=0");
 		$att+=30;
 		addnoise($sn,'__',$now,$pls,0,0,$sn);
-		addnews($now,'song',$name,$plsinfo[$pls],$noiseinfo[$sn]);
+		addnews($now,'song',$nick.' '.$name,$plsinfo[$pls],$noiseinfo[$sn]);
 		return;
 	
 	
@@ -60,10 +61,11 @@
 		$db->query("INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('0','$now','$name','$plsinfo','♪♪la la la la♪♪...')");
 		
 		//$result = $db->query("select * from {$tablepre}players where pls='$pls' and hp>0 and type=0");
-		$ss+=200;
+		$ss+=20;
 		$mss=$ss;
+		$rp-=50;
 		addnoise($sn,'__',$now,$pls,0,0,$sn);
-		addnews($now,'song',$name,$plsinfo[$pls],$noiseinfo[$sn]);
+		addnews($now,'song',$nick.' '.$name,$plsinfo[$pls],$noiseinfo[$sn]);
 		return;
 	
 	
@@ -82,7 +84,7 @@
 		$db->query ( "UPDATE {$tablepre}players SET weps=wepes=55 WHERE `pls` ={$pls} AND hp>0 AND type=0 ");
 		$db->query ( "UPDATE {$tablepre}players SET wepsk='z' WHERE `pls` ={$pls} AND hp>0 AND type=0 ");
 		addnoise($sn,'__',$now,$pls,0,0,$sn);
-		addnews($now,'song',$name,$plsinfo[$pls],$noiseinfo[$sn]);
+		addnews($now,'song',$nick.' '.$name,$plsinfo[$pls],$noiseinfo[$sn]);
 		return;
 	}
 	

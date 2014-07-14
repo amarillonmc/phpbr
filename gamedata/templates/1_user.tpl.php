@@ -10,14 +10,23 @@
 <center>
 <form method="post" action="user.php" name="userdata">
 <input type="hidden" name="mode" value="edit">
-<span class ="yellow">账户基本资料</span>
+<table style="text-align: center">
+<tr>
+<td style="vertical-align:top"><span class ="yellow">账户密码</span>
 <?php include template('userbasicdata'); ?>
-<br />
-<span class ="yellow">账户个性化资料</span>
-<?php include template('usergdicon'); ?>
-<br />
-<?php include template('userwords'); ?>
-<br />
+</td>
+<td rowspan="2"style="vertical-align:top"><span class ="yellow">个性化资料</span>
+<?php include template('useradvdata'); ?>
+</td>
+</tr>
+<tr>
+<td><span class ="yellow">积分操作</span>
+<?php include template('usercrdtsdata'); ?>
+</td>
+</tr>
+</table>
+
+
 <div id="postdata">
 <input type="submit" id="post" onClick="postCmd('userdata','user.php');return false;" value="提交">
 <input type="reset" id="reset" name="reset" value="重设">

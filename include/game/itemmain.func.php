@@ -13,9 +13,9 @@ if(!defined('IN_GAME')) {
 }
 
 function trap(){
-	global $log,$cmd,$mode,$iteminfo,$itm0,$itmk0,$itme0,$itms0,$itmsk0;
-	global $name,$now,$hp,$db,$tablepre,$bid,$lvl,$pid,$type,$tactic,$club;
-	global $wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk;
+	global $log,$cmd,$mode,$iteminfo,$itm0,$itmk0,$itme0,$itms0,$itmsk0,$nick;
+	global $name,$now,$hp,$db,$tablepre,$bid,$lvl,$pid,$type,$tactic,$club,$skills;
+	global $wepsk,$arbsk,$arhsk,$arask,$arfsk,$artsk,$achievement;
 	
 	$playerflag = $itmsk0 ? true : false;
 	$selflag = $itmsk0 == $pid ? true : false;
@@ -35,6 +35,8 @@ function trap(){
 			$escrate += 35;
 		}
 	}
+	include_once GAME_ROOT.'./include/game/clubskills.func.php';
+	$escrate *= get_clubskill_bonus_escrate($club,$skills);
 	$escrate = $escrate >= 90 ? 90 : $escrate;//最大回避率
 	$escrate = $itmk0 == 'TOc' ? -1 : $escrate;//必中陷阱
 	//$log .= "回避率: $escrate<br>";
@@ -74,10 +76,10 @@ function trap(){
 			}			
 		}
 		if($damage){
-			$hp -= $damage;
-		
+			$hp -= $damage; $tmp_club=$club;
+		 
 			if($playerflag){
-				addnews($now,'trap',$name,$trname,$itm0);
+				addnews($now,'trap',$nick.' '.$name,$trname,$itm0);
 			}
 			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！受到<span class=\"dmg\">$damage</span>点伤害！<br>";
 			if($goodmancard){
@@ -86,18 +88,31 @@ function trap(){
 				$hp -= $gm;
 			}
 			
-			
+			$trapkill=false;
 			if($hp <= 0) {
 				include_once GAME_ROOT.'./include/state.func.php';
 				$killmsg = death('trap',$trname,$trtype,$itm0);
 				$log .= "你被{$trperfix}陷阱杀死了！";
-				
+				$trapkill=true;
+				//检查成就
+				include_once GAME_ROOT.'./include/game/achievement.func.php';
+				//check_trap_death_achievement($name,$trname,$selflag,$itm0,$itme0);
+		
 				if($killmsg && !$selflag){
 					$log .= "<span class=\"yellow\">{$trname}对你说：“{$killmsg}”</span><br>";
 				}				
+				if ($tmp_club==99) $log.="<span class=\"lime\">但由于你及时按下了BOMB键，你原地满血复活了！</span><br>";
 			}
-			if($playerflag && !$selflag && $hp<=0){
-				$w_log = "<span class=\"red\">{$name}触发了你设置的陷阱{$itm0}并被杀死了！</span><br>";
+			else
+			{
+				//检查成就
+				include_once GAME_ROOT.'./include/game/achievement.func.php';
+				//check_trap_survive_achievement($achievement,$selflag,$itm0,$itme0);
+			}
+			if($playerflag && !$selflag && $trapkill){
+				$w_log = "<span class=\"red\">{$name}触发了你设置的陷阱{$itm0}并被杀死了！</span>";
+				if ($tmp_club==99) $w_log.="<span class=\"lime\">但由于{$name}及时按下了BOMB键，{$name}原地满血复活了！</span>";
+				$w_log.="<br>";
 				logsave ( $itmsk0, $now, $w_log ,'b');
 			}elseif($playerflag && !$selflag){
 				$w_log = "<span class=\"yellow\">{$name}触发了你设置的陷阱{$itm0}！</span><br>";
@@ -105,27 +120,35 @@ function trap(){
 			}
 		}else{
 			if($playerflag){
-				addnews($now,'trapdef',$name,$trname,$itm0);
+				addnews($now,'trapdef',$nick.' '.$name,$trname,$itm0);
 				if(!$selflag){
 					$w_log = "<span class=\"yellow\">{$name}触发了你设置的陷阱{$itm0}，但是没有受到任何伤害！</span><br>";
 					logsave ( $itmsk0, $now, $w_log ,'b');
 				}				
 			}
 			$log .= "糟糕，你触发了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>！<br>不过，身上装备着的自动迎击系统启动了！<span class=\"yellow\">在迎击功能的保护下你毫发无伤。</span><br>";
+			//检查成就
+			include_once GAME_ROOT.'./include/game/achievement.func.php';
+			//check_trap_fail_achievement($achievement,$selflag,$itm0,$itme0);
 		}
 		
 		$itm0 = $itmk0 = $itmsk0 = '';
 		$itme0 = $itms0 = 0;
 		return;
 	} else {
+		//检查成就
+		include_once GAME_ROOT.'./include/game/achievement.func.php';
+		//check_trap_miss_achievement($achievement,$selflag,$itm0,$itme0);
 		if($playerflag && !$selflag){
-			addnews($now,'trapmiss',$name,$trname,$itm0);
+			addnews($now,'trapmiss',$nick.' '.$name,$trname,$itm0);
 			$w_log = "<span class=\"yellow\">{$name}回避了你设置的陷阱{$itm0}！</span><br>";
 			logsave ( $itmsk0, $now, $w_log ,'b');
 		}
 		$dice = rand(0,99);
 		$fdrate = $club == 5 ? 40 + $lvl/3 : 5 + $lvl/3;
 		$fdrate = $selflag ? $fdrate + 50 : $fdrate;
+		include_once GAME_ROOT.'./include/game/clubskills.func.php';
+		$fdrate *= get_clubskill_bonus_reuse($club,$skills);
 		if($dice < $fdrate){
 			if($minedetect){
 				$log .= "在探雷装备的辅助下，你发现了{$trperfix}陷阱<span class=\"yellow\">$itm0</span>并且拆除了它。陷阱看上去还可以重复使用。<br>";
@@ -151,7 +174,7 @@ function trap(){
 }
 
 function itemfind() {
-	global $mode,$log,$itm0,$itmk0,$itms0;
+	global $mode,$log,$itm0,$itmk0,$itms0,$itmsk0;
 	if(!$itm0||!$itmk0||!$itms0){
 		$log .= '获取物品信息错误！';
 		$mode = 'command';
@@ -160,6 +183,13 @@ function itemfind() {
 	if(strpos($itmk0,'TO')===0) {
 		trap();
 	}else{
+		if(CURSCRIPT == 'botservice')
+		{
+			echo "mode=itemfind\n";
+			echo "itm0=$itm0\n";
+			echo "itms0=$itms0\n";
+			echo "itmsk0=$itmsk0\n";
+		}
 		$mode = 'itemfind';
 		return;
 	}
@@ -193,17 +223,28 @@ function itemget() {
 			}
 		}
 	} elseif(preg_match('/^H|^P/',$itmk0) && $itms0 !== $nosta){
-		$sameitem = array();
+		$sameitem = array(); $scnt=0;
 		for($i = 1;$i <= 6;$i++){
 			global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i};
 			if(${'itms'.$i}&&($itm0 == ${'itm'.$i})&&($itme0 == ${'itme'.$i})&&(preg_match('/^(H|P)/',${'itmk'.$i}))){
-				$sameitem[] = $i;
+				$sameitem[] = $i; $scnt++;
 			}
 		}
 		if(isset($sameitem[0])){
-			include template('itemmerge0');
-			$cmd = ob_get_contents();
-			ob_clean();
+			if (CURSCRIPT != 'botservice')
+			{
+				include template('itemmerge0');
+				$cmd = ob_get_contents();
+				ob_clean();
+			}
+			else  
+			{
+				echo "mode=itemmerge0\n";
+				echo "itemmergechoicenum={$scnt}\n";
+				for ($i=0; $i<$scnt; $i++)
+					echo "itemmergechoice{$i}={$sameitem[$i]}\n";
+			}
+
 //			$cmd .= '<input type="hidden" name="mode" value="itemmain"><input type="hidden" name="command" value="itemmerge"><input type="hidden" name="merge1" value="0"><br>是否将 <span class="yellow">'.$itm0.'</span> 与以下物品合并？<br><input type="radio" name="merge2" id="itmn" value="n" checked><a onclick=sl("itmn"); href="javascript:void(0);" >不合并</a><br><br>';
 //			foreach($sameitem as $n) {
 //				$cmd .= '<input type="radio" name="merge2" id="itm'.$n.'" value="'.$n.'"><a onclick=sl("itm'.$n.'"); href="javascript:void(0);">'."${'itm'.$n}/${'itme'.$n}/${'itms'.$n}".'</a><br>';
@@ -217,38 +258,7 @@ function itemget() {
 	return;
 }
 
-function itemchange($item){
-	if(strpos($item,'itm') === 0) {
-		$itmn = substr($item,3,1);
-		global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
-		$itm = & ${'itm'.$itmn};
-		$itmk = & ${'itmk'.$itmn};
-		$itme = & ${'itme'.$itmn};
-		$itms = & ${'itms'.$itmn};
-		$itmsk = & ${'itmsk'.$itmn};
-	}
-	if(!$itms||!$itmk||$itmk=='WN'||$itmk=='DN'){
-		$log .= '该物品不存在！<br>';
-		$mode = 'command';
-		return;
-	}
-	global $gamecfg,$rp,$killnum,$def,$att,$log;
-	$karma = ($rp * $killnum - $def )+ $att;
-	$file = config('ichange',$gamecfg);
-	$wlist = openfile($file);
-	$wnum = count($wlist)-1;
-	$oldw=$itm;
-	for ($i=0;$i<=$wnum;$i++){
-		list($on,$k1,$k2,$nn,$nk,$ne,$ns,$nsk) = explode(',',$wlist[$i]);
-		if (($itm==$on)&&($k1<=$karma)&&($k2>=$karma)){
-			$itm=$nn;$itmk=$nk;$itme=$ne;$itms=$ns;$itmsk=$nsk;
-			$log.="<span class=\"yellow\">{$oldw}</span>变换成了<span class=\"yellow\">{$itm}</span>。<br>";
-			return;
-		}
-	}
-	$log.="该物品不能变换，或你没有满足变换条件。<br>";
-	return;
-}
+
 function itemdrop($item) {
 	global $db,$log,$mode,$pls,$tablepre;
 
@@ -277,7 +287,11 @@ function itemdrop($item) {
 		$itms = & ${'itms'.$itmn};
 		$itmsk = & ${'itmsk'.$itmn};
 	}
-
+if(($itmk=='XX')||(($itmk=='XY'))){
+		$log .= '该物品不能丢弃。<br>';
+		$mode = 'command';
+		return;
+	}
 	if(!$itms||!$itmk||$itmk=='WN'||$itmk=='DN'){
 		$log .= '该物品不存在！<br>';
 		$mode = 'command';
@@ -326,6 +340,11 @@ function itemoff($item){
 		$mode = 'command';
 		return;
 	}
+		if(($itmk=='XX')||(($itmk=='XY'))){
+		$log .= '该物品不能卸下。<br>';
+		$mode = 'command';
+		return;
+	}
 	$log .= "你卸下了装备<span class=\"yellow\">$itm</span>。<br>";
 
 	$itm0 = $itm;
@@ -370,10 +389,14 @@ function itemadd(){
 			return;
 		}
 	}
-	//$log .= '你的包裹已经满了。想要丢掉哪个物品？<br>';
-	include template('itemdrop0');
-	$cmd = ob_get_contents();
-	ob_clean();
+	if (CURSCRIPT != 'botservice')
+	{
+		//$log .= '你的包裹已经满了。想要丢掉哪个物品？<br>';
+		include template('itemdrop0');
+		$cmd = ob_get_contents();
+		ob_clean();
+	}
+	else  echo "mode=itemdrop0\n";
 //	$cmd .= '<input type="hidden" name="mode" value="itemmain"><br><input type="radio" name="command" id="dropitm0" value="dropitm0" checked><a onclick=sl("dropitm0"); href="javascript:void(0);" >'."$itm0/$itme0/$itms0".'</a><br><br>';
 //
 //	for($i = 1;$i <= 6;$i++){
@@ -462,8 +485,8 @@ function itemmerge($itn1,$itn2){
 	return;
 }
 $syncn=$synck=$synce=$syncs=$syncsk=Array();
-function itemmix($mlist) {
-	global $log,$mode,$gamecfg,$name,$nosta,$gd,$name;
+function itemmix($mlist, $itemselect=-1) {
+	global $log,$mode,$gamecfg,$name,$nosta,$gd,$name,$nick;
 	global $itm1,$itm2,$itm3,$itm4,$itm5,$itm6,$itms1,$itms2,$itms3,$itms4,$itms5,$itms6,$itme1,$itme2,$itme3,$itme4,$itme5,$itme6,$club,$wd;
 	global $itmk1,$itmk2,$itmk3,$itmk4,$itmk5,$itmk6,$itmsk1,$itmsk2,$itmsk3,$itmsk4,$itmsk5,$itmsk6;
 	global $syncn,$synck,$synce,$syncs,$syncsk,$sync,$reqname,$star;
@@ -509,7 +532,7 @@ function itemmix($mlist) {
 			$isntove=true;
 			if ($isoverlay==true){
 				$log.="<span class=\"red\">超量失败！所有素材消失！说明写这段代码的人还是一个有良知，明是非的中国人！</span><br>";
-				addnews($now,'mixfail',$name,$itm0);
+				addnews($now,'mixfail',$nick.' '.$name,$itm0);
 				foreach($mlist as $val){
 					${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
 					${'itme'.$val} = ${'itms'.$val} = 0;
@@ -524,7 +547,7 @@ function itemmix($mlist) {
 		if ($isoverlay==true){
 			if ((strlen(${'itmk'.$val})<4)||((substr(${'itmk'.$val},2,2)!=$ostar)&&($ostar!=0))){
 				$log.="<span class=\"red\">超量失败！所有素材消失！说明写这段代码的人还是一个有良知，明是非的中国人！</span><br>";
-				addnews($now,'mixfail',$name,$itm0);
+				addnews($now,'mixfail',$nick.' '.$name,$itm0);
 				foreach($mlist as $val){
 					${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
 					${'itme'.$val} = ${'itms'.$val} = 0;
@@ -537,7 +560,7 @@ function itemmix($mlist) {
 			if ((strlen(${'itmk'.$val})>=4)&&(strpos(${'itmsk'.$val},'J')!==false)){
 				if (substr(${'itmk'.$val},2,2)!=$ostar){
 					$log.="<span class=\"red\">超量失败！所有素材消失！说明写这段代码的人还是一个有良知，明是非的中国人！</span><br>";
-					addnews($now,'mixfail',$name,$itm0);
+					addnews($now,'mixfail',$nick.' '.$name,$itm0);
 					foreach($mlist as $val){
 						${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
 						${'itme'.$val} = ${'itms'.$val} = 0;
@@ -551,7 +574,7 @@ function itemmix($mlist) {
 		if ($issyncro==true){
 			if ((strlen(${'itmk'.$val})<4)&&($isntsyn==false)){
 				$log.="<span class=\"red\">同调失败！所有素材消失！真是大快人心啊！</span><br>";
-				addnews($now,'mixfail',$name,$itm0);
+				addnews($now,'mixfail',$nick.' '.$name,$itm0);
 				foreach($mlist as $val){
 					${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
 					${'itme'.$val} = ${'itms'.$val} = 0;
@@ -560,7 +583,7 @@ function itemmix($mlist) {
 			}
 			if (strpos(${'itmsk'.$val},'s')!==false){
 				$log.="<span class=\"red\">同调失败！所有素材消失！真是大快人心啊！</span><br>";
-				addnews($now,'mixfail',$name,$itm0);
+				addnews($now,'mixfail',$nick.' '.$name,$itm0);
 				foreach($mlist as $val){
 					${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
 					${'itme'.$val} = ${'itms'.$val} = 0;
@@ -578,7 +601,7 @@ function itemmix($mlist) {
 					continue;
 				}else{
 					$log.="<span class=\"red\">同调失败！所有素材消失！真是大快人心啊！</span><br>";
-					addnews($now,'mixfail',$name,$itm0);
+					addnews($now,'mixfail',$nick.' '.$name,$itm0);
 					foreach($mlist as $val){
 						${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
 						${'itme'.$val} = ${'itms'.$val} = 0;
@@ -612,25 +635,51 @@ function itemmix($mlist) {
 			$syncs[$sync]=$t[3];
 			$syncsk[$sync]=$t[4];
 		}
-		foreach($mlist as $val){
-			${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
-			${'itme'.$val} = ${'itms'.$val} = 0;
-			}
 		if ($sync==-1){
 			$log.="<span class=\"red\">超量失败！所有素材消失！说明写这段代码的人还是一个有良知，明是非的中国人！</span><br>";
-			addnews($now,'mixfail',$name,$itm0);
+			foreach($mlist as $val){
+				${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
+				${'itme'.$val} = ${'itms'.$val} = 0;
+			}
+			addnews($now,'mixfail',$nick.' '.$name,$itm0);
 			return;
 		}
-		$cmd.='<input type="hidden" name="usemode" value="sync">';
-		$cmd.='<input type="hidden" id="mode" name="mode" value="command">';
-		$cmd.='<input type="hidden" id="command" name="command" value="menu">';
-		$cmd.='<input type="hidden" id="subcmd" name="subcmd" value="">';
-		$cmd.= "请选择超量结果<br><br>";
-		for($i=0;$i<=$sync;$i++){
-			$tn=$syncn[$i];
-			$tk=$syncn[$i].'_'.$synck[$i].'_'.$synce[$i].'_'.$syncs[$i].'_'.$syncsk[$i].'_-1_';
-			$cmd.="<input type=\"button\" class=\"cmdbutton\"  style=\"width:200\" id=\"sync\"".$i."\" name=\"sync\"".$i."\" value=\"".$tn."\" onclick=\"$('command').value='sync';$('subcmd').name='sp_cmd';$('subcmd').value='".$tk."';postCmd('gamecmd','command.php');this.disabled=true;\">";
+		if ($itemselect==-1)
+		{
+			$mask=0;
+			foreach($mlist as $k)
+				if (1<=$k && $k<=6)
+					$mask|=(1<<((int)$k-1));
+					
+			$cmd.='<input type="hidden" id="mode" name="mode" value="itemmain">';
+			$cmd.='<input type="hidden" id="command" name="command" value="itemmix">';
+			$cmd.='<input type="hidden" id="mixmask" name="mixmask" value="'.$mask.'">';
+			$cmd.='<input type="hidden" id="itemselect" name="itemselect" value="999">';
+			$cmd.= "请选择超量结果<br><br>";
+			for($i=0;$i<=$sync;$i++){
+				$tn=$syncn[$i];
+				$tk=$syncn[$i].'_'.$synck[$i].'_'.$synce[$i].'_'.$syncs[$i].'_'.$syncsk[$i].'_-1_';
+				$cmd.="<input type=\"button\" class=\"cmdbutton\"  style=\"width:200\" value=\"".$tn."\" onclick=\"$('itemselect').value='".$i."';postCmd('gamecmd','command.php');this.disabled=true;\">";
 			}
+			$cmd.="<input type=\"button\" class=\"cmdbutton\"  style=\"width:200\" value=\"返回\" onclick=\"postCmd('gamecmd','command.php');this.disabled=true;\">";
+		}
+		else
+		{
+			$i=(int)$itemselect;
+			if ($i<0 || $i>$sync)
+			{
+				$mode='command'; return; 
+			}
+			foreach($mlist as $val)
+			{
+				${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
+				${'itme'.$val} = ${'itms'.$val} = 0;
+			}
+			$tk=$syncn[$i].'_'.$synck[$i].'_'.$synce[$i].'_'.$syncs[$i].'_'.$syncsk[$i].'_-1_';
+			include_once GAME_ROOT.'./include/game/special.func.php';
+			syncro($tk);
+			$mode='command';
+		}
 		return;
 	}
 	//syncro
@@ -654,33 +703,58 @@ function itemmix($mlist) {
 			$sync++;
 			$syncn[$sync]=$tn;$synck[$sync]=$tk;$synce[$sync]=$te;$syncs[$sync]=$ts;$syncsk[$sync]=$tsk;
 		}
-		foreach($mlist as $val){
-			${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
-			${'itme'.$val} = ${'itms'.$val} = 0;
-			}
 		if ($sync==-1){
 			$log.="<span class=\"red\">同调失败！所有素材消失！真是大快人心啊！</span><br>";
-			addnews($now,'mixfail',$name,$itm0);
+			foreach($mlist as $val){
+				${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
+				${'itme'.$val} = ${'itms'.$val} = 0;
+			}
+			addnews($now,'mixfail',$nick.' '.$name,$itm0);
 			return;
 		}
-		$cmd.='<input type="hidden" name="usemode" value="sync">';
-		$cmd.='<input type="hidden" id="mode" name="mode" value="command">';
-		$cmd.='<input type="hidden" id="command" name="command" value="menu">';
-		$cmd.='<input type="hidden" id="subcmd" name="subcmd" value="">';
-		$cmd.= "请选择同调结果<br><br>";
-		for($i=0;$i<=$sync;$i++){
-			$tn=$syncn[$i];
-			$tk=$syncn[$i].'_'.$synck[$i].'_'.$synce[$i].'_'.$syncs[$i].'_'.$syncsk[$i].'_'.$star.'_';
-			$cmd.="<input type=\"button\" class=\"cmdbutton\"  style=\"width:200\" id=\"sync\"".$i."\" name=\"sync\"".$i."\" value=\"".$tn."\" onclick=\"$('command').value='sync';$('subcmd').name='sp_cmd';$('subcmd').value='".$tk."';postCmd('gamecmd','command.php');this.disabled=true;\">";
+		if ($itemselect==-1)
+		{
+			$mask=0;
+			foreach($mlist as $k)
+				if (1<=$k && $k<=6)
+					$mask|=(1<<((int)$k-1));
+			
+			$cmd.='<input type="hidden" id="mode" name="mode" value="itemmain">';
+			$cmd.='<input type="hidden" id="command" name="command" value="itemmix">';
+			$cmd.='<input type="hidden" id="mixmask" name="mixmask" value="'.$mask.'">';
+			$cmd.='<input type="hidden" id="itemselect" name="itemselect" value="999">';
+			$cmd.= "请选择同调结果<br><br>";
+			for($i=0;$i<=$sync;$i++){
+				$tn=$syncn[$i];
+				$tk=$syncn[$i].'_'.$synck[$i].'_'.$synce[$i].'_'.$syncs[$i].'_'.$syncsk[$i].'_'.$star.'_';
+				$cmd.="<input type=\"button\" class=\"cmdbutton\"  style=\"width:200\" value=\"".$tn."\" onclick=\"$('itemselect').value='".$i."';postCmd('gamecmd','command.php');this.disabled=true;\">";
 			}
+			$cmd.="<input type=\"button\" class=\"cmdbutton\"  style=\"width:200\" value=\"返回\" onclick=\"postCmd('gamecmd','command.php');this.disabled=true;\">";
+		}
+		else
+		{
+			$i=(int)$itemselect;
+			if ($i<0 || $i>$sync)
+			{
+				$mode='command'; return; 
+			}
+			foreach($mlist as $val)
+			{
+				${'itm'.$val} = ${'itmk'.$val} = ${'itmsk'.$val} = '';
+				${'itme'.$val} = ${'itms'.$val} = 0;
+			}
+			$tk=$syncn[$i].'_'.$synck[$i].'_'.$synce[$i].'_'.$syncs[$i].'_'.$syncsk[$i].'_1_';
+			include_once GAME_ROOT.'./include/game/special.func.php';
+			syncro($tk);
+			$mode='command';
+		}
 		return;
 	}
-	global $gamecfg,$rp,$killnum,$def,$att,$log;
-	$karma = ($rp * $killnum - $def )+ $att;
+
 	include_once config('mixitem',$gamecfg);
 	$mixflag = false;
 	foreach($mixinfo as $minfo) {
-		if(!array_diff($mixitem,$minfo['stuff']) && !array_diff($minfo['stuff'],$mixitem) && count($mixitem) == count($minfo['stuff']) && (((($karma>=$minfo['karma1'])&&($karma<=$minfo['karma2'])))||(($minfo['karma2']=='')&&($minfo['karma1']=='')))){ 
+		if(!array_diff($mixitem,$minfo['stuff']) && !array_diff($minfo['stuff'],$mixitem) && count($mixitem) == count($minfo['stuff'])){ 
 			$mixflag = true;
 			break;			
 		}
@@ -705,7 +779,7 @@ function itemmix($mlist) {
 		list($itm0,$itmk0,$itme0,$itms0,$itmsk0) = $minfo['result'];
 		$log .= "<span class=\"yellow\">$itmstr</span>合成了<span class=\"yellow\">{$minfo['result'][0]}</span><br>";
 		//var_dump($minfo['result'][0]);
-		addnews($now,'itemmix',$name,$itm0);
+		addnews($now,'itemmix',$nick.' '.$name,$itm0);
 		//if($club == 5) { $wd += 2; }
 		//else { $wd+=1; }
 		$wd+=1;
@@ -713,6 +787,11 @@ function itemmix($mlist) {
 		elseif((strpos($itmk0,'H') === 0)&&($club == 16)&&($itms0 !== $nosta)){ $itms0 = ceil($itms0*2); }
 		elseif(($itmk0 == 'EE' || $itmk0 == 'ER') && ($club == 7)){ $itme0 *= 5; }
 		//elseif(($itm0 == '移动PC' || $itm0 == '广域生命探测器') && ($club == 7)){ $itme0 *= 3; }
+		
+		//检查成就
+		include_once GAME_ROOT.'./include/game/achievement.func.php';
+		check_mixitem_achievement($name,$itm0);
+		
 		itemget();
 	}
 	return;
@@ -910,7 +989,7 @@ function getcorpse($item){
 		$mode = 'command';
 		return;
 	}
-
+	
 	if($item == 'wep') {
 		$itm0 = $edata['wep'];
 		$itmk0 = $edata['wepk'];

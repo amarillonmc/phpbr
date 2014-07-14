@@ -91,12 +91,15 @@ value="使用"
 <?php if(in_array($pls,$shops)) { ?>
 <input type="button" class="cmdbutton" id="sp_shop" name="sp_shop" value="商店" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_shop';postCmd('gamecmd','command.php');this.disabled=true;">
 <?php } ?>
-<input type="button" class="cmdbutton" id="sp_word" name="sp_word" value="留言变更" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_word';postCmd('gamecmd','command.php');this.disabled=true;">
-<input type="button" class="cmdbutton" id="sp_pswd" name="sp_pswd" value="修改密码" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_pswd';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="sp_skpts" name="sp_skpts" value="升级技能" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_skpts';postCmd('gamecmd','command.php');this.disabled=true;">
 <br />
 <?php if($club == 7) { ?>
 <input type="button" class="cmdbutton" id="sp_adtsk" name="sp_adtsk" value="武器带电" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_adtsk';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="sp_trapadtsk" name="sp_trapadtsk" value="陷阱带电" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_trapadtsk';postCmd('gamecmd','command.php');this.disabled=true;">
 <?php } elseif($club == 8) { ?>
 <input type="button" class="cmdbutton" id="sp_adtsk" name="sp_adtsk" value="武器淬毒" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_adtsk';postCmd('gamecmd','command.php');this.disabled=true;">
+<input type="button" class="cmdbutton" id="sp_trapadtsk" name="sp_trapadtsk" value="陷阱淬毒" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_trapadtsk';postCmd('gamecmd','command.php');this.disabled=true;">
 <input type="button" class="cmdbutton" id="sp_poison" name="sp_poison" value="检查毒物" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_poison';postCmd('gamecmd','command.php');this.disabled=true;">
+<?php } elseif($club == 99) { ?>
+<input type="button" class="cmdbutton" id="sp_pbomb" name="sp_pbomb" value="X 按钮" onclick="$('command').value='special';$('subcmd').name='sp_cmd';$('subcmd').value='sp_pbomb';postCmd('gamecmd','command.php');this.disabled=true;">
 <?php } ?>

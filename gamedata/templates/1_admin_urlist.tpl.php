@@ -25,10 +25,13 @@
 <th>权限</th>
 <th>最新游戏</th>
 <th>ip</th>
-<th>分数</th>
+<th>分数1</th>
+<th>分数2</th>
 <th>性别</th>
 <th>头像</th>
 <th>社团</th>
+<th>成就</th>
+<th>称号表</th>
 <th>口头禅</th>
 <th>杀人留言</th>
 <th>遗言</th>
@@ -36,14 +39,15 @@
 </tr>
 <?php if($urdata) { if(is_array($urdata)) { foreach($urdata as $n => $ur) { ?>
 <tr>
-<?php if($ur['groupid']>=$mygroup) { ?>
+<?php if($ur['groupid']>$mygroup) { ?>
 <td><input type="checkbox" id="user_<?php echo $n?>" name="user_<?php echo $n?>" value="<?php echo $ur['uid']?>" disabled="true"></td>
 <td><?php echo $ur['username']?></td>
 <td><input type="text" name="pass_<?php echo $n?>" size="20" maxlength="20" value="无法修改" disabled="true"></td>
 <td><?php echo $urgroup[$ur['groupid']]?></td>
 <td>第<?php echo $ur['lastgame']?>局</td>
 <td><?php echo $ur['ip']?></td>
-<td><?php echo $ur['credits']?></td>
+<td><input type="text" name="credits_<?php echo $n?>" size="6" maxlength="10" value="<?php echo $ur['credits']?>" disabled="true"></td>
+<td><input type="text" name="credits2_<?php echo $n?>" size="6" maxlength="10" value="<?php echo $ur['credits2']?>" disabled="true"></td>
 <td>
 <select name="gender_<?php echo $n?>" disabled="true">
 <option value="0" 
@@ -65,7 +69,9 @@ selected
 </td>
 <td><input type="text" name="icon_<?php echo $n?>" size="2" maxlength="2" value="<?php echo $ur['icon']?>" disabled="true"></td>
 <td><?php echo $clubinfo[$ur['club']]?></td>
-<td><input type="text" name="motto_<?php echo $n?>" size="20" maxlength="20" value="<?php echo $ur['motto']?>" disabled="true"></td>
+<td><input type="text" name="achievement_<?php echo $n?>" size="20" maxlength="400" value="<?php echo $ur['achievement']?>" disabled="true"></td>
+<td><input type="text" name="nicks_<?php echo $n?>" size="20" maxlength="300" value="<?php echo $ur['nicks']?>" disabled="true"></td>
+<td><input type="text" name="motto_<?php echo $n?>" size="20" maxlength="60" value="<?php echo $ur['motto']?>" disabled="true"></td>
 <td><input type="text" name="killmsg_<?php echo $n?>" size="20" maxlength="20" value="<?php echo $ur['killmsg']?>" disabled="true"></td>
 <td><input type="text" name="lastword_<?php echo $n?>" size="20" maxlength="20" value="<?php echo $ur['lastword']?>" disabled="true"></td>
 <td>
@@ -78,7 +84,8 @@ selected
 <td><?php echo $urgroup[$ur['groupid']]?></td>
 <td>第<?php echo $ur['lastgame']?>局</td>
 <td><?php echo $ur['ip']?></td>
-<td><?php echo $ur['credits']?></td>
+<td><input type="text" name="credits_<?php echo $n?>" size="6" maxlength="10" value="<?php echo $ur['credits']?>"></td>
+<td><input type="text" name="credits2_<?php echo $n?>" size="6" maxlength="10" value="<?php echo $ur['credits2']?>"></td>
 <td>
 <select name="gender_<?php echo $n?>">
 <option value="0" 
@@ -100,6 +107,8 @@ selected
 </td>
 <td><input type="text" name="icon_<?php echo $n?>" size="2" maxlength="2" value="<?php echo $ur['icon']?>"></td>
 <td><?php echo $clubinfo[$ur['club']]?></td>
+<td><input type="text" name="achievement_<?php echo $n?>" size="20" maxlength="400" value="<?php echo $ur['achievement']?>"></td>
+<td><input type="text" name="nicks_<?php echo $n?>" size="20" maxlength="300" value="<?php echo $ur['nicks']?>"></td>
 <td><input type="text" name="motto_<?php echo $n?>" size="20" maxlength="60" value="<?php echo $ur['motto']?>"></td>
 <td><input type="text" name="killmsg_<?php echo $n?>" size="20" maxlength="60" value="<?php echo $ur['killmsg']?>"></td>
 <td><input type="text" name="lastword_<?php echo $n?>" size="20" maxlength="60" value="<?php echo $ur['lastword']?>"></td>

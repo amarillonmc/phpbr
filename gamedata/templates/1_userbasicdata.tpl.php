@@ -8,12 +8,12 @@
 </tr>
 <tr>
 <td>新密码</td>
-<td><input type="password" id="npass" name="npass" size="24" maxlength="24" value=""></td>
+<td><input type="password" id="npass" name="npass" size="15" maxlength="24" value=""></td>
 <td>最长24个字符，留空为不修改</td>
 </tr>
 <tr>
 <td>重复新密码</td>
-<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
+<td><input type="password" id="rnpass" name="rnpass" size="15" maxlength="24" value=""></td>
 <td>最长24个字符，留空为不修改</td>
 </tr>
 <?php } elseif(CURSCRIPT == 'user') { ?>
@@ -24,17 +24,17 @@
 </tr>
 <tr>
 <td>原密码</td>
-<td><input type="password" id="opass" name="opass" size="24" maxlength="24" value=""></td>
+<td><input type="password" id="opass" name="opass" size="15" maxlength="24" value=""></td>
 <td> </td>
 </tr>
 <tr>
 <td>新密码</td>
-<td><input type="password" id="npass" name="npass" size="24" maxlength="24" value=""></td>
+<td><input type="password" id="npass" name="npass" size="15" maxlength="24" value=""></td>
 <td>最长24个字符，留空为不修改</td>
 </tr>
 <tr>
 <td>重复新密码</td>
-<td><input type="password" id="rnpass" name="rnpass" size="24" maxlength="24" value=""></td>
+<td><input type="password" id="rnpass" name="rnpass" size="15" maxlength="24" value=""></td>
 <td>最长24个字符，留空为不修改</td>
 </tr>
 <?php } else { ?>

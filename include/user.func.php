@@ -104,4 +104,15 @@ function get_iconlist(){
 	}
 	return $iconarray;
 }
+
+function get_utitlelist(){//称号
+	global $nicks,$utitlelist;
+	$utarr = explode('/',$nicks);//字符串转数组
+	$utlist = Array();
+	//array_unshift($utarr,0);//数组右移一位以与$utitlelist对应
+	foreach($utarr as $key => $val){//$utitlelist在resources里
+			$utlist[$key] = $val;
+	}
+	return $utlist;
+}
 ?>

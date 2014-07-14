@@ -2,12 +2,12 @@
 
 if(!defined('IN_GAME')){exit('Access Denied');}
 
-$hdamage = 1723623;
-$hplayer = 'CC.';
-$noisetime = 1353836963;
-$noisepls = 7;
-$noiseid = 358;
-$noiseid2 = 337;
-$noisemode = 'D';
+$hdamage = 0;
+$hplayer = '';
+$noisetime = 0;
+$noisepls = 0;
+$noiseid = 0;
+$noiseid2 = 0;
+$noisemode = '';
 
 ?>

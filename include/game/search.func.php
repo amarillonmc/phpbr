@@ -6,8 +6,10 @@ if(!defined('IN_GAME')) {
 
 function move($moveto = 99) {
 	global $lvl,$log,$pls,$plsinfo,$inf,$hp,$mhp,$sp,$def,$club,$arealist,$areanum,$hack,$areainfo,$gamestate,$pose,$weather;
-	
-
+	global $gamestate;
+	$f=false;
+	if ($pls==34 && $gamestate<50) $f=true;
+	if ($moveto==34 && $gamestate<50) $f=true;
 	$plsnum = sizeof($plsinfo);
 	if(($moveto == 'main')||($moveto < 0 )||($moveto >= $plsnum)){
 		$log .= '请选择正确的移动地点。<br>';
@@ -19,7 +21,8 @@ function move($moveto = 99) {
 		$log .= $plsinfo[$moveto].'是禁区，还是离远点吧！<br>';
 		return;
 	}
-	
+
+
 	//足部受伤，20；足球社，12；冻伤，30；正常，15；去gamecfg里改吧
 	$movesp = 15;
 	if ($inf) {
@@ -64,7 +67,7 @@ function move($moveto = 99) {
 //			$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 		}
 	} elseif($weather == 14){//离子暴
-		$dice = rand(0,9);
+		$dice = rand(0,8);
 		if($dice ==0 && strpos($inf,'e')===false){
 			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"yellow\">身体麻痹</span>了！<br>";
 			$inf = str_replace('e','',$inf);
@@ -73,11 +76,24 @@ function move($moveto = 99) {
 			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"grey\">混乱</span>了！<br>";
 			$inf = str_replace('w','',$inf);
 			$inf .= 'w';
+		}elseif($dice ==2 && (strpos($inf,'w')===false || strpos($inf,'e')===false)){
+			if (strpos($inf,'w')===false)
+			{
+				$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"grey\">混乱</span>了！<br>";
+				$inf = str_replace('w','',$inf);
+				$inf .= 'w';
+			}
+			if (strpos($inf,'e')===false)
+			{
+				$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"yellow\">身体麻痹</span>了！<br>";
+				$inf = str_replace('e','',$inf);
+				$inf .= 'e';
+			}
 		}else{
 			$log .= "空气中充斥着狂暴的电磁波……<br>";
 		}
 	} elseif($weather == 15){//辐射尘
-		$dice = rand(0,9);
+		$dice = rand(0,3);
 		if($dice == 0){
 			$mhpdown = rand(4,8);
 			if($mhp > $mhpdown){
@@ -85,18 +101,22 @@ function move($moveto = 99) {
 				$mhp -= $mhpdown;
 				if($hp > $mhp){$hp = $mhp;}
 			}
+		}elseif ($dice==1 && strpos($inf,'p')===false){
+			$log .= "空气中弥漫着的<span class=\"green\">放射性尘埃</span>导致你<span class=\"purple\">中毒</span>了！<br>";
+			$inf = str_replace('p','',$inf);
+			$inf .= 'p';
 		}else{
 			$log .= "空气中弥漫着放射性尘埃……<br>";
 		}
 	} elseif($weather == 16){//臭氧洞
-		$dice = rand(0,9);
-		if($dice == 0){
-			$defdown = rand(3,6);
+		$dice = rand(0,7);
+		if($dice <= 3){
+			$defdown = rand(4,8);
 			if($def > $defdown){
 				$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你的防御力减少了<span class=\"red\">{$defdown}</span>点！<br>";
 				$def -= $defdown;
 			}
-		}elseif($dice ==1 && strpos($inf,'u')===false){
+		}elseif($dice <=5 && strpos($inf,'u')===false){
 			$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你<span class=\"red\">烧伤</span>了！<br>";
 			$inf = str_replace('u','',$inf);
 			$inf .= 'u';
@@ -107,7 +127,8 @@ function move($moveto = 99) {
 	if(!$moved) {
 		$pls = $moveto;
 		$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
-	}
+	}else{$f=false;}
+	
 	
 	if($inf){
 		global $infwords,$inf_move_hp;
@@ -125,39 +146,25 @@ function move($moveto = 99) {
 		}
 	}
 	
-	/*if(strpos($inf, 'p') !== false){
-		$damage = round($mhp/16) + rand(0,10);
-		$hp -= $damage;
-		$log .= "<span class=\"purple\">毒发</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
-		if($hp <= 0 ){
-			include_once GAME_ROOT.'./include/state.func.php';
-			death('pmove');
-			return;
-		}
+	$log .= $areainfo[$pls].'<br>';	
+	if ($f) {
+		if (CURSCRIPT !== 'botservice') $log.="<span id=\"HsUipfcGhU\"></span>";	//刷新页面标记
+		return;
 	}
-	if(strpos($inf, 'u') !== false){
-		$damage = round($mhp/16) + rand(0,15);
-		$hp -= $damage;
-		$log .= "<span class=\"yellow\">烧伤发作</span>减少了<span class=\"red\">$damage</span>点生命！<br>";
-		if($hp <= 0 ){
-			include_once GAME_ROOT.'./include/state.func.php';
-			death('umove');
-			return;
-		}
-	}*/
-	$log .= $areainfo[$pls].'<br>';
+	$enemyrate = 40;
+	if($gamestate == 40){$enemyrate += 20;}
+	elseif($gamestate == 50){$enemyrate += 40;}
+	if($pose==3){$enemyrate -= 20;}
+	elseif($pose==4){$enemyrate += 10;}
+	discover($enemyrate);
+	/*
 	$enemyrate = 70;
 	if($gamestate == 40){$enemyrate += 10;}
 	elseif($gamestate == 50){$enemyrate += 15;}
 	if($pose==3){$enemyrate -= 20;}
 	elseif($pose==4){$enemyrate += 10;}
 	discover($enemyrate);
-//	$log .= '遇敌率'.$enemyrate.'%<br>';
-//	if(($gamestate>=40)&&($pose!=3)){
-//		discover(90);
-//	} else {
-//		discover(70);
-//	}
+	*/
 	return;
 
 }
@@ -195,17 +202,25 @@ function search(){
 		return;	
 	}
 
-	if($weather == 13) {
+	if($weather == 11) {//龙卷风
+		if($hack){$pls = rand(0,sizeof($plsinfo)-1);}
+		else {$pls = rand($areanum+1,sizeof($plsinfo)-1);$pls=$arealist[$pls];}
+		$log = ($log . "龙卷风把你吹到了<span class=\"yellow\">$plsinfo[$pls]</span>！<br>");
+		$moved = true;
+	} elseif($weather == 13) {//冰雹
 		$damage = round($mhp/12) + rand(0,20);
 		$hp -= $damage;
-		$log .= "被<span class=\"blue\">冰雹</span>击中，生命减少<span class=\"red\">$damage</span>点！<br>";
+		$log .= "被<span class=\"blue\">冰雹</span>击中，生命减少了<span class=\"red\">$damage</span>点！<br>";
 		if($hp <= 0 ) {
 			include_once GAME_ROOT.'./include/state.func.php';
 			death('hsmove');
 			return;
+//		} else {
+//			$pls = $moveto;
+//			$log .= "消耗<span class=\"yellow\">{$movesp}</span>点体力，移动到了<span class=\"yellow\">$plsinfo[$pls]</span>。<br>";
 		}
 	} elseif($weather == 14){//离子暴
-		$dice = rand(0,9);
+		$dice = rand(0,8);
 		if($dice ==0 && strpos($inf,'e')===false){
 			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"yellow\">身体麻痹</span>了！<br>";
 			$inf = str_replace('e','',$inf);
@@ -214,11 +229,24 @@ function search(){
 			$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"grey\">混乱</span>了！<br>";
 			$inf = str_replace('w','',$inf);
 			$inf .= 'w';
+		}elseif($dice ==2 && (strpos($inf,'w')===false || strpos($inf,'e')===false)){
+			if (strpos($inf,'w')===false)
+			{
+				$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"grey\">混乱</span>了！<br>";
+				$inf = str_replace('w','',$inf);
+				$inf .= 'w';
+			}
+			if (strpos($inf,'e')===false)
+			{
+				$log .= "空气中充斥着的<span class=\"linen\">狂暴电磁波</span>导致你<span class=\"yellow\">身体麻痹</span>了！<br>";
+				$inf = str_replace('e','',$inf);
+				$inf .= 'e';
+			}
 		}else{
 			$log .= "空气中充斥着狂暴的电磁波……<br>";
 		}
 	} elseif($weather == 15){//辐射尘
-		$dice = rand(0,9);
+		$dice = rand(0,3);
 		if($dice == 0){
 			$mhpdown = rand(4,8);
 			if($mhp > $mhpdown){
@@ -226,18 +254,22 @@ function search(){
 				$mhp -= $mhpdown;
 				if($hp > $mhp){$hp = $mhp;}
 			}
+		}elseif ($dice==1 && strpos($inf,'p')===false){
+			$log .= "空气中弥漫着的<span class=\"green\">放射性尘埃</span>导致你<span class=\"purple\">中毒</span>了！<br>";
+			$inf = str_replace('p','',$inf);
+			$inf .= 'p';
 		}else{
 			$log .= "空气中弥漫着放射性尘埃……<br>";
 		}
 	} elseif($weather == 16){//臭氧洞
-		$dice = rand(0,9);
-		if($dice == 0){
-			$defdown = rand(3,6);
+		$dice = rand(0,7);
+		if($dice <= 3){
+			$defdown = rand(4,8);
 			if($def > $defdown){
 				$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你的防御力减少了<span class=\"red\">{$defdown}</span>点！<br>";
 				$def -= $defdown;
 			}
-		}elseif($dice ==1 && strpos($inf,'u')===false){
+		}elseif($dice <=5 && strpos($inf,'u')===false){
 			$log .= "高强度的<span class=\"purple\">紫外线照射</span>导致你<span class=\"red\">烧伤</span>了！<br>";
 			$inf = str_replace('u','',$inf);
 			$inf .= 'u';
@@ -301,7 +333,7 @@ function search(){
 }
 
 function discover($schmode = 0) {
-	global $art,$pls,$now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect,$action;
+	global $art,$pls,$now,$log,$mode,$command,$cmd,$event_obbs,$weather,$pls,$club,$pose,$tactic,$inf,$item_obbs,$enemy_obbs,$trap_min_obbs,$trap_max_obbs,$bid,$db,$tablepre,$gamestate,$corpseprotect,$action,$skills,$rp,$aidata;
 	$event_dice = rand(0,99);
 	if(($event_dice < $event_obbs)||(($art!="Untainted Glory")&&($pls==34)&&($gamestate != 50))){
 		include_once GAME_ROOT.'./include/game/event.func.php';
@@ -309,6 +341,32 @@ function discover($schmode = 0) {
 		$mode = 'command';
 		return;
 	}
+	
+	include_once GAME_ROOT. './include/game/aievent.func.php';//AI事件
+	$aidata = false;//用于判断天然呆AI（冴冴这样的）是否已经来到你身后并且很生气
+	aievent(20);//触发AI事件的概率
+	if(is_array($aidata)){
+		include_once GAME_ROOT.'./include/game/attr.func.php';
+		$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf,$aidata['pose']);
+		include_once GAME_ROOT.'./include/game/clubskills.func.php';
+		$active_r *= get_clubskill_bonus_active($club,$skills,$aidata['club'],$aidata['skills']);
+		if ($active_r>96) $active_r=96;
+		$bid = $aidata['pid'];
+		$active_dice = rand(0,99);
+		if($active_dice <  $active_r) {
+			$action = 'enemy'.$aidata['pid'];
+			include_once GAME_ROOT.'./include/game/battle.func.php';
+			findenemy($aidata);
+			return;
+		} else {
+			include_once GAME_ROOT.'./include/game/combat.func.php';
+			combat(0);
+			return;
+		}
+		
+		
+	}
+	
 	$trap_dice=rand(0,99);//随机数，开始判断是否踩陷阱
 	if($trap_dice < $trap_max_obbs){ //踩陷阱概率最大值
 		$trapresult = $db->query("SELECT * FROM {$tablepre}maptrap WHERE pls = '$pls' ORDER BY itmk DESC");
@@ -343,6 +401,11 @@ function discover($schmode = 0) {
 				return;
 			}else{
 				$real_trap_obbs = $trap_min_obbs + $trpnum/4;
+				//Anti-Meta RP System Version 2.00 ~ Nemo
+				//冴冴我喜欢你！
+				//17rp/177rp+1%
+				if($gamestate >= 50) {$real_trap_obbs = $real_trap_obbs + $rp / 177; }
+				else{ $real_trap_obbs = $real_trap_obbs + $rp/30; }
 				if($pose==1){$real_trap_obbs+=1;}
 				elseif($pose==3){$real_trap_obbs+=3;}//攻击和探索姿势略容易踩陷阱
 				if($gamestate >= 40){$real_trap_obbs+=3;}//连斗以后略容易踩陷阱
@@ -408,6 +471,7 @@ function discover($schmode = 0) {
 		$result = $db->query("SELECT * FROM {$tablepre}players WHERE pls='$pls' AND pid!='$pid'");
 		if(!$db->num_rows($result)){
 			$log .= '<span class="yellow">周围一个人都没有。</span><br>';
+			if(CURSCRIPT == 'botservice') echo "noenemy=1\n";
 			$mode = 'command';
 			return;
 		}
@@ -423,7 +487,16 @@ function discover($schmode = 0) {
 			$edata = $db->fetch_array($result);
 			if(!$edata['type'] || $gamestate < 50){
 				if($edata['hp'] > 0) {
+					global $art,$artk,$name; 
+					if ((!$edata['type'])&&($artk=='XX')&&(($edata['artk']!='XX')||($edata['art']!=$name))&&($gamestate<50)){
+						continue;
+					}
+					if (($artk!='XX')&&($edata['artk']=='XX')&&($gamestate<50)){
+						continue;
+					}
 					$hide_r = get_hide_r($weather,$pls,$edata['pose'],$edata['tactic'],$edata['club'],$edata['inf']);
+					include_once GAME_ROOT.'./include/game/clubskills.func.php';
+					$hide_r *= get_clubskill_bonus_hide($edata['club'],$edata['skills']);
 					$enemy_dice = rand(0,99);
 					if($enemy_dice < ($find_obbs - $hide_r)) {
 						if($teamID&&(!$fog)&&($gamestate<40)&&($teamID == $edata['teamID'])){
@@ -434,6 +507,9 @@ function discover($schmode = 0) {
 							return;
 						} else {
 							$active_r = get_active_r($weather,$pls,$pose,$tactic,$club,$inf,$edata['pose']);
+							include_once GAME_ROOT.'./include/game/clubskills.func.php';
+							$active_r *= get_clubskill_bonus_active($club,$skills,$edata['club'],$edata['skills']);
+							if ($active_r>96) $active_r=96;
 							$bid = $edata['pid'];
 							$active_dice = rand(0,99);
 							if($active_dice <  $active_r) {
@@ -442,6 +518,13 @@ function discover($schmode = 0) {
 								findenemy($edata);
 								return;
 							} else {
+								if (CURSCRIPT == 'botservice') 
+								{
+									echo "passive_battle=1\n";
+									echo "passive_w_name={$edata['name']}\n";
+									echo "passive_w_type={$edata['type']}\n";
+									echo "passive_w_sNo={$edata['sNo']}\n";
+								}
 								include_once GAME_ROOT.'./include/game/combat.func.php';
 								combat(0);
 								return;
@@ -462,7 +545,9 @@ function discover($schmode = 0) {
 							findcorpse($edata);
 							return;
 						} else {
-							discover(50);
+							//这看上去是个bug…… 会导致地图上最后一个兵很难摸到…… 
+							//改成discover(100)应该就能解决问题…… 但修复了可能导致平衡性问题…… 所以暂时留在这……
+							discover(50);	
 							return;
 						}
 					}
@@ -514,7 +599,7 @@ function discover($schmode = 0) {
 				itemfind();
 				return;
 			} else {
-				$log .= "但是什么都没有发现。<br>";
+				$log .= "但是什么都没有发现。可能是因为道具有天然呆属性。<br>";
 			}
 		} else {
 			$log .= "但是什么都没有发现。<br>";

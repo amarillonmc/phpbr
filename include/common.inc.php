@@ -15,10 +15,14 @@ set_error_handler('gameerrorhandler');
 $magic_quotes_gpc = get_magic_quotes_gpc();
 extract(gstrfilter($_COOKIE));
 extract(gstrfilter($_POST));
-unset($_GET);
+extract(gstrfilter($_GET));
+//$_GET = gstrfilter($_GET);
+$_REQUEST = gstrfilter($_REQUEST);
 $_FILES = gstrfilter($_FILES);
 
 require GAME_ROOT.'./config.inc.php';
+
+
 
 //$errorinfo ? error_reporting(E_ALL) : error_reporting(0);
 date_default_timezone_set('Etc/GMT');
@@ -192,9 +196,16 @@ if(CURSCRIPT !== 'chat'){
 	fclose($plock); 
 }
 
-$cuser = & ${$tablepre.'user'};
-$cpass = & ${$tablepre.'pass'};
-
+if (CURSCRIPT == 'botservice')
+{
+	$cuser = $botname;
+	$cpass = $botpass;
+}
+else
+{
+	$cuser = & ${$tablepre.'user'};
+	$cpass = & ${$tablepre.'pass'};
+}
 
 //function testlog($name){
 //	global $month,$day,$hour,$min,$sec,$old_gamestate,$gamestate,$old_areanum,$areanum,$pt;

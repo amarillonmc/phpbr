@@ -71,7 +71,8 @@ if($mode == 'edit') {
 			}
 		}
 	}
-	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon',{$passqry}motto='$motto',  killmsg='$killmsg', lastword='$lastword', credits='$credits', credits2='$credits2' WHERE username='$cuser'");
+	if ($icon>$iconlimit) $icon=0;
+	$db->query("UPDATE {$tablepre}users SET gender='$gender', icon='$icon',{$passqry}motto='$motto',  killmsg='$killmsg', lastword='$lastword', credits='$credits', credits2='$credits2' ,nick='$nick' WHERE username='$cuser'");
 	if($db->affected_rows()){
 		$gamedata['innerHTML']['info'] .= $_INFO['data_success'];
 	}else{
@@ -90,6 +91,8 @@ if($mode == 'edit') {
 	extract($udata);
 	$iconarray = get_iconlist($icon);
 	$select_icon = $icon;
+	//这里假定player表里有usertitle字段而且储存方式是这样蛋疼的。具体程序虚子你写。
+	$utlist = get_utitlelist();//然后去接收用户传来的$
 	include template('user');
 }
 

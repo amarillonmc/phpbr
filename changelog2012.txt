@@ -1,3 +1,9 @@
+2012-10-28
+添加了剧情系统{global.func.php;system.func.php;resources_1.php;common.inc.php;}
+修正了御神签抽签死亡的问题{item2.func.php;}
+修正了SCP嗑药系统里的判定小问题{item.func.php;}
+修正了0防伤害异常的问题{combat.func.php}
+
 2012-10-25
 修正歌唱系统显示的小问题{command.htm;}
 修正了玩家可以进入强袭姿态的BUG{command.php;}

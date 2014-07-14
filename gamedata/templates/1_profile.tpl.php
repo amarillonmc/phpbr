@@ -4,7 +4,7 @@
 <td>
 <table border="0" width="720" cellspacing="0" cellpadding="0"  valign="middle">
 <tr>
-<td width="210" colspan="3" class="b1"><span><?php echo $name?></span></td>
+<td width="210" colspan="3" class="b1"><span><?php echo $nick?> <?php echo $name?></span></td>
 <td width="100" colspan="1" class="b1"><span><?php echo $sexinfo[$gd]?><?php echo $sNo?>号</span></td>
 <td width="95" colspan="2" class="b1"><span>天气:<?php echo $wthinfo[$weather]?></span></td>
 <td width="215" colspan="1" class="b1"><span><?php echo $month?>月<?php echo $day?>日 星期<?php echo $week["$wday"]?> <?php echo $hour?>:<?php echo $min?>
@@ -169,7 +169,25 @@ onclick="$('mode').value='special';$('command').value='inff';postCmd('gamecmd','
 </tr>
 <tr>
 <td class="b2"><span>内定称号</span></td>
-<td class="b3"><span><?php echo $clubinfo[$club]?></span></td>
+<td class="b3"><span>
+<?php if($club!=0) { ?>
+<?php echo $clubinfo[$club]?>
+<?php } else { ?>
+<select id="clubsel" name="clubsel" onchange="$('mode').value='special';$('command').value=$('clubsel').value;postCmd('gamecmd','command.php');return false;" 
+<?php if(CURSCRIPT != 'game' || $mode != 'command') { ?>
+disabled
+<?php } ?>
+>
+<?php if(is_array($clubavl)) { foreach($clubavl as $key => $value) { ?>
+<option value="clubsel<?php echo $key?>"
+<?php if($club == $key) { ?>
+selected
+<?php } ?>
+><?php echo $clubinfo[$value]?>
+<?php } } ?>
+</select>
+<?php } ?>
+</span></td>
 <td class="b2"><span>
 <?php if($wc >= 100) { ?>
 投熟
@@ -183,7 +201,7 @@ onclick="$('mode').value='special';$('command').value='inff';postCmd('gamecmd','
 <td width="70" class="b2"><span>攻击力</span></td>
 <td width="80" class="b3"><span><?php echo $att?> + <?php echo $wepe?></span></td>
 <td class="b2"><span>金钱</span></td>
-<td class="b3"><span><?php echo $money?> Pt</span></td>
+<td class="b3"><span><?php echo $money?> 元</span></td>
 <td class="b2"><span>
 <?php if($wd >= 100) { ?>
 爆熟
@@ -282,13 +300,19 @@ yellow
 clan
 <?php } ?>
 "><?php echo $hp?> / <?php echo $mhp?></span></span></td>
-<td class="b2"><span>击杀数</span></td>
-<td class="b3"><span><?php echo $killnum?></span></td>
+<td class="b2"><span>技能点</span></td>
+<td class="b3">
+<?php if($skillpoint > 0) { ?>
+<span class="lime"><?php echo $skillpoint?></span>
+<?php } else { ?>
+<span><?php echo $skillpoint?></span>
+<?php } ?>
+</td>
 </tr>
 <tr>
 <td class="b2">■■：</td>
 <td class="b3">
-■■■■■■■■■</td>
+■■■应■回■■■。</td>
 <td class="b2"><span>歌魂</span></td>
 <td class="b3"><span class="
 <?php if($ss <= $mss*0.2) { ?>
@@ -299,8 +323,8 @@ yellow
 clan
 <?php } ?>
 "><?php echo $ss?> / <?php echo $mss?></span></td>
-<td class="b2"><span>罪业</span></td>
-<td class="b3"><span><?php echo $karma?></span></td>
+<td class="b2"><span>击杀数</span></td>
+<td class="b3"><span><?php echo $killnum?></span></td>
 </tr>
 </table>
 </td>

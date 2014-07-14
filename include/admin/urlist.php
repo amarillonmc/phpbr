@@ -101,12 +101,14 @@ if($urcmd == 'ban' || $urcmd == 'unban' || $urcmd == 'del') {
 		$cmd_info = "帐户UID错误。";
 	}elseif(!isset($urdata[$no]) || $urdata[$no]['uid'] != $uid){
 		$cmd_info = "该帐户不存在或超出查询范围。";
-	}elseif($urdata[$no]['groupid'] >= $mygroup){
+	}elseif($urdata[$no]['groupid'] > $mygroup){
 		$cmd_info = "权限不够，不能修改此帐户信息！";
 	}else{
 		$urdata[$no]['motto'] = $urmotto = astrfilter(${'motto_'.$no});
 		$urdata[$no]['killmsg'] = $urkillmsg = astrfilter(${'killmsg_'.$no});
 		$urdata[$no]['lastword'] = $urlastword = astrfilter(${'lastword_'.$no});
+		$urdata[$no]['nicks'] = $urnicks = ${'nicks_'.$no};
+		$urdata[$no]['achievement'] = $urach = ${'achievement_'.$no};
 		$urdata[$no]['icon'] = $uricon = (int)(${'icon_'.$no});
 		$urdata[$no]['credits'] = $urcredits = (int)(${'credits_'.$no});
 		$urdata[$no]['credits2'] = $urcredits2 = (int)(${'credits2_'.$no});
@@ -117,10 +119,10 @@ if($urcmd == 'ban' || $urcmd == 'unban' || $urcmd == 'del') {
 		}
 		if(!empty(${'pass_'.$no})){
 			$urpass = md5(${'pass_'.$no});
-			$db->query("UPDATE {$tablepre}users SET motto='$urmotto',killmsg='$urkillmsg',lastword='$urlastword',icon='$uricon',gender='$urgender',password='$urpass',credits='$urcredits',credits2='$urcredits2' WHERE uid='$uid'");
+			$db->query("UPDATE {$tablepre}users SET motto='$urmotto',killmsg='$urkillmsg',lastword='$urlastword',icon='$uricon',gender='$urgender',password='$urpass',credits='$urcredits',credits2='$urcredits2' ,nicks='$urnicks' ,achievement='$urach' WHERE uid='$uid'");
 			$cmd_info = "帐户 ".$urdata[$no]['username']." 的密码及其他信息已修改！";
 		}else{
-			$db->query("UPDATE {$tablepre}users SET motto='$urmotto',killmsg='$urkillmsg',lastword='$urlastword',icon='$uricon',gender='$urgender',credits='$urcredits',credits2='$urcredits2' WHERE uid='$uid'");
+			$db->query("UPDATE {$tablepre}users SET motto='$urmotto',killmsg='$urkillmsg',lastword='$urlastword',icon='$uricon',gender='$urgender',credits='$urcredits',credits2='$urcredits2' ,nicks='$urnicks' ,achievement='$urach' WHERE uid='$uid'");
 			$cmd_info = "帐户 ".$urdata[$no]['username']." 的信息已修改！";
 		}		
 	}

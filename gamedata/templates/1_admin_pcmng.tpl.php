@@ -247,20 +247,28 @@
 <td><input size="20" type="text" name="itme6" value="<?php echo $pc['itme6']?>" maxlength="20"></td>
 </tr>
 <tr>
-<td>队伍密码</td>
-<td><input size="20" type="text" name="teamPass" value="<?php echo $pc['teamPass']?>" maxlength="20"></td>
+<td>成就</td>
+<td><input size="20" type="text" name="achievement" value="<?php echo $pc['achievement']?>" maxlength="500"></td>
 <td>耐久</td>
 <td><input size="20" type="text" name="arts" value="<?php echo $pc['arts']?>" maxlength="20"></td>
 <td>耐久</td>
 <td><input size="20" type="text" name="itms6" value="<?php echo $pc['itms6']?>" maxlength="20"></td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>歌魂</td>
+<td><input size="20" type="text" name="ss" value="<?php echo $pc['ss']?>" maxlength="20"></td>
 <td>子类型</td>
 <td><input size="20" type="text" name="artsk" value="<?php echo $pc['artsk']?>" maxlength="20"></td>
 <td>子类型</td>
 <td><input size="20" type="text" name="itmsk6" value="<?php echo $pc['itmsk6']?>" maxlength="20"></td>
+</tr>
+<tr>
+<td>最大歌魂</td>
+<td><input size="20" type="text" name="mss" value="<?php echo $pc['mss']?>" maxlength="20"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </table>
 <input type="submit" value="修改玩家数值" onclick="$('command').value = 'submitedit'">

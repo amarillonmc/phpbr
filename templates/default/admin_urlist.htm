@@ -30,6 +30,8 @@
 			<th>性别</th>
 			<th>头像</th>
 			<th>社团</th>
+			<th>成就</th>
+			<th>称号表</th>
 			<th>口头禅</th>
 			<th>杀人留言</th>
 			<th>遗言</th>
@@ -38,7 +40,7 @@
 		<!--{if $urdata}-->
 		<!--{loop $urdata $n $ur}-->
 		<tr>
-			<!--{if $ur['groupid']>=$mygroup}-->
+			<!--{if $ur['groupid']>$mygroup}-->
 			<td><input type="checkbox" id="user_$n" name="user_$n" value="{$ur['uid']}" disabled="true"></td>
 			<td>{$ur['username']}</td>
 			<td><input type="text" name="pass_$n" size="20" maxlength="20" value="无法修改" disabled="true"></td>
@@ -56,7 +58,9 @@
 			</td>
 			<td><input type="text" name="icon_$n" size="2" maxlength="2" value="$ur['icon']" disabled="true"></td>
 			<td>{$clubinfo[$ur['club']]}</td>
-			<td><input type="text" name="motto_$n" size="20" maxlength="20" value="$ur['motto']" disabled="true"></td>
+			<td><input type="text" name="achievement_$n" size="20" maxlength="400" value="$ur['achievement']" disabled="true"></td>
+			<td><input type="text" name="nicks_$n" size="20" maxlength="300" value="$ur['nicks']" disabled="true"></td>
+			<td><input type="text" name="motto_$n" size="20" maxlength="60" value="$ur['motto']" disabled="true"></td>
 			<td><input type="text" name="killmsg_$n" size="20" maxlength="20" value="$ur['killmsg']" disabled="true"></td>
 			<td><input type="text" name="lastword_$n" size="20" maxlength="20" value="$ur['lastword']" disabled="true"></td>
 			<td>
@@ -80,6 +84,8 @@
 			</td>
 			<td><input type="text" name="icon_$n" size="2" maxlength="2" value="$ur['icon']"></td>
 			<td>{$clubinfo[$ur['club']]}</td>
+			<td><input type="text" name="achievement_$n" size="20" maxlength="400" value="$ur['achievement']"></td>
+			<td><input type="text" name="nicks_$n" size="20" maxlength="300" value="$ur['nicks']"></td>
 			<td><input type="text" name="motto_$n" size="20" maxlength="60" value="$ur['motto']"></td>
 			<td><input type="text" name="killmsg_$n" size="20" maxlength="60" value="$ur['killmsg']"></td>
 			<td><input type="text" name="lastword_$n" size="20" maxlength="60" value="$ur['lastword']"></td>

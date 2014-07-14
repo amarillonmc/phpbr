@@ -24,7 +24,8 @@ function event(){
 		}elseif($rp <=45){
 			$log = ($log . "“呜嘛呜——！”<br>怪人给了你一个钱包！里面有<span class=\"red\">{$dice2}个1元硬币</span>！<BR>");
 			$money = $money + $dice2 * 1;
-			$rp = $rp + 15;
+			event_rp_up(15);
+			//$rp = $rp + 15;
 		}else{
 			$log = ($log . "呼，总算逃脱了。<BR>");
 		}
@@ -33,13 +34,15 @@ function event(){
 			$log = ($log . "突然，一位拿着纸袋的少女向你撞来！<BR>");
 			if($dice1 == 2){
 				$log = ($log . "你身体一侧，成功回避了被撞倒的厄运。<BR>你看着少女面朝下重重地摔在地上，转头走开了。<BR>");
-				$rp = $rp + 40;
+				event_rp_up(40);
+				//$rp = $rp + 40;
 			}
 			else{
 				$log = ($log . "你回避不及，被少女撞个正着！<BR>你面朝下地重重地摔在地上。");
 				$inf = str_replace('h','',$inf);
 				$inf = ($inf . 'h');	
-				$rp = $rp + 25;
+				event_rp_up(25);
+				//$rp = $rp + 25;
 				$log = ($log . "不过知道少女不是故意找茬后，<BR>你原谅了她，并且和她分享了雕鱼烧，你感觉全身舒畅。");
 				$hp = $mhp;
 				$sp = $msp;
@@ -48,13 +51,15 @@ function event(){
 			$log = ($log . "突然，一位少女向你撞来！<BR>");
 			if($dice1 == 2){
 				$log = ($log . "你身体一侧，成功回避了被撞倒的厄运。<BR>你看着少女面朝下重重地摔在地上，转头走开了。<BR>");
-				$rp = $rp + 40;
+				event_rp_up(40);
+				//$rp = $rp + 40;
 			}
 			else{
 				$log = ($log . "你回避不及，被少女撞个正着！<BR>你面朝下地重重地摔在地上。");
 				$inf = str_replace('h','',$inf);
 				$inf = ($inf . 'h');	
-				$rp = $rp - 5;
+				event_rp_up(-5);
+				//$rp = $rp - 5;
 			}
 		}		
 	} elseif($pls == 4) { //索拉利斯
@@ -156,7 +161,8 @@ function event(){
 				elseif($dice2 == 30){
 				$log = ($log . "接下来你看见驾驶着棕色机体的少女向你飞来。<BR>“实在对不起，我们看起来没有放假的时候啊。危险躲藏在每个大意之中不是么？”<br>她扔给了你些什么东西，貌似是面额为573的『纸币』？<br>“祝你好运！”少女这么说完就飞走了。");
 				$money = $money + 573;
-				$rp = $rp + 100;
+				event_rp_up(100);
+				//$rp = $rp + 100;
 				}
 			}
 			else{
@@ -186,7 +192,7 @@ function event(){
 					$hp = 1;
 				}
 				elseif($dice2 >= 36){
-					$log = ($log . "并且，黑洞激光造成你<span class=\"clan\">冻结</span>了！<BR>");
+					$log = ($log . "并且，黑洞激光造成你<span class=\"blue\">冻结</span>了！<BR>");
 					$inf = str_replace('i','',$inf);
 					$inf = ($inf . 'i');
 				}
@@ -220,6 +226,174 @@ function event(){
 	} elseif($pls == 24) { //永恒的世界
 	} elseif($pls == 25) { //妖精驿站
 	} elseif($pls == 26) { //键刃墓场
+		global $gamestate;
+		$dice=rand(0,10);
+		if ($dice < 3){
+			if ($rp < 40){
+				$log = ($log . "在远方你能感觉到什么东西在……看着你。<BR>");
+				event_rp_up(rand(10,25));
+				//$rp = $rp + rand(10,25);
+			}elseif ($rp < 500){
+				$log = ($log . "在远方你能感觉到什么东西在……追踪着你。<BR>");
+				event_rp_up(rand(50,100));
+				//$rp = $rp + rand(50,100);
+			}elseif ($rp < 1000 && $killnum == 0){
+				$log = ($log . "你觉得身后有什么东西<BR>你回头看了一眼，发现什么都没有。<BR>你稍微放松了点精神。<BR>");
+				//$rp = $rp + rand(100,200);
+				$spup = rand(50,100);
+				//$hp = $mhp;
+				$msp += $spup;
+				$sp = $msp;		
+				event_rp_up($spup*2);
+				//$rp += $spup*2;	
+			}elseif ($rp < 1000){
+				$log = ($log . "不知道为什么，你觉得双腿一软……<BR>");
+				$spdown = round($rp/4);
+				$sp -= $spdown;
+				if($sp <= 0){$sp = 1;}
+				//$sp = 17;
+			}elseif ($rp < 5000 && $killnum == 0){
+				$log = ($log . "你感觉你听到了什么Homo开头的拉丁文单词……可能是错觉吧。<BR>");
+			}elseif ($rp < 5000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(3);
+			}else{
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(rand(1,2));
+				//$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
+			}
+		}elseif ($dice < 6){
+			if ($rp < 40){
+				$log = ($log . "在远方你能感觉到什么东西在……看着你。<BR>");
+				event_rp_up(rand(50,100));
+				//$rp = $rp + rand(50,100);
+			}elseif ($rp < 500){
+				$log = ($log . "不知道为什么，你觉得双腿一软……<BR>");
+				$hpdown = round($rp/4);
+				$hp -= $hpdown;
+				if($hp <= 0 ){$hp = 1;}
+				//$sp = $sp - 200;			
+			}elseif ($rp < 1000 && $killnum == 0){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>少女的丝带飞到你的面前，<BR>在你的脸上重重地刮了一下。<BR>");
+				$inf = str_replace('h','',$inf);
+				$inf = ($inf . 'h');
+			}elseif ($rp < 1000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>少女的丝带飞到你的面前，<BR>在你的脸上重重地刮了一下。<BR>");
+				$inf = str_replace('e','',$inf);
+				$inf = ($inf . 'e');
+			}elseif ($rp < 5000 && $killnum == 0){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>少女的丝带飞到你的面前，<BR>在你的头上重重地敲了一下。<BR>");
+				$inf = str_replace('h','',$inf);
+				$inf = str_replace('w','',$inf);
+				$inf = ($inf . 'hw');
+			}elseif ($rp < 5000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(3);
+			}else{
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(rand(1,2));
+				//$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
+			}		
+		}elseif ($dice < 9){
+			if ($rp < 40){
+				$log = ($log . "你感觉有什么东西在注意着你的一举一动。<BR>");
+				event_rp_up(rand(200,400));
+				//$rp = $rp + rand(200,400);
+			}elseif ($rp < 500){
+				$log = ($log . "你在两把卡在地上的武器间隙中<BR>发现了一个装满奇怪的深色液体的保温瓶；<BR>你喝了一口，感觉体内有一种力量涌出来。<BR>");
+				$mhpup = rand(25,50);
+				$mhp = $mhp + $mhpup;
+				$hp = $mhp;
+				event_rp_up($mhpup*4);
+				//$rp += $mhpup*4;
+			}elseif ($rp < 1000 && $killnum == 0){
+				$log = ($log . "你百无聊赖地坐了下来看着四周。<BR>突然你发现了一个黑白两色的袋子！<BR>");
+				$hp = round($mhp/10);
+				if($hp <= 0){$hp = 1;}
+				$sp = round($msp/10);
+				if($sp <= 0){$sp = 1;}
+//				$mhp = 400;
+//				$msp = 400;
+//				$hp = 200;
+//				$sp = 200;
+				$log = ($log . "但是你头一昏<BR>然后你什么都记不得了。<BR>你醒来的时候，才发现你已经七窍流血。<BR>");
+				$skillupsum = 0;
+				foreach(array('wp','wk','wg','wc','wd','wf') as $val){
+					$up = rand(23,34);
+					${$val} += $up;
+					$skillupsum += $up;
+				}
+				$rp += $skillupsum*2;
+//				$wp = $wp + rand(75,150);
+//				$wk = $wk + rand(75,150);
+//				$wg = $wg + rand(75,150);
+//				$wc = $wc + rand(75,150);
+//				$wd = $wd + rand(75,150);
+//				$wf = $wf + rand(75,150);
+			}elseif ($rp < 1000){
+				$log = ($log . "你小心翼翼地在少女旁边坐下，想看看她身下的『绘卷』<BR>结果被红色的丝带正中腿部。<BR>");
+//				$hp = 200;
+//				$sp = 200;
+				$hp = round($mhp/8);
+				if($hp <= 0){$hp = 1;}
+//				$sp = round($msp/10);
+//				if($sp <= 0){$sp = 1;}
+				$inf = str_replace('f','',$inf);
+				$inf = ($inf . 'f');
+				$log = ($log . "你龇牙咧嘴地逃走了。<BR>");			
+			}elseif ($rp < 5000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(3);
+			}elseif ($rp > 5000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(3);
+			}else{
+				$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
+			}		
+		}else{
+			if ($rp < 40){
+				$log = ($log . "你感觉有什么东西在你身后吹气！<BR>太可怕了，还是赶快离开为妙！<BR>");
+				event_rp_up(rand(500,1000));
+				//$rp = $rp + rand(500,1000);
+			}elseif ($rp < 500){
+				$log = ($log . "你感觉有什么东西贯穿了你的身体！<BR>太可怕了，还是赶快离开为妙！<BR>");
+				$oldhp = $hp;$oldsp = $sp;
+				$hp = 1;
+				$sp = 1;
+				event_rp_up( -round(($oldhp+$oldsp)/10));
+				//$rp = $rp - round(($oldhp+$oldsp)/10);
+			}elseif ($rp < 1000 && $killnum == 0){
+				$log = ($log . "你感觉有什么东西贯穿了你的身体！<BR>太可怕了，还是赶快离开为妙！<BR>");
+				$skilldownsum = 0;
+				foreach(array('wp','wk','wg','wc','wd','wf') as $val){
+					$down = rand(1,round(${$val}/2));
+					${$val} -= $down;
+					$skilldownsum += $down;
+				}
+				event_rp_up( -round($skilldownsum/6));
+				//$rp -= round($skilldownsum/6);
+			}elseif ($rp < 1000){
+				$log = ($log . "你突然感觉被一种无形的压力直接压在了地上，<BR>太可怕了，还是赶快离开为妙！<BR>");
+				$mhp = round($mhp/2);
+				if($mhp <= 37){$mhp = 37;}
+				if($hp > $mhp){$hp = $mhp;}
+				$msp = round($msp/2);
+				if($msp <= 37){$msp = 37;}
+				if($sp > $msp){$sp = $msp;}
+				//$mhp = $msp = 100;
+				event_rp_up( -37);
+				//$rp = $rp - 37;
+			}elseif ($rp < 5000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(3);
+			}elseif ($rp > 5000){
+				$log = ($log . "你面前突然出现了一个黑裙白发的少女身影！是K.A.G.A.R.I！<BR>");
+				death_kagari(3);
+			}else{
+				$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
+			}		
+		}
+		//echo $rp;
 	} elseif($pls == 27) { //花菱商厦
 	} elseif($pls == 28) { //FARGO前基地
 	} elseif($pls == 29) { //风祭森林
@@ -228,23 +402,16 @@ function event(){
 	} elseif($pls == 32) { //SCP实验室
 	} elseif($pls == 33) { //雏菊之丘
 		global $gamestate;
-		$dice=rand(0,200);
-		if ($dice==8){
-			global $itm0,$itmk0,$itme0,$itms0,$itmsk0;
-			$log = ($log . "少女向你扔来一个东西。<BR>");
-			$itm0='黑色发卡';
-			$itmk0='Y';
-			$itme0=1;
-			$itms0=1;
-			include_once GAME_ROOT . './include/game/itemmain.func.php';
-			itemget();
-		}elseif ($dice < 60){
+		$dice=rand(0,10);
+		if ($dice < 3){
 			if ($rp < 40){
 				$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
-				$rp = $rp + rand(10,25);
+				event_rp_up(rand(10,25));
+				//$rp = $rp + rand(10,25);
 			}elseif ($rp < 500){
 				$log = ($log . "少女抬头看了你一眼，貌似对你的举动很感兴趣的样子。<BR>");
-				$rp = $rp + rand(50,100);
+				event_rp_up(rand(50,100));
+				//$rp = $rp + rand(50,100);
 			}elseif ($rp < 1000 && $killnum == 0){
 				$log = ($log . "少女向你扔来一个保温瓶。<BR>里面是类似于咖啡的液体；<BR>你喝了一口，感觉味道不怎么样。<BR>");
 				//$rp = $rp + rand(100,200);
@@ -252,7 +419,8 @@ function event(){
 				//$hp = $mhp;
 				$msp += $spup;
 				$sp = $msp;		
-				$rp += $spup*2;	
+				event_rp_up($spup*2);
+				//$rp += $spup*2;	
 			}elseif ($rp < 1000){
 				$log = ($log . "不知道为什么，你觉得双腿一软……<BR>");
 				$spdown = round($rp/4);
@@ -280,10 +448,11 @@ function event(){
 				death_kagari(3);
 				//$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
 			}
-		}elseif ($dice < 120){
+		}elseif ($dice < 6){
 			if ($rp < 40){
 				$log = ($log . "少女抬头看了你一眼，貌似对你的举动很感兴趣的样子。<BR>");
-				$rp = $rp + rand(50,100);
+				event_rp_up(rand(50,100));
+				//$rp = $rp + rand(50,100);
 			}elseif ($rp < 500){
 				$log = ($log . "不知道为什么，你觉得双腿一软……<BR>");
 				$hpdown = round($rp/4);
@@ -309,16 +478,18 @@ function event(){
 				death_kagari(3);
 				//$log = ($log . "少女抬头看了你一眼，随后低下头去继续她的研究。<BR>");
 			}		
-		}elseif ($dice < 180){
+		}elseif ($dice < 9){
 			if ($rp < 40){
 				$log = ($log . "少女抬头开始注意你的一举一动。<BR>");
-				$rp = $rp + rand(200,400);
+				event_rp_up(rand(200,400));
+				//$rp = $rp + rand(200,400);
 			}elseif ($rp < 500){
 				$log = ($log . "少女向你扔来一个保温瓶。<BR>里面是奇怪的深色液体；<BR>你喝了一口，感觉体内有一种力量涌出来。<BR>");
 				$mhpup = rand(25,50);
 				$mhp = $mhp + $mhpup;
 				$hp = $mhp;
-				$rp += $mhpup*4;
+				event_rp_up($mhpup*4);
+				//$rp += $mhpup*4;
 			}elseif ($rp < 1000 && $killnum == 0){
 				$log = ($log . "你小心翼翼地在少女旁边坐下，（竟然没被她赶走！）<BR>看着她身下的『绘卷』<BR>");
 				$hp = round($mhp/10);
@@ -332,7 +503,7 @@ function event(){
 				$log = ($log . "当你觉得你看懂了点什么的时候<BR>只见少女用惊讶的眼光盯着你。<BR>这时你才发现你已经七窍流血。<BR>");
 				$skillupsum = 0;
 				foreach(array('wp','wk','wg','wc','wd','wf') as $val){
-					$up = rand(50,100);
+					$up = rand(23,34);
 					${$val} += $up;
 					$skillupsum += $up;
 				}
@@ -364,13 +535,15 @@ function event(){
 		}else{
 			if ($rp < 40){
 				$log = ($log . "少女飘了起来，并且跟在了你的后面，<BR>太可怕了，还是赶快离开为妙！<BR>");
-				$rp = $rp + rand(500,1000);
+				event_rp_up(rand(500,1000));
+				//$rp = $rp + rand(500,1000);
 			}elseif ($rp < 500){
 				$log = ($log . "少女瞪了你一眼，你感觉你的生命力被抽干了，<BR>太可怕了，还是赶快离开为妙！<BR>");
 				$oldhp = $hp;$oldsp = $sp;
 				$hp = 1;
 				$sp = 1;
-				$rp = $rp - round(($oldhp+$oldsp)/10);
+				event_rp_up(-round(($oldhp+$oldsp)/10));
+				//$rp = $rp - round(($oldhp+$oldsp)/10);
 			}elseif ($rp < 1000 && $killnum == 0){
 				$log = ($log . "少女瞪了你一眼，你感觉头晕目眩，<BR>太可怕了，还是赶快离开为妙！<BR>");
 				$skilldownsum = 0;
@@ -379,7 +552,8 @@ function event(){
 					${$val} -= $down;
 					$skilldownsum += $down;
 				}
-				$rp -= round($skilldownsum/6);
+				event_rp_up(round($skilldownsum/6));
+				//$rp -= round($skilldownsum/6);
 			}elseif ($rp < 1000){
 				$log = ($log . "少女瞪了你一眼，你被一种无形的压力直接压在了地上，<BR>太可怕了，还是赶快离开为妙！<BR>");
 				$mhp = round($mhp/2);
@@ -388,8 +562,8 @@ function event(){
 				$msp = round($msp/2);
 				if($msp <= 37){$msp = 37;}
 				if($sp > $msp){$sp = $msp;}
-				//$mhp = $msp = 100;
-				$rp = $rp - 37;
+				//$mhp = $msp = 100;-37rand(500,1000));
+				//$rp = $rp - 37;
 			}elseif ($rp < 5000){
 				death_kagari(1);
 			}elseif ($rp > 5000){
@@ -400,15 +574,16 @@ function event(){
 		}
 		//echo $rp;
 	}elseif ($pls==34){//英灵殿
-		global $art,$plsinfo,$gamestate;
+		global $art,$plsinfo,$gamestate,$hack,$arealist,$areanum;
 		if (($art!='Untainted Glory')&&($gamestate != 50)){
-			$rpls=34;
-			while ($rpls==34){
+			$rpls=-1;
+			while ($rpls<0 || $arealist[$rpls]==34){
 				if($hack){$rpls = rand(0,sizeof($plsinfo)-1);}
 				else {$rpls = rand($areanum+1,sizeof($plsinfo)-1);}
 			} 
-			$pls=$rpls;
-			$log.="殿堂的深处传来一个声音：<span class=\"evergreen\">“你还没有进入这里的资格”。</span><br>一股未知的力量包围了你，当你反应过来的时候，发现自己正身处<span class=\"yellow\">{$plsinfo[$rpls]}</span>。<br>";
+			$pls=$arealist[$rpls];
+			$log.="殿堂的深处传来一个声音：<span class=\"evergreen\">“你还没有进入这里的资格”。</span><br>一股未知的力量包围了你，当你反应过来的时候，发现自己正身处<span class=\"yellow\">{$plsinfo[$pls]}</span>。<br>";
+			if (CURSCRIPT !== 'botservice') $log.="<span id=\"HsUipfcGhU\"></span>";
 		}
 	}	else {
 	}
@@ -473,5 +648,18 @@ function death_kagari($type){
 	}else{
 		return;
 	}	
+}
+
+function event_rp_up($rpup){
+	global $rp,$club,$skills;
+	if($club != 19 || $rpup <= 0){
+		$rp += $rpup;
+	}else{
+		include_once GAME_ROOT.'./include/game/clubskills.func.php';
+		$rpdec = 30;
+		$rpdec += get_clubskill_rp_dec($club,$skills);
+		$rp += round($rpup*(100-$rpdec)/100);
+	}
+	return;
 }
 ?>

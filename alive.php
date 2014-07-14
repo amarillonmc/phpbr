@@ -18,7 +18,12 @@ $alivedata = $apdata = Array();
 while($apdata = $db->fetch_array($result)) {
 	$apdata['iconImg'] = "{$apdata['gd']}_{$apdata['icon']}.gif";
 	$apdata['winrate'] = $apdata['wingames'] ? round($apdata['wingames']/$apdata['validgames']*100).'%' : '0%';
-//	$result3 = $db->query("SELECT motto FROM {$tablepre}users WHERE username = '".$apdata['name']."'");
+	if (($apdata['endtime'] - $apdata['validtime'])>0) {
+		$apdata['apm'] = round($apdata['cmdnum']/($apdata['endtime'] - $apdata['validtime']) * 60 * 1000)/1000;
+	} else{
+		$apdata['apm'] = 0;
+	}
+	//	$result3 = $db->query("SELECT motto FROM {$tablepre}users WHERE username = '".$apdata['name']."'");
 //	$apdata['motto'] = $db->result($result3, 0);
 
 	$alivedata[$apdata['pid']] = $apdata;
@@ -55,7 +60,10 @@ if($gamblingon){
 	//判断是否满足下注条件
 	if($cuser && $cpass){
 		if($gamestate < 20) { $gbinfo .= $_ERROR['no_start']; }
+		//elseif($now - $starttime >= 600) { $gbinfo .= '游戏开始超过10分钟，不可进行下注！'; }
+		elseif($areanum >= $areaadd) { $gbinfo .= '游戏超过一禁，不可进行下注！'; }
 		elseif($gamestate >= 30) { $gbinfo .= '游戏已停止激活，不可进行下注！'; }
+		elseif($gbpool >= 8000 && $wager>50) { $gbinfo .= '本局总奖池已经超过8000切糕上限，此时每人最多只能下注50切糕！'; }
 		else{
 			$uresult = $db->query("SELECT * FROM {$tablepre}users WHERE username='$cuser'");
 			if(!$db->num_rows($uresult)) { $gbinfo .= $_ERROR['login_check']; }
@@ -71,7 +79,8 @@ if($gamblingon){
 						$wager = ceil((int)$wager);
 						if(!$bet || $bet == 'none'){ $gbinfo .= '投注对象有误，请检查输入。';}
 						elseif($wager <= 0){ $gbinfo .= '投注数额有误，请检查输入。';}
-						elseif($wager > $credits2){ $gbinfo .= '投注数额过大。';}
+						elseif($wager > $credits2 || $wager > 1000 ){ $gbinfo .= '投注数额过大。每人每局最多只能投注总计不超过1000切糕。';}
+						elseif ($gbpool >= 8000 && $wager > 50) { $gbinfo .= '本局总奖池已经超过8000切糕上限，此时每人最多只能下注50切糕！'; }
 						else{
 							$bet = (int)$bet;
 							$bresult = $db->query("SELECT * FROM {$tablepre}players LEFT JOIN {$tablepre}users ON {$tablepre}players.name={$tablepre}users.username WHERE {$tablepre}players.pid='$bet'");
@@ -83,7 +92,15 @@ if($gamblingon){
 								elseif($bdata['type'] >=1) {$gbinfo .= '投注对象不是人类！'; }
 								elseif($gbnum && isset($gbeddata[$udata['uid']])){//已经下注
 									$gbudata = $gbeddata[$udata['uid']];
-									if($gbudata['bid'] != $bet){$gbinfo .= '追加赌注的对象必须跟之前相同。';}
+									if ($gbudata['wager'] + $wager > 1000 ) 
+									{
+										$gbinfo .= '投注数额过大。每人每局最多只能投注总计不超过1000切糕。';
+									}
+									else if ($gbpool >= 8000 && $gbudata['wager'] + $wager > 50)
+									{
+										$gbinfo .= '本局总奖池已经超过8000切糕上限，此时每人最多只能下注50切糕！';
+									}
+									else if($gbudata['bid'] != $bet){$gbinfo .= '追加切糕的对象必须跟之前相同。';}
 									else{
 										$bwager = $gbudata['wager'] + $wager;
 										$odds = ($gbudata['wager'] * $gbudata['odds'] + $nowodds * $wager)/$bwager;
@@ -126,7 +143,7 @@ if($gamblingon){
 					}
 					if($gbnum && isset($gbeddata[$udata['uid']])){
 						$gbudata = $gbeddata[$udata['uid']];
-						$gbinfo .= '你已下注，对象为：'.$gbudata['bname'].'，赌注为：'.$gbudata['wager'].'；';
+						$gbinfo .= '你已下注，对象为：'.$gbudata['bname'].'，切糕为：'.$gbudata['wager'].'；';
 						//var_dump($gbeddata[$udata['uid']]);
 						$gbact = 1;
 					}else{
@@ -179,9 +196,14 @@ function gbsum($pdata){
 }
 
 function odds(){//判断赔率的
-	global $validnum,$alivenum,$deathnum,$startime,$areanum,$areaadd;
+	global $validnum,$alivenum,$deathnum,$startime,$areanum,$areaadd,$now,$starttime;
 	
-	$areaodds = 2/(1+$areanum/$areaadd);//0禁赔率奖励为2，1禁赔率奖励为1，逐步降低
+//	$areaodds = 2/(1+$areanum/$areaadd);//0禁赔率奖励为2，1禁赔率奖励为1，逐步降低
+	$pasttime = $now - $starttime;
+	if($pasttime <= 180){$timeodds = 5;}//前3分钟系数为5；
+	else{$timeodds = 5/($pasttime/180);}//系数趋近于0；
+	
+	$timeodds = round($timeodds * 100000)/100000;
 //	$validodds = $validnum/100;//激活赔率；
 //	$deathodds = $deathnum/400;//死亡赔率，增长很慢
 //	$winrate = $pdata['validgames'] ? $pdata['wingames']/$pdata['validgames'] : 0;
@@ -190,6 +212,6 @@ function odds(){//判断赔率的
 //	$wagerodds = (100-$gbsum)/100; $wagerodds = $wagerodds < 0 ? 1 : $wagerodds + 1;//投注的影响，0投注是2，超过100投注是1；
 //	$odds = round((1 + $areaodds + $validodds + $deathodds)*$wrodds*$wagerodds*1000)/1000;
 
-	return $areaodds;
+	return $timeodds;
 }
 ?>

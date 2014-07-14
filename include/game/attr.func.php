@@ -82,7 +82,7 @@ function get_hitrate($wkind = 'N',$skill = 0,$club = 0,$inf = ''){
 		if(strpos($inf, $inf_ky)!==false){$hitrate *= $value;}
 	}	
 	if($weather == 12){$hitrate += 20;}
-	//echo 'hitrate:'.$hitrate.' ';
+	//echo 'wkind:'.$wkind.' skill:'.$skill.' club:'.$club.' hitrate:'.$hitrate.' ';
 	return $hitrate;
 }
 
@@ -108,7 +108,7 @@ function get_attack_p($weather = 0,$pls = 0,$pose = 0,$tactic = 0,$club = 0,$inf
 		(
 		'weather' => array(10,10,0,-5,-10,-20,-15,0,0,7,20,-7,-20,-5,-10,-10,-10),
 		'pls' => array(0,0,0,0,0,0,10,0,0,-10,0,0,0,0,-10,0,0,0,10,0,0,0),
-		'pose' => array(0,50,0,-25,25,-50),
+		'pose' => array(0,100,0,-25,25,-50),
 		'tactic' => array(0,20,-25,25,-50),
 		);
 

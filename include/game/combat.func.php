@@ -8,10 +8,10 @@ function combat($active = 1, $wep_kind = '') {
 	global $log, $mode, $main, $cmd, $battle_title, $db, $tablepre, $pls, $message, $now, $w_log, $nosta, $hdamage, $hplayer;
 	global $pid, $name, $club, $inf, $lvl, $exp, $killnum, $bid, $tactic, $pose, $hp,$mhp;
 	global $wep, $wepk, $wepe, $weps, $wepsk;
-	global $edata, $w_pid, $w_name, $w_pass, $w_type, $w_endtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
+	global $edata, $w_pid, $w_name, $w_pass, $w_type, $w_endtime,$w_deathtime, $w_gd, $w_sNo, $w_icon, $w_club, $w_hp, $w_mhp, $w_sp, $w_msp, $w_att, $w_def, $w_pls, $w_lvl, $w_exp, $w_money, $w_bid, $w_inf, $w_rage, $w_pose, $w_tactic, $w_killnum, $w_state, $w_wp, $w_wk, $w_wg, $w_wc, $w_wd, $w_wf, $w_teamID, $w_teamPass;
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_arb, $w_arbk, $w_arbe, $w_arbs, $w_arh, $w_arhk, $w_arhe, $w_arhs, $w_ara, $w_arak, $w_arae, $w_aras, $w_arf, $w_arfk, $w_arfe, $w_arfs, $w_art, $w_artk, $w_arte, $w_arts, $w_itm0, $w_itmk0, $w_itme0, $w_itms0, $w_itm1, $w_itmk1, $w_itme1, $w_itms1, $w_itm2, $w_itmk2, $w_itme2, $w_itms2, $w_itm3, $w_itmk3, $w_itme3, $w_itms3, $w_itm4, $w_itmk4, $w_itme4, $w_itms4, $w_itm5, $w_itmk5, $w_itme5, $w_itms5,$w_itm6, $w_itmk6, $w_itme6, $w_itms6, $w_wepsk, $w_arbsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_itmsk0, $w_itmsk1, $w_itmsk2, $w_itmsk3, $w_itmsk4, $w_itmsk5, $w_itmsk6;
 	global $infinfo, $w_combat_inf;
-	global $rp,$w_rp,$action,$w_action;
+	global $rp,$w_rp,$action,$w_action,$achievement,$w_achievement,$skills,$w_skills,$skillpoint,$w_skillpoint;
 	
 	$battle_title = '战斗发生';
 	
@@ -29,7 +29,9 @@ function combat($active = 1, $wep_kind = '') {
 	
 	$wep_temp = $wep;
 	
+	include_once GAME_ROOT.'./include/game/clubskills.func.php';
 	if ($active) {
+		
 		if ($wep_kind == 'back') {
 			$log .= "你逃跑了。";
 			$action = '';
@@ -90,6 +92,9 @@ function combat($active = 1, $wep_kind = '') {
 		
 		$log .= "你向<span class=\"red\">$w_name</span>发起了攻击！<br>";
 		$att_dmg = attack ( $wep_kind, 1 );
+		global $ggflag;
+		if($ggflag){return;}
+		
 		$w_hp -= $att_dmg;
 		
 		if (($w_hp > 0) && ($w_tactic != 4) && ($w_pose != 5)) {
@@ -104,6 +109,8 @@ function combat($active = 1, $wep_kind = '') {
 			//if (($rangeinfo [$wep_kind] == $rangeinfo [$w_wep_kind]) || ($rangeinfo [$w_wep_kind] == 'M')) {
 			if ($rangeinfo [$wep_kind] <= $rangeinfo [$w_wep_kind] && $rangeinfo [$wep_kind] !== 0) {
 				$counter = get_counter ( $w_wep_kind, $w_tactic, $w_club, $w_inf );
+				
+				$counter *= get_clubskill_bonus_counter($w_club,$w_skills,'w_',$club,$skills,'');
 				$counter_dice = rand ( 0, 99 );
 				if ($counter_dice < $counter) {
 					$log .= "<span class=\"red\">{$w_name}的反击！</span><br>";
@@ -152,6 +159,8 @@ function combat($active = 1, $wep_kind = '') {
 			global $rangeinfo;
 			if ($rangeinfo [$wep_kind] >= $rangeinfo [$w_wep_kind] && $rangeinfo [$w_wep_kind] !== 0) {
 				$counter = get_counter ( $wep_kind, $tactic, $club, $inf );
+				
+				$counter *= get_clubskill_bonus_counter($club,$skills,'',$w_club,$w_skills,'w_');
 				$counter_dice = rand ( 0, 99 );
 				if ($counter_dice < $counter) {
 					$log .= "<span class=\"red\">你的反击！</span><br>";
@@ -168,6 +177,7 @@ function combat($active = 1, $wep_kind = '') {
 			$log .= "<span class=\"red\">你逃跑了！</span><br>";
 		}
 	}
+
 	if($hp == 0 && !$w_action){$w_action = 'pacorpse'.$pid;}
 	w_save ( $w_pid );
 	$att_dmg = $att_dmg ? $att_dmg : 0;
@@ -191,7 +201,8 @@ function combat($active = 1, $wep_kind = '') {
 		}
 		if($hp == 0){
 			$w_log .= "<span class=\"yellow\">$name</span><span class=\"red\">被你杀死了！</span><br>";
-			
+			//include_once GAME_ROOT.'./include/game/achievement.func.php';
+			//check_battle_achievement($w_achievement,$w_type,$name);
 		}
 		
 		logsave ( $w_pid, $now, $w_log ,'b');
@@ -209,7 +220,7 @@ function combat($active = 1, $wep_kind = '') {
 	
 	//$bid = $w_pid;
 	
-	if ($w_hp <= 0 && ($w_type == 0 || $w_club != 99)) {
+	if ($w_hp <= 0 && $w_club != 99) {
 		$w_bid = $pid;
 		$w_hp = 0;
 		if ($w_type==0){$killnum ++;};
@@ -218,8 +229,23 @@ function combat($active = 1, $wep_kind = '') {
 		$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
 		$log .= npc_chat ( $w_type,$w_name, 'death' );
 		
+		include_once GAME_ROOT.'./include/game/achievement.func.php';
+		check_battle_achievement($name,$w_type,$w_name,$wep_temp);
+			
 		$log .= "<span class=\"red\">{$w_name}被你杀死了！</span><br>";
-		$rp = $rp + 20 ;
+		//$rp = $rp + 20 ;
+		
+		if(!$w_type){$rpup = $w_rp;}
+		else{$rpup = 20;}		
+		if($club == 19){
+			$rpdec = 30;
+			$rpdec += get_clubskill_rp_dec($club,$skills);
+			$rp += round($rpup*(100-$rpdec)/100);
+		}		
+		else{
+			$rp += $rpup;
+		}
+		
 		if($killmsg){$log .= "<span class=\"yellow\">你对{$w_name}说：“{$killmsg}”</span><br>";}
 		include_once GAME_ROOT . './include/game/battle.func.php';
 		$result = $db->query ( "SELECT * FROM {$tablepre}players WHERE pid='$w_pid'" );
@@ -229,24 +255,37 @@ function combat($active = 1, $wep_kind = '') {
 		return;
 	} else {
 		if($w_hp <= 0){//有第二阶段
-			$log .= npc_chat ( $w_type,$w_name, 'death' );
-			include_once GAME_ROOT . './include/system.func.php';
-			$npcdata = evonpc ($w_type,$w_name);
-			$log .= '<span class="yellow">'.$w_name.'却没死去，反而爆发出真正的实力！</span><br>';
-			if($npcdata){
-				addnews($now , 'evonpc',$w_name, $npcdata['name'], $name);
-				foreach($npcdata as $key => $val){
-					${'w_'.$key} = $val;
+			if ($w_type) 
+			{
+				$log .= npc_chat ( $w_type,$w_name, 'death' );
+				include_once GAME_ROOT . './include/system.func.php';
+				$npcdata = evonpc ($w_type,$w_name);
+				$log .= '<span class="yellow">'.$w_name.'却没死去，反而爆发出真正的实力！</span><br>';
+				if($npcdata){
+					addnews($now , 'evonpc',$w_name, $npcdata['name'], $name);
+					foreach($npcdata as $key => $val){
+						${'w_'.$key} = $val;
+					}
 				}
+			}
+			else
+			{
+				include_once GAME_ROOT . './include/state.func.php';
+				$killmsg = kill ( $wep_kind, $w_name, $w_type, $w_pid, $wep_temp );
+				$log .= '<span class="yellow">'.$w_name.'由于其及时按了BOMB键而原地满血复活了！</span><br>';
 			}	
 		}
 		$main = 'battle';
 		init_battle ( 1 );
-		include template('battleresult');
-		//$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
-		$cmd = ob_get_contents();
-		ob_clean();
-		//$bid = $hp <= 0 ? $bid : 0;
+		
+		if (CURSCRIPT !== 'botservice')
+		{
+			include template('battleresult');
+			//$cmd = '<br><br><input type="hidden" name="mode" value="command"><input type="radio" name="command" id="back" value="back" checked><a onclick=sl("back"); href="javascript:void(0);" >确定</a><br>';
+			$cmd = ob_get_contents();
+			ob_clean();
+			//$bid = $hp <= 0 ? $bid : 0;
+		}
 		$action = '';
 		return;
 	}
@@ -260,8 +299,8 @@ function attack($wep_kind = 'N', $active = 0) {
 	global $artk, $arhsk, $arbsk, $arask, $arfsk, $artsk;
 	global $w_hp, $w_rage, $w_lvl, $w_pid, $w_gd, $w_name, $w_type, $w_inf, $w_def;
 	global $w_wepsk, $w_arhsk, $w_arask, $w_arfsk, $w_artsk, $w_artk;
-	global $wp,$wk,$wc,$wg,$wd,$wf;
-	
+	global $wp,$wk,$wc,$wg,$wd,$wf,$skills,$w_skills,$w_club,$skillpoint,$w_skillpoint,$rp,$w_rp;
+	include_once GAME_ROOT.'./include/game/clubskills.func.php';
 	//npc_changewep();
 	$is_wpg = false;
 	$watt=-1;
@@ -279,12 +318,66 @@ function attack($wep_kind = 'N', $active = 0) {
 	
 	$att_key = getatkkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk, $is_wpg );
 	$w_def_key = getdefkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk );
+	$mdr = $skdr = $sldr = false;
+	if(strpos($att_key.$w_def_key,'-')!==false){$mdr = true;}//精抽
+	if(strpos($att_key.$w_def_key,'*')!==false){$sldr = true;}//魂抽
+	if(strpos($att_key.$w_def_key,'+')!==false){$skdr = true;}//技抽
+	
+	if($mdr || $sldr || $skdr){
+		list($wsk,$hsk,$bsk,$ask,$fsk,$tsk,$tk)=Array($wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk);
+		list($wwsk,$whsk,$wbsk,$wask,$wfsk,$wtsk,$wtk)=Array( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk);
+		if($mdr){
+			$log .= "<span class=\"yellow\">精神抽取使双方的防具属性全部失效！</span><br>";
+			$hsk = $bsk = $ask = $fsk = $whsk = $wbsk = $wask = $wfsk = '';
+		}
+		if($sldr){
+			$log .= "<span class=\"yellow\">灵魂抽取使双方的武器和饰物属性全部失效！</span><br>";
+			$wsk = $tsk = $tk = $wwsk = $wtsk = $wtk = '';
+		}
+		if($skdr){
+			$log .= "<span class=\"yellow\">技能抽取使双方的武器熟练度在战斗中大幅下降！</span><br>";
+			//$bsk = $ask = $fsk = $wbsk = $wask = $wfsk = '';
+		}
+		$att_key = getatkkey ( $wsk,$hsk,$bsk,$ask,$fsk,$tsk,$tk, $is_wpg );
+		$w_def_key = getdefkey ( $wwsk,$whsk,$wbsk,$wask,$wfsk,$wtsk,$wtk );
+	}
+	
+	
+	//判定直死
+	if(strpos($att_key,'X')!==false){
+		global $ggflag;
+		$ggflag = false;
+		$ddice = rand(0,99);
+		if($ddice <=14){
+			$log .= "<span class=\"red\">你手中的武器忽然失去了控制，喀吧一声就斩断了什么。你发现那似乎是你的死线。</span><br>";
+			include_once GAME_ROOT . './include/state.func.php';
+			death('gg','','',$wep);
+			$ggflag = true;
+			return 0;
+		}
+	}
+		
+	//attack函数是玩家打npc专用，在这里加npc内容是没用的
+	
+//	if ((strpos($att_key,"X")!==false)&&($type)&&(!$w_type)&&(rand(1,5)>3)){  
+//		if ($wep=='燕返262'){
+//			$log.="<img src=\"img/other/262.png\"><br>";
+//		}
+//		$damage=$w_mhp;
+//		$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
+//		checkdmg ( $name, $w_name, $damage );
+//		return $damage;
+//	}
+	
 	global ${$skillinfo [$wep_kind]};
 	$add_skill = & ${$skillinfo [$wep_kind]};
 	if ($club==18){
 		$wep_skill=round(${$skillinfo [$wep_kind]}*0.7+($wp+$wk+$wc+$wg+$wd+$wf)*0.3);
 	}else{
 		$wep_skill=${$skillinfo [$wep_kind]};
+	}
+	if($skdr){
+		$wep_skill=sqrt($wep_skill);
 	}
 	if ($watt==-1){
 		if ($wep_kind == 'N') {
@@ -293,74 +386,100 @@ function attack($wep_kind = 'N', $active = 0) {
 			$watt = $wepe * 2;
 		}
 	}
+	
 	$hitrate = get_hitrate ( $wep_kind, $wep_skill, $club, $inf );
 	
+	
+	$hitrate *= get_clubskill_bonus_hitrate($club,$skills,'',$w_club,$w_skills,'w_');
+	
 	$damage_p = get_damage_p ( $rage, $att_key, 0, '你' , $club, $message);
-	$hit_time = get_hit_time ( $att_key, $wep_skill, $hitrate, $wep_kind, $weps, $infobbs [$wep_kind], $wepimprate [$wep_kind], $is_wpg );
+	$hit_time = get_hit_time ( $att_key, $wep_skill, $hitrate, $wep_kind, $weps, $infobbs [$wep_kind] * get_clubskill_bonus_imfrate($club,$skills,'',$w_club,$w_skills,'w_'), get_clubskill_bonus_imftime($club,$skills,'',$w_club,$w_skills,'w_'), $wepimprate [$wep_kind] * get_clubskill_bonus_imprate($club,$skills,'',$w_club,$w_skills,'w_'), $is_wpg, get_clubskill_bonus_hitrate($club,$skills,'',$w_club,$w_skills,'w_'));
 	if ($hit_time [1] > 0) {
-		$gender_dmg_p = check_gender ( '你', $w_name, $gd, $w_gd, $att_key );
-		if ($gender_dmg_p == 0) {
-			$damage = 1;
-		} else {
-			$w_active = 1 - $active;
-			$attack = $att + $watt;
-			$defend = checkdef($w_def , $w_arbe + $w_arhe + $w_arae + $w_arfe , $att_key, 1);
-			
-			
-			
-			$damage = get_original_dmg ( '', 'w_', $attack, $defend, $wep_skill, $wep_kind );
-			
-			//if ($wep_kind == 'D') {爆炸伤害做到属性里面去了
-			//	$damage += $wepe;
-			//} elseif ($wep_kind == 'F') {
-			if ($wep_kind == 'F') {
-				$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
-			}
-			if ($wep_kind == 'J') {
-				$adddamage=$w_mhp/3;
-				if ($adddamage>20000) {$adddamage=10000;}
-				$damage += round($wepe*2/3+$adddamage);
-				//$log.="你大爷我".$adddamage;
-			}
-			checkarb ( $damage, $wep_kind, $att_key, $w_def_key ,1);
-			$damage *= $damage_p;
-			
-			$damage = $damage > 1 ? round ( $damage ) : 1;
-			$damage *= $gender_dmg_p;
-		}
-		if ($w_wepk=='WJ'){
-			$log.="<span class=\"red\">由于{$w_name}手中的武器过于笨重，受到的伤害大增！真是大快人心啊！</span><br>";
-			$damage+=round($damage*0.5);
-		}
-		if ($hit_time [1] > 1) {
-			$d_temp = $damage;
-			if ($hit_time [1] == 2) {
-				$dmg_p = 2;
-			} elseif ($hit_time [1] == 3) {
-				$dmg_p = 2.8;
+		if(strpos($att_key,'R')!==false){//随机伤害无视一切伤害计算
+			$maxdmg = $w_mhp > $wepe ? $wepe : $w_mhp;
+			$damage = rand(1,$maxdmg);
+			$log .= "武器随机造成了<span class=\"red\">$damage</span>点伤害！<br>";
+		}else{
+			$gender_dmg_p = check_gender ( '你', $w_name, $gd, $w_gd, $att_key );
+			if ($gender_dmg_p == 0) {
+				$damage = 1;
 			} else {
-				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+				$w_active = 1 - $active;
+				$attack = $att + $watt;
+				$defend = checkdef($w_def , $w_arbe + $w_arhe + $w_arae + $w_arfe , $att_key, 1);
+				
+				
+				
+				$damage = get_original_dmg ( '', 'w_', $attack, $defend, $wep_skill, $wep_kind );
+				
+				if ($wep_kind == 'F') {
+					if($sldr){
+						$log.="<span class=\"red\">由于灵魂抽取的作用，灵系武器伤害大幅降低了！</span><br>";
+					}else{
+						$damage = round ( ($wepe + $damage) * get_WF_p ( '', $club, $wepe) ); //get_spell_factor ( 0, $club, $att_key, $sp, $wepe ) );
+					}
+					
+				}
+				if ($wep_kind == 'J') {
+					$adddamage=$w_mhp/3;
+					if ($adddamage>20000) {$adddamage=10000;}
+					$damage += round($wepe*2/3+$adddamage);
+				}
+				checkarb ( $damage, $wep_kind, $att_key, $w_def_key ,1);
+				$damage *= $damage_p;
+				
+				$damage = $damage > 1 ? round ( $damage ) : 1;
+				$damage *= $gender_dmg_p;
 			}
-			//$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.2;
-			$damage = round ( $damage * $dmg_p );
-			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
-		} else {
-			$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
-		}
-		$pdamage = $damage;
-		$damage += get_ex_dmg ( $w_name, 0, $club, $w_inf, $att_key, $wep_kind, $wepe, $wep_skill, $w_def_key );
-		$damage = checkdmgdef($damage, $att_key,$w_def_key,1);
-		//好人卡特别活动
-		if($w_type == 0){
-			$gm = ceil(count_good_man_card(0)*rand(80,120)/100);
-			if($gm){
-				$log .= "在{$w_name}身上的<span class=\"yellow\">好人卡</span>的作用下，{$w_name}受到的伤害增加了<span class=\"red\">$gm</span>点！<br>";
-				$damage += $gm;
+			if ($w_wepk=='WJ'){
+				$log.="<span class=\"red\">由于{$w_name}手中的武器过于笨重，受到的伤害大增！真是大快人心啊！</span><br>";
+				$damage+=round($damage*0.5);
 			}
-		}		
-		if($pdamage != $damage){
-			$log .= "<span class=\"yellow\">造成的总伤害：<span class=\"red\">$damage</span>。</span><br>";
+			
+			
+			
+			if ($hit_time [1] > 1) {
+				$d_temp = $damage;
+				if ($hit_time [1] == 2) {
+					$dmg_p = 2;
+				} elseif ($hit_time [1] == 3) {
+					$dmg_p = 2.8;
+				} else {
+					$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+				}
+				//$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.2;
+				$damage = round ( $damage * $dmg_p );
+				$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
+			} else {
+				$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
+			}
+			$pdamage = $damage;
+			$damage += get_ex_dmg ( $w_name, 0, $club, $w_inf, $att_key, $wep_kind, $wepe, $wep_skill, $w_def_key );
+			$damage = checkdmgdef($damage, $att_key,$w_def_key,1);
+			//好人卡特别活动
+			if($w_type == 0){
+				$gm = ceil(count_good_man_card(0)*rand(80,120)/100);
+				if($gm){
+					$log .= "在{$w_name}身上的<span class=\"yellow\">好人卡</span>的作用下，{$w_name}受到的伤害增加了<span class=\"red\">$gm</span>点！<br>";
+					$damage += $gm;
+				}
+			}
+			$bonus_dmg = get_clubskill_bonus_dmg_rate($club,$skills,$w_club,$w_skills)*100;
+			if($bonus_dmg < 100){
+				$log.="<span class=\"yellow\">由于技能效果的作用，伤害下降至".$bonus_dmg."%！</span><br>";
+				$damage = round($damage * $bonus_dmg / 100);
+			}
+			$rpdmg=get_clubskill_bonus_dmg_val($club,$skills,$rp,$w_rp);
+			if($rpdmg > 0){
+				$log .= "<span class=\"yellow\">由于技能的影响，对方受到了<span class=\"red\">$rpdmg</span>点额外伤害。</span><br>";
+				$damage += $rpdmg;
+			}
+			
+			if($pdamage != $damage){
+				$log .= "<span class=\"yellow\">造成的总伤害：<span class=\"red\">$damage</span>。</span><br>";
+			}
 		}
+		
 		checkdmg ( $name, $w_name, $damage );
 		
 		get_dmg_punish ( '你', $damage, $hp, $att_key );
@@ -392,11 +511,11 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	global $w_wep, $w_wepk, $w_wepe, $w_weps, $w_wepsk;
 	global $arbe, $arbsk, $arhe, $arae, $arfe,$wepk;
 	global $w_artk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk;
-	global $hp, $rage, $lvl, $pid, $gd, $name, $inf, $att, $def;
+	global $hp, $rage, $lvl, $pid, $gd, $name, $inf, $att, $def, $club;
 	global $wepsk, $arhsk, $arask, $arfsk, $artsk, $artk;
 	global $w_type, $w_sNo, $w_killnum,$mhp;
-	global $w_wp,$w_wk,$w_wc,$w_wg,$w_wf,$w_wd;
-	
+	global $w_wp,$w_wk,$w_wc,$w_wg,$w_wf,$w_wd,$w_skills,$skills,$skillpoint,$w_skillpoint,$w_rp;
+	include_once GAME_ROOT.'./include/game/clubskills.func.php';
 	//npc_changewep();
 	$watt=-1;
 	$w_wep_temp = $w_wep;
@@ -410,6 +529,47 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	
 	$w_att_key = getatkkey ( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk, $is_wpg );
 	$def_key = getdefkey ( $wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk );
+	$mdr = $skdr = $sldr = false;
+	if(strpos($w_att_key.$def_key,'-')!==false){$mdr = true;}//精抽
+	if(strpos($w_att_key.$def_key,'*')!==false){$sldr = true;}//魂抽
+	if(strpos($w_att_key.$def_key,'+')!==false){$skdr = true;}//技抽
+	if($mdr || $sldr || $skdr){
+		list($wsk,$hsk,$bsk,$ask,$fsk,$tsk,$tk)=Array($wepsk, $arhsk, $arbsk, $arask, $arfsk, $artsk, $artk);
+		list($wwsk,$whsk,$wbsk,$wask,$wfsk,$wtsk,$wtk)=Array( $w_wepsk, $w_arhsk, $w_arbsk, $w_arask, $w_arfsk, $w_artsk, $w_artk);
+		if($mdr){
+			$log .= "<span class=\"yellow\">精神抽取使双方的防具属性全部失效！</span><br>";
+			$hsk = $bsk = $ask = $fsk = $whsk = $wbsk = $wask = $wfsk = '';
+		}
+		if($sldr){
+			$log .= "<span class=\"yellow\">灵魂抽取使双方的武器和饰物属性全部失效！</span><br>";
+			$wsk = $tsk = $tk = $wwsk = $wtsk = $wtk = '';
+		}
+		if($skdr){
+			$log .= "<span class=\"yellow\">技能抽取使双方的武器熟练度在战斗中大幅下降！</span><br>";
+			//$bsk = $ask = $fsk = $wbsk = $wask = $wfsk = '';
+		}
+		$w_att_key = getatkkey ( $wwsk,$whsk,$wbsk,$wask,$wfsk,$wtsk,$wtk, $is_wpg );
+		$def_key = getdefkey ( $wsk,$hsk,$bsk,$ask,$fsk,$tsk,$tk );
+	}
+	
+	
+	
+	
+	if ((strpos($w_att_key,"X")!==false)&&($w_type)&&(!$type)&&(rand(1,100)>90)){
+		if ($w_wep=='燕返262'){
+			$log.="<img src=\"img/other/262.png\"><br>";
+		}
+		$damage=$mhp;
+		$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
+		checkdmg ( $w_name, $name, $damage );
+		$hp = 0;
+		$w_killnum ++;
+		include_once GAME_ROOT . './include/state.func.php';
+		$killmsg = death ( $w_wep_kind, $w_name, $w_type, $w_wep_temp );
+		$log .= npc_chat ( $w_type,$w_name, 'kill' );
+		return $damage;
+	}
+	
 	global ${'w_' . $skillinfo [$w_wep_kind]};
 	$w_add_skill = & ${'w_' . $skillinfo [$w_wep_kind]};
 	if ($w_club==18){
@@ -417,86 +577,106 @@ function defend($w_wep_kind = 'N', $active = 0) {
 	}else{
 		$w_wep_skill=${'w_' .$skillinfo [$w_wep_kind]};
 	}
+	if($skdr){
+		$w_wep_skill=sqrt($w_wep_skill);
+	}
 	
 	if ($watt==-1){
-	if ($w_wep_kind == 'N') {
-		global $w_wp;
-		$watt =  round ($w_wep_skill*2/3);
-	} else {
-		$watt = $w_wepe * 2;
-	}
+		if ($w_wep_kind == 'N') {
+			global $w_wp;
+			$watt =  round ($w_wep_skill*2/3);
+		} else {
+			$watt = $w_wepe * 2;
+		}
 	}
 	
 
 	
 	$hitrate = get_hitrate ( $w_wep_kind, $w_wep_skill, $w_club, $w_inf );
+	
+	$hitrate *= get_clubskill_bonus_hitrate($w_club,$w_skills,'w_',$club,$skills,'');
 	$damage_p = get_damage_p ( $w_rage, $w_att_key, $w_type, $w_name , $w_club);
-	$hit_time = get_hit_time ( $w_att_key, $w_wep_skill, $hitrate, $w_wep_kind, $w_weps, $infobbs [$w_wep_kind], $wepimprate [$w_wep_kind], $is_wpg );
+	$hit_time = get_hit_time ( $w_att_key, $w_wep_skill, $hitrate, $w_wep_kind, $w_weps, $infobbs [$w_wep_kind] * get_clubskill_bonus_imfrate($w_club,$w_skills,'w_',$club,$skills,''), get_clubskill_bonus_imftime($w_club,$w_skills,'w_',$club,$skills,''), $wepimprate[$w_wep_kind] * get_clubskill_bonus_imprate($w_club,$w_skills,'w_',$club,$skills,''), $is_wpg, get_clubskill_bonus_hitrate($w_club,$w_skills,'w_',$club,$skills,'') );
 	
 	if ($hit_time [1] > 0) {
-		$gender_dmg_p = check_gender ( $w_name, '你', $w_gd, $gd, $w_att_key );
-		if ($gender_dmg_p == 0) {
-			$damage = 1;
-		} else {
-			global $w_att;
-			$w_active = 1 - $active;
-			$attack = $w_att + $watt;
-			$defend = checkdef($def , $arbe + $arhe + $arae + $arfe,$w_att_key);
-			
-			
-			$damage = get_original_dmg ( 'w_', '', $attack, $defend, $w_wep_skill, $w_wep_kind );
-			
-			
-			//if ($w_wep_kind == 'D') {
-			//	$damage += $w_wepe;
-			//} elseif ($w_wep_kind == 'F') {
-			if ($w_wep_kind == 'F') {
-				$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
-			}
-			if ($w_wep_kind == 'J') {
-				$adddamage=$mhp/3;
-				if ($adddamage>20000) {$adddamage=10000;}
-				$damage +=round($w_wepe*2/3);
-				//$log.="你大爷我";
-			}
-			checkarb ( $damage, $w_wep_kind, $w_att_key, $def_key );
-			$damage *= $damage_p;
-			
-			$damage = $damage > 1 ? round ( $damage ) : 1;
-			$damage *= $gender_dmg_p;
-		}
-		if ($wepk=='WJ'){
-			$log.="<span class=\"red\">由于你手中的武器过于笨重，受到的伤害大增！真是大快人心啊！</span><br>";
-			$damage+=round($damage*0.5);
-		}
-		if ($hit_time [1] > 1) {
-			$d_temp = $damage;
-			if ($hit_time [1] == 2) {
-				$dmg_p = 2;
-			} elseif ($hit_time [1] == 3) {
-				$dmg_p = 2.8;
+		if(strpos($w_att_key,'R')!==false){//随机伤害无视一切伤害计算
+			$maxdmg = $mhp > $wepe ? $wepe : $mhp;
+			$damage = rand(1,$maxdmg);
+			$log .= "武器随机造成了<span class=\"red\">$damage</span>点伤害！<br>";
+		}else{
+			$gender_dmg_p = check_gender ( $w_name, '你', $w_gd, $gd, $w_att_key );
+			if ($gender_dmg_p == 0) {
+				$damage = 1;
 			} else {
-				$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+				global $w_att;
+				$w_active = 1 - $active;
+				$attack = $w_att + $watt;
+				$defend = checkdef($def , $arbe + $arhe + $arae + $arfe,$w_att_key);
+				
+				
+				$damage = get_original_dmg ( 'w_', '', $attack, $defend, $w_wep_skill, $w_wep_kind );
+				
+				if ($w_wep_kind == 'F') {
+					if($sldr){
+						$log.="<span class=\"red\">由于灵魂抽取的作用，灵系武器伤害大幅降低了！</span><br>";
+					}else{
+						$damage = round ( ($w_wepe + $damage) * get_WF_p ( 'w_', $w_club, $w_wepe) ); //get_spell_factor ( 1, $w_club, $w_att_key, $w_sp, $w_wepe ) );
+					}
+					
+					
+				}
+				if ($w_wep_kind == 'J') {
+					$adddamage=$mhp/3;
+					if ($adddamage>20000) {$adddamage=10000;}
+					$damage +=round($w_wepe*2/3+$adddamage);
+				}
+				checkarb ( $damage, $w_wep_kind, $w_att_key, $def_key );
+				$damage *= $damage_p;
+				
+				$damage = $damage > 1 ? round ( $damage ) : 1;
+				$damage *= $gender_dmg_p;
 			}
-			//$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.2;
-			$damage = round ( $damage * $dmg_p );
-			$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
-		} else {
-			$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
-		}
-		$pdamage = $damage;
-		$damage += get_ex_dmg ( "你", 1, $w_club, $inf, $w_att_key, $w_wep_kind, $w_wepe, $w_wep_skill, $def_key );
-		$damage = checkdmgdef($damage, $w_att_key, $def_key, 0);
-		//好人卡特别活动
-		$gm = ceil(count_good_man_card(1)*rand(80,120)/100);
-		if($gm){
-			$log .= "在你身上的<span class=\"yellow\">好人卡</span>的作用下，你受到的伤害增加了<span class=\"red\">$gm</span>点！<br>";
-			$damage += $gm;
+			if ($wepk=='WJ'){
+				$log.="<span class=\"red\">由于你手中的武器过于笨重，受到的伤害大增！真是大快人心啊！</span><br>";
+				$damage+=round($damage*0.5);
+			}
+			
+			
+			
+			if ($hit_time [1] > 1) {
+				$d_temp = $damage;
+				if ($hit_time [1] == 2) {
+					$dmg_p = 2;
+				} elseif ($hit_time [1] == 3) {
+					$dmg_p = 2.8;
+				} else {
+					$dmg_p = 2.8 + 0.6 * ($hit_time [1] - 3);
+				}
+				//$dmg_p = $hit_time[1] - ($hit_time[1]-1)*0.2;
+				$damage = round ( $damage * $dmg_p );
+				$log .= "造成{$d_temp}×{$dmg_p}＝<span class=\"red\">$damage</span>点伤害！<br>";
+			} else {
+				$log .= "造成<span class=\"red\">$damage</span>点伤害！<br>";
+			}
+			$pdamage = $damage;
+			$damage += get_ex_dmg ( "你", 1, $w_club, $inf, $w_att_key, $w_wep_kind, $w_wepe, $w_wep_skill, $def_key );
+			$damage = checkdmgdef($damage, $w_att_key, $def_key, 0);
+			//好人卡特别活动
+			$gm = ceil(count_good_man_card(1)*rand(80,120)/100);
+			if($gm){
+				$log .= "在你身上的<span class=\"yellow\">好人卡</span>的作用下，你受到的伤害增加了<span class=\"red\">$gm</span>点！<br>";
+				$damage += $gm;
+			}
+			$bonus_dmg = get_clubskill_bonus_dmg_rate($w_club,$w_skills,$club,$skills)*100;
+			if($bonus_dmg < 100){
+				$log.="<span class=\"yellow\">由于技能效果的作用，伤害下降至".$bonus_dmg."%！</span><br>";
+				$damage = round($damage * $bonus_dmg / 100);
+			}
+			if($damage != $pdamage){
+				$log .= "<span class=\"yellow\">造成的总伤害：<span class=\"red\">$damage</span>。</span><br>";
+			}
 		}
 		
-		if($damage != $pdamage){
-			$log .= "<span class=\"yellow\">造成的总伤害：<span class=\"red\">$damage</span>。</span><br>";
-		}
 		checkdmg ( $w_name, $name, $damage );
 		
 		get_dmg_punish ( $w_name, $damage, $w_hp, $w_att_key );
@@ -510,11 +690,24 @@ function defend($w_wep_kind = 'N', $active = 0) {
 		$hp -= $damage;
 		
 		if ($hp <= 0) {
+			$tmp_club=$club;
 			$hp = 0;
 			$w_killnum ++;
+			$rpup = 20;
+			if($w_club == 19){
+				$rpdec = 30;
+				$rpdec += get_clubskill_rp_dec($w_club,$w_skills);
+				$w_rp += round($rpup*(100-$rpdec)/100);
+			}
+			else{
+				$w_rp += $rpup;
+			}
+			
 			include_once GAME_ROOT . './include/state.func.php';
 			$killmsg = death ( $w_wep_kind, $w_name, $w_type, $w_wep_temp );
 			$log .= npc_chat ( $w_type,$w_name, 'kill' );
+			if ($tmp_club==99)
+				$log .= '<span class="yellow">由于你及时按了BOMB键，你原地满血复活了！</span><br>';
 		}
 	} else {
 		$damage = 0;
@@ -536,14 +729,24 @@ function defend($w_wep_kind = 'N', $active = 0) {
 
 function get_original_dmg($w1, $w2, $att, $def, $ws, $wp_kind) {
 	global $skill_dmg, $dmg_fluc, $weather, $pls;
-	global ${$w1 . 'pose'}, ${$w1 . 'tactic'}, ${$w1 . 'club'}, ${$w1 . 'inf'}, ${$w1 . 'active'}, ${$w2 . 'pose'}, ${$w2 . 'tactic'}, ${$w2 . 'club'}, ${$w2 . 'inf'}, ${$w2 . 'active'};
+	global ${$w1 . 'pose'}, ${$w1 . 'tactic'}, ${$w1 . 'club'}, ${$w1 . 'inf'}, ${$w1 . 'active'}, ${$w2 . 'pose'}, ${$w2 . 'tactic'}, ${$w2 . 'club'}, ${$w2 . 'inf'}, ${$w2 . 'active'},${$w2 . 'skills'},${$w1 . 'skills'};
+	include_once GAME_ROOT.'./include/game/clubskills.func.php';
+	get_clubskill_bonus(${$w1 . 'club'},${$w1 . 'skills'},$w1,${$w2 . 'club'},${$w2 . 'skills'},$w2,$att1,$def1);
+	$att+=$att1; $def+=$def1;
 	$attack_p = get_attack_p ( $weather, $pls, ${$w1 . 'pose'}, ${$w1 . 'tactic'}, ${$w1 . 'club'}, ${$w1 . 'inf'}, ${$w1 . 'active'} );
 	$att_pow = $att * $attack_p;
 	$defend_p = get_defend_p ( $weather, $pls, ${$w2 . 'pose'}, ${$w2 . 'tactic'}, ${$w2 . 'club'}, ${$w2 . 'inf'}, ${$w2 . 'active'} );
 	$def_pow = $def * $defend_p;
+	get_clubskill_bonus_p(${$w1 . 'club'},${$w1 . 'skills'},$w1,${$w2 . 'club'},${$w2 . 'skills'},$w2,$attfac,$deffac);
+	$att_pow *= $attfac;
+	$def_pow *= $deffac;
+	if($def_pow <= 0){$def_pow = 0.01;}
 	$damage = ($att_pow / $def_pow) * $ws * $skill_dmg [$wp_kind];
 	
-	$dmg_factor = (100 + rand ( - $dmg_fluc [$wp_kind], $dmg_fluc [$wp_kind] )) / 100;
+	$dfluc = $dmg_fluc [$wp_kind];
+	$dfluc += get_clubskill_bonus_fluc(${$w1 . 'club'},${$w1 . 'skills'},$w1,${$w2 . 'club'},${$w2 . 'skills'},$w2);
+	
+	$dmg_factor = (100 + rand ( - $dfluc, $dfluc )) / 100;
 	
 	$damage = round ( $damage * $dmg_factor * rand ( 4, 10 ) / 10 );
 	return $damage;
@@ -632,35 +835,35 @@ function get_damage_p(&$rg, $atkcdt, $type, $nm,$cl = 0, $msg = '' ) {
 
 function checkdmg($p1, $p2, $d) {
 	if (($d >= 100) && ($d < 150)) {
-		$words = "{$p1}对{$p2}做出了{$d}点的攻击，一定是有练过。";
+		$words = "{$p1}对{$p2}施加了一定程度的伤害。（100-150）";
 	} elseif (($d >= 150) && ($d < 200)) {
-		$words = "{$p1}拿了什么神兵？{$p2}被打了{$d}滴血。";
+		$words = "{$p1}拿了什么神兵？{$p2}所受的损伤已经不可忽略了。（150-200）";
 	} elseif (($d >= 200) && ($d < 250)) {
-		$words = "{$p1}简直不是人！{$p2}瞬间被打了{$d}点伤害。";
+		$words = "{$p1}简直不是人！{$p2}只能狼狈招架。（200-250）";
 	} elseif (($d >= 250) && ($d < 300)) {
-		$words = "{$p1}发出会心一击！{$p2}损失了{$d}点生命！";
+		$words = "{$p1}发出会心一击！{$p2}瞬间损失了大量生命！（250-300）";
 	} elseif (($d >= 300) && ($d < 400)) {
-		$words = "{$p1}使出浑身解数奋力一击！{$d}点伤害！{$p2}还安好吗？";
+		$words = "{$p1}使出浑身解数奋力一击！{$p2}想必凶多吉少！（300-400）";
 	} elseif (($d >= 400) && ($d < 500)) {
-		$words = "{$p1}使出武器中内藏的力量！可怜的{$p2}受到了{$d}点的伤害！";
+		$words = "{$p1}使出武器中内藏的力量！可怜的{$p2}已经承受不住凶残的攻击了！（400-500）";
 	} elseif (($d >= 500) && ($d < 600)) {
-		$words = "{$p1}眼色一变使出绝招！{$p2}招架不住，生命减少{$d}点！";
+		$words = "{$p1}眼色一变使出绝招！{$p2}无法抵挡，只能任人宰割！（500-600）";
 	} elseif (($d >= 600) && ($d < 750)) {
-		$words = "{$p1}手中的武器闪耀出七彩光芒！{$p2}招架不住，生命减少{$d}点！";
+		$words = "{$p1}手中的武器闪耀出七彩光芒！{$p2}的身躯几乎融化在光芒中！（600-750）";
 	} elseif (($d >= 750) && ($d < 1000)) {
-		$words = "{$p1}受到天神的加护，打出惊天动地的一击——{$p2}被打掉{$d}点生命值！";
+		$words = "{$p1}受到天神的加护，打出惊天动地的一击！{$p2}此刻已不成人形！（750-1000）";
 	} elseif (($d >= 1000) && ($d < 5000)) {
-		$words = "{$p1}燃烧自己的生命得到了不可思议的力量！【{$d}】点的伤害值，没天理啊……{$p2}的HP足够么？";
+		$words = "{$p1}燃烧自己的生命得到了不可思议的力量！{$p2}，你还活着吗？（1000-5000）";
 	} elseif (($d >= 5000) && ($d < 10000)) {
-		$words = "{$p1}超越自己的极限爆发出了震天动地的力量！在【{$d}】点的伤害后，{$p2}化作了一颗流星！";
+		$words = "{$p1}超越自己的极限爆发出了震天动地的力量！受此神力摧残的{$p2}化作了一颗流星！（5000-10000）";
 	} elseif (($d >= 10000) && ($d < 50000)) {
-		$words = "{$p1}运转百万匹周天，吐气扬声，一道霸气的光束过后，在【{$d}】点的伤害下，{$p2}还活着么？";
+		$words = "{$p1}运转百万匹周天，吐气扬声，一道霸气的光束直逼{$p2}，后者的身躯瞬间被力量的洪流所吞没！（10000-50000）";
 	} elseif (($d >= 50000) && ($d < 200000)) {
-		$words = "{$p1}已然和手中的武器成为一体！随着一声令大地崩塌的长啸，{$p2}吃下了【{$d}】点的伤害！";
+		$words = "{$p1}已然超越了人类的极限！【{$d}】点的伤害——疾风怒涛般的攻击令大地崩塌，而{$p2}几乎化为齑粉！";
 	}	elseif (($d >= 200000) && ($d < 500000)) {
-		$words = "天空一道惊雷划过，{$p1}站在战场上，而{$p2}因为受到了【{$d}】点的伤害现在已经不见踪影！";
+		$words = "鬼哭神嚎！风暴既逝，{$p1}仍然屹立在战场上，而受到了【{$d}】点伤害的{$p2}想必已化为宇宙的尘埃了！";
 	} elseif ( $d >= 500000) {
-		$words = "将{$p2}击飞出【{$d}】的{$p1}业已经天下无敌！";
+		$words = "残虐的攻击已经无法用言语形容！将{$p2}击飞出【{$d}】点伤害的英雄——{$p1}！让我们记住他的名字吧！";
 	} else {
 		$words = '';
 	}
@@ -760,14 +963,18 @@ function getatkkey($w, $ah, $ab, $aa, $af, $at, $atkind, $is_wpg) {
 	global $ex_attack;
 	$atkcdt = '';
 	$eqpkey = $w . $ah . $ab . $aa . $af . $at . substr ( $atkind, 1, 1 );
-	foreach(Array('c','l','g','H','h','N','n') as $value){
+	foreach(Array('c','l','g','H','h','N','n','X','L','-','*','+') as $value){
 		if (strpos ( $eqpkey, $value ) !== false) {
 			$atkcdt .= '_'.$value;
 		}
 	}
-	if (strpos ( $w, 'r' ) !== false && ! $is_wpg) {
-		$atkcdt .= '_r';
-	}
+	if(!$is_wpg){
+		foreach(Array('r','R') as $value){
+			if (strpos ( $w, $value ) !== false) {
+				$atkcdt .= '_'.$value;
+			}
+		}
+	}	
 	foreach ($ex_attack as $value) {
 		if (strpos ( $w, $value ) !== false && ! $is_wpg) {
 			$atkcdt .= '_'.$value;
@@ -777,7 +984,7 @@ function getatkkey($w, $ah, $ab, $aa, $af, $at, $atkind, $is_wpg) {
 	return $atkcdt;
 }
 
-function get_hit_time($ky, $ws, $htr, $wk, $lmt, $infr, $wimpr, $is_wpg = false) {
+function get_hit_time($ky, $ws, $htr, $wk, $lmt, $infr, $inft, $wimpr, $is_wpg = false, $hitratebonus) {
 	global $log, $nosta;
 	if ($lmt == $nosta) {
 		$wimpr *= 2;
@@ -810,13 +1017,13 @@ function get_hit_time($ky, $ws, $htr, $wk, $lmt, $infr, $wimpr, $is_wpg = false)
 			if ($dice < $htr) {
 				$ht_t ++;
 				if ($dice2 < $infr) {
-					$inf_t ++;
+					$inf_t += $inft;
 				}
 				if ($dice3 < $wimpr) {
 					$wimp_t ++;
 				}
 			}
-			$htr *= 0.8;
+			$htr *= 0.8 * $hitratebonus;
 			$infr *= 0.9;
 			$wimpr *= $wimpr <= 0 ? 1 : 1.2;
 		}
@@ -831,7 +1038,7 @@ function get_hit_time($ky, $ws, $htr, $wk, $lmt, $infr, $wimpr, $is_wpg = false)
 		if ($dice < $htr) {
 			$ht_t = 1;
 			if ($dice2 < $infr) {
-				$inf_t = 1;
+				$inf_t += $inft;
 			}
 			if ($dice3 < $wimpr) {
 				$wimp_t = 1;
@@ -848,7 +1055,7 @@ function getdefkey($w, $ah, $ab, $aa, $af, $at, $atkind) {
 	global $ex_dmg_def;
 	$defcdt = '';
 	$eqpkey = $w . $ah . $ab . $aa . $af . $at . substr ( $atkind, 1, 1 );
-	foreach(Array('B','b','h','R') as $value){
+	foreach(Array('B','b','h','R','-','*','+') as $value){
 		if (strpos ( $eqpkey, $value ) !== false) {
 			$defcdt .= '_'.$value;
 		}
@@ -875,7 +1082,7 @@ function getdefkey($w, $ah, $ab, $aa, $af, $at, $atkind) {
 
 function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 	if ($ky) {
-		global $log, $exdmgname, $exdmginf, $ex_attack,$specialrate;
+		global $log, $exdmgname, $exdmginf, $ex_attack,$specialrate,$now;
 		global $ex_dmg_def, $ex_base_dmg,$ex_max_dmg, $ex_wep_dmg, $ex_skill_dmg, $ex_dmg_fluc, $ex_inf, $ex_inf_r, $ex_max_inf_r, $ex_skill_inf_r, $ex_inf_punish, $ex_good_wep, $ex_good_club;
 		$ex_final_dmg = 0;
 		$exinv = false;
@@ -894,10 +1101,10 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 						$exnum ++;
 					}
 				}
-				$log .= "<span class=\"red\">属性攻击的力量完全被防具吸收了！</span>只造成了<span class=\"red\">{$exnum}</span>点伤害！";
+				$log .= "<span class=\"red\">属性攻击的力量完全被防具吸收了！</span>只造成了<span class=\"red\">{$exnum}</span>点伤害！<br>";
 				$exinv = true;
 			}else{
-				$log .= "纳尼？防具使属性攻击无效化的属性竟然失效了！";
+				$log .= "纳尼？防具使属性攻击无效化的属性竟然失效了！<br>";
 			}
 		}
 		if(!$exinv){
@@ -1048,15 +1255,16 @@ function get_ex_dmg($nm, $sd, $clb, &$inf, $ky, $wk, $we, $ws, $dky) {
 }
 
 function get_WF_p($w, $clb, $we) {
-	global $log, ${$w . 'sp'};
+	global $log, ${$w . 'sp'}, ${$w . 'skills'};
 	if (! empty ( $w )) {
 		$factor = 0.5;
 	} else {
 		$we = $we > 0 ? $we : 1;
 		if ($clb == 9) {
-			$spd0 = round ( 0.25*$we);
+			include_once GAME_ROOT.'./include/game/clubskills.func.php';
+			$spd0 = round ( 0.2*get_clubskill_bonus_spd($clb,${$w . 'skills'})*$we);
 		} else {
-			$spd0 = round ( 0.3*$we);
+			$spd0 = round ( 0.25*$we);
 		}
 		if ($spd0 >= ${$w . 'sp'}) {
 			$spd = ${$w . 'sp'} - 1;

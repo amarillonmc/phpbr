@@ -3,6 +3,21 @@ if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
 
+function use_func_item($usemode,$item)
+{
+	if ($usemode=="poison"){poison($item);}
+	elseif ($usemode=="wthchange"){wthchange($item);}
+	elseif ($usemode=="hack") {hack($item);}
+	elseif ($usemode=="newradar") {newradar($item);}
+	elseif ($usemode=="divining") {divining($item);}
+	elseif ($usemode=="divining1") {divining1($item);}
+	elseif ($usemode=="divining2") {divining2($item);}
+	elseif ($usemode=="deathnote") {deathnote($item);}
+	elseif ($usemode=="qianghua") {qianghua($item);}
+	elseif ($usemode=="nametag") {nametag($item);}
+	elseif ($usemode=="supernametag") {supernametag($item);}
+}
+
 function poison($itmn = 0) {
 	global $mode,$log,$nosta,$art,$club,$pid;
 	global $itmp,${'itm'.$itmp},${'itms'.$itmp},${'itmk'.$itmp},${'itme'.$itmp},${'itmsk'.$itmp};
@@ -44,9 +59,10 @@ function poison($itmn = 0) {
 }
 
 function wthchange($itm,$itmsk){
-	global $now,$log,$weather, $wthinfo, $name;
+	global $now,$log,$weather, $wthinfo, $name,$nick;
+	$weathertd = $weather;
 	if($weather >= 14 && $weather <= 16){
-		addnews ( $now, 'wthfail', $name, $weather, $itm );
+		addnews ( $now, 'wthfail', $nick.' '.$name, $weather, $itm );
 		$log .= "你使用了{$itm}。<br /><span class=\"red\">但是恶劣的天气并未发生任何变化！</span><br />";
 	}else{
 		if($itmsk==99){$weather = rand ( 0, 13 );}//随机全天气
@@ -59,16 +75,34 @@ function wthchange($itm,$itmsk){
 			}else{$weather = 0;}
 		}
 		else{$weather = 0;}
-		include_once GAME_ROOT . './include/system.func.php';
-		save_gameinfo ();
-		addnews ( $now, 'wthchange', $name, $weather, $itm );
-		$log .= "你使用了{$itm}。<br />天气突然转变成了<span class=\"red\">$wthinfo[$weather]</span>！<br />";
+		
+		$flag = false;
+		if($itm=='【风神的神德】'){
+			$dice = rand ( 1, 20 );
+			if ($dice < 18){
+				$flag = true;
+			} else{
+				$weather = 6;
+			}
+		}
+		if($flag){
+			$weather = $weathertd;
+			$log .= "你使用了<span class=\"yellow\">{$itm}</span>。<br>“好像没什么反应嘛？”";
+			include_once GAME_ROOT . './include/state.func.php';
+			$log .= "你正这样想着，天空中忽然传来一阵巨响！”<br>“祈求神德的话，就以你的生命作为祭品吧！<br>你只来得及看到一个巨大的柱状物飞来，就失去了意识。";
+			death ( 'thunde', '', 0, $itm );
+		} else {
+			include_once GAME_ROOT . './include/system.func.php';
+			save_gameinfo ();
+			addnews ( $now, 'wthchange', $nick.' '.$name, $weather, $itm );
+			$log .= "你使用了<span class=\"yellow\">{$itm}</span>。<br />天气突然转变成了<span class=\"red\">$wthinfo[$weather]</span>！<br />";
+		}
 	}
 	return;
 }
 
 function hack($itmn = 0) {
-	global $log,$hack,$hack_obbs,$club,$now,$name,$alivenum,$deathnum,$hp,$state;
+	global $log,$hack,$hack_obbs,$club,$now,$name,$alivenum,$deathnum,$hp,$state,$nick;
 	
 	global ${'itm'.$itmn},${'itmk'.$itmn},${'itme'.$itmn},${'itms'.$itmn},${'itmsk'.$itmn};
 	$itm = & ${'itm'.$itmn};
@@ -95,7 +129,8 @@ function hack($itmn = 0) {
 		$log .= '入侵禁区控制系统成功了！全部禁区都被解除了！<br>';
 		include_once GAME_ROOT.'./include/system.func.php';
 		movehtm();
-		addnews($now,'hack',$name);
+		addnews($now,'hack',$nick.' '.$name);
+		storyputchat($now,'hack');
 		save_gameinfo();
 	} else {
 		$log .= '可是，入侵禁区控制系统失败了……<br>';
@@ -134,7 +169,7 @@ function newradar($m = 0){
 	global $mode,$log,$cmd,$main,$pls,$db,$tablepre,$plsinfo,$arealist,$areanum,$hack,$gamestate;
 	global $pnum,$npc2num,$npc3num,$npc4num,$npc5num,$npc6num,$radarscreen,$typeinfo,$weather;
 	
-	if(!$mode) {
+	if((CURSCRIPT !== 'botservice') && (!$mode)) {
 		$log .= '仪器使用失败！<br>';
 		return;
 	}
@@ -149,103 +184,127 @@ function newradar($m = 0){
 	$npctplist = Array(90,2,5,6,7,11,14);
 	$tdheight = 20;
 	$screenheight = count($plsinfo)*$tdheight;
-	$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0");
-	while($cd = $db->fetch_array($result)) {
-		$chdata[] = $cd;
-	}
-	$radar = array();
-	foreach ($chdata as $data){
-		if(isset($radar[$data['pls']][$data['type']])){$radar[$data['pls']][$data['type']]+=1;}
-		else{$radar[$data['pls']][$data['type']]=1;}
-	}
-	$radarscreen = '<table height='.$screenheight.'px width=720px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
-	$radarscreen .= "<tr>
-		<td class=b2 height={$tdheight}px width=120px><div class=nttx></div></td>
-		<td class=b2><div class=nttx>{$typeinfo[0]}</div></td>";
-	foreach ($npctplist as $value){
-		$radarscreen .= "<td class=b2><div class=nttx>{$typeinfo[$value]}</div></td>";
-	}
-	$radarscreen .= '</tr>';
-	for($i=0;$i<count($plsinfo);$i++) {
-		$radarscreen .= "<tr><td class=b2 height={$tdheight}px><div class=nttx>{$plsinfo[$i]}</div></td>";
-		if((array_search($i,$arealist) > $areanum) || $hack) {
-			if($i==$pls) {
-				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				//$num0 = $db->num_rows($result);
-				$num0 = $radar[$i][0];
-				foreach ($npctplist as $j){
-					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
-					//${'num'.$j} = $db->num_rows($result);
-					if($gamestate == 50){${'num'.$j} = 0;}
-					else{
-						${'num'.$j} = isset($radar[$i][$j]) ? $radar[$i][$j] : 0;
-					}
-				}
-				if($num0){
-					$pnum[$i] ="<span class=\"yellow b\">$num0</span>";
-				} else {
-					$pnum[$i] ='<span class="yellow b">-</span>';
-				}
-				foreach ($npctplist as $j){
-					//${'npc'.$j.'num'}[$i] = "<span class=\"yellow b\">${'num'.$j}</span>";
-					if(${'num'.$j}){
-					${'npc'.$j.'num'}[$i] ="<span class=\"yellow b\">${'num'.$j}</span>";
-					} else {
-					${'npc'.$j.'num'}[$i] ='<span class="yellow b">-</span>';
-					}
-				}
-			} elseif($m == 2) {
-				//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
-				//$num0 = $db->num_rows($result);
-				$num0 = isset($radar[$i][0]) ? $radar[$i][0] : 0;
-				foreach ($npctplist as $j){
-					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
-					//${'num'.$j} = $db->num_rows($result);
-					if($gamestate == 50){${'num'.$j} = 0;}
-					else{
-						${'num'.$j} = isset($radar[$i][$j]) ? $radar[$i][$j] : 0;
-					}
-					
-				}
-				if($num0){
-					$pnum[$i] =$num0;
-				} else {
-					$pnum[$i] ='-';
-				}
-				//$pnum[$i] ="$num0";
-				foreach ($npctplist as $j){
-					//${'npc'.$j.'num'}[$i] = "${'num'.$j}";;
-					if(${'num'.$j}){
-					${'npc'.$j.'num'}[$i] =${'num'.$j};
-					} else {
-					${'npc'.$j.'num'}[$i] ='-';
-					}
-				}
-			} else {
-				$pnum[$i] = '？';
-				foreach ($npctplist as $j){
-					${'npc'.$j.'num'}[$i] = '？';
-				}
-			}
-		} else {
-			$pnum[$i] = '<span class="red b">×</span>';
-			foreach ($npctplist as $j){
-				${'npc'.$j.'num'}[$i] = '<span class="red b">×</span>';
-			}
-		}
-		$radarscreen .= "<td class=b3><div class=nttx>{$pnum[$i]}</div></td>";
-		foreach ($npctplist as $j){
-			$radarscreen .= "<td class=b3><div class=nttx>{${'npc'.$j.'num'}[$i]}</div></td>";
+	if (CURSCRIPT == 'botservice') 
+	{
+		if ($m==2)
+			$result = $db->query("SELECT type,sNo,pls,name FROM {$tablepre}players WHERE hp>0");
+		else  $result = $db->query("SELECT type,sNo,pls,name FROM {$tablepre}players WHERE hp>0 AND pls='{$pls}'");
+		$rows=$db->num_rows($result);
+		echo "radarresultnum=$rows\n";
+		$i=0;
+		while($data = $db->fetch_array($result)) 
+		{
+			$i++;
+			echo "radarresulttype$i={$data['type']}\n";
+			echo "radarresultsNo$i={$data['sNo']}\n";
+			echo "radarresultpls$i={$data['pls']}\n";
+			echo "radarresultname$i={$data['name']}\n";
 		}	
-		$radarscreen .= '</tr>';
 	}
-	$radarscreen .= '</tbody></table>';
-	$log .= '白色数字：该区域内的人数<br><span class="yellow b">黄色数字</span>：自己所在区域的人数<br><span class="red b">×</span>：禁区<br><br>';
-	include template('radarcmd');
-	$cmd = ob_get_contents();
-	ob_clean();
-	//$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
-	$main = 'radar';
+	else
+	{
+		$result = $db->query("SELECT type,pls FROM {$tablepre}players WHERE hp>0");
+		while($cd = $db->fetch_array($result)) {
+			$chdata[] = $cd;
+		}
+		$radar = array();
+		foreach ($chdata as $data){
+			if(isset($radar[$data['pls']][$data['type']])){$radar[$data['pls']][$data['type']]+=1;}
+			else{$radar[$data['pls']][$data['type']]=1;}
+		}
+		$radarscreen = '<table height='.$screenheight.'px width=720px border="0" cellspacing="0" cellpadding="0" valign="middle"><tbody>';
+		$radarscreen .= "<tr>
+			<td class=b2 height={$tdheight}px width=120px><div class=nttx></div></td>
+			<td class=b2><div class=nttx>{$typeinfo[0]}</div></td>";
+		foreach ($npctplist as $value){
+			$radarscreen .= "<td class=b2><div class=nttx>{$typeinfo[$value]}</div></td>";
+		}
+		$radarscreen .= '</tr>';
+		for($i=0;$i<count($plsinfo);$i++) {
+			$radarscreen .= "<tr><td class=b2 height={$tdheight}px><div class=nttx>{$plsinfo[$i]}</div></td>";
+			if((array_search($i,$arealist) > $areanum) || $hack) {
+				if($i==$pls) {
+					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
+					//$num0 = $db->num_rows($result);
+					$num0 = $radar[$i][0];
+					foreach ($npctplist as $j){
+						//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
+						//${'num'.$j} = $db->num_rows($result);
+							if($gamestate == 50){${'num'.$j} = 0;}
+						else{
+							${'num'.$j} = isset($radar[$i][$j]) ? $radar[$i][$j] : 0;
+						}
+					}
+					if($num0){
+						$pnum[$i] ="<span class=\"yellow b\">$num0</span>";
+					} else {
+						$pnum[$i] ='<span class="yellow b">-</span>';
+					}
+					foreach ($npctplist as $j){
+						//${'npc'.$j.'num'}[$i] = "<span class=\"yellow b\">${'num'.$j}</span>";
+						if(${'num'.$j}){
+						${'npc'.$j.'num'}[$i] ="<span class=\"yellow b\">${'num'.$j}</span>";
+						} else {
+						${'npc'.$j.'num'}[$i] ='<span class="yellow b">-</span>';
+						}
+					}
+				} elseif($m >= 2) {
+					//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type='0' AND pls=$i");
+					//$num0 = $db->num_rows($result);
+					$num0 = isset($radar[$i][0]) ? $radar[$i][0] : 0;
+					foreach ($npctplist as $j){
+						//$result = $db->query("SELECT pid FROM {$tablepre}players WHERE hp>0 AND type=$j AND pls=$i");
+						//${'num'.$j} = $db->num_rows($result);
+						if($gamestate == 50){${'num'.$j} = 0;}
+						else{
+							${'num'.$j} = isset($radar[$i][$j]) ? $radar[$i][$j] : 0;
+						}
+						
+					}
+					if ($m==2)
+						if($num0){
+							$pnum[$i] =$num0;
+						} else {
+							$pnum[$i] ='-';
+						}	
+					else  $pnum[$i] = '？';
+					//$pnum[$i] ="$num0";
+					foreach ($npctplist as $j){
+						//${'npc'.$j.'num'}[$i] = "${'num'.$j}";;
+						if(${'num'.$j}){
+	
+							${'npc'.$j.'num'}[$i] =${'num'.$j};
+
+						} else {
+							${'npc'.$j.'num'}[$i] ='-';
+						}
+					}
+				} else {
+					$pnum[$i] = '？';
+					foreach ($npctplist as $j){
+						${'npc'.$j.'num'}[$i] = '？';
+					}
+				}	
+			} else {	
+				$pnum[$i] = '<span class="red b">×</span>';
+				foreach ($npctplist as $j){
+				${'npc'.$j.'num'}[$i] = '<span class="red b">×</span>';
+				}
+			}
+			$radarscreen .= "<td class=b3><div class=nttx>{$pnum[$i]}</div></td>";
+			foreach ($npctplist as $j){
+				$radarscreen .= "<td class=b3><div class=nttx>{${'npc'.$j.'num'}[$i]}</div></td>";
+			}	
+			$radarscreen .= '</tr>';
+		}
+		$radarscreen .= '</tbody></table>';
+		$log .= '白色数字：该区域内的人数<br><span class="yellow b">黄色数字</span>：自己所在区域的人数<br><span class="red b">×</span>：禁区<br><br>';
+		include template('radarcmd');
+		$cmd = ob_get_contents();
+		ob_clean();
+		//$cmd = '<input type="radio" name="command" id="menu" value="menu" checked><a onclick=sl("menu"); href="javascript:void(0);" >返回</a><br><br>';
+		$main = 'radar';
+	}
 	return;
 }
 
@@ -287,7 +346,8 @@ function divining1($u) {
 	$mhp+=$uphp;
 	$att+=$upatt;
 	$def+=$updef;
-
+	
+	
 	return "$uphp,$upatt,$updef";
 
 }
@@ -298,17 +358,21 @@ function divining2($u) {
 	$upatt = rand(0,$u);
 	$updef = rand(0,$u);
 	
+	if($hp - $uphp <= 0){
+		$uphp = $hp-1;
+		if($uphp < 0){$uphp = 0;}
+	}
+	
 	$hp-=$uphp;
 	$mhp-=$uphp;
 	$att-=$upatt;
 	$def-=$updef;
-
+	
 	return "$uphp,$upatt,$updef";
-
 }
 
 function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1,$sfn) {
-	global $db,$tablepre,$log,$killnum,$mode;
+	global $db,$tablepre,$log,$killnum,$mode,$achievement;
 	global ${'itm'.$itmd},${'itms'.$itmd},${'itmk'.$itmd},${'itme'.$itmd},${'itmsk'.$itmd};
 	$dn = & ${'itm'.$itmd};
 	$dnk = & ${'itmk'.$itmd};
@@ -318,7 +382,7 @@ function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1,$sfn) 
 
 	$mode = 'command';
 
-	if($dn != '■DeathNote■'){
+	if($dn != '■DeathNote■' && $dn != '四面亲手制作的■DeathNote■' ){
 		$log .= '道具使用错误！<br>';
 		return;
 	} elseif($dns <= 0) {
@@ -329,25 +393,41 @@ function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1,$sfn) 
 	}
 
 	if(!$dnname){return;}
-	if($dnname == $sfn){
+	if($dnname == $sfn && $dn != '四面亲手制作的■DeathNote■'){
 		$log .= "你不能自杀。<br>";
 		return;
 	}
 	if(!$dndeath){$dndeath = '心脏麻痹';}
+	if ($dn == '四面亲手制作的■DeathNote■') $dndeath="使用了天然呆四面的假冒伪劣■DeathNote■";
 	//echo "name=$dnname,gender = $dngender,icon=$dnicon,";
-	$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$dnname' AND type = 0");
+	if ($dn != '四面亲手制作的■DeathNote■') 
+		$result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$dnname' AND type = 0");
+	else  $result = $db->query("SELECT * FROM {$tablepre}players WHERE name='$sfn' AND type = 0");
 	if(!$db->num_rows($result)) { 
 		$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？<br>"; 
 	} else {
 		$edata = $db->fetch_array($result);
 		
-		if(($dngender != $edata['gd'])||($dnicon != $edata['icon'])) {
+		if((($dngender != $edata['gd'])||($dnicon != $edata['icon'])) && ($dn != '四面亲手制作的■DeathNote■')) {
 			$log .= "你使用了■DeathNote■，但是什么都没有发生。<br>哪里出错了？<br>"; 
 		} else {
-			$log .= "你将<span class=\"yellow b\">$dnname</span>的名字写在了■DeathNote■上。<br><span class=\"yellow b\">$dnname</span>被你杀死了。";
-			include_once GAME_ROOT.'./include/state.func.php';
-			kill('dn',$dnname,0,$edata['pid'],$dndeath);
-			$killnum++;
+			if ($dn != '四面亲手制作的■DeathNote■') 
+			{
+				$log .= "你将<span class=\"yellow b\">$dnname</span>的名字写在了■DeathNote■上。<br>";
+				$log .= "<span class=\"yellow b\">$dnname</span>被你杀死了。";
+				include_once GAME_ROOT.'./include/state.func.php';
+				kill('dn',$dnname,0,$edata['pid'],$dndeath);
+				$killnum++;
+			}
+			else  
+			{
+				$log .= "你将<span class=\"yellow b\">$dnname</span>的名字写在了■DeathNote■上。<br>";
+				$log .= "但就在这时，你突然感觉一阵晕眩。<br>你失去了意识。<br>";
+				$log .= "<span class='lime'>“这张■DeathNote■似乎制作不合格呢，还真是对不起呢……”<br></span>";
+				include_once GAME_ROOT.'./include/state.func.php';
+				death ( 'fake_dn', '', 0, $dndeath);
+				$killnum++;
+			}
 		}
 	}
 	$dns--;
@@ -356,10 +436,11 @@ function deathnote($itmd=0,$dnname='',$dndeath='',$dngender='m',$dnicon=1,$sfn) 
 		$dn = $dnk = $dnsk = '';
 		$dne = $dns = 0;
 	}
-		return;
+	return;
 }
+
 function qianghua($itmn = 0) {
-	global $mode,$log,$nosta,$name;
+	global $mode,$log,$nosta,$name,$nick;
 	global $itmp,${'itm'.$itmp},${'itms'.$itmp},${'itmk'.$itmp},${'itme'.$itmp},${'itmsk'.$itmp};
 	$baoshi = & ${'itm'.$itmp};
 	$baoshie = & ${'itme'.$itmp};
@@ -420,8 +501,9 @@ function qianghua($itmn = 0) {
 			}else{$flag = false;}
 	  }	
   }	
-  addnews ( $now, 'newwep2', $name, $baoshi, $o_itm );
+  addnews ( $now, 'newwep2',$nick.' '.$name, $baoshi, $o_itm );
 	if ($flag){
+
 	 $log .= "<span class=\"yellow\">『一道神圣的闪光照耀在你的眼睛上，当你恢复视力时，发现你的装备闪耀着彩虹般的光芒』</span><br>";
 	 $nzitmlv = $zitmlv +1;
 	 $itm = str_replace('[+'.$zitmlv.']','[+'.$nzitmlv.']',$itm);
@@ -447,4 +529,261 @@ function qianghua($itmn = 0) {
 	$mode = 'command';
 	return;
 }	
+
+function nametag($item){
+	global $rename,$ntitm,$log,$now,$command,$mode,$nosta;
+	global ${'itm'.$ntitm},${'itms'.$ntitm},${'itmk'.$ntitm},${'itme'.$ntitm},${'itmsk'.$ntitm};
+	if(${'itm'.$ntitm} != '残响兵器' || ${'itmk'.$ntitm} != 'Y' || !${'itms'.$ntitm}){
+		$log .= "<span class=\"yellow\">道具不存在！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if($item == 'itm'.$ntitm){
+		$log .= "<span class=\"yellow\">不能修改道具自身！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if(strpos($item,'itm')===0){
+		$i = str_replace('itm','',$item);
+		global ${'itm'.$i},${'itms'.$i},${'itmk'.$i},${'itme'.$i},${'itmsk'.$i};
+		$rn = & ${'itm'.$i};
+		$rnk = & ${'itmk'.$i};
+		$rne = & ${'itme'.$i};
+		$rns = & ${'itms'.$i};
+		$rnsk = & ${'itmsk'.$i};
+	}else{
+		global ${$item},${$item.'k'}, ${$item.'e'}, ${$item.'s'},${$item.'sk'};
+		$rn = & ${$item};
+		$rnk = & ${$item.'k'};
+		$rne = & ${$item.'e'};
+		$rns = & ${$item.'s'};
+		$rnsk = & ${$item.'sk'};
+	}
+	
+	
+	if(!$rns || !$rne){
+		$log .= "<span class=\"yellow\">道具选择错误！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if(strpos($rnk,'Y')===0 || strpos($rnk,'Z')===0){
+		$log .= "<span class=\"yellow\">不能修改特殊道具的名字！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if(!$rename){
+		$log .= "<span class=\"yellow\">请输入符合要求的名字！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	$mark = '■';
+	$rn0 = $rn;
+	$rn = $mark.$rename.$mark;
+	$rnsk = str_replace('Z','x',$rnsk);
+	$log .= "{$rn0}已改名为<span class=\"yellow\">$rn</span>！武器的菁英属性已经抹消。<br>";
+	if(${'itms'.$ntitm} != $nosta){
+		${'itms'.$ntitm} --;
+		if(${'itms'.$ntitm} <= 0){
+			$log .= "<span class=\"yellow\">{${'itm'.$ntitm}}用完了。</span><br>";
+			${'itm'.$ntitm} = ${'itmk'.$ntitm} = ${'itmsk'.$ntitm} = '';
+			${'itms'.$ntitm} = ${'itme'.$ntitm} = 0;		
+		}
+	}
+	$mode = 'command';
+	return;
+}
+function supernametag($item){
+	global $rename,$ntitm,$log,$now,$command,$mode,$nosta;
+	global ${'itm'.$ntitm},${'itms'.$ntitm},${'itmk'.$ntitm},${'itme'.$ntitm},${'itmsk'.$ntitm};
+	if(${'itm'.$ntitm} != '超臆想时空' || ${'itmk'.$ntitm} != 'Y' || !${'itms'.$ntitm}){
+		$log .= "<span class=\"yellow\">道具不存在！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if($item == 'itm'.$ntitm){
+		$log .= "<span class=\"yellow\">不能修改道具自身！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if(strpos($item,'itm')===0){
+		$i = str_replace('itm','',$item);
+		global ${'itm'.$i},${'itms'.$i},${'itmk'.$i},${'itme'.$i},${'itmsk'.$i};
+		$rn = & ${'itm'.$i};
+		$rnk = & ${'itmk'.$i};
+		$rne = & ${'itme'.$i};
+		$rns = & ${'itms'.$i};
+		$rnsk = & ${'itmsk'.$i};
+	}else{
+		global ${$item},${$item.'k'}, ${$item.'e'}, ${$item.'s'},${$item.'sk'};
+		$rn = & ${$item};
+		$rnk = & ${$item.'k'};
+		$rne = & ${$item.'e'};
+		$rns = & ${$item.'s'};
+		$rnsk = & ${$item.'sk'};
+	}
+	
+	
+	if(!$rns || !$rne){
+		$log .= "<span class=\"yellow\">道具选择错误！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if(strpos($rnk,'Y')===0 || strpos($rnk,'Z')===0){
+		$log .= "<span class=\"yellow\">不能修改特殊道具的名字！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if(!$rename){
+		$log .= "<span class=\"yellow\">请输入符合要求的名字！</span><br>";
+		$mode = 'command';
+		return;
+	}
+	if($rename =='『A.Q.U.A』'){
+		$log .= "<span class=\"yellow\">呵呵，你知道的太多了。</span><br>";
+		$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+		include_once GAME_ROOT . './include/state.func.php';
+		$log .= '然后你失去了意识。<br>';
+			for ($i=1;$i<=6;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				$itm = & ${'itm'.$i};
+				$itmk = & ${'itmk'.$i};
+				$itme = & ${'itme'.$i};
+				$itms = & ${'itms'.$i};
+				$itmsk = & ${'itmsk'.$i};
+				if ($itm=='黑色发卡') {$flag=true;}
+				$itm = '';
+				$itmk = '';
+				$itme = 0;
+				$itms = 0;
+				$itmsk = '';
+			}
+		death ( 'salv', '', 0, $itm );
+		//return;	
+	}
+	if($rename =='『T.E.R.R.A』'){
+		$log .= "<span class=\"yellow\">呵呵，你知道的太多了。</span><br>";
+		$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+		include_once GAME_ROOT . './include/state.func.php';
+		$log .= '然后你失去了意识。<br>';
+			for ($i=1;$i<=6;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				$itm = & ${'itm'.$i};
+				$itmk = & ${'itmk'.$i};
+				$itme = & ${'itme'.$i};
+				$itms = & ${'itms'.$i};
+				$itmsk = & ${'itmsk'.$i};
+				if ($itm=='黑色发卡') {$flag=true;}
+				$itm = '';
+				$itmk = '';
+				$itme = 0;
+				$itms = 0;
+				$itmsk = '';
+			}
+		death ( 'salv', '', 0, $itm );
+		//return;	
+	}
+	if($rename =='『V.E.N.T.U.S』'){
+		$log .= "<span class=\"yellow\">呵呵，你知道的太多了。</span><br>";
+		$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+		include_once GAME_ROOT . './include/state.func.php';
+		$log .= '然后你失去了意识。<br>';
+			for ($i=1;$i<=6;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				$itm = & ${'itm'.$i};
+				$itmk = & ${'itmk'.$i};
+				$itme = & ${'itme'.$i};
+				$itms = & ${'itms'.$i};
+				$itmsk = & ${'itmsk'.$i};
+				if ($itm=='黑色发卡') {$flag=true;}
+				$itm = '';
+				$itmk = '';
+				$itme = 0;
+				$itms = 0;
+				$itmsk = '';
+			}
+		death ( 'salv', '', 0, $itm );
+		//return;	
+	}
+	if($rename =='『C.H.A.O.S』'){
+		$log .= "<span class=\"yellow\">呵呵，你知道的太多了。</span><br>";
+		$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+		include_once GAME_ROOT . './include/state.func.php';
+		$log .= '然后你失去了意识。<br>';
+			for ($i=1;$i<=6;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				$itm = & ${'itm'.$i};
+				$itmk = & ${'itmk'.$i};
+				$itme = & ${'itme'.$i};
+				$itms = & ${'itms'.$i};
+				$itmsk = & ${'itmsk'.$i};
+				if ($itm=='黑色发卡') {$flag=true;}
+				$itm = '';
+				$itmk = '';
+				$itme = 0;
+				$itms = 0;
+				$itmsk = '';
+			}
+		death ( 'salv', '', 0, $itm );
+		//return;	
+	}
+		if($rename =='琉璃血'){
+		$log .= "<span class=\"yellow\">呵呵，你知道的太多了。</span><br>";
+		$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+		include_once GAME_ROOT . './include/state.func.php';
+		$log .= '然后你失去了意识。<br>';
+			for ($i=1;$i<=6;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				$itm = & ${'itm'.$i};
+				$itmk = & ${'itmk'.$i};
+				$itme = & ${'itme'.$i};
+				$itms = & ${'itms'.$i};
+				$itmsk = & ${'itmsk'.$i};
+				if ($itm=='黑色发卡') {$flag=true;}
+				$itm = '';
+				$itmk = '';
+				$itme = 0;
+				$itms = 0;
+				$itmsk = '';
+			}
+		death ( 'salv', '', 0, $itm );
+		//return;	
+	}
+		if($rename =='社员专用的ID卡'){
+		$log .= "<span class=\"yellow\">呵呵，你知道的太少了。</span><br>";
+		$log .= '你头晕脑胀地躺到了地上，<br>感觉整个人都被救济了。<br>';
+		include_once GAME_ROOT . './include/state.func.php';
+		$log .= '然后你失去了意识。<br>';
+			for ($i=1;$i<=6;$i++){
+				global ${'itm'.$i},${'itmk'.$i},${'itme'.$i},${'itms'.$i},${'itmsk'.$i};
+				$itm = & ${'itm'.$i};
+				$itmk = & ${'itmk'.$i};
+				$itme = & ${'itme'.$i};
+				$itms = & ${'itms'.$i};
+				$itmsk = & ${'itmsk'.$i};
+				if ($itm=='黑色发卡') {$flag=true;}
+				$itm = '';
+				$itmk = '';
+				$itme = 0;
+				$itms = 0;
+				$itmsk = '';
+			}
+		death ( 'salv', '', 0, $itm );
+		//return;	
+	}
+	$mark = '';
+	$rn0 = $rn;
+	$rn = $mark.$rename.$mark;
+//	$rnsk = str_replace('Z','x',$rnsk);
+	$log .= "{$rn0}已改名为<span class=\"yellow\">$rn</span>！<br>";
+	if(${'itms'.$ntitm} != $nosta){
+		${'itms'.$ntitm} --;
+		if(${'itms'.$ntitm} <= 0){
+			$log .= "<span class=\"yellow\">{${'itm'.$ntitm}}用完了。</span><br>";
+			${'itm'.$ntitm} = ${'itmk'.$ntitm} = ${'itmsk'.$ntitm} = '';
+			${'itms'.$ntitm} = ${'itme'.$ntitm} = 0;		
+		}
+	}
+	$mode = 'command';
+	return;
+}
 ?>

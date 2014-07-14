@@ -26,7 +26,7 @@ function rs_game($mode = 0) {
 		}
 		
 		//清空战斗信息
-		global $hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode,$starttime;
+		global $hdamage,$hplayer,$noisetime,$noisepls,$noiseid,$noiseid2,$noisemode,$starttime,$gamevars;
 		$hdamage = 0;
 		$hplayer = '';
 		$noisetime = 0;
@@ -40,8 +40,8 @@ function rs_game($mode = 0) {
 		$afktime = $starttime;
 		//重设连斗判断死亡数
 		$combonum = $deathlimit;
-		
 		//重设游戏剧情开关
+		$gamevars = 0;
 		save_gameinfo();
 		
 		
@@ -105,19 +105,24 @@ function rs_game($mode = 0) {
 					$npc['hp'] = $npc['mhp'];
 					$npc['sp'] = $npc['msp'];
 					$npc['exp'] = round(2*$npc['lvl']*$GLOBALS['baseexp']);
-					$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
+					foreach(Array('p','k','g','c','d','f') as $val){
+						if(!$npc['w'.$val]){
+							$npc['w'.$val] = $npc['skill'];
+						}
+					}
+					//$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
 					if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
 					do{$rpls=rand(1,$plsnum-1);}while ($rpls==34);
 					if($npc['pls'] == 99){$npc['pls'] = $rpls; }
 					$npc['state'] = 0;
-					$npcqry .= "('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['state']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['itm6']."','".$npc['itmk6']."','".$npc['itme6']."','".$npc['itms6']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."','".$npc['itmsk6']."'),";
+					$npcqry .= "('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['rp']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['state']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['itm6']."','".$npc['itmk6']."','".$npc['itme6']."','".$npc['itms6']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."','".$npc['itmsk6']."','".$npc['skills']."'),";
 					//$db->query("INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5) VALUES ('".$npc['name']."','".$npc['pass']."','".$npc['type']."','".$npc['endtime']."','".$npc['gd']."','".$npc['sNo']."','".$npc['icon']."','".$npc['club']."','".$npc['hp']."','".$npc['mhp']."','".$npc['sp']."','".$npc['msp']."','".$npc['att']."','".$npc['def']."','".$npc['pls']."','".$npc['lvl']."','".$npc['exp']."','".$npc['money']."','".$npc['bid']."','".$npc['inf']."','".$npc['rage']."','".$npc['pose']."','".$npc['tactic']."','".$npc['killnum']."','".$npc['death']."','".$npc['wp']."','".$npc['wk']."','".$npc['wg']."','".$npc['wc']."','".$npc['wd']."','".$npc['wf']."','".$npc['teamID']."','".$npc['teamPass']."','".$npc['wep']."','".$npc['wepk']."','".$npc['wepe']."','".$npc['weps']."','".$npc['arb']."','".$npc['arbk']."','".$npc['arbe']."','".$npc['arbs']."','".$npc['arh']."','".$npc['arhk']."','".$npc['arhe']."','".$npc['arhs']."','".$npc['ara']."','".$npc['arak']."','".$npc['arae']."','".$npc['aras']."','".$npc['arf']."','".$npc['arfk']."','".$npc['arfe']."','".$npc['arfs']."','".$npc['art']."','".$npc['artk']."','".$npc['arte']."','".$npc['arts']."','".$npc['itm0']."','".$npc['itmk0']."','".$npc['itme0']."','".$npc['itms0']."','".$npc['itm1']."','".$npc['itmk1']."','".$npc['itme1']."','".$npc['itms1']."','".$npc['itm2']."','".$npc['itmk2']."','".$npc['itme2']."','".$npc['itms2']."','".$npc['itm3']."','".$npc['itmk3']."','".$npc['itme3']."','".$npc['itms3']."','".$npc['itm4']."','".$npc['itmk4']."','".$npc['itme4']."','".$npc['itms4']."','".$npc['itm5']."','".$npc['itmk5']."','".$npc['itme5']."','".$npc['itms5']."','".$npc['wepsk']."','".$npc['arbsk']."','".$npc['arhsk']."','".$npc['arask']."','".$npc['arfsk']."','".$npc['artsk']."','".$npc['itmsk0']."','".$npc['itmsk1']."','".$npc['itmsk2']."','".$npc['itmsk3']."','".$npc['itmsk4']."','".$npc['itmsk5']."')");
 					unset($npc);
 				}
 			}
 		}
 		if(!empty($npcqry)){
-			$npcqry = "INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ".substr($npcqry, 0, -1);
+			$npcqry = "INSERT INTO {$tablepre}players (name,pass,type,endtime,gd,sNo,icon,club,rp,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6,skills) VALUES ".substr($npcqry, 0, -1);
 			$db->query($npcqry);
 			unset($npcqry);
 		}
@@ -362,7 +367,7 @@ function areawarn(){
 }
 
 function duel($time = 0,$keyitm = ''){
-	global $now,$gamestate,$name;
+	global $now,$gamestate,$name,$nick;
 	if($gamestate < 30){
 		return 30;
 	} elseif($gamestate >= 50) {
@@ -371,7 +376,7 @@ function duel($time = 0,$keyitm = ''){
 		$time = $time == 0 ? $now : $time;
 		$gamestate = 50;
 		save_gameinfo();
-		addnews($time,'duelkey',$name,$keyitm);
+		addnews($time,'duelkey',$nick.' '.$name,$keyitm);
 		addnews($time,'duel');
 		systemputchat($time,'duel');
 		return 50;
@@ -444,6 +449,12 @@ function gameover($time = 0, $mode = '', $winname = '') {
 		$pdata['hdp'] = $hplayer;
 		$db->query("INSERT INTO {$tablepre}winners (gid,name,pass,type,endtime,gd,sNo,icon,club,hp,mhp,sp,msp,att,def,pls,lvl,`exp`,money,bid,inf,rage,pose,tactic,killnum,killnum2,state,wp,wk,wg,wc,wd,wf,teamID,teamPass,wep,wepk,wepe,weps,arb,arbk,arbe,arbs,arh,arhk,arhe,arhs,ara,arak,arae,aras,arf,arfk,arfe,arfs,art,artk,arte,arts,itm0,itmk0,itme0,itms0,itm1,itmk1,itme1,itms1,itm2,itmk2,itme2,itms2,itm3,itmk3,itme3,itms3,itm4,itmk4,itme4,itms4,itm5,itmk5,itme5,itms5,itm6,itmk6,itme6,itms6,motto,wmode,vnum,gtime,gstime,getime,hdmg,hdp,hkill,hkp,wepsk,arbsk,arhsk,arask,arfsk,artsk,itmsk0,itmsk1,itmsk2,itmsk3,itmsk4,itmsk5,itmsk6) VALUES ('".$gamenum."','".$pdata['name']."','".$pdata['pass']."','".$pdata['type']."','".$pdata['endtime']."','".$pdata['gd']."','".$pdata['sNo']."','".$pdata['icon']."','".$pdata['club']."','".$pdata['hp']."','".$pdata['mhp']."','".$pdata['sp']."','".$pdata['msp']."','".$pdata['att']."','".$pdata['def']."','".$pdata['pls']."','".$pdata['lvl']."','".$pdata['exp']."','".$pdata['money']."','".$pdata['bid']."','".$pdata['inf']."','".$pdata['rage']."','".$pdata['pose']."','".$pdata['tactic']."','".$pdata['killnum']."','".$pdata['killnum2']."','".$pdata['state']."','".$pdata['wp']."','".$pdata['wk']."','".$pdata['wg']."','".$pdata['wc']."','".$pdata['wd']."','".$pdata['wf']."','".$pdata['teamID']."','".$pdata['teamPass']."','".$pdata['wep']."','".$pdata['wepk']."','".$pdata['wepe']."','".$pdata['weps']."','".$pdata['arb']."','".$pdata['arbk']."','".$pdata['arbe']."','".$pdata['arbs']."','".$pdata['arh']."','".$pdata['arhk']."','".$pdata['arhe']."','".$pdata['arhs']."','".$pdata['ara']."','".$pdata['arak']."','".$pdata['arae']."','".$pdata['aras']."','".$pdata['arf']."','".$pdata['arfk']."','".$pdata['arfe']."','".$pdata['arfs']."','".$pdata['art']."','".$pdata['artk']."','".$pdata['arte']."','".$pdata['arts']."','".$pdata['itm0']."','".$pdata['itmk0']."','".$pdata['itme0']."','".$pdata['itms0']."','".$pdata['itm1']."','".$pdata['itmk1']."','".$pdata['itme1']."','".$pdata['itms1']."','".$pdata['itm2']."','".$pdata['itmk2']."','".$pdata['itme2']."','".$pdata['itms2']."','".$pdata['itm3']."','".$pdata['itmk3']."','".$pdata['itme3']."','".$pdata['itms3']."','".$pdata['itm4']."','".$pdata['itmk4']."','".$pdata['itme4']."','".$pdata['itms4']."','".$pdata['itm5']."','".$pdata['itmk5']."','".$pdata['itme5']."','".$pdata['itms5']."','".$pdata['itm6']."','".$pdata['itmk6']."','".$pdata['itme6']."','".$pdata['itms6']."','".$pdata['motto']."','".$pdata['wmode']."','".$pdata['vnum']."','".$pdata['gtime']."','".$pdata['gstime']."','".$pdata['getime']."','".$pdata['hdmg']."','".$pdata['hdp']."','".$pdata['hkill']."','".$pdata['hkp']."','".$pdata['wepsk']."','".$pdata['arbsk']."','".$pdata['arhsk']."','".$pdata['arask']."','".$pdata['arfsk']."','".$pdata['artsk']."','".$pdata['itmsk0']."','".$pdata['itmsk1']."','".$pdata['itmsk2']."','".$pdata['itmsk3']."','".$pdata['itmsk4']."','".$pdata['itmsk5']."','".$pdata['itmsk6']."')");
 	}
+	
+	//检查成就
+	include_once GAME_ROOT.'./include/game/achievement.func.php';
+	check_end_achievement($winner,$winmode);
+	
+	
 	rs_sttime();//重置游戏开始时间和当前游戏状态
 	$gamestate = 0;
 	save_gameinfo();
@@ -550,7 +561,12 @@ function addnpc($type,$sub,$num,$time = 0) {
 			$npc['hp'] = $npc['mhp'];
 			$npc['sp'] = $npc['msp'];
 			if(!isset($npc['state'])){$npc['state'] = 0;}
-			$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
+			foreach(Array('p','k','g','c','d','f') as $val){
+				if(!$npc['w'.$val]){
+					$npc['w'.$val] = $npc['skill'];
+				}
+			}
+			//$npc['wp'] = $npc['wk'] = $npc['wg'] = $npc['wc'] = $npc['wd'] = $npc['wf'] = $npc['skill'];
 			if($npc['gd'] == 'r'){$npc['gd'] = rand(0,1) ? 'm':'f';}
 			if($npc['pls'] == 99){
 				$areaarr = array_slice($arealist,$areanum+1);
@@ -632,6 +648,8 @@ function antiAFK($timelimit = 0){
 			addnews($now,'death32',$kcontent['name'],'',$kcontent['pls']);
 			$alivenum--;
 			$deathnum++;			
+
+
 		}
 	}
 	save_gameinfo();
@@ -641,27 +659,29 @@ function antiAFK($timelimit = 0){
 function set_credits(){
 	global $db,$tablepre,$winmode,$gamenum,$winner,$pdata,$gamblingon;
 	$clist = $creditlist = $updatelist = Array();
-	$result = $db->query("SELECT * FROM {$tablepre}players LEFT JOIN {$tablepre}users ON {$tablepre}players.name={$tablepre}users.username WHERE {$tablepre}players.type='0'");
+	$result = $db->query("SELECT * FROM {$tablepre}users RIGHT JOIN {$tablepre}players ON {$tablepre}players.name={$tablepre}users.username WHERE {$tablepre}players.type='0'");
 	while($data = $db->fetch_array($result)){
 		$clist[$data['name']] = $data;
 	}
 	foreach($clist as $key => $val){
 		$credits = get_credit_up($val,$winner,$winmode) + $val['credits'];
-		$credits2 = $val['credits2'] + 1;
+		$credits2 = $val['credits2'] + 10;
 		$validgames = $val['validgames'] + 1;
 		$wingames = $key == $winner ? $val['wingames'] + 1 : $val['wingames'];
-		$updatelist[$key] = Array('username' => $key, 'credits' => $credits, 'credits2' => $credits2, 'wingames' => $wingames, 'validgames' => $validgames);
+		$updatelist[$key] = Array(
+			'username' => $key,
+			'credits' => $credits,
+			'credits2' => $credits2,
+			'wingames' => $wingames,
+			'validgames' => $validgames,
+		);
 	}
-	$db->multi_update("{$tablepre}users", $updatelist, 'username');
+	$db->multi_update("{$tablepre}users", $updatelist,'username');
 	if($gamblingon){//赌注系统开启
-		$updatelist2 = get_gambling_result($winner,$winmode);
-		if($updatelist2){$db->multi_update("{$tablepre}users", $updatelist2, 'username');}//必须分两次，因为涉及字段不同
-//		foreach($updatelist as $key => &$val){
-//			if(isset($updatelist2[$key])){
-//				$val = array_merge($val,$updatelist2[$key]);
-//			}
-//		}
-		//$updatelist = $updatelist2 ? array_merge_recursive($updatelist,$updatelist2) : $updatelist;
+		$updatelist2 = get_gambling_result($clist,$winner,$winmode);
+		if($updatelist2){//必须分两次，因为涉及字段不同
+			$db->multi_update("{$tablepre}users", $updatelist2,'username');
+		}
 	}
 	//var_dump($updatelist);
 	
@@ -698,6 +718,24 @@ function set_credits(){
 //		$udghkey = implode(',',$udghkey);
 //		$db->multi_update("{$tablepre}players", $upghlist, 'name', "name IN ($udghkey)");
 //	}
+	//更新成就
+	//$result = $db->query("SELECT * FROM {$tablepre}players WHERE {$tablepre}players.type='0'");
+	//while($data = $db->fetch_array($result)) 
+	//{
+	//	$dlist[$data['name']] = $data['achievement'];
+	//}
+	//include_once GAME_ROOT.'./include/game/achievement.func.php';
+	//foreach($dlist as $key => $val)
+	//{
+		//$v=$val; 
+		//normalize_achievement($v,$c1,$c2);
+		//$res = $db->query("SELECT * FROM {$tablepre}users WHERE username='".$key."'" );
+		//$data=$db->fetch_array($res);
+		//$c1+=$data['credits']; $c2+=$data['credits2'];
+		//$db->query("UPDATE {$tablepre}users SET achievement='$v' WHERE username='".$key."'" );
+		//$db->query("UPDATE {$tablepre}users SET credits='$c1' WHERE username='".$key."'" );
+		//$db->query("UPDATE {$tablepre}users SET credits2='$c2' WHERE username='".$key."'" );
+	//}
 	return;
 }
 
@@ -731,16 +769,17 @@ function get_credit_up($data,$winner = '',$winmode = 0){
 	return $up;
 }
 
-function get_gambling_result($winner='',$winmode=''){
-	global $db,$tablepre,$hdamage;
+function get_gambling_result($clist, $winner='',$winmode=''){
+	global $db,$tablepre,$hdamage,$validnum,$now,$areanum,$areaadd;
 	$gblog = '';
 	$gbfile = GAME_ROOT.TPLDIR.'/lastgb.htm';
 	if(!in_array($winmode,Array(2,3,5,7))){//无人获胜，全部赌注被冴冴吃掉
+		$gblog .= '无人获胜，全部切糕被冴冴吃掉！';
 		$updatelist = false;
 	}else{
 		$result = $db->query("SELECT * FROM {$tablepre}gambling WHERE 1");
 		if(!$db->num_rows($result)){
-			$gblog .= '无人下注';
+			$gblog .= '无人下注！';
 			$updatelist = false;
 		}else{
 			$bwlist = $updatelist = Array();
@@ -753,10 +792,37 @@ function get_gambling_result($winner='',$winmode=''){
 				}				
 				$bpool += $bdata['wager'];//奖池记录所有玩家的赌注总额
 			}
-			$dmgprizeodds = 100 + round(pow($hdamage,0.5)) * 2;
+			
+			//(所有入场玩家战斗力总和÷1000）×（每名玩家APM达到则1.0—1.1之间的随机数）×（连斗时间从10—0.1递减）=每局基础奖金——飞雪大魔王
+
+			$creditsum = $apmnum = 0;
+			foreach($clist as $cdata){
+				$creditsum += $cdata['credits'];
+				$apm = $cdata['deathtime'] > $cdata['validtime'] ? $cdata['cmdnum'] / ($cdata['deathtime'] - $cdata['validtime']) : $cdata['cmdnum'] / ($now - $cdata['validtime']);
+				if($apm >= 1){$apmnum ++;}
+			}
+			
+			$avrcredit = $creditsum / $validnum;//平均战斗力
+			if($avrcredit > 10000){$creditodds = 1.25;}//平均战斗力超过10000则系数为1.25，否则系数减少，平均战斗力为4000时为1.1；
+			else{$creditodds = round((1 + $avrcredit / 40000)*1000)/1000;}
+			$apmodds = round(pow(1.02,$apmnum)*1000)/1000;//每有一名玩家达到60APM则乘以1.02
+			$timeodds = 1.2 - $areanum/$areaadd * 0.1;//游戏结束时为0禁则系数为1.2，否则每禁系数减少0.1，不会低于0.8
+			if($timeodds < 0.8){$timeodds = 0.8;}
+			
+			
+			
+//			$result3 = $db->query("SELECT cmdnum FROM {$tablepre}players WHERE type=0 ORDER BY cmdnum DESC LIMIT 10");
+//			while($cdata = $db->fetch_array($result3)){
+//				$cmdsum += $cdata['cmdnum'];
+//			}
+//			if($cmdsum <= 10000){$cmdodds = 1;}
+//			elseif($cmdsum >= 30000){$cmdodds = 1.25;}
+//			else{$cmdodds = 1+($cmdsum-10000)*0.0000125;}
+			
+			//$dmgprizeodds = 100 + round(pow($hdamage,0.5)) * 2;
 			$obpool = $bpool;
-			$bpool = round($bpool * $dmgprizeodds / 100);
-			$gblog = '奖池：'.$obpool.' * '.$dmgprizeodds.'% = '.$bpool.'<br>';
+			$bpool = round($bpool * $creditodds * $apmodds * $timeodds);
+			$gblog = '奖池：'.$obpool.' * '.$creditodds.' * '.$apmodds.' * '.$timeodds.' = '.$bpool.'<br>';
 			if($bwlist){
 				$bnlist = array_keys($bwlist);
 				$bnstr = "('".implode("','",$bnlist)."')";
@@ -764,7 +830,8 @@ function get_gambling_result($winner='',$winmode=''){
 				while($udata = $db->fetch_array($result2)){
 					$bwlist[$udata['username']]['credits2'] = $udata['credits2'];
 				}
-				if($bwsum == $bpool){//奖池与本金相等，则大家拿回本金
+				if($bwsum >= $bpool){//奖池与本金相等，则大家拿回本金
+					$gblog .= '奖池少于本金，系统资助判断正确者取回本金。';
 					foreach($bwlist as $key => $val){
 						$bwlist[$val['uname']]['crup'] = 0;
 						$bwlist[$val['uname']]['crrst'] = $val['wager'];
@@ -774,13 +841,13 @@ function get_gambling_result($winner='',$winmode=''){
 				}else{//奖池大于本金，则大家拿回本金基础上，获胜者分得10%，其他人分掉额外的90%；
 					$ext = $bpool - $bwsum;
 					foreach($bwlist as $key => $val){
-						$crup = round($ext * 0.9 * $val['wager'] * $val['odds'] / $bwsum2);
+						$crup = ceil($ext * 0.9 * $val['wager'] * $val['odds'] / $bwsum2);
 						$bwlist[$val['uname']]['crup'] = $crup;
 						$bwlist[$val['uname']]['crrst'] = $val['wager'] + $crup;
 						$credits2 = $val['credits2'] + $val['wager'] + $crup;
 						$updatelist[$key] = Array('username' => $key, 'credits2' => $credits2);
 					}
-					$wcrup = round($ext * 0.1);
+					$wcrup = ceil($ext * 0.1);
 					$bwlist[] = Array('uname' => '获胜者', 'wager' => '', 'bname' => '', 'odds' => '', 'crup' => $wcrup, 'crrst' => $wcrup);
 					if(is_array($updatelist) && isset($updatelist[$winner]['credits2'])){
 						$updatelist[$winner]['credits2'] += $wcrup;
@@ -798,8 +865,8 @@ function get_gambling_result($winner='',$winmode=''){
 //				}
 				
 			}else{
-				$gblog .= '无赌胜者，奖池的20%归获胜者。';
-				$wcrup = round($bpool * 0.2);
+				$gblog .= '无判断正确者，奖池的20%归获胜者。';
+				$wcrup = ceil($bpool * 0.2);
 				$bwlist[] = Array('uname' => '获胜者', 'wager' => '', 'bname' => '', 'odds' => '', 'crup' => $wcrup, 'crrst' => $wcrup);
 				if(is_array($updatelist) && isset($updatelist[$winner]['credits2'])){
 					$updatelist[$winner]['credits2'] += $wcrup;

@@ -24,7 +24,7 @@
 <TD class="b3"><span><?php echo $gwin[$info['wmode']]?></span></TD>
 <TD class="b3" style="white-space: nowrap;">
 <?php if($info['name']) { ?>
-<span class="evergreen"><?php echo $info['name']?></span>
+<span class="evergreen"><u><a href="user_profile.php?playerID=<?php echo $info['name']?>"><?php echo $info['name']?></a></u></span>
 <?php } else { ?>
 <span class="grey">无</span>
 <?php } ?>
@@ -47,14 +47,14 @@
 </TD>
 <TD class="b3">
 <?php if($info['hdmg']) { ?>
-<span class="white"><?php echo $info['hdp']?></span>
+<span class="white"><u><a href="user_profile.php?playerID=<?php echo $info['hdp']?>"><?php echo $info['hdp']?></a></u></span>
 <?php } else { ?>
 <span class="grey">无</span>
 <?php } ?>
 </TD>
 <TD class="b3">
 <?php if($info['hkill']) { ?>
-<span class="white"><?php echo $info['hkp']?></span>
+<span class="white"><u><a href="user_profile.php?playerID=<?php echo $info['hkp']?>"><?php echo $info['hkp']?></a></u></span>
 <?php } else { ?>
 <span class="grey">无</span>
 <?php } ?>

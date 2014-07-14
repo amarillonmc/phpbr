@@ -392,7 +392,7 @@ No.3 alter，林无月</span>阁下。”</p>
 <span id="p5">『英雄是有保质期限的，请接过……』</span><br>
 <span id="p6">『战争，战争永恒不变』</span><br>
 <span id="p7">『反抗我的都要灭！』</span><br>
-<span id="p8">『吃下这710000的战斗伤害吧！胜利蛇XX03直接攻击！粉碎玉碎大喝彩！』</span><br>
+<span id="p8">『吃下这■的战斗伤害吧！■直接攻击！粉碎玉碎大喝彩！』</span><br>
 <span id="p1">『我的血将承载这黑暗，我的灵将承载这痛苦』</span><br>
 <span style="color:red;font-family:微软雅黑;font-size:23px;font-weight:bold;line-height:29px">…………<br>
 这是……■■线■残■……</span><br><br>
@@ -402,7 +402,7 @@ No.3 alter，林无月</span>阁下。”</p>
 <span id="p13">『被凝固的日常，将重新开始转动。』</span><br>
 <span id="p14">『你们都统统去给我读古生物书读到心脏怦怦乱跳为止再回来玩！』</span><br>
 <span id="p15">『浪子的口袋里面是永远不缺崭新的钞票的』</span><br>
-<span id="p16">『啊～啊我招了吧，这永续的黑夜，这异常的月亮，还有在罗汉像上放上帽子这些都是爱丽丝干的，现在给我让开！』</span><br>
+<span id="p16">『啊～啊我招了吧，这永续的黑夜，这异常的月亮，还有在罗汉像上放上帽子这些都是■干的，现在给我让开！』</span><br>
 <span id="p17">『想证明给我看的话，就从我身上轧过去吧！』</span><br>
 <br>
 承受不住巨大信息的压力，<br>
@@ -454,7 +454,7 @@ No.3 alter，林无月</span>阁下。”</p>
 面前的形象完全地溶解在了光芒之中，而那个光芒随着你手上的武器进入了你的身体。</p>
 <p>
 <span style="font-size:31px;color:#feea23;font-family:微软雅黑;font-weight:bold;line-height:41px">『■■■■■■』<br>
-『PROJECT XANADU』<br>
+『PROJECT ■』<br>
 『■■■■』</span>
 </p>
 这是她留下的最终信息么？很遗憾我看起来解读不能啊……抱歉。<br>
@@ -464,10 +464,10 @@ No.3 alter，林无月</span>阁下。”</p>
 <p>
 “嗯，因为虚拟现实装置暴走的受害者已经全部被治疗完毕了。身体和心理上应该不会有后遗症。”<br>
 “嗯，这样就好，那群家伙也是应该审视一下自己的系统了，病毒入侵导致暴走什么的……”<br>
-林无月叹了一口气，关闭了窃听器。<br>
+■叹了一口气，关闭了窃听器。<br>
 “非常抱歉我们无法察觉到中枢程序的被入侵……”她身边穿着黑袍子的人如此说道。<br>
 <span class="evergreen">“没有办法，在我们开发出新的替代程序之前，只好让时空特使这样瞎闹了，等到所有事情结束后我一定要他们好看。”</span><br>
-林无月愤怒地站了起来，离开了房间。<br>
+■愤怒地站了起来，离开了房间。<br>
 <span class="evergreen">“给我马上准备重新载入中枢程序！”</span>在门口，她回过头这么怒吼了一句。<br>
 </p>
 <br>
@@ -477,7 +477,7 @@ No.3 alter，林无月</span>阁下。”</p>
 </p>
 <br>
 <p align="right" style="padding-right:17%">
-<span class="red">NEXT EPISODE：Project:DTX</span>
+<span class="red">NEXT EPISODE：Project:■</span>
 </p>
 <?php } elseif($winmode == 7) { ?>
 <div class="subtitle">幻境解离</div>

@@ -8,10 +8,10 @@
 <center>
 <form method="post" id="reg" name="reg">
 <input type="hidden" name="cmd" value="post_register">
-<span class ="yellow">账户基本资料</span>
+<span class ="yellow">账户密码</span>
 <?php include template('userbasicdata'); ?>
 <br />
-<span class ="yellow">账户个性化资料</span>
+<span class ="yellow">个性化资料</span>
 <?php include template('usergdicon'); ?>
 <br />
 <?php include template('userwords'); ?>

@@ -2,7 +2,7 @@
 /*Game Config*/
 
 //禁区间隔时间,单位 小时
-$areahour = 30;
+$areahour = 40;
 //每次间隔增加的禁区数量
 $areaadd = 4;
 //聊天记录里的禁区提示时间，单位秒
@@ -14,10 +14,12 @@ $areaesc = 0;
 //是否开启死斗模式 0=关闭,1=开启。连斗后下次禁区，进入死斗状态，死斗后玩家只会遇到玩家，死斗后所有区域都将一次性宣布为禁区。（尚未完成）
 $isduel = 0;
 
+//开启快捷键？0为不开启，1为开启
+$hotkeyon = 0;
 //开启NPC台词功能？0为不开启，1为开启
 $npcchaton = 1;
 //有台词的NPC
-$npccanchat = Array(1,5,6,7,9,10,12,13,21);
+$npccanchat = Array(1,5,6,7,9,10,12,13,15,21,22);
 //反挂机系统间隔时间，单位分钟
 $antiAFKertime = 3;
 //尸体保护时间，单位秒
@@ -31,10 +33,10 @@ $movecoldtime=900;
 //探索的冷却时间，单位微秒
 $searchcoldtime=900;
 //使用物品的冷却时间，单位微秒
-$itemusecoldtime=500;
+$itemusecoldtime=600;
 
 //胜率榜最小参赛次数
-$winratemingames = 10;
+$winratemingames = 50;
 //是否启动赌注系统？0为不启动，1为启动；
 $gamblingon = 1;
 
@@ -74,7 +76,7 @@ $team_sp = 200;
 //加入队伍需要的体力
 $teamj_sp = 100;
 //队伍最大人数
-$teamlimit = 5;
+$teamlimit = 2;
 
 //随机事件几率(百分比)
 $event_obbs = 5;
@@ -107,5 +109,8 @@ $inf_search_hp = Array('p'=> 0.03125, 'u'=> 0.03125);
 $hack_obbs = 40;
 //电子设备充电上限，包括电脑和雷达
 $elec_cap = 5;
+
+//成就总数
+$achievement_count=70;
 
 ?>

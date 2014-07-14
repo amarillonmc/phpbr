@@ -9,7 +9,11 @@
 	<tr>
 		<td>{lang icon}</td>
 		<td>
-			<select id="icon" name="icon" onchange="userIconMover()"><!--{loop $iconarray $icon}-->$icon<!--{/loop}--></select>（0为随机）
+			<select id="icon" name="icon" onchange="userIconMover()">
+				<!--{loop $iconarray $icon}-->
+				{$icon}
+				<!--{/loop}-->
+			</select>（0为随机）
 			<div id="userIconImg" class="iconImg" >
 				<img src="img/<!--{if $gender != 'f'}-->m<!--{else}-->f<!--{/if}-->_{$select_icon}.gif" alt="$select_icon">
 			</div>
@@ -27,5 +31,15 @@
 	<tr>
 		<td>{lang lastword}</td>
 		<td><input size="30" type="text" name="lastword" maxlength="30" value="{$lastword}">{lang lastword_comment}</td>
+	</tr>
+	<tr>
+		<td>{lang usertitle}</td>
+		<td>
+			<select name="nick">
+				<!--{loop $utlist $key $val}-->
+				<option value="{$val}">$val</option>
+				<!--{/loop}-->
+			</select>
+		</td>
 	</tr>
 </table> 

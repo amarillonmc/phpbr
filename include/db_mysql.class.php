@@ -155,6 +155,34 @@ class dbstuff {
 		return $query;
 	}
 	
+	function multi_insert($tblname, $data, $primary = ''){
+		$query = "INSERT INTO {$tblname} ";
+		$fieldlist = $valuelist = '';
+		foreach($data as $single){
+			$fieldtemp = $valuetemp = '';
+			foreach ($single as $key => $value) {
+				if($key != $primary){
+					if(empty($fieldlist) && $key != $primary){
+						$fieldtemp .= "{$key},";
+					}
+					$valuetemp .= "'{$value}',";
+				}
+			}
+			if(empty($fieldlist)){
+				//echo $fieldtemp;
+				$fieldlist = '('.substr($fieldtemp,0,-1).')';
+			}			
+			$valuelist .= '('.substr($valuetemp,0,-1).'),';
+		}
+		//echo $fieldtemp;
+		if(!empty($fieldlist) && !empty($valuelist)){
+			$query .= $fieldlist . ' VALUES ' . substr($valuelist, 0, -1);
+		}
+		
+		$this->query ($query);
+		return $query;
+	}
+	
 	function array_update($dbname, $data, $where){ //根据$data的键和键值更新数据
 		$query = "UPDATE {$dbname} SET ";
 		foreach ($data as $key => $value) {

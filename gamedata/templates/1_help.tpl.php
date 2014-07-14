@@ -74,7 +74,7 @@ cellPadding=0 align=center border=0>
 <span><A href="help.php#毒药和陷阱">毒药和陷阱</A></span>
 </TD>
 <TD class="b3">
-<span><A href="help.php#内定称号">内定称号</A></span>
+<span><A href="help.php#内定称号">内定称号与技能点</A></span>
 </TD>
 <TD class="b3">
 <span><A href="help.php#道具合成">道具合成</A></span>
@@ -84,6 +84,17 @@ cellPadding=0 align=center border=0>
 </TD>
 <TD class="b3">
 <span><A href="help.php#天气">天气</A></span>
+</TD>
+<TD class="b3">
+<span><A href="help.php#NPC简介">NPC简介</A></span>
+</TD>
+</TR>
+<TR>
+<TD class="b3" height=25px>
+<span><A href="help.php#物品掉落表">物品掉落表</A></span>
+</TD>
+<TD class="b3">
+<span><A href="help.php#游戏周边">游戏周边</A></span>
 </TD>
 <TD class="b3">
 <span><A href="help.php#玩家守则">玩家守则</A></span>
@@ -326,7 +337,7 @@ class="yellow">“锁定解除”</span>结局。<br>
 <BR>
 
 <p><a name="基础姿态"><span class="subtitle2">8.基础姿态</span></a></p>
-
+当你进行你的<span class="yellow">主动行动</span>时，不同的基础姿态将对你主动行动时的某些能力产生增幅或减幅，具体请见下表。<br> 
 <br>
 <table cellSpacing=0 cellPadding=0>
 <TBODY>
@@ -375,7 +386,7 @@ class="yellow">“锁定解除”</span>结局。<br>
 <span>注重攻击和防御的姿态</span>
 </TD>
 <TD class="b3">
-<span class="clan">↑↑↑</span>
+<span class="clan">↑↑↑↑↑</span>
 </TD>
 <TD class="b3">
 <span class="clan">↑↑</span>
@@ -455,12 +466,19 @@ class="yellow">“锁定解除”</span>结局。<br>
 </TR>
 </TBODY>
 </TABLE>
+
+<p>※基础姿态是你主动行动时的姿态，因此攻击力的变化只当你主动攻击时才生效</p>
+<p>※发见率表示发现地图上的物品的概率</p>
+<p>※隐蔽率表示你被其他玩家发现的概率</p>
+<p>※先制攻击率表示当你发现其他人物（玩家或NPC）时，你能够主动选择战斗的概率；也是其他玩家发现你时，你能够先制攻击他们的概率。</p>
 <BR>
 <BR>
 <br>
 
 <p><a name="应战策略"><span class="subtitle2">9.应战策略</span></a></p>
 
+<br>
+故名思意，应战策略是你<span class="yellow">应对他人攻击</span>的策略，不同的应战策略会为你应对他人攻击的某些能力产生增幅或减幅，具体请见下表。<br>
 <br>
 
 <table cellSpacing=0 cellPadding=0>
@@ -555,8 +573,9 @@ class="yellow">“锁定解除”</span>结局。<br>
 
 </TBODY>
 </TABLE>
-
-<p>※被发现率表示被其它玩家发现的机率</p>
+<p>※应战策略是你应对他人攻击的策略，因此攻击力的变化只当你反击他人的攻击时才生效</p>
+<p>※隐蔽率表示你被其他玩家发现的概率</p>
+<p>※反击率是当其他人攻击你时，你成功作出反击的概率</p>
 <BR>
 <BR>
 <br>
@@ -628,6 +647,7 @@ class="yellow">“锁定解除”</span>结局。<br>
 <span class="yellow">近</span>
 </td>
 <td class="b3">
+
 <span class="lime">中等</span>
 </td>
 <td class="b3">
@@ -939,7 +959,7 @@ class="yellow">“锁定解除”</span>结局。<br>
 <span>攻击附带冻气伤害</span>
 </td>
 <td class="b3">
-<span class="clan">冻结</span>
+<span class="blue">冻结</span>
 </td>
 <td class="b3">
 <span>概率导致异常状态</span>
@@ -1009,10 +1029,24 @@ class="yellow">“锁定解除”</span>结局。<br>
 <span>攻击附带额外冻气伤害，无法被防御</span>
 </td>
 <td class="b3">
-<span class="clan">冻结</span>
+<span class="blue">冻结</span>
 </td>
 <td class="b3">
 <span>高概率导致异常状态</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>直死</span>
+</td>
+<td class="b3">
+<span>使用该武器攻击时，有一定概率导致自己直接死亡</span>
+</td>
+<td class="b3">
+无
+</td>
+<td class="b3">
+无
 </td>
 </tr>
 </table>
@@ -1304,6 +1338,7 @@ class="yellow">“锁定解除”</span>结局。<br>
 </td>
 <td class="b3">
 <span>人类，可以超越神么？……</span>
+
 </td>
 <td class="b3">
 <span>……</span>
@@ -1436,7 +1471,7 @@ class="red">↓</span></div>
 </tr>
 <tr>
 <td class="b2" height=20px>
-<span class="clan">冻结</span>
+<span class="blue">冻结</span>
 </td>
 <td class="b3">
 <span>移动和探索体力消耗<span class="yellow">↑↑↑</span></span>
@@ -1490,10 +1525,10 @@ class="yellow">↓↓</span></div>
 自己设的陷阱可能会被自己触发，自己下毒的食物可能会被自己捡到并且误食，所以在设下陷阱或是下毒的时候要谨慎。<BR>
 陷阱类道具会造成不超过道具效果值的伤害，下毒的食物会造成与食物效果值一样的伤害。</p>
 <BR>
-<p><a name="内定称号"><span class="subtitle2">16.内定称号</span></a></p>
+<p><a name="内定称号"><span class="subtitle2">16.内定称号与技能点</span></a></p>
 
 <br>
-<p>玩家进入游戏时，会随机分配到一个内定称号。<BR>
+<p>玩家进入游戏时，会随机分配到三个内定称号，玩家可以从中任选一个，但一旦选择便无法更改。<BR>
 内定称号分为“一般”和“特殊”两种类型。<BR>
 一般内定称号增加熟练度，获得几率较高；特殊内定称号会赋予玩家特殊能力，获得几率较低。<BR>
 内定称号对玩家的影响如下表：</p>
@@ -1521,7 +1556,7 @@ class="yellow">↓↓</span></div>
 <span>一般</span>
 </td>
 <td class="b3">
-<span>殴熟+25；升级时额外增加殴熟</span>
+<span>初始30殴系熟练；升级时额外增加殴系熟练</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1535,7 +1570,7 @@ class="yellow">↓↓</span></div>
 <span>一般</span>
 </td>
 <td class="b3">
-<span>斩熟+25；升级时额外增加斩熟</span>
+<span>初始30斩系熟练；升级时额外增加斩系熟练</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1549,7 +1584,7 @@ class="yellow">↓↓</span></div>
 <span>一般</span>
 </td>
 <td class="b3">
-<span>射熟+25；升级时额外增加射熟</span>
+<span>初始30射系熟练；升级时额外增加射系熟练</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1563,7 +1598,7 @@ class="yellow">↓↓</span></div>
 <span>一般</span>
 </td>
 <td class="b3">
-<span>投熟+25；升级时额外增加投熟</span>
+<span>初始30投系熟练；升级时额外增加投系熟练</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1577,7 +1612,7 @@ class="yellow">↓↓</span></div>
 <span>一般</span>
 </td>
 <td class="b3">
-<span>爆熟+25；升级时额外增加爆熟；设置陷阱有熟练度和经验值加成；合成爆炸物有数量加成；陷阱回避概率上升。</span>
+<span>初始20爆系熟练；升级时额外增加爆系熟练；设置陷阱有熟练度和经验值加成；合成爆炸物有数量加成；陷阱回避概率上升</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1591,7 +1626,7 @@ class="yellow">↓↓</span></div>
 <span>一般</span>
 </td>
 <td class="b3">
-<span>灵熟+25；升级时额外增加灵熟</span>
+<span>初始20灵系熟练；升级时额外增加灵系熟练</span>
 </td>
 <td class="b3">
 <span>能自由控制怒气使用必杀技</span>
@@ -1633,7 +1668,7 @@ class="yellow">↓↓</span></div>
 <span>特殊</span>
 </td>
 <td class="b3">
-<span>hack成功率极高，且不会导致严重后果；合成电子设备有效果加成；陷阱探测类装备效率提高；电气属性致伤率增加；</span>
+<span>hack成功率极高，且不会导致严重后果；合成电子设备有效果加成；陷阱探测类装备效率提高；电气属性致伤率增加；生命探测类设备可以探测全地图NPC</span>
 </td>
 <td class="b3">
 <span>能够用电池或探测器电池为武器增加电击属性</span>
@@ -1661,7 +1696,7 @@ class="yellow">↓↓</span></div>
 <span>特殊</span>
 </td>
 <td class="b3">
-<span>战斗时武器本系熟练值额外附加其他系的熟练值；</span>
+<span>战斗计算武器本系熟练值时会以一定比率额外附加其他系的熟练值；</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1675,7 +1710,7 @@ class="yellow">↓↓</span></div>
 <span>特殊</span>
 </td>
 <td class="b3">
-<span>全系熟练+50；升级时额外增加全系熟练</span>
+<span>全系熟练+15；升级时额外增加全系熟练；使用补给品具有2.5倍效果</span>
 </td>
 <td class="b3">
 <span>无</span>
@@ -1722,8 +1757,309 @@ class="yellow">↓↓</span></div>
 <td class="b3">
 <span>无</span>
 </tr>
+<tr>
+<td class="b2" height=20px>
+<span>决死结界</span>
+</td>
+<td class="b3">
+<span>特殊</span>
+</td>
+<td class="b3">
+<span>当你被击杀或因陷阱而死时，会立即复活，同时本称号消失</span>
+</td>
+<td class="b3">
+<span>可以使用一次特殊技能，使自身命体上限、全系熟练、<br>怒气值均按比例获得一定加成，同时本称号消失</span>
+</tr>
 </table>
 <br>
+
+<p>玩家角色<span class="lime">每升一级</span>，便可以获得一点技能点。 <BR>
+<p>技能点可以用于多种升级操作，其中有一些是<span class="yellow">公共的</span>（任意称号均可使用），而有一些是<span class="yellow">特殊的</span>（只有特定内定称号的才可使用，也只对对应称号有效），具体请见下表。 <BR>
+<br>
+<table cellSpacing=0 cellPadding=0>
+<tr>
+<td class="b1" height=20px>
+<span>名称</span>
+</td>
+<td class="b1" height=20px>
+<span>称号要求</span>
+</td>
+<td class="b1">
+<span>描述</span>
+</td>
+<td class="b1">
+<span>附加说明</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>生命</span>
+</td>
+<td class="b3">
+<span>不限</span>
+</td>
+<td class="b3">
+<span>使用技能点提升一定生命上限</span>
+</td>
+<td class="b3">
+<span>单次使用，立即生效</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>攻防</span>
+</td>
+<td class="b3">
+<span>不限</span>
+</td>
+<td class="b3">
+<span>使用技能点提升一定基础攻击和基础防御</span>
+</td>
+<td class="b3">
+<span>单次使用，立即生效</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>治疗</span>
+</td>
+<td class="b3">
+<span>不限</span>
+</td>
+<td class="b3">
+<span>使用技能点包扎所有伤口，解除所有异常状态</span>
+</td>
+<td class="b3">
+<span>单次使用，立即生效</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>格挡</span>
+</td>
+<td class="b3">
+<span>铁拳无敌</span>
+</td>
+<td class="b3">
+<span>当使用殴系武器时，武器效果按一定比率算入防御力</span>
+</td>
+<td class="b3">
+<span>可升级，增加的防御力数值有上限</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>暴击</span>
+</td>
+<td class="b3">
+<span>铁拳无敌</span>
+</td>
+<td class="b3">
+<span>当使用殴系武器时，增强武器攻击力，有几率在计算伤害时让对方防御力减少一定比率</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>精准</span>
+</td>
+<td class="b3">
+<span>见敌必斩</span>
+</td>
+<td class="b3">
+<span>当使用斩系武器时，提升武器的命中率，减少连击时命中率衰减</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>保养</span>
+</td>
+<td class="b3">
+<span>见敌必斩</span>
+</td>
+<td class="b3">
+<span>当使用斩系武器时，攻击时武器耐久损耗几率降低</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>静息</span>
+</td>
+<td class="b3">
+<span>狙击鹰眼</span>
+</td>
+<td class="b3">
+<span>当使用射系武器时，提升武器的命中率，减少连击时命中率衰减</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>重击</span>
+</td>
+<td class="b3">
+<span>狙击鹰眼</span>
+</td>
+<td class="b3">
+<span>&nbsp; 当使用射系武器时，损坏敌人防具概率增加，敌人防具耐久损耗增加，一定几率获得一定比率的攻击力加成</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>臂力</span>
+</td>
+<td class="b3">
+<span>灌篮高手</span>
+</td>
+<td class="b3">
+<span>当使用投系武器时，提升武器的反击率</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>潜能</span>
+</td>
+<td class="b3">
+<span>灌篮高手</span>
+</td>
+<td class="b3">
+<span>当使用投系武器时，增强武器攻击力，增加武器伤害的浮动范围</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>隐蔽</span>
+</td>
+<td class="b3">
+<span>拆弹专家</span>
+</td>
+<td class="b3">
+<span>提升自己的隐蔽率，提升自己的先手率</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>冷静</span>
+</td>
+<td class="b3">
+<span>拆弹专家</span>
+</td>
+<td class="b3">
+<span>回避陷阱几率增加，拆除并重复使用敌人陷阱的几率增加</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>灵力</span>
+</td>
+<td class="b3">
+<span>超能力者</span>
+</td>
+<td class="b3">
+<span>当使用灵系武器时，降低攻击时体力消耗，降低敌人对自己攻击的反击率</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>敏捷</span>
+</td>
+<td class="b3">
+<span>宛如疾风</span>
+</td>
+<td class="b3">
+<span>提升自己的隐蔽率，提升自己的先手率，提升自己的反击率</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>闪避</span>
+</td>
+<td class="b3">
+<span>宛如疾风</span>
+</td>
+<td class="b3">
+<span>战斗时对方命中率降低</span>
+</td>
+<td class="b3">
+<span>可升级</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>攻防</span>
+</td>
+<td class="b3">
+<span>肌肉兄贵</span>
+</td>
+<td class="b3">
+<span>用技能点换取攻防数值时，能获得比一般称号更多的攻防</span>
+</td>
+<td class="b3">
+<span>无</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>生命</span>
+</td>
+<td class="b3">
+<span>根性兄贵</span>
+</td>
+<td class="b3">
+<span>用技能点换取生命上限数值时，能获得比一般称号更多的生命上限</span>
+</td>
+<td class="b3">
+<span>无</span>
+</td>
+</tr>
+<tr>
+<td class="b2" height=20px>
+<span>学习</span>
+</td>
+<td class="b3">
+<span>天赋异禀</span>
+</td>
+<td class="b3">
+<span>可以学习以上技能中的任意2个，并为己所用</span>
+</td>
+<td class="b3">
+<span>无</span>
+</td>
+</tr>
+</table>
+
+<BR>
 <BR>
 <!--
 <p><a name="地区说明"><span class="subtitle2">17.地区说明</span></a></p>
@@ -1961,11 +2297,193 @@ class="yellow">↓↓</span></div>
 
 <p>可以将某些物品合成为另一种物品，只要名称正确即可合成。合成道具成功则可增加爆熟。</p>
 <p>合成成功时，如果所用的材料是武器或者防具，则会将整个材料耗尽；其他情况下，材料的耐久会减1。</p>
-<br>
+<p><span class="evergreen">鼠标停留在参与合成的道具上可以显示此道具获取方式。</span></p>
 <br>
 <?php include template('mixhelp'); ?>
 <br>
 
+<p><span class="lime">同调合成与超量合成说明：</span></p>
+<p><font size=2>
+游戏王系道具名字后面带有‘★ 数字’的道具可以参与同调合成。只要你选择的道具均可以参与同调合成，且至少<span class="yellow">存在一个道具含有“调整”属性</span>，同调合成就能进行。<br>
+若干同调道具合成时，会对‘★’后面的数字求和，不妨设结果为x，那么合成结果就是星数为x的道具，如果有多种，你可以<span class="yellow">从中任选一个作为结果</span>。<br>
+总之，<span class="yellow">同调合成就是算星数的和</span>。 只要参与合成的道具都具有星数，且至少存在一个道具具有调整属性，也存在对应星数的合成结果，就能成功合成。<br>
+例如：卡片汽车 D ★2 + 水灵使-艾莉娅 ★3 + 盟军 次时代鸟人 ★3（这个道具具有调整属性） => 星尘龙 ★8<br>
+或者：救世龙 ★1（这个道具具有调整属性） + 凭依装着-希塔 ★4 + 光灵使-莱娜 ★3 => 星尘龙 ★8<br>
+以下是可能获得的同调结果的列表。<br>
+<br>
+<table>
+<tr>
+<td class="b1"><span>合成结果</span></td>
+<td class="b1"><span>用途</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>星尘龙 ★8</span></td>
+<td class="b3"><span>投掷兵器/170/100/音波+陷阱探测+重击辅助</span></td>
+</tr>
+<tr>
+<td class="b3"><span>红莲魔龙 ★8 -仮</span></td>
+<td class="b3"><span>投掷兵器/130/∞/重击辅助+火焰</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>正义盟军 光明守望者 ★8 -仮</span></td>
+<td class="b3"><span>投掷兵器/101/∞/菁英</span></td>
+</tr>
+<tr>
+<td class="b3"><span>阿尔法大日 ★9</span></td>
+<td class="b3"><span>投掷兵器/33/99/电击+属性抹消+连击+多重</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>超念力枪手 ★9</span></td>
+<td class="b3"><span>投掷兵器/180/∞/冲击+HP制御</span></td>
+</tr>
+<tr>
+<td class="b3"><span>黑蔷薇龙 ★7</span></td>
+<td class="b3"><span>投掷兵器/180/70/火焰</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>机巧将军 无零 ★7</span></td>
+<td class="b3"><span>投掷兵器/252/∞/菁英</span></td>
+</tr>
+<tr>
+<td class="b3"><span>流星龙 ★10 -仮</span></td>
+<td class="b3"><span>投掷兵器/120/∞/重击辅助</span></td>
+</tr>
+</table>
+<br>
+另外，上述只是一般情况。 有一些同调结果必须通过<span class="yellow">特定的同调道具</span>才能合成，这些合成将在下表中列出。<br>
+<br>
+<table>
+<tr>
+<td class="b1" height=20px><span>合成材料一</span></td>
+<td class="b1"><span>合成材料二</span></td>
+<td class="b1"><span>合成材料三</span></td>
+<td class="b1"><span>合成材料四</span></td>
+<td class="b1"><span>合成材料五</span></td>
+<td class="b1"></td>
+<td class="b1"><span>合成结果</span></td>
+<td class="b1"><span>用途</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>救世龙 ★1</span></td>
+<td class="b3"><span>星尘龙 ★8</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>救世星龙 -仮</span></td>
+<td class="b3"><span>投掷兵器/100/∞/重击辅助+菁英</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>救世龙 ★1</span></td>
+<td class="b3"><span>红莲魔龙 ★8</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>救世魔龙 -仮</span></td>
+<td class="b3"><span>投掷兵器/100/∞/重击辅助+爆炸</span></td>
+</tr>
+</table>
+<br>
+道具属性中带有<span class="yellow">超量素材属性</span>的道具可以进行超量合成。装备<span class="yellow">具有“多重”属性且具有星数的投系武器</span>，点击“武器模式”按钮，即可将武器转化为超量素材。注意，转化是不可逆的！<br>
+超量合成要求所有参与合成的道具都是超量素材，且<span class="yellow">星数相同</span>。 参与合成的超量素材的星数和个数决定了合成结果，与同调一样，如果有多个，你可以<span class="yellow">从中任选一个</span>。<br>
+以下是可能的超量合成列表：<br>
+<br>
+<table>
+<tr>
+<td class="b1" height=20px><span>合成材料一</span></td>
+<td class="b1"><span>合成材料二</span></td>
+<td class="b1"><span>合成材料三</span></td>
+<td class="b1"><span>合成材料四</span></td>
+<td class="b1"><span>合成材料五</span></td>
+<td class="b1"></td>
+<td class="b1"><span>合成结果</span></td>
+<td class="b1"><span>用途</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>No39.希望皇 霍普 ☆4</span></td>
+<td class="b3"><span>投掷兵器/240/∞/全系防御</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>机甲忍者 刃心 ☆4</span></td>
+<td class="b3"><span>投掷兵器/160/∞/重击辅助+连击</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>星圣 欧米伽星云 ☆4</span></td>
+<td class="b3"><span>投掷兵器/251/∞/陷阱探测+冻气</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>英豪冠军 草雉剑王</span></td>
+<td class="b3"><span>锐器/150/200/贯穿+重击辅助</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3"><span>游戏王四星素材</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>No91.雷闪龙 ☆4</span></td>
+<td class="b3"><span>投掷兵器/380/∞/全系防御+属性防御+连击</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王五星素材</span></td>
+<td class="b3"><span>游戏王五星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>始祖守护者 提拉斯 ☆5 -仮</span></td>
+<td class="b3"><span>投掷兵器/200/∞</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王九星素材</span></td>
+<td class="b3"><span>游戏王九星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>No9.天盖星 戴森球 ☆9</span></td>
+<td class="b3"><span>投掷兵器/233/∞/电击+属性防御</span></td>
+</tr>
+<tr>
+<td class="b3" height=20px><span>游戏王十星素材</span></td>
+<td class="b3"><span>游戏王十星素材</span></td>
+<td class="b3"><span>游戏王十星素材</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3"><span>-</span></td>
+<td class="b3">→</td>
+<td class="b3"><span>超次元机器人 银河破坏王 ☆10</span></td>
+<td class="b3"><span>投掷兵器/800/∞/连击+爆炸+重击辅助+陷阱迎击</span></td>
+</tr>
+</table>
+<br>
+警告： 如果同调或超量合成失败，所有参与合成的道具都会消失！<br>
+</font></p>
 
 <p><a name="特殊道具"><span class="subtitle2">18.特殊道具</span></a></p>
 
@@ -2049,6 +2567,7 @@ class="yellow">↓↓</span></div>
 <td class="b2" height=20px>
 <span>武器师安雅的奖赏</span>
 </td>
+
 <td class="b3">
 <span>增加武器攻击力/耐久/转换武器的类型</span>
 </td>
@@ -2610,14 +3129,59 @@ class="clan">“暴风雪”</span>的其中一种。<BR>
 <BR>
 <BR>
 
+<p><a name="NPC简介"><span class="subtitle2">20.NPC简介</span></a></p>
+<br>
+<?php include template('npchelp'); ?>
 <BR>
-<p><a name="玩家守则"><span class="subtitle2">20.玩家守则</span></a></p>
+
+<p><a name="物品掉落表"><span class="subtitle2">21.物品掉落表</span></a></p>
+<br>
+下面给出ACFUN大逃杀地图物品掉落表格，供玩家查询使用。<br> 
+<span class="lime">如果你只是想查找合成表中的物品的掉落位置，只需将鼠标停留在合成表中该物品上，就会出现这个物品的获取方式了～</span><br>
+<span class="yellow">物品掉落表比较巨大，因此请利用浏览器的查找功能（Ctrl+F）查找你所需的内容。 </span><br>
+<a href="itemhelp.php"><u>>>点我查看掉落物品一览表<<</u></a><br>
+<br>
+<br>
+
+<p><a name="游戏周边"><span class="subtitle2">22.游戏周边</span></a></p>
+<br>
+为了增加游戏趣味，ACFUN大逃杀还包含一些<span class="yellow">不影响游戏本身</span>的游戏周边内容，包括<span class="yellow">成就系统</span>、<span class="yellow">称号系统</span>、<span class="yellow">切糕系统</span>、<span class="yellow">玩家排行系统</span>等。<br>
+<br>
+<span class="lime">成就系统</span><br>
+登陆后点击“帐号资料”导航条，进入帐号资料页面即可查看目前的所有成就和它们的完成情况。每个成就都有其要求说明，只需达到说明要求即可完成成就； 但也有几个成就是没有说明的，只能根据其标题来猜测其要求了。<br>
+完成成就可以得到一定<span class="yellow">积分</span>和<span class="yellow">切糕</span>奖励，有的成就还能解锁新的<span class="yellow">称号</span>。<br>
+“当前幸存”“历史优胜”和“玩家排行”页面里的所有玩家名字都是超链接，点击它们就可以看到其他人完成成就的情况了。<br>
+<br>
+<span class="lime">称号系统</span><br>
+每个新的“称号”都可以通过完成特定的“成就”解锁。 当你参与游戏时，你的称号会与你的ID一起出现在游戏进行状况中。<br>
+登陆后点击“帐号资料”导航条，然后点击“编辑我的帐号资料”按钮，即可进入编辑帐号资料页面。 选择你喜欢的称号后提交即可。选择的新称号在下一局游戏时才会生效。<br>
+<br>
+<span class="lime">切糕系统</span><br>
+你可以在“当前幸存”页面中，选择<span class="yellow">你认为将获得游戏胜利的人</span>，使用“切糕”对其下注。 <br>
+下注后，切糕进入当局游戏奖池，当游戏结束时，判断正确者将以<span class="yellow">下注多少</span>和<span class="yellow">分成系数</span>为依据，分得奖池中的切糕。该局的优胜者也可以获得一定比例的切糕奖励。<br>
+仅当游戏不处于“连斗”状态且处于0禁时，才可以进行下注。 <br>
+因为下注时间越早，判断难度越大，风险也越高，因此我们将使用“分成系数”概念。<br>
+当游戏开始时，有一个初始的分成系数，这个分成系数会随着游戏的进行而逐渐减少。 你的实际分成权值将是你的下注金额乘以下注时的分成系数。 这样在较早时刻下注时，同等切糕将有更大的分成权值，从而做到相对公平。<br>
+每人每局只能最多下注1000切糕。 每局有固定的奖池上限，为8000切糕。 当当前奖池达到奖池上限后，玩家依然可以下注，但每人只能下注不超过50切糕。 这是为了防止奖池过大，保证每局游戏不会使切糕总数增加过多。<br>
+每次参加游戏均会奖励10切糕（游戏结束时发放），完成成就也可以获得切糕奖励，获得游戏的胜利也可以从这局游戏的总奖池中分到一些切糕。<br>
+<br>
+<span class="lime">玩家排行系统</span><br>
+积分表现出你参与游戏时间的多少。<br>
+每参加一局游戏，均可以获得一定战斗力积分。 获得的积分与你在该局中的表现有关，积分会累计。完成成就也可以获得积分奖励。<br>
+在“玩家排行”中可以看到积分排行榜、胜率排行榜和切糕排行榜。<br>
+<br>
+<br>
+
+<p><a name="玩家守则"><span class="subtitle2">23.玩家守则</span></a></p>
 <p><span class="evergreen">
 1。请文明地进行游戏。使用不雅昵称或口出脏话，而且不听劝阻的人，不保证其继续游戏的权利。<br>
 2。请放松地进行游戏，勿为游戏中的突发事件而走极端。<br>
 3。如果发现游戏中的漏洞，请及时通知管理员。如果利用游戏漏洞谋取利益或者攻击游戏服务器，管理员将保留采取任何反制手段的权利。<br>
 <br>
 感谢能遵守以上三条的人的默默支持，祝你们都能享受到“ACFUN大逃杀”的游戏乐趣。</span></p>
+
+
+
 
 </div>
 <a href="changelog2011.html">更新履历</a><br>

@@ -70,6 +70,12 @@ if($hp > 0){
 		}
 	}
 	
+	if ($club==0 && !isset($clubavl))
+	{
+		include_once GAME_ROOT.'./include/game/clubslct.func.php';
+		getclub($name,$c1,$c2,$c3);
+		$clubavl[0]=0; $clubavl[1]=$c1; $clubavl[2]=$c2; $clubavl[3]=$c3;
+	}
 	
 	//判断冷却时间是否过去
 	if($coldtimeon){
@@ -78,7 +84,7 @@ if($hp > 0){
 		$rmcdtime = $nowmtime >= $cdover ? 0 : $cdover - $nowmtime;
 	}
 	
-	if($coldtimeon && $rmcdtime > 0 && (strpos($command,'move')===0 || strpos($command,'search')===0 || strpos($command,'itm')===0 || strpos($sp_cmd,'sp_weapon')===0 || strpos($command,'song')===0)){
+	if($coldtimeon && $rmcdtime > 0 && (strpos($command,'move')===0 || strpos($command,'search')===0 || (strpos($command,'itm')===0)&&($command != 'itemget') || strpos($sp_cmd,'sp_weapon')===0 || strpos($command,'song')===0)){
 		$log .= '<span class="yellow">冷却时间尚未结束！</span><br>';
 		$mode = 'command';
 	}else{
@@ -117,10 +123,6 @@ if($hp > 0){
 				include_once GAME_ROOT.'./include/game/song.inc.php';
 				//$log.=$sname;
 				sing($sname);
-			}elseif($command == 'sync') {
-				include_once GAME_ROOT.'./include/game/special.func.php';
-				syncro($sp_cmd);
-				$mode='command';
 			}elseif($command == 'special') {
 				if($sp_cmd == 'sp_word'){
 					include_once GAME_ROOT.'./include/game/special.func.php';
@@ -130,6 +132,73 @@ if($hp > 0){
 					include_once GAME_ROOT.'./include/game/special.func.php';
 					adtsk();
 					$mode = 'command';
+				}elseif($sp_cmd == 'sp_trapadtsk'){
+					$position = 0;
+					if ($club==7)
+					{	
+						foreach(Array(1,2,3,4,5,6) as $imn)
+							if(strpos(${'itmk'.$imn},'B')===0 && ${'itme'.$imn} > 0 ){
+								$position = $imn;
+								break;
+							}
+						if (!$position) 
+						{
+							$log .= '<span class="red">你没有电池，无法改造陷阱！</span><br />';
+							$mode = 'command';
+						}
+					}
+					else  if ($club==8)
+					{
+						foreach(Array(1,2,3,4,5,6) as $imn)
+							if(${'itm'.$imn} == '毒药' && ${'itmk'.$imn} == 'Y' && ${'itme'.$imn} > 0 ){
+								$position = $imn;
+								break;
+							}
+						if (!$position) 
+						{
+							$log .= '<span class="red">你没有毒药，无法改造陷阱！</span><br />';
+							$mode = 'command';
+						}
+					}
+					else  
+					{
+						$log .= '<span class="red">你不懂得如何改造陷阱！</span><br />';
+						$mode = 'command';
+					}
+					if ($position)
+					{
+						$position = 0;
+						foreach(Array(1,2,3,4,5,6) as $imn)
+							if(strpos(${'itmk'.$imn},'T')===0 && ${'itme'.$imn} > 0 ){
+								$position = $imn;
+								break;
+							}
+						if (!$position)
+						{
+							$log .= '<span class="red">你的背包中没有陷阱，无法改造！</span><br />';
+							$mode = 'command';
+						}
+						else  $mode = 'sp_trapadtsk';
+					}
+				}elseif($sp_cmd == 'sp_trapadtskselected'){
+					if (!isset($choice) || $choice=='menu')
+					{
+						$mode='command';
+					}
+					else
+					{
+						$choice=(int)$choice;
+						if ($choice<1 || $choice>6)
+							$log.='<span class="red">无此物品。</span><br />';
+						else
+						{
+							include_once GAME_ROOT.'./include/game/special.func.php';
+							trap_adtsk($choice);
+						}
+						$mode='command';
+					}
+				}elseif($sp_cmd == 'sp_pbomb'){
+					$mode = 'sp_pbomb';
 				}elseif($sp_cmd == 'sp_weapon'){
 					include_once GAME_ROOT.'./include/game/special.func.php';
 					weaponswap();
@@ -137,6 +206,11 @@ if($hp > 0){
 					if($coldtimeon){$cmdcdtime=$weaponswapcoldtime;}
 				}elseif($sp_cmd == 'oneonone'){
 					$mode='oneonone';
+				}elseif($sp_cmd == 'sp_skpts'){
+					include_once GAME_ROOT.'./include/game/clubskills.func.php';
+					calcskills($skarr);
+					$p12[1]=1; $p12[2]=2;
+					$mode='sp_skpts';
 				}else{
 					$mode = $sp_cmd;
 				}
@@ -152,7 +226,7 @@ if($hp > 0){
 		} elseif($mode == 'item') {
 			include_once GAME_ROOT.'./include/game/item2.func.php';
 			$item = substr($command,3);
-			$usemode($item);
+			use_func_item($usemode,$item);
 		} elseif($mode == 'itemmain') {
 			include_once GAME_ROOT.'./include/game/itemmain.func.php';
 			if($command == 'itemget') {
@@ -176,13 +250,27 @@ if($hp > 0){
 				itemdrop($swap_item);
 				itemadd();
 			} elseif($command == 'itemmix') {
-				$mixlist = array();
-				for($i=1;$i<=6;$i++){
-					if(isset(${'mitm'.$i}) && ${'mitm'.$i} == $i){
-						$mixlist[] = $i;
+				if (isset($itemselect) && $itemselect==999)
+					$mode='command';
+				else
+				{
+					$mixlist = array();
+					if (!isset($mixmask))
+					{
+						for($i=1;$i<=6;$i++)
+							if(isset(${'mitm'.$i}) && ${'mitm'.$i} == $i)
+								$mixlist[] = $i;
 					}
+					else
+					{
+						for($i=1;$i<=6;$i++)
+							if ($mixmask&(1<<($i-1)))
+								$mixlist[] = $i;
+					}
+					if (isset($itemselect))
+						itemmix($mixlist,$itemselect);
+					else  itemmix($mixlist);
 				}
-				itemmix($mixlist);
 			}
 		} elseif($mode == 'special') {
 			include_once GAME_ROOT.'./include/game/special.func.php';
@@ -203,6 +291,18 @@ if($hp > 0){
 			} elseif(strpos($command,'shop') === 0) {
 				$shop = substr($command,4,2);
 				shoplist($shop);
+			} elseif(strpos($command,'clubsel') === 0) {
+				$clubchosen = substr($command,7,1);
+				include_once GAME_ROOT.'./include/game/clubslct.func.php';
+				$retval=selectclub($clubchosen);
+				if ($retval==0)
+					$log.="称号选择成功。<br>";
+				else if ($retval==1)
+					$log.="称号选择失败，称号一旦被选择便无法更改。<br>";
+				else if ($retval==2)
+					$log.="未选择称号。<br>";
+				else  $log.="称号选择非法！<br>";
+				$mode = 'command';
 			}
 		} elseif($mode == 'senditem') {
 			include_once GAME_ROOT.'./include/game/battle.func.php';
@@ -224,7 +324,9 @@ if($hp > 0){
 			getcorpse($command);
 		} elseif($mode == 'team') {
 			include_once GAME_ROOT.'./include/game/team.func.php';
-			$command($nteamID,$nteamPass);
+			if ($command=="teammake") teammake($nteamID,$nteamPass);
+			if ($command=="teamjoin") teamjoin($nteamID,$nteamPass);
+			if ($command=="teamquit") teamquit($nteamID,$nteamPass);
 		} elseif($mode == 'shop') {
 			if(in_array($pls,$shops)){
 				if($command == 'shop') {
@@ -253,6 +355,15 @@ if($hp > 0){
 						$log .= '约战取消。<br>';
 						$mode = 'command';
 					}
+		} elseif ($mode == 'sp_skpts') {
+			include_once GAME_ROOT.'./include/game/clubskills.func.php';
+			upgradeclubskills($command);
+			calcskills($skarr);
+			$p12[1]=1; $p12[2]=2;
+		} elseif ($mode == 'sp_pbomb') {
+			include_once GAME_ROOT.'./include/game/special.func.php';
+			if ($command=="YES") press_bomb();
+			$mode = 'command';
 		} else {
 			$mode = 'command';
 		}

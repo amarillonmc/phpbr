@@ -21,13 +21,13 @@
 		<TR height="20">
 			<TD class="b2"><span>$gid</span></TD>
 			<TD class="b3"><span>$gwin[$info['wmode']]</span></TD>
-			<TD class="b3" style="white-space: nowrap;"><!--{if $info['name']}--><span class="evergreen">$info['name']</span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
+			<TD class="b3" style="white-space: nowrap;"><!--{if $info['name']}--><span class="evergreen"><u><a href="user_profile.php?playerID=$info['name']">$info['name']</a></u></span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
 			<TD class="b3"><span><img src="img/$info['iconImg']" style="width:70;height:40;"></span></TD>
 			<TD class="b3"><span>$info['date']</span><br><span>$info['time']</span></TD>
 			<TD class="b3"><!--{if $info['motto']}--><span class="white">$info['motto']</span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
 			<TD class="b3"><!--{if $info['wep']}--><span class="white">$info['wep']</span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
-			<TD class="b3"><!--{if $info['hdmg']}--><span class="white">$info['hdp']</span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
-			<TD class="b3"><!--{if $info['hkill']}--><span class="white">$info['hkp']</span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
+			<TD class="b3"><!--{if $info['hdmg']}--><span class="white"><u><a href="user_profile.php?playerID=$info['hdp']">$info['hdp']</a></u></span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
+			<TD class="b3"><!--{if $info['hkill']}--><span class="white"><u><a href="user_profile.php?playerID=$info['hkp']">$info['hkp']</a></u></span><!--{else}--><span class="grey">无</span><!--{/if}--></TD>
 			<TD class="b3">
 				<span>
 					<input type="button" value="角色信息" <!--{if $info['wmode'] && $info['wmode'] != 1 && $info['wmode'] !=4 && $info['wmode'] != 6}-->onclick="$('command').value='info';$('gnum').value='$gid';document.info.submit();"<!--{else}-->disabled<!--{/if}-->>

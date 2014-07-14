@@ -1,8 +1,10 @@
 <?php
 
+
 define('CURSCRIPT', 'index');
 
 require './include/common.inc.php';
+
 
 $timing = 0;
 if($gamestate > 10) {
@@ -14,6 +16,8 @@ if($gamestate > 10) {
 		$timing = 0;
 	}
 }
+
+
 $adminmsg = file_get_contents('./gamedata/adminmsg.htm') ;
 $systemmsg = file_get_contents('./gamedata/systemmsg.htm') ;
 include template('index');

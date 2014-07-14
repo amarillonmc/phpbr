@@ -9,13 +9,13 @@ $isLogin = 1;
 //是否缓存css文件。0=不缓存，1=缓存
 $allowcsscache = 1;
 //游戏版本
-$gameversion = 'GE600';
+$gameversion = '<strike>GE486684</strike>GE777 ～YOU ARE BLESSED';
 //站长留言
 //$systemmsg = '';
 //游戏开始方式 0=后台手动开始，1=每天固定时间开始，2=上局结束后，间隔固定小时后的整点开始，3=上局结束后，间隔固定分钟开始
 $startmode = 3;
 //游戏开始的小时，如果，如果$startmode = 1,表示开始时间0~23，如果$startmode = 2，表示间隔小时，>0，如果$startmode = 3，表示间隔分钟，>0
-$starthour = 3;
+$starthour = 5;
 //游戏开始的分钟数，范围1~59
 $startmin = 1;
 //游戏所用配置文件
@@ -23,7 +23,7 @@ $gamecfg = 1;
 
 
 //同ip限制激活人数。0为不限制
-$iplimit = 3;
+$iplimit = 0;
 //头像数量（男女相同）
 $iconlimit = 20;
 //游戏进行状况显示条数
@@ -35,7 +35,7 @@ $ranklimit = 20;
 //历史优胜者显示条数
 $winlimit = 50;
 //枪声间隔时间(秒)
-$noiselimit = 300;
+$noiselimit = 200;
 //失焦冻结时间，单位分钟
 //$lostfocusmin = 10;
 

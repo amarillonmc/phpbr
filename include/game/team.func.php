@@ -23,7 +23,7 @@ function teamcheck() {
 }
 
 function teammake($tID,$tPass) {
-	global $log,$mode,$teamID,$teamPass,$db,$tablepre,$noitm,$sp,$team_sp,$now,$name,$gamestate;
+	global $log,$mode,$teamID,$teamPass,$db,$tablepre,$noitm,$sp,$team_sp,$now,$name,$gamestate,$nick;
 	if($gamestate >= 40) {
 		$log .= '连斗时不能组建队伍。<br>';
 		$mode = 'command';
@@ -64,7 +64,7 @@ function teammake($tID,$tPass) {
 			$teamPass = $tPass;
 			$sp -= $team_sp;
 			$log .= '你创建了队伍<span class="yellow">'.$teamID.'</span>。<br>';
-			addnews($now,'teammake',$teamID,$name);
+			addnews($now,'teammake',$teamID,$nick.' '.$name);
 //			global $gamedata,$chatinfo;
 //			$gamedata['innerHTML']['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";
 //			$gamedata['value']['team'] = $teamID;
@@ -120,7 +120,7 @@ function teamjoin($tID,$tPass) {
 				$teamPass = $tPass;
 				$sp -= $teamj_sp;
 				$log .= '你加入了队伍<span class="yellow">'.$teamID.'</span>。<br>';
-				addnews($now,'teamjoin',$teamID,$name);
+				addnews($now,'teamjoin',$teamID,$nick.' '.$name);
 //				global $gamedata,$chatinfo;
 //				$gamedata['innerHTML']['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]<option value=\"1\" >$chatinfo[1]</select>";
 //				$gamedata['value']['team'] = $teamID;
@@ -135,11 +135,11 @@ function teamjoin($tID,$tPass) {
 }
 
 function teamquit() {
-	global $log,$mode,$teamID,$teamPass,$now,$name,$gamestate;
+	global $log,$mode,$teamID,$teamPass,$now,$name,$gamestate,$nick;
 
 	if($teamID && $gamestate<40){
 		$log .= '你退出了队伍<span class="yellow">'.$teamID.'</span>。<br>';
-		addnews($now,'teamquit',$teamID,$name);
+		addnews($now,'teamquit',$teamID,$nick.' '.$name);
 		$teamID =$teamPass = '';
 //		global $gamedata,$chatinfo;
 //		$gamedata['innerHTML']['chattype'] = "<select name=\"chattype\" value=\"2\"><option value=\"0\" selected>$chatinfo[0]</select>";

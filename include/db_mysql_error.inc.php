@@ -1,4 +1,4 @@
-<?
+<?php
 if(!defined('IN_GAME')) {
 	exit('Access Denied');
 }
@@ -35,7 +35,7 @@ if($dberrno == 1114) {
 </table>
 </body>
 </html>
-<?
+<?php
 
 	function_exists('dexit') ? dexit() : exit();
 

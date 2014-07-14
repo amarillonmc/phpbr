@@ -30,7 +30,7 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<span class=\"evergreen\"><B>{$month}月{$day}日(星期$week[$wday])</B></span><br>";
 			$nday = $day;
 		}
-
+		//$sec='??';
 		if($news == 'newgame') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">第{$a}回ACFUN大逃杀开始了</span><br>\n";
 		} elseif($news == 'gameover') {
@@ -78,9 +78,9 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}引爆了核弹，毁坏了虚拟战场</span><br>\n";
 		} elseif($news == 'end6') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">本局游戏被GM中止</span><br>\n";
-		} elseif($news == 'end7') {
-			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"L5\">{$a}完成了他的使命</span><br>\n";
-		}elseif(strpos($news,'death') === 0) {
+		} elseif($news == 'revival') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}因为及时按了BOMB键而原地满血复活了！</span><br>\n";
+		} elseif(strpos($news,'death') === 0) {
 			if($news == 'death11') {
 				$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因滞留在<span class=\"red\">禁区【{$plsinfo[$c]}】</span>死亡";
 			} elseif($news == 'death12') {
@@ -118,7 +118,7 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 					$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因食用了有毒的<span class=\"red\">$d</span>被毒死";
 				}
 			} elseif($news == 'death27') {
-				if($c){
+				if(($c)&&($c!=' ')){
 					$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因触发了<span class=\"yellow\">$c</span>设置的陷阱<span class=\"red\">$d</span>被杀死";
 				} else {
 					$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">$a</span>因触发了陷阱<span class=\"red\">$d</span>被杀死";
@@ -214,6 +214,8 @@ function  nparse_news($start = 0, $range = 0  ){//$type = '') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"lime\">{$a}超量合成了{$b}</span><br>\n";
 		}elseif($news == 'mixfail') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"red\">{$a}合成游戏王卡牌失败，素材全部消失！真是大快人心啊！</span><br>\n";
+		}elseif($news == 'npcmove') {
+			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，{$a}使<span class=\"yellow\">{$b}</span>的位置移动了！<br>\n";
 		}elseif($news == 'song') {
 			$newsinfo .= "<li>{$hour}时{$min}分{$sec}秒，<span class=\"yellow\">{$a}</span>在<span class=\"yellow\">{$b}</span>歌唱了<span class=\"red\">{$c}</span>。<br>\n";
 		}  elseif($news == 'itembuy') {

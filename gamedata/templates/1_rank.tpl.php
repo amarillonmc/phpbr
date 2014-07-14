@@ -3,17 +3,13 @@
 <span class="subtitle">玩家排行榜</span>
 <center>
 <form id='showrank' name="showrank" method="post">
-<input type="hidden" name="start" id="start" value="0">
-<input type="hidden" name="command" id="command" value="ref">
 <input type="hidden" name="checkmode" id="checkmode" value="credits">
 <div>
-<input type="button" id="credits" value="按积分顺序排列" onClick="document['showrank']['start'].value='0';document['showrank']['checkmode'].value='credits';document['showrank']['command'].value='ref';postCmd('showrank','rank.php');return false;">
-<input type="button" id="credits" value="按胜率顺序排列" onClick="document['showrank']['start'].value='0';document['showrank']['checkmode'].value='winrate';document['showrank']['command'].value='ref';postCmd('showrank','rank.php');return false;">
-</div>
-<div>
-<input type="button" id="last" name="last" value="上一页" onClick="document['showrank']['command'].value='last';postCmd('showrank','rank.php');return false;">
-<span id="pageinfo">第<span class="yellow" id="startnum"><?php echo $startnum?></span>条至第<span class="yellow" id="endnum"><?php echo $endnum?></span>条</span>
-<input type="button" id="next" name="next" value="下一页" onClick="document['showrank']['command'].value='next';postCmd('showrank','rank.php');return false;">
+<input type="button" id="credits" value="查看积分榜" onClick="document['showrank']['checkmode'].value='credits';postCmd('showrank','rank.php');return false;">
+<?php if($gamblingon) { ?>
+<input type="button" id="credits2" value="查看切糕榜" onClick="document['showrank']['checkmode'].value='credits2';postCmd('showrank','rank.php');return false;">
+<?php } ?>
+<input type="button" id="winrate" value="查看胜率榜" onClick="document['showrank']['checkmode'].value='winrate';postCmd('showrank','rank.php');return false;">
 </div>
 </form>
 <div id="rank">

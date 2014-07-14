@@ -5,7 +5,7 @@ if (! defined ( 'IN_GAME' )) {
 }
 
 function death($death, $kname = '', $ktype = 0, $annex = '') {
-	global $now, $db, $tablepre, $alivenum, $deathnum, $name, $state, $type, $bid, $killmsginfo, $typeinfo, $hp, $pls;
+	global $now, $db, $tablepre, $alivenum, $deathnum, $name, $state, $deathtime, $type, $lvl, $bid, $killmsginfo, $typeinfo, $hp, $mhp, $wp, $wk, $wg, $wc, $wd, $wf, $sp, $msp, $club, $pls , $nick;
 	if (! $death) {
 		return;
 	}
@@ -56,6 +56,10 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 		$state = 37;
 	} elseif ($death == 'kagari3'){
 		$state = 38;
+	} elseif ($death == 'gg'){
+		$state = 39;
+	} elseif ($death == 'fake_dn'){
+		$state = 28;
 	} else {
 		$state = 10;
 	}
@@ -80,8 +84,20 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 		$pls = $db->result($result, 0);*/
 		$db->query ( "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')" );
 	}
-	addnews ( $now, 'death' . $state, $name, $type, $kname, $annex, $lastword );
+	$deathtime = $now;
+	$result = $db->query("SELECT nick FROM {$tablepre}players WHERE name = '$kname' AND type = '$type'");
+	$knick = $db->result($result, 0);
+	addnews ( $now, 'death' . $state, $name, $type, $knick.' '.$kname, $annex, $lastword );
 	//$alivenum = $db->result($db->query("SELECT COUNT(*) FROM {$tablepre}players WHERE hp>0 AND type=0"), 0);
+	
+	if ($type==0 && $club==99 && ($death=="N" || $death=="P" || $death=="K" || $death=="G" || $death=="C" || $death=="D" || $death=="F" || $death=="J" || $death=="trap"))	
+	{
+		addnews($now,'revival',$name);	//玩家春哥附体称号的处理
+		$hp=$mhp; $sp=$msp;
+		$club=17; $state=0;
+		$alivenum++;
+	}
+	
 	$alivenum --;
 	$deathnum ++;
 	save_gameinfo ();
@@ -91,7 +107,7 @@ function death($death, $kname = '', $ktype = 0, $annex = '') {
 
 
 function kill($death, $dname, $dtype = 0, $dpid = 0, $annex = '') {
-	global $now, $db, $tablepre, $alivenum, $deathnum, $name, $w_state, $type, $pid, $typeinfo, $pls, $lwinfo;
+	global $now, $db, $tablepre, $alivenum, $deathnum, $name, $w_state, $type, $pid, $typeinfo, $pls, $lwinfo, $w_achievement;
 	
 	if (! $death || ! $dname) {
 		return;
@@ -128,9 +144,14 @@ function kill($death, $dname, $dtype = 0, $dpid = 0, $annex = '') {
 		$alivenum --;
 	}
 	$deathnum ++;
-	save_gameinfo ();
+	
 	
 	if ($dtype) {
+		if($dtype == 15){//静流AI
+			global $gamevars;
+			$gamevars['sanmadead'] = 1;
+			save_gameinfo();
+		}
 		$lwname = $typeinfo [$dtype] . ' ' . $dname;
 		if (is_array ( $lwinfo [$dtype] )) {
 			$lastword = $lwinfo [$dtype] [$dname];
@@ -146,8 +167,36 @@ function kill($death, $dname, $dtype = 0, $dpid = 0, $annex = '') {
 		
 		$db->query ( "INSERT INTO {$tablepre}chat (type,`time`,send,recv,msg) VALUES ('3','$now','$lwname','$pls','$lastword')" );
 	}
-	addnews ( $now, 'death' . $w_state, $dname, $dtype, $name, $annex, $lastword );
-	$db->query ( "UPDATE {$tablepre}players SET hp='0',endtime='$now',bid='$pid',state='$w_state' WHERE pid=$dpid" );
+	$result = $db->query("SELECT nick FROM {$tablepre}players WHERE name = '$name' AND type = '$type'");
+	$knick = $db->result($result, 0);
+	addnews ( $now, 'death' . $w_state, $dname, $dtype, $knick.' '.$name, $annex, $lastword );
+	
+	$result = $db->query("SELECT * FROM {$tablepre}players WHERE pid=$dpid" );
+	$res=$db->fetch_array($result);
+	$revivaled=false;
+	if ($res['type']==0 && $res['club']==99 && ($death=="N" || $death=="P" || $death=="K" || $death=="G" || $death=="C" ||$death=="D" || $death=="F" || $death=="J" || $death=="trap"))	
+	{
+		addnews($now,'revival',$res['name']);	//玩家春哥附体称号的处理
+		$db->query ( "UPDATE {$tablepre}players SET hp=mhp WHERE pid=$dpid" );
+		$db->query ( "UPDATE {$tablepre}players SET sp=msp WHERE pid=$dpid" );
+		$db->query ( "UPDATE {$tablepre}players SET club=17 WHERE pid=$dpid" );
+		$db->query ( "UPDATE {$tablepre}players SET state=0 WHERE pid=$dpid" );
+		$alivenum++;
+		$revivaled=true;
+	}
+	if (!$revivaled) $db->query ( "UPDATE {$tablepre}players SET hp='0',endtime='$now',deathtime='$now',bid='$pid',state='$w_state' WHERE pid=$dpid" );
+//	if($dtype == 1 || $dtype == 9){
+//		global $rdown,$bdown;
+//		if($dtype == 1){
+//			$rdown = 1;
+//			storyputchat($now,'rdown');
+//		}elseif($dtype == 9){
+//			$bdown = 1;
+//			storyputchat($now,'bdown');
+//		}			
+//	}
+	
+	save_gameinfo ();
 	return $killmsg;
 }
 
@@ -160,10 +209,10 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		} else {
 			$perfix = 'w_';
 		}
-		global ${$perfix . 'name'}, ${$perfix . 'hp'}, ${$perfix . 'mhp'}, ${$perfix . 'sp'}, ${$perfix . 'msp'}, ${$perfix . 'att'}, ${$perfix . 'def'}, ${$perfix . 'upexp'}, ${$perfix . 'club'}, ${$perfix . 'type'};
+		global ${$perfix . 'name'}, ${$perfix . 'hp'}, ${$perfix . 'mhp'}, ${$perfix . 'sp'}, ${$perfix . 'msp'}, ${$perfix . 'att'}, ${$perfix . 'def'}, ${$perfix . 'upexp'}, ${$perfix . 'club'}, ${$perfix . 'type'}, ${$perfix . 'skillpoint'};
 		global ${$perfix . 'wp'}, ${$perfix . 'wk'}, ${$perfix . 'wc'}, ${$perfix . 'wg'}, ${$perfix . 'wd'}, ${$perfix . 'wf'};
 		$sklanginfo = Array ('wp' => '殴熟', 'wk' => '斩熟', 'wg' => '射熟', 'wc' => '投熟', 'wd' => '爆熟', 'wf' => '灵熟', 'all' => '全系熟练度' );
-		$sknlist = Array (1 => 'wp', 2 => 'wk', 3 => 'wc', 4 => 'wg', 5 => 'wd', 9 => 'wf', 12 => 'all' );
+		$sknlist = Array (1 => 'wp', 2 => 'wk', 3 => 'wc', 4 => 'wg', 5 => 'wd', 9 => 'wf', 16 => 'all' );
 		$skname = $sknlist [${$perfix . 'club'}];
 		//升级判断
 		$lvup = 1 + floor ( ($exp - $up_exp_temp) / $baseexp / 2 );
@@ -206,6 +255,7 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		${$perfix . 'msp'} += $lvupsp;
 		${$perfix . 'att'} += $lvupatt;
 		${$perfix . 'def'} += $lvupdef;
+		${$perfix . 'skillpoint'} += $lvup;
 		if ($skname == 'all') {
 			${$perfix . 'wp'} += $lvupskill;
 			${$perfix . 'wk'} += $lvupskill;
@@ -227,10 +277,10 @@ function lvlup(&$lvl, &$exp, $isplayer = 1) {
 		}
 		if ($isplayer) {
 			global $log;
-			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}！</span><br>";
+			$log .= "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}，获得了{$lvup}点技能点！</span><br>";
 		} elseif (! $w_type) {
 			global $w_pid, $now;
-			$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}！</span><br>";
+			$w_log = "<span class=\"yellow\">你升了{$lvup}级！生命上限+{$lvuphp}，体力上限+{$lvupsp}，攻击+{$lvupatt}，防御+{$lvupdef}{$sklog}，体力恢复了{$lvupspref}，获得了{$lvup}点技能点！</span><br>";
 			logsave ( $w_pid, $now, $w_log,'s');
 		}
 	} elseif ($lvl >= 255) {

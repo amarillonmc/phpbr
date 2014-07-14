@@ -1,0 +1,2 @@
+<?php if(!defined('IN_GAME')) exit('Access Denied'); ?>
+<span class="evergreen"><b>现在的禁区是：</b></span>&nbsp;无月之影&nbsp;常磐台中学&nbsp;对天使用作战本部&nbsp;妖精驿站&nbsp;花菱商厦<br><span class="evergreen"><b>下回的禁区是：</b></span><b>13时30分：</b> &nbsp;风祭森林&nbsp;&nbsp;春之镇&nbsp;&nbsp;梦幻馆&nbsp;&nbsp;雏菊之丘&nbsp;；<b>14时0分：</b> &nbsp;墓地&nbsp;&nbsp;常磐森林&nbsp;&nbsp;圣Gradius学园&nbsp;&nbsp;键刃墓场&nbsp;；<b>14时30分：</b> &nbsp;麦斯克林&nbsp;&nbsp;夏之镇&nbsp;&nbsp;守矢神社&nbsp;&nbsp;清水池&nbsp;
